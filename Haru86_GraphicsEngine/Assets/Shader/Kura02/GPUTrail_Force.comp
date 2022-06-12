@@ -1,0 +1,156 @@
+#version 430
+
+struct BoidsForce{
+	vec3 force;
+};
+
+layout(std430,binding=0) buffer destBufferBoidsForce
+{
+	BoidsForce boidsForce[];
+} outBufferBoidsForce;
+
+struct BoidsData {
+    vec3 position;
+    vec3 velocity;
+    vec3 viewDir;
+};
+
+layout(std430,binding=1) buffer destBufferBoidsData
+{
+	BoidsData boidsData[];
+} outBufferBoidsData;
+
+layout(local_size_x=32,local_size_y=1,local_size_z=1) in;
+
+uniform float _time;
+uniform float _deltaTime;
+uniform float _adjustTime;
+
+#define BoundingSize vec3(100.0,100.0,100.0)
+
+//Boids Func////////////////////////////////////////////////////////////////////////////
+
+#define NUMTHREADS_X_NUM 32
+
+uniform int _boids_count;
+uniform float _maxBoidsDist;
+//uniform float _maxBoidsField;
+uniform vec3 _maxBoidsField;
+uniform float _centerPosPower;
+uniform float _NoiseValue;
+
+uniform float _joinPower;
+uniform float _separatePower;
+uniform float _alignmentPower;
+
+uniform float _joinDisMin;
+uniform float _separateDistMin;
+uniform float _alignmentDistMin;
+
+shared BoidsData shared_BoidsData[NUMTHREADS_X_NUM];
+
+vec3 Turn(vec3 pos,vec3 vel,float uid){
+    vec3 turnVel=vec3(0,0,0);
+     
+    //float seed=2.5;
+     float seed=.85;
+
+    if(pos.x<-1.0*_maxBoidsField.x){
+        vel.x+=seed*abs(vel.x);
+    }
+     if(pos.x>_maxBoidsField.x){
+        vel.x-=seed*abs(vel.x);
+    }
+    
+    if(pos.y<-1.0*_maxBoidsField.y){
+        vel.y+=seed*abs(vel.y);
+    }
+     if(pos.y>_maxBoidsField.y){
+        vel.y-=seed*abs(vel.y);
+    }
+
+    if(pos.z<-1.0*_maxBoidsField.z){
+        vel.z+=seed*abs(vel.z);
+    }
+     if(pos.z>_maxBoidsField.z){
+        vel.z-=seed*abs(vel.z);
+    }
+
+    return vel;
+}
+
+vec3 TurnFromCenter(vec3 pos,vec3 vel,float uid){
+    vec3 VecFC=normalize(vec3(0.0)-pos);
+    float nearCV=abs(dot(VecFC,normalize(vel)));
+    
+    vec3 rv=vel;
+    if(nearCV>0.6){
+        vec3 mv=normalize(cross(VecFC,normalize(vel)));
+        rv+=mv*1.0*nearCV;
+    }
+
+    return rv;
+}
+
+float rand(vec2 st)
+{
+    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+vec2 random2(vec2 seeds)
+{
+ seeds = vec2(dot(seeds, vec2(127.1, 311.7)),
+ dot(seeds, vec2(269.5, 183.3)));
+ return fract(sin(seeds) * 43758.5453123);
+}
+
+float perlinNoise(vec2 seeds)
+{
+vec2 i = floor(seeds);
+vec2 f = fract(seeds);
+vec2 i00 = i + vec2(0, 0);
+vec2 i10 = i + vec2(1, 0);
+vec2 i01 = i + vec2(0, 1);
+vec2 i11 = i + vec2(1, 1);
+vec2 f00 = f - vec2(0, 0);
+vec2 f10 = f - vec2(1, 0);
+vec2 f01 = f - vec2(0, 1);
+vec2 f11 = f - vec2(1, 1);
+vec2 g00 = normalize(-1.0 + 2.0 * random2(i00));
+vec2 g10 = normalize(-1.0 + 2.0 * random2(i10));
+vec2 g01 = normalize(-1.0 + 2.0* random2(i01));
+vec2 g11 = normalize(-1.0 + 2.0* random2(i11));
+float v00 = dot(g00, f00);
+float v10 = dot(g10, f10);
+float v01 = dot(g01, f01);
+float v11 = dot(g11, f11);
+vec2 p = smoothstep(0.0, 1.0, f);
+float v00v10 = mix(v00, v10, p.x);
+float v01v11 = mix(v01, v11, p.x);
+return mix(v00v10, v01v11, p.y) * 0.5 + 0.5;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void main(){
+	uint DID=gl_GlobalInvocationID.x;
+    uint GID=gl_WorkGroupID.x;
+    
+    float deltaX=rand(vec2(float(DID),5.2102))*64.0;
+
+    vec3 result_velocity=vec3(
+        50.0*(perlinNoise(vec2(float(DID),0.123)+vec2(_time+deltaX))*2.0-1.0)*cos(float(DID)+_time+deltaX),
+        50.0*(perlinNoise(vec2(0.971,float(DID))+vec2(_time+deltaX))*2.0-1.0)*sin(float(DID)+_time+deltaX),
+        50.0*(perlinNoise(vec2(float(DID))      +vec2(_time+deltaX))*2.0-1.0)*sin(float(DID)+_time+deltaX)
+    );
+
+    float radius=3.5;
+    result_velocity+=normalize(result_velocity)*radius;
+
+    outBufferBoidsForce.boidsForce[DID].force=vec3(
+        (isnan(result_velocity.x))?0.005:result_velocity.x,
+        (isnan(result_velocity.y))?0.005:result_velocity.y,
+        (isnan(result_velocity.z))?0.005:result_velocity.z
+    );
+
+}
