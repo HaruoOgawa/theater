@@ -70,12 +70,12 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	);
 
 	if (!sWindow) {
-		SDL_Log("Failure! Can not initialize SDL_OpenGL Window: %s", SDL_GetError());
+		//SDL_Log("Failure! Can not initialize SDL_OpenGL Window: %s", SDL_GetError());
 		return false;
 	}
 	
 	if (SDL_SetWindowFullscreen(sWindow, SDL_WINDOW_FULLSCREEN_DESKTOP)!=0) {
-		SDL_Log("Full Screeen Error: %s", SDL_GetError());
+		//SDL_Log("Full Screeen Error: %s", SDL_GetError());
 	}
 
 	SDL_GetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);
@@ -85,7 +85,7 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	glewExperimental = GL_TRUE;
 	const GLenum error = glewInit();
 	if (error != GLEW_OK) {
-		SDL_Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
+		//SDL_Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
 		return false;
 	}
 	glGetError();
@@ -95,31 +95,31 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 	//CreateFrameBuffer
 	if (!CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer,GL_RGBA, GL_RGBA)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		SDL_Log("Can not create frame buffer");
+		//SDL_Log("Can not create frame buffer");
 	}
 
 	font =  std::make_shared<Font>();

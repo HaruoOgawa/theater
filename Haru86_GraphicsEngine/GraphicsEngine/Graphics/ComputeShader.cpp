@@ -68,11 +68,11 @@ void ComputeShader::LoadComputeShader(std::string computeShaderPath) {
 		GLint status;
 		glGetProgramiv(shaderPrg, GL_LINK_STATUS, &status);
 		if (status != GL_TRUE) {
-			SDL_Log("Cannot Load Program Data(ComputeShader)");
+			//SDL_Log("Cannot Load Program Data(ComputeShader)");
 			char buffer[512];
 			memset(buffer, 0, 512);
 			glGetProgramInfoLog(shaderPrg, 511, nullptr, buffer);
-			SDL_Log("GLSL Link Status(ComputeShader):\n%s", buffer);
+			//SDL_Log("GLSL Link Status(ComputeShader):\n%s", buffer);
 		}
 	}
 }
@@ -92,18 +92,18 @@ bool ComputeShader::CompileShader(std::string shadername, GLuint& outShader) {
 		glCompileShader(outShader);
 	}
 	else {
-		SDL_Log("Failure!! cannot open shader file...");
+		//SDL_Log("Failure!! cannot open shader file...");
 	}
 
 	GLint status;
 	glGetShaderiv(outShader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE) {
-		SDL_Log("Cannnot Load Shader: %s", shadername.c_str());
+		//SDL_Log("Cannnot Load Shader: %s", shadername.c_str());
 
 		char buffer[512];
 		memset(buffer, 0, 512);
 		glGetShaderInfoLog(outShader, 511, nullptr, buffer);
-		SDL_Log("GLSL Compile Failed: %s", buffer);
+		//SDL_Log("GLSL Compile Failed: %s", buffer);
 		return false;
 	}
 

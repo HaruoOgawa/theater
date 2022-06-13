@@ -11,7 +11,7 @@ Font::~Font() {
 
 bool Font::Load(std::string fontPass) {
 	if (TTF_Init() != 0) {
-		SDL_Log("Cannot Initialize TTF");
+		//SDL_Log("Cannot Initialize TTF");
 		return false;
 	}
 	
@@ -29,7 +29,7 @@ bool Font::Load(std::string fontPass) {
 	for (auto size : fontSizes) {
 		TTF_Font* font = TTF_OpenFont(fontPass.c_str(), size);
 		if (font == nullptr) {
-			SDL_Log("Can not Load Font Data: %s",TTF_GetError());
+			//SDL_Log("Can not Load Font Data: %s",TTF_GetError());
 			return false;
 		}
 		fontData.emplace(size, font);
@@ -70,7 +70,7 @@ std::unique_ptr<Texture> Font::GetFontTexture(const std::string fontText, const 
 		}
 	}
 	else {
-		SDL_Log("Cannnot Get FontText");
+		//SDL_Log("Cannnot Get FontText");
 	}
 
 	return texture;

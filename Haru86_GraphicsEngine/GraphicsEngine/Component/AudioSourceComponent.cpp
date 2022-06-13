@@ -31,7 +31,7 @@ bool AudioSourceComponent::Initialize() {
 	FMOD_RESULT result;
 	result = FMOD::Studio::System::create(&mSystem);
 	if (result != FMOD_OK) {
-		SDL_Log("FMOD‚Ìì¬‚ÉŽ¸”s‚µ‚Ü‚µ‚½: %s",FMOD_ErrorString(result));
+		//SDL_Log("FMOD‚Ìì¬‚ÉŽ¸”s‚µ‚Ü‚µ‚½: %s",FMOD_ErrorString(result));
 		return false;
 	}
 	
@@ -43,7 +43,7 @@ bool AudioSourceComponent::Initialize() {
 	);
 
 	if (result!=FMOD_OK) {
-		SDL_Log("FMOD‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½: %s", FMOD_ErrorString(result));
+		//SDL_Log("FMOD‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½: %s", FMOD_ErrorString(result));
 		return false;
 	}
 
@@ -143,7 +143,7 @@ bool AudioSourceComponent::CreateSound(std::string name) {
 	}
 	else {
 		char a[] = "a";
-		SDL_Log("Cannnot Load Sound: (%d) %s",result,FMOD_ErrorString(result));
+		//SDL_Log("Cannnot Load Sound: (%d) %s",result,FMOD_ErrorString(result));
 		delete sound;
 		return false;
 	}
@@ -152,7 +152,7 @@ bool AudioSourceComponent::CreateSound(std::string name) {
 void AudioSourceComponent::Play() {
 	FMOD_RESULT result = lowLevelSystem->playSound(sound, nullptr, false, &channel);
 	if (result != FMOD_OK) {
-		SDL_Log("Cannnot Play Sound: (%d) %s", result, FMOD_ErrorString(result));
+		//SDL_Log("Cannnot Play Sound: (%d) %s", result, FMOD_ErrorString(result));
 		delete sound;
 		delete channel;
 	}

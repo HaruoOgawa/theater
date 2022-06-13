@@ -121,13 +121,13 @@ GraphicsMain::~GraphicsMain() {
 
 bool GraphicsMain::CreateApp() {
 	if (SDL_Init(SDL_INIT_VIDEO || SDL_INIT_AUDIO) != 0) {
-		SDL_Log("SDL Init is failure: %s", SDL_GetError());
+		//SDL_Log("SDL Init is failure: %s", SDL_GetError());
 		return false;
 	}
 
 	GraphicsRenderer::Create();
 	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		SDL_Log("Can not Initialize");
+		//SDL_Log("Can not Initialize");
 		return false;
 	}
 

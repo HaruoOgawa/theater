@@ -162,9 +162,13 @@ xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y</Comm
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
+
 xcopy "C:\SDL2_image-2.0.5\lib\x86\*.dll" "$(OutDir)" /i /s /y
+
 xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
+
 xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll" "$(OutDir)" /i /s /y
+
 xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
