@@ -2,7 +2,7 @@
 #include "GraphicsEngine/Component/Component.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
-#include "GraphicsEngine/Component/SkinMeshRendererComponent.h"
+#include "GraphicsEngine/App/CEventListener.h"
 
 namespace obj {
 	CNode::CNode():
@@ -55,9 +55,6 @@ namespace obj {
 		auto MeshRenderer = GetComponent<MeshRendererComponent>();
 		if (MeshRenderer)MeshRenderer->Draw(); // m_ModelMatrixTree‚ð“n‚·
 		
-		auto SkinMeshRenderer = GetComponent<SkinMeshRendererComponent>();
-		if (SkinMeshRenderer)SkinMeshRenderer->Draw(m_ModelMatrixTree); // m_ModelMatrixTree‚ð“n‚·
-
 		for (auto node : m_Nodes) {
 			// m_ModelMatrixTree‚ðŽq—v‘f‚ÌDraw‚É“n‚·
 			node->Draw(m_ModelMatrixTree);
@@ -69,13 +66,13 @@ namespace obj {
 		return true;
 	}
 
-	void CNode::ProcessInput(const SDL_Event& e) {
+	void CNode::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 		for (auto comp : m_ComponentList) {
-			comp.second->ProcessInput(e);
+			comp.second->ProcessInput(EventListener);
 		}
 
 		for (auto node : m_Nodes) {
-			node->ProcessInput(e);
+			node->ProcessInput(EventListener);
 		}
 	}
 

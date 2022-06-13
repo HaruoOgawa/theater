@@ -30,5 +30,4 @@ bool AudioObject::Initialize() {
 }
 
 void AudioObject::PlayAudio() {
-	audioSource->Play();
 }

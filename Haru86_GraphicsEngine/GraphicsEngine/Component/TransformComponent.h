@@ -40,7 +40,7 @@ public:
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
-    void ProcessInput(const SDL_Event& e) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 
     static std::shared_ptr<TransformComponent> Combine(const std::shared_ptr<TransformComponent>& a, const std::shared_ptr<TransformComponent>& b);
     static std::shared_ptr<TransformComponent> inverse(const std::shared_ptr<TransformComponent>& t);

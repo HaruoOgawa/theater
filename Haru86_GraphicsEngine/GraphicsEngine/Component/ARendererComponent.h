@@ -14,7 +14,7 @@ public:
 
 	virtual void Update() override = 0;
 	virtual void Draw() = 0;
-	virtual void ProcessInput(const SDL_Event& e) override = 0;
+	virtual void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override = 0;
 
 	const std::shared_ptr<Mesh>& GetMesh()const;
 	const std::shared_ptr<Material>& GetMaterial()const;

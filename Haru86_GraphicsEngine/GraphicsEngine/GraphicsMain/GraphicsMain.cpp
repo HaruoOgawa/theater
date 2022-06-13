@@ -16,6 +16,7 @@
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/App/CEventListener.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -44,7 +45,8 @@ GraphicsMain::GraphicsMain()
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr),
-	m_PhysicsEngine(nullptr)
+	m_PhysicsEngine(nullptr),
+	m_EventListener(std::make_shared<app::CEventListener>())
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -120,14 +122,14 @@ GraphicsMain::~GraphicsMain() {
 }
 
 bool GraphicsMain::CreateApp() {
-	if (SDL_Init(SDL_INIT_VIDEO || SDL_INIT_AUDIO) != 0) {
-		SDL_Log("SDL Init is failure: %s", SDL_GetError());
+	if (glfwInit() == GL_FALSE) {
+		Console::Log("Could not initialize GLFW\n");
 		return false;
 	}
 
 	GraphicsRenderer::Create();
 	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		SDL_Log("Can not Initialize");
+		Console::Log("Could not Create GraphicsRenderer\n");
 		return false;
 	}
 
@@ -199,7 +201,10 @@ void GraphicsMain::UpdateTimeline() {
 }
 
 void GraphicsMain::InputProcess() {
-	SDL_Event e;
+	// イベントを取り出す(?)
+	glfwWaitEvents();
+	
+	/*SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
 		switch (e.type)
@@ -218,13 +223,13 @@ void GraphicsMain::InputProcess() {
 		} 
 	}
 
-	const Uint8* state = SDL_GetKeyboardState(NULL);
+	const Uint8* state = SDL_GetKeyboardState(NULL);*/
 
 	for (auto obj : gameObjectList) {
-		obj->ProcessInput(e);
+		obj->ProcessInput(m_EventListener);
 	}
 
-	game_camera_instance->ProcessInput(e);
+	game_camera_instance->ProcessInput(m_EventListener);
 
 }
 

@@ -7,7 +7,7 @@
 //#include "Assets/App/Kura02/Kura02.h"
 #include "Assets/App/AnimationLearning/AnimationLearning.h"
 
-int main(int argc, char** argv) {
+int WinMain(int argc, char** argv) {
 	GraphicsMain::Create();
 	
 	if (GraphicsMain::GetInstance()->CreateApp()) {

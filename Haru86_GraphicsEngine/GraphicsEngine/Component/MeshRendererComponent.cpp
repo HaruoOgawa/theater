@@ -1,5 +1,5 @@
 #include "MeshRendererComponent.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include <glm/glm.hpp>
 #include "./TransformComponent.h"
 #include <string>
@@ -59,9 +59,9 @@ MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, 
 	mesh = std::make_shared<Mesh>((primType));
 	mesh->glDrawType = GLDrawType::NONE;
 	material = std::make_shared<Material>(vertexShaderName, fragmentShaderName);
-	if (GraphicsRenderer::GetInstance()->font != nullptr) {
+	/*if (GraphicsRenderer::GetInstance()->font != nullptr) {
 		primTex = GraphicsRenderer::GetInstance()->font->GetFontTexture(textureString, glm::vec3(1.0, 1.0, 1.0), 30);
-	}
+	}*/
 
 }
 
@@ -160,6 +160,6 @@ void MeshRendererComponent::DrawBoard() {
 
 
 
-void MeshRendererComponent::ProcessInput(const SDL_Event& e) {
+void MeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

@@ -28,7 +28,7 @@ public:
 	void SetRotation(glm::quat rot);
 	void SetScale(glm::vec3 s);
 	virtual void Update();
-	virtual void ProcessInput(const SDL_Event& e);
+	virtual void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener);
 	
 	glm::vec3 GetPosition();
 	glm::quat GetRotation();

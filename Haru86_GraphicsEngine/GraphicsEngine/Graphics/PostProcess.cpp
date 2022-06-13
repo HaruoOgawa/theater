@@ -1,7 +1,7 @@
 #include "PostProcess.h"
 #include <iostream>
 #include "GraphicsEngine/Graphics/Texture.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include "CBloom.h"
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/Graphics/Material.h"

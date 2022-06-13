@@ -1,6 +1,5 @@
 #include "Mesh.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 #include "./Primitive.h"
 #include <vector>
 

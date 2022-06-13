@@ -1,17 +1,17 @@
 #pragma once
-#include "SDL.h"
 #include "../GraphicsMain/GraphicsMain.h"
+#include <glew.h>
+#include <glfw3.h>
 #include <glm/glm.hpp>
-#include <GL/glew.h>
+
 #include <memory>
 
 class GraphicsRenderer
 {
-	SDL_Window* sWindow;
+	GLFWwindow* sWindow;
 	int sWindowWidth;
 	int sWindowHeight;
 	class GraphicsMain* mgame;
-	SDL_GLContext context;
 
 	//FrameBuffer
 	unsigned int polygon_frameBuffer;
@@ -44,7 +44,6 @@ public:
 	glm::ivec2 GetScreenSize();
 	float deltaTime;
 	float frameResolusion;
-	std::shared_ptr<class Font> font;
 
 	//FrameTextures
 	std::shared_ptr<class Texture> polygon_frameTexture;

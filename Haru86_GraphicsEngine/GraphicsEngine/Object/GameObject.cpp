@@ -3,11 +3,8 @@
 #include "../Component/TransformComponent.h"
 #include "../Component/ARendererComponent.h"
 #include "../Component/MeshRendererComponent.h"
-#include "../Component/SkinMeshRendererComponent.h"
 #include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "CNode.h"
-#include "GraphicsEngine/Graphics/glTFLoader.h"
-#include "GraphicsEngine/Graphics/glTFData.h"
 
 GameObject::GameObject(PrimitiveType primType) 
 	: Object(), renderOrder(RenderQueue::Geometry), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(primType)
@@ -23,13 +20,6 @@ GameObject::GameObject(PrimitiveType primType, std::map<GLenum, std::string> sha
 	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
 	meshComp = std::make_shared<MeshRendererComponent>(this, primType,shaders);
 	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
-}
-
-GameObject::GameObject(std::string objPath)
-	: Object(), renderOrder(RenderQueue::Geometry), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(PrimitiveType::CUSTOM)
-{
-	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
-	auto data = gltf::glTFLoader::Load(this, objPath);
 }
 
 GameObject::GameObject(PrimitiveType primType, std::string fragmentShaderName)
@@ -92,9 +82,9 @@ void GameObject::SetRenderOlder(int order) {
 	renderOrder = order;
 }
 
-void GameObject::ProcessInput(const SDL_Event& e) {
+void GameObject::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 	for (auto comp : m_RootNode->GetComponentList()) {
-		comp.second->ProcessInput(e);
+		comp.second->ProcessInput(EventListener);
 	}
 }
 

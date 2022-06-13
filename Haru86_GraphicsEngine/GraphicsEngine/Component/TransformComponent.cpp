@@ -145,7 +145,7 @@ void TransformComponent::ComputePerspectiveMatrix() {
 	);
 }
 
-void TransformComponent::ProcessInput(const SDL_Event& e) {
+void TransformComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

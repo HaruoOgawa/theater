@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include <SDL.h>
-#include <GL/glew.h>
+
+#include <glew.h>
 
 class Texture
 {
@@ -9,7 +9,6 @@ public:
 	Texture();
 	~Texture();
 	void CreateForRendering(int width, int height,GLint internalformat,GLint format,GLenum type= GL_UNSIGNED_BYTE);
-	void CreateTrueTypeFontTexture(SDL_Surface* surf);
 	bool Load(const std::string& fileName);
 	unsigned int GetTextureID() const { return mTextureID; }
 	void SetActive();

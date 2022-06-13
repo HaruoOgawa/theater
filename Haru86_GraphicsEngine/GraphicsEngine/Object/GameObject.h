@@ -7,7 +7,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <GL/glew.h>
+#include <glew.h>
 #include <typeinfo>
 #include <memory>
 #include "GraphicsEngine/Physics/EColliderType.h"
@@ -40,7 +40,6 @@ class GameObject
 public:
 	GameObject(PrimitiveType primType);
 	GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders);
-	GameObject(std::string objPath);
 	GameObject(PrimitiveType primType,std::string fragmentShaderName);
 	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName);
 	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);
@@ -49,7 +48,7 @@ public:
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
-	void ProcessInput(const SDL_Event& e) override;
+	void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 	void AddCollider(physics::EColliderType ColliderType,physics::EObjectType ObjectType);
 	std::shared_ptr<ARendererComponent> meshComp;
 	float animTime = 0.0f;

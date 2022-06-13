@@ -94,27 +94,19 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\inc;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\inc;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;fmodL_vc.lib;fmodstudioL_vc.lib;SDL2_ttf.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
-xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
-
-
-
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -124,26 +116,22 @@ xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\inc;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\inc;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;fmodL_vc.lib;fmodstudioL_vc.lib;SDL2_ttf.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
-xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -152,20 +140,17 @@ xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y</Comm
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\inc;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\inc;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;fmodL_vc.lib;fmodstudioL_vc.lib;SDL2_ttf.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\SDL2_image-2.0.5\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -175,42 +160,28 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\inc;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\inc;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\FMOD_API\studio\lib;$(ProjectDir)GraphicsEngine\Library\FMOD_API\lowlevel\lib;$(ProjectDir)GraphicsEngine\Library\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;fmodL_vc.lib;fmodstudioL_vc.lib;SDL2_ttf.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\SDL2_image-2.0.5\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsEngine\Animation\AnimationController.h" />
-    <ClInclude Include="GraphicsEngine\Animation\AnimatorComponent.h" />
+    <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Clip.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CTrack.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CFrame.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CCurve.h" />
-    <ClInclude Include="GraphicsEngine\Animation\EInterpolationType.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFData.h" />
-    <ClInclude Include="GraphicsEngine\Library\tinygltf\include\json.hpp" />
-    <ClInclude Include="GraphicsEngine\Library\tinygltf\include\stb_image.h" />
-    <ClInclude Include="GraphicsEngine\Library\tinygltf\include\stb_image_write.h" />
-    <ClInclude Include="GraphicsEngine\Library\tinygltf\include\tiny_gltf.h" />
     <ClInclude Include="GraphicsEngine\Physics\CCellContents.h" />
     <ClInclude Include="GraphicsEngine\Physics\CColliderCell.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
@@ -220,18 +191,9 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClInclude Include="GraphicsEngine\Physics\CSphereCollider.h" />
     <ClInclude Include="GraphicsEngine\Physics\ACollider.h" />
     <ClInclude Include="Assets\App\DemoApp\DemoApp.h" />
-    <ClInclude Include="Assets\App\Kura02\Kura02.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\Script\KuraGPGPU.h" />
-    <ClInclude Include="Assets\App\Kura02\Script\CBoxInstancing.h" />
-    <ClInclude Include="Assets\App\Kura02\Script\CKura3DGPUTrail.h" />
-    <ClInclude Include="Assets\App\CollisionArt\CollisionArt.h" />
-    <ClInclude Include="Assets\App\CollisionArt\Script\CCollisionGPUBox.h" />
-    <ClInclude Include="Assets\App\CollisionArt\Script\CKura3DGPUTrail.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\CameraObject.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFMesh.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFLoader.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Graphics.h" />
@@ -247,20 +209,17 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
     <ClInclude Include="GraphicsEngine\Object\GameObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\KuraArtApp.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Material.h" />
     <ClInclude Include="GraphicsEngine\Component\MeshRendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\Object.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Primitive.h" />
     <ClInclude Include="GraphicsEngine\Component\RectTransformComponent.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\Script\KuraTrail.h" />
     <ClInclude Include="GraphicsEngine\Object\RaymarchingObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
     <ClInclude Include="GraphicsEngine\Physics\EColliderType.h" />
     <ClInclude Include="GraphicsEngine\Physics\EObjectType.h" />
     <ClInclude Include="GraphicsEngine\Physics\ICollider.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Pose.h" />
     <ClInclude Include="GraphicsEngine\Object\CNode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
@@ -270,20 +229,11 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Component\UIComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
-    <ClInclude Include="GraphicsEngine\Animation\TransformTrack.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Skeleton.h" />
-    <ClInclude Include="GraphicsEngine\Component\SkinMeshRendererComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GraphicsEngine\Animation\AnimationController.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\AnimatorComponent.cpp" />
+    <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Clip.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CTrack.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CFrame.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CCurve.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFData.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CCellContents.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CColliderCell.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CColliderTree.cpp" />
@@ -292,19 +242,10 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClCompile Include="GraphicsEngine\Physics\CSphereCollider.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\ACollider.cpp" />
     <ClCompile Include="Assets\App\DemoApp\DemoApp.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Kura02.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\Script\KuraGPGPU.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Script\CBoxInstancing.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Script\CKura3DGPUTrail.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\CollisionArt.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\Script\CCollisionGPUBox.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\Script\CKura3DGPUTrail.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFMesh.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFLoader.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Graphics.cpp" />
@@ -316,7 +257,6 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\Main.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\KuraArtApp.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Material.cpp" />
     <ClCompile Include="GraphicsEngine\Component\MeshRendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\Object.cpp" />
@@ -329,15 +269,10 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
     <ClCompile Include="GraphicsEngine\Component\TransformComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Component\UIComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\Script\KuraTrail.cpp" />
     <ClCompile Include="GraphicsEngine\Object\RaymarchingObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\TransformTrack.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Pose.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Skeleton.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\SkinMeshRendererComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\CollisionArt\CubeFieldRaymarching.frag" />
@@ -416,16 +351,12 @@ xcopy "C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowle
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets" Condition="Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" />
-    <Import Project="..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets" Condition="Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" />
     <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets'))" />
     <Error Condition="!Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.800\build\native\glm.targets'))" />
   </Target>
 </Project>

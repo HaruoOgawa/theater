@@ -1,12 +1,13 @@
 #pragma once
 
-#include "SDL.h"
 #include "../Graphics/GraphicsRenderer.h"
 #include <vector>
 
 #include <memory>
 #include <map>
-#include <GL/glew.h>
+
+#include <glew.h>
+#include <glfw3.h>
 
 namespace physics { class CPhysicsEngine; }
 
@@ -17,6 +18,10 @@ enum ERerderingTarget
 };
 
 class BaseApp;
+
+namespace app {
+	class CEventListener;
+}
 
 class GraphicsMain
 {
@@ -30,6 +35,9 @@ class GraphicsMain
 	bool mouseStateBool;
 	
 	ERerderingTarget renderingTarget;
+
+	//
+	std::shared_ptr<app::CEventListener> m_EventListener;
 
 public:
 	static GraphicsMain* GetInstance()
@@ -69,6 +77,8 @@ public:
 
 	//
 	bool isRestart;
+
+	
 
 	friend class Main;
 	friend class GameObject;
