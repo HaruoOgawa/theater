@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include <glew.h>
-#include <SOIL.h>
+//#include <SOIL.h>
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include <map>
 
@@ -22,16 +22,16 @@ bool Texture::Load(const std::string& fileName)
 {
 	int channels = 0;
 
-	unsigned char* image = SOIL_load_image(fileName.c_str(),
-		&mWidth, &mHeight, &channels, SOIL_LOAD_AUTO);
+	//unsigned char* image = SOIL_load_image(fileName.c_str(),
+	//	&mWidth, &mHeight, &channels, SOIL_LOAD_AUTO);
 
-	if (image == nullptr)
+	/*if (image == nullptr)
 	{
 		//SDL_Log("SOIL failed to load image %s: %s", fileName.c_str(), SOIL_last_result());
 		return false;
-	}
+	}*/
 
-	int format = GL_RGB;
+	/*int format = GL_RGB;
 	if (channels == 4)
 	{
 		format = GL_RGBA;
@@ -42,9 +42,9 @@ bool Texture::Load(const std::string& fileName)
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format,
-		GL_UNSIGNED_BYTE, image);
+		GL_UNSIGNED_BYTE, image);*/
 
-	SOIL_free_image_data(image);
+	//SOIL_free_image_data(image);
 
 	// Enable linear filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

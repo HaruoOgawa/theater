@@ -10,6 +10,10 @@
 class Component;
 class TransformComponent;
 
+namespace app {
+	class CEventListener;
+}
+
 namespace obj {
 	class CNode
 	{

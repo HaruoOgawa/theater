@@ -16,6 +16,7 @@
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/App/CEventListener.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 

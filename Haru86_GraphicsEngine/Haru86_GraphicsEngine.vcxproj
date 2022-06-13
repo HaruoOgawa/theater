@@ -96,16 +96,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -117,18 +117,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -138,16 +138,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -159,18 +159,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -185,7 +185,6 @@
     <ClInclude Include="GraphicsEngine\Animation\CCurve.h" />
     <ClInclude Include="GraphicsEngine\Animation\EInterpolationType.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFData.h" />
     <ClInclude Include="GraphicsEngine\Physics\CCellContents.h" />
     <ClInclude Include="GraphicsEngine\Physics\CColliderCell.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
@@ -195,18 +194,9 @@
     <ClInclude Include="GraphicsEngine\Physics\CSphereCollider.h" />
     <ClInclude Include="GraphicsEngine\Physics\ACollider.h" />
     <ClInclude Include="Assets\App\DemoApp\DemoApp.h" />
-    <ClInclude Include="Assets\App\Kura02\Kura02.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\Script\KuraGPGPU.h" />
-    <ClInclude Include="Assets\App\Kura02\Script\CBoxInstancing.h" />
-    <ClInclude Include="Assets\App\Kura02\Script\CKura3DGPUTrail.h" />
-    <ClInclude Include="Assets\App\CollisionArt\CollisionArt.h" />
-    <ClInclude Include="Assets\App\CollisionArt\Script\CCollisionGPUBox.h" />
-    <ClInclude Include="Assets\App\CollisionArt\Script\CKura3DGPUTrail.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\CameraObject.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFMesh.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\glTFLoader.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Graphics.h" />
@@ -222,13 +212,11 @@
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
     <ClInclude Include="GraphicsEngine\Object\GameObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\KuraArtApp.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Material.h" />
     <ClInclude Include="GraphicsEngine\Component\MeshRendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\Object.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Primitive.h" />
     <ClInclude Include="GraphicsEngine\Component\RectTransformComponent.h" />
-    <ClInclude Include="Assets\App\KuraArtApp\Script\KuraTrail.h" />
     <ClInclude Include="GraphicsEngine\Object\RaymarchingObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
@@ -259,7 +247,6 @@
     <ClCompile Include="GraphicsEngine\Animation\CFrame.cpp" />
     <ClCompile Include="GraphicsEngine\Animation\CCurve.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFData.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CCellContents.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CColliderCell.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CColliderTree.cpp" />
@@ -268,19 +255,10 @@
     <ClCompile Include="GraphicsEngine\Physics\CSphereCollider.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\ACollider.cpp" />
     <ClCompile Include="Assets\App\DemoApp\DemoApp.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Kura02.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\Script\KuraGPGPU.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Script\CBoxInstancing.cpp" />
-    <ClCompile Include="Assets\App\Kura02\Script\CKura3DGPUTrail.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\CollisionArt.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\Script\CCollisionGPUBox.cpp" />
-    <ClCompile Include="Assets\App\CollisionArt\Script\CKura3DGPUTrail.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFMesh.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\glTFLoader.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Graphics.cpp" />
@@ -292,7 +270,6 @@
     <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\Main.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\KuraArtApp.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Material.cpp" />
     <ClCompile Include="GraphicsEngine\Component\MeshRendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\Object.cpp" />
@@ -305,7 +282,6 @@
     <ClCompile Include="GraphicsEngine\Component\TransformComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Component\UIComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
-    <ClCompile Include="Assets\App\KuraArtApp\Script\KuraTrail.cpp" />
     <ClCompile Include="GraphicsEngine\Object\RaymarchingObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />

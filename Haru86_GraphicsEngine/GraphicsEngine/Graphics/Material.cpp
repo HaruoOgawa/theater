@@ -1,7 +1,6 @@
 #include "Material.h"
 #include <fstream>
 #include <sstream>
-#include "./SDL.h"
 #include <iostream>
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/Texture.h"

@@ -3,6 +3,7 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Component/SkinMeshRendererComponent.h"
+#include "GraphicsEngine/App/CEventListener.h"
 
 namespace obj {
 	CNode::CNode():
