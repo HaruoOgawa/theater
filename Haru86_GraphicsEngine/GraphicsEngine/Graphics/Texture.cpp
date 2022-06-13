@@ -71,18 +71,6 @@ void Texture::CreateForRendering(int width, int height, GLint internalformat, GL
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::CreateTrueTypeFontTexture(SDL_Surface* surf) {
-	mWidth = surf->w;
-	mHeight = surf->h;
-	glGenTextures(1, &mTextureID);
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glBindTexture(GL_TEXTURE_2D, mTextureID );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, mWidth, mHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE,surf->pixels );
-	
-}
-
 void Texture::SetActive()
 {
 	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);

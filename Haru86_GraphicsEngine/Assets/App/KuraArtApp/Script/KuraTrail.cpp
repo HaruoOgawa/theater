@@ -118,7 +118,7 @@ void KuraTrail::Update() {
 
 }
 
-void KuraTrail::ProcessInput(const SDL_Event& e) {
+void KuraTrail::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

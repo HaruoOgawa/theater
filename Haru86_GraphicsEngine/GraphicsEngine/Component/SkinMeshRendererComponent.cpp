@@ -74,6 +74,6 @@ void SkinMeshRendererComponent::Draw(const std::vector<glm::mat4>& ModelMatrixTr
 	mesh->Draw();
 }
 
-void SkinMeshRendererComponent::ProcessInput(const SDL_Event& e) {
+void SkinMeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

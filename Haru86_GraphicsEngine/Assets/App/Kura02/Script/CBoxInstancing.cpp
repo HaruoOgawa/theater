@@ -69,6 +69,6 @@ void CBoxInstancing::Draw() {
 	
 }
 
-void CBoxInstancing::ProcessInput(const SDL_Event& e) {
+void CBoxInstancing::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

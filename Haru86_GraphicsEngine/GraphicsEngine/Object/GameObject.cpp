@@ -92,7 +92,7 @@ void GameObject::SetRenderOlder(int order) {
 	renderOrder = order;
 }
 
-void GameObject::ProcessInput(const SDL_Event& e) {
+void GameObject::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 	for (auto comp : m_RootNode->GetComponentList()) {
 		comp.second->ProcessInput(e);
 	}

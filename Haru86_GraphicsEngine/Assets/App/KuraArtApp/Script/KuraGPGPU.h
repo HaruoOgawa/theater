@@ -40,7 +40,7 @@ public:
     ~KuraGPGPU();
     void Start() override;
     void Update() override;
-    void ProcessInput(const SDL_Event& e) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
     void Draw();
     float rand(glm::vec2 st);
     int num;

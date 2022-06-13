@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <typeinfo>
-#include <SDL.h>
+
 #include <glm/glm.hpp>
 
 class Component;
@@ -27,7 +27,7 @@ namespace obj {
 		bool Update();
 		bool Draw();
 		bool Draw(const std::vector<glm::mat4>& ModelMatrixTree);
-		void ProcessInput(const SDL_Event& e);
+		void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener);
 
 		//
 		const std::unordered_map<std::type_index, std::shared_ptr<Component>>& GetComponentList()const;

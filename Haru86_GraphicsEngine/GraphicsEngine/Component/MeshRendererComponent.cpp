@@ -160,6 +160,6 @@ void MeshRendererComponent::DrawBoard() {
 
 
 
-void MeshRendererComponent::ProcessInput(const SDL_Event& e) {
+void MeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

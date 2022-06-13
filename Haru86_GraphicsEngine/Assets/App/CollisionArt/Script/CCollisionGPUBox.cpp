@@ -71,6 +71,6 @@ void CCollisionGPUBox::Draw() {
 	
 }
 
-void CCollisionGPUBox::ProcessInput(const SDL_Event& e) {
+void CCollisionGPUBox::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

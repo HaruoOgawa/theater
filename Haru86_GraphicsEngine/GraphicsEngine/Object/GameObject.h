@@ -49,7 +49,7 @@ public:
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
-	void ProcessInput(const SDL_Event& e) override;
+	void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 	void AddCollider(physics::EColliderType ColliderType,physics::EObjectType ObjectType);
 	std::shared_ptr<ARendererComponent> meshComp;
 	float animTime = 0.0f;

@@ -182,7 +182,7 @@ void KuraGPGPU::Draw() {
 
 }
 
-void KuraGPGPU::ProcessInput(const SDL_Event& e) {
+void KuraGPGPU::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

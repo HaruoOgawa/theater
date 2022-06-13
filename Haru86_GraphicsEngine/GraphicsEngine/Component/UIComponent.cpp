@@ -1,7 +1,7 @@
 #include "UIComponent.h"
 #include "../Object/GameObject.h"
 #include "../GraphicsMain/GraphicsMain.h"
-#include <SDL.h>
+
 #include "../Graphics/GraphicsRenderer.h"
 #include <glm/glm.hpp>
 #include "./TransformComponent.h"
@@ -25,9 +25,9 @@ UIComponent::~UIComponent() {
 
 }
 
-void UIComponent::ProcessInput(const SDL_Event& e) {
+void UIComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 	int x, y;
-	SDL_GetMouseState(&x, &y);
+	//SDL_GetMouseState(&x, &y);
 
 	float fx = static_cast<float>(x) - static_cast<float>(GraphicsRenderer::GetInstance()->GetScreenSize().x) * 0.5f;
 	float fy = static_cast<float>(GraphicsRenderer::GetInstance()->GetScreenSize().y) * 0.5f- static_cast<float>(y);

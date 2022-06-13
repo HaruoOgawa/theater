@@ -36,6 +36,6 @@ RectTransformComponent::~RectTransformComponent() {
 
 }
 
-void RectTransformComponent::ProcessInput(const SDL_Event& e) {
+void RectTransformComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

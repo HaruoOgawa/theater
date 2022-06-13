@@ -18,6 +18,10 @@ enum ERerderingTarget
 
 class BaseApp;
 
+namespace app {
+	class CEventListener;
+}
+
 class GraphicsMain
 {
 	bool isRunning;
@@ -30,6 +34,9 @@ class GraphicsMain
 	bool mouseStateBool;
 	
 	ERerderingTarget renderingTarget;
+
+	//
+	std::shared_ptr<app::CEventListener> m_EventListener;
 
 public:
 	static GraphicsMain* GetInstance()
@@ -69,6 +76,8 @@ public:
 
 	//
 	bool isRestart;
+
+	
 
 	friend class Main;
 	friend class GameObject;

@@ -30,7 +30,7 @@ public:
     void Start() override;
     void Update() override;
     void Draw();
-    void ProcessInput(const SDL_Event& e) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 private:
     std::shared_ptr<class Mesh> m_mesh;
     std::shared_ptr<class Material> m_material;

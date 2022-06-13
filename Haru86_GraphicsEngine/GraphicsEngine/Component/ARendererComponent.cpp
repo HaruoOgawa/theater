@@ -21,7 +21,7 @@ void ARendererComponent::Draw() {
 
 }
 
-void ARendererComponent::ProcessInput(const SDL_Event& e) {
+void ARendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

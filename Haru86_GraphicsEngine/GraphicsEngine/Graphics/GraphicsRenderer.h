@@ -10,7 +10,6 @@ class GraphicsRenderer
 	int sWindowWidth;
 	int sWindowHeight;
 	class GraphicsMain* mgame;
-	SDL_GLContext context;
 
 	//FrameBuffer
 	unsigned int polygon_frameBuffer;

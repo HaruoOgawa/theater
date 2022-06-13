@@ -20,7 +20,7 @@ bool AudioSourceComponent::Initialize() {
 
 void AudioSourceComponent::Update(){
 }
-void AudioSourceComponent::ProcessInput(const SDL_Event& e) {
+void AudioSourceComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

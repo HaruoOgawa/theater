@@ -23,7 +23,7 @@ public:
     void Update() override;
     void Draw();
     void DrawBoard() override;
-    void ProcessInput(const SDL_Event& e) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 
     friend class GraphicsRenderer;
 private:

@@ -217,6 +217,6 @@ void TimelineComponent::ClearTimeline() {
 
 }
 
-void TimelineComponent::ProcessInput(const SDL_Event& e) {
+void TimelineComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }

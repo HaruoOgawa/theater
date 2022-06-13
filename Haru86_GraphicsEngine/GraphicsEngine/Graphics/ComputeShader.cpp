@@ -1,7 +1,6 @@
 #include "ComputeShader.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <SDL.h>
+#include <glew.h>
+
 #include <fstream>
 #include <sstream>
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"

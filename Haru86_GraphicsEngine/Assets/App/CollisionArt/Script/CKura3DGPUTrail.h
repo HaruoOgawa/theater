@@ -107,7 +107,7 @@ public:
     void Start() override;
     void Update() override;
     void Draw();
-    void ProcessInput(const SDL_Event& e) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
     float rand(glm::vec2 st);
     void TrailUpdate();
 private:

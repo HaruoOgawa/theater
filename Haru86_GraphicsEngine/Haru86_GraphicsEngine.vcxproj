@@ -191,6 +191,7 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="GraphicsEngine\Animation\AnimationController.h" />
     <ClInclude Include="GraphicsEngine\Animation\AnimatorComponent.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
@@ -269,6 +270,7 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
     <ClInclude Include="GraphicsEngine\Component\SkinMeshRendererComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="GraphicsEngine\Animation\AnimationController.cpp" />
     <ClCompile Include="GraphicsEngine\Animation\AnimatorComponent.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />

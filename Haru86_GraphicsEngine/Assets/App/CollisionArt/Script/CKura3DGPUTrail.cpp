@@ -239,7 +239,7 @@ void CKura3DGPUTrail::Draw() {
 
 }
 
-void CKura3DGPUTrail::ProcessInput(const SDL_Event& e) {
+void CKura3DGPUTrail::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
 }
 

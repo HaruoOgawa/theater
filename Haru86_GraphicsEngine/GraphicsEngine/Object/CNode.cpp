@@ -69,7 +69,7 @@ namespace obj {
 		return true;
 	}
 
-	void CNode::ProcessInput(const SDL_Event& e) {
+	void CNode::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 		for (auto comp : m_ComponentList) {
 			comp.second->ProcessInput(e);
 		}

@@ -20,8 +20,8 @@ void Object::Update() {
 	m_RootNode->Update();
 }
 
-void Object::ProcessInput(const SDL_Event& e) {
-	m_RootNode->ProcessInput(e);
+void Object::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
+	m_RootNode->ProcessInput(EventListener);
 }
 
 void Object::SetTransform(glm::vec3 pos, glm::quat rot, glm::vec3 s)

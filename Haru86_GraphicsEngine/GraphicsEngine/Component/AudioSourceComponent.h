@@ -14,7 +14,7 @@ public:
     ~AudioSourceComponent();
     bool Initialize();
 	void Update() override;
-	void ProcessInput(const SDL_Event& e) override;
+	void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 	
 };
 

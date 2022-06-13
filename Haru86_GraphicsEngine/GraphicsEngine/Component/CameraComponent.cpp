@@ -1,6 +1,6 @@
 #include "CameraComponent.h"
 #include "GraphicsEngine/Object/CameraObject.h"
-#include <SDL.h>
+
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
@@ -42,7 +42,7 @@ void CameraComponent::Update() {
 	}
 }
 
-void CameraComponent::ProcessInput(const SDL_Event& e) {
+void CameraComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 	// 前回のフレームからのマウスの移動距離を取得する
 	int XMove, YMove = 0;
 	Uint32 MouseState=SDL_GetRelativeMouseState(&m_XMove, &m_YMove);
@@ -67,12 +67,12 @@ void CameraComponent::ProcessInput(const SDL_Event& e) {
 	}
 
 	// マウスホイールの回転量を取得する
-	if (e.type==SDL_MOUSEWHEEL) {
+	/*if (e.type == SDL_MOUSEWHEEL) {
 		m_IsMouseWheel = true;
 		m_WheelX = static_cast<int>(e.wheel.x);
 		m_WheelY = static_cast<int>(e.wheel.y);
 	}
 	else {
 		m_IsMouseWheel = false;
-	}
+	}*/
 }

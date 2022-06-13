@@ -44,7 +44,8 @@ GraphicsMain::GraphicsMain()
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr),
-	m_PhysicsEngine(nullptr)
+	m_PhysicsEngine(nullptr),
+	m_EventListener(std::make_shared<app::CEventListener>())
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -229,10 +230,10 @@ void GraphicsMain::InputProcess() {
 	const Uint8* state = SDL_GetKeyboardState(NULL);*/
 
 	for (auto obj : gameObjectList) {
-		obj->ProcessInput(e);
+		obj->ProcessInput(m_EventListener);
 	}
 
-	game_camera_instance->ProcessInput(e);
+	game_camera_instance->ProcessInput(m_EventListener);
 
 }
 

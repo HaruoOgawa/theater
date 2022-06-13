@@ -40,7 +40,7 @@ namespace animation {
 
     void AnimatorComponent::Draw() {
     }
-    void AnimatorComponent::ProcessInput(const SDL_Event& e) {
+    void AnimatorComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
     }
 

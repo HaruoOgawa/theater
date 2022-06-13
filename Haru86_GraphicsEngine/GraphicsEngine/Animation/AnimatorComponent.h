@@ -24,7 +24,7 @@ namespace animation {
 
         virtual void Update() override;
         virtual void Draw();
-        virtual void ProcessInput(const SDL_Event& e) override;
+        virtual void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 
         void Set(const std::shared_ptr<Skeleton>& Skeleton, const std::vector<std::shared_ptr<animation::Clip>>& AnimationClipList);
 
