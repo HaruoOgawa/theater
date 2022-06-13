@@ -59,9 +59,9 @@ MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, 
 	mesh = std::make_shared<Mesh>((primType));
 	mesh->glDrawType = GLDrawType::NONE;
 	material = std::make_shared<Material>(vertexShaderName, fragmentShaderName);
-	if (GraphicsRenderer::GetInstance()->font != nullptr) {
+	/*if (GraphicsRenderer::GetInstance()->font != nullptr) {
 		primTex = GraphicsRenderer::GetInstance()->font->GetFontTexture(textureString, glm::vec3(1.0, 1.0, 1.0), 30);
-	}
+	}*/
 
 }
 

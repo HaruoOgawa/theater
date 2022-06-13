@@ -5,7 +5,6 @@
 #include "../Component/TransformComponent.h"
 #include "../GraphicsMain/GraphicsMain.h"
 #include "./Texture.h"
-#include "./Font.h"
 #include "GraphicsEngine/App/BaseApp/BaseApp.h"
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
@@ -32,7 +31,6 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	sWindowHeight(500),
 	deltaTime(0.0f),
 	frameResolusion(0.7),
-	font(nullptr),
 	polygon_frameTexture(std::make_shared<Texture>()),
 	polygon_depthTexture(std::make_shared<Texture>()),
 	raymarching_frameTexture(std::make_shared<Texture>()),
@@ -120,12 +118,6 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	
 	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
 		//SDL_Log("Can not create frame buffer");
-	}
-
-	font =  std::make_shared<Font>();
-	if (!(font->Load("./Assets/Resources/FontData/FRSCRIPT.TTF"))) {
-		font.reset();
-		font == nullptr;
 	}
 
 	m_Mixer = std::make_unique<PolygonRaymarchingMixer>();

@@ -44,7 +44,6 @@ public:
 	glm::ivec2 GetScreenSize();
 	float deltaTime;
 	float frameResolusion;
-	std::shared_ptr<class Font> font;
 
 	//FrameTextures
 	std::shared_ptr<class Texture> polygon_frameTexture;
