@@ -122,11 +122,6 @@ GraphicsMain::~GraphicsMain() {
 }
 
 bool GraphicsMain::CreateApp() {
-	/*if (SDL_Init(SDL_INIT_VIDEO || SDL_INIT_AUDIO) != 0) {
-		//SDL_Log("SDL Init is failure: %s", SDL_GetError());
-		return false;
-	}*/
-
 	if (glfwInit() == GL_FALSE) {
 		Console::Log("Could not initialize GLFW\n");
 		return false;

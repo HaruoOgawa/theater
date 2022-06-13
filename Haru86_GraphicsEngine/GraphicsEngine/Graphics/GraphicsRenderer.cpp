@@ -38,7 +38,14 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	p_r_BlendingTexture(std::make_shared<Texture>()),
 	m_PolygonPostProcess_FrameTexture(std::make_shared<Texture>()),
 	m_LatePostProcess_FrameTexture(std::make_shared<Texture>()),
-	m_BackgroudColor(glm::vec4(0.0f,0.0f,0.0f,1.0f))
+	m_BackgroudColor(glm::vec4(0.0f,0.0f,0.0f,1.0f)),
+	polygon_frameBuffer(0),
+	polygon_depthBuffer(0),
+	raymarching_frameBuffer(0),
+	raymarching_depthBuffer(0),
+	p_r_BlendingBuffer(0),
+	m_PolygonPostProcess_FrameBuffer(0),
+	m_LatePostProcess_FrameBuffer(0)
 {
 }
 
@@ -49,14 +56,12 @@ GraphicsRenderer::~GraphicsRenderer() {
 bool GraphicsRenderer::Initialize(float width,float height) {
 	// OpenGLの設定
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	
 	// ウィンドウ生成
 	sWindow = glfwCreateWindow(
-		static_cast<int>(sWindowWidth),
-		static_cast<int>(sWindowHeight),
+		sWindowWidth,
+		sWindowHeight,
 		"Haru86_GraphicsEngine",
 		NULL,
 		NULL
@@ -270,29 +275,29 @@ void GraphicsRenderer::Draw() {
 void GraphicsRenderer::ShutDown() {
 	PostProcess::DestroyInstance();
 	
-	if (polygon_frameTexture!=nullptr) {
-		glDeleteFramebuffers(1, &polygon_frameBuffer);
+	if (polygon_frameTexture) {
+		if(polygon_frameBuffer!=0)glDeleteFramebuffers(1, &polygon_frameBuffer);
 		polygon_frameTexture->Unload();
 		polygon_frameTexture.reset();
 		polygon_frameTexture = nullptr;
 	}
 
-	if (polygon_depthTexture != nullptr) {
-		glDeleteFramebuffers(1, &polygon_depthBuffer);
+	if (polygon_depthTexture) {
+		if (polygon_depthBuffer != 0)glDeleteFramebuffers(1, &polygon_depthBuffer);
 		polygon_depthTexture->Unload();
 		polygon_depthTexture.reset();
 		polygon_depthTexture = nullptr;
 	}
 
-	if (raymarching_frameTexture != nullptr) {
-		glDeleteFramebuffers(1, &raymarching_frameBuffer);
+	if (raymarching_frameTexture) {
+		if (raymarching_frameBuffer != 0)glDeleteFramebuffers(1, &raymarching_frameBuffer);
 		raymarching_frameTexture->Unload();
 		raymarching_frameTexture.reset();
 		raymarching_frameTexture = nullptr;
 	}
 
-	if (raymarching_depthTexture != nullptr) {
-		glDeleteFramebuffers(1, &raymarching_depthBuffer);
+	if (raymarching_depthTexture) {
+		if (raymarching_depthBuffer != 0)glDeleteFramebuffers(1, &raymarching_depthBuffer);
 		raymarching_depthTexture->Unload();
 		raymarching_depthTexture.reset();
 		raymarching_depthTexture = nullptr;
