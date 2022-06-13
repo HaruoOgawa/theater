@@ -101,11 +101,13 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,10 +126,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -142,10 +146,12 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -164,10 +170,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\bin\glew32d.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
