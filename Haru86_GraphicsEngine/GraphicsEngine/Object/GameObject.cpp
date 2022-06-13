@@ -3,7 +3,6 @@
 #include "../Component/TransformComponent.h"
 #include "../Component/ARendererComponent.h"
 #include "../Component/MeshRendererComponent.h"
-#include "../Component/SkinMeshRendererComponent.h"
 #include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "CNode.h"
 

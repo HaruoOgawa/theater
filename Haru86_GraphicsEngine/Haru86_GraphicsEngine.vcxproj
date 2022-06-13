@@ -180,14 +180,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
-    <ClInclude Include="GraphicsEngine\Animation\AnimationController.h" />
-    <ClInclude Include="GraphicsEngine\Animation\AnimatorComponent.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Clip.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CTrack.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CFrame.h" />
-    <ClInclude Include="GraphicsEngine\Animation\CCurve.h" />
-    <ClInclude Include="GraphicsEngine\Animation\EInterpolationType.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Physics\CCellContents.h" />
     <ClInclude Include="GraphicsEngine\Physics\CColliderCell.h" />
@@ -227,7 +220,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s
     <ClInclude Include="GraphicsEngine\Physics\EColliderType.h" />
     <ClInclude Include="GraphicsEngine\Physics\EObjectType.h" />
     <ClInclude Include="GraphicsEngine\Physics\ICollider.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Pose.h" />
     <ClInclude Include="GraphicsEngine\Object\CNode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
@@ -237,19 +229,10 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Component\UIComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
-    <ClInclude Include="GraphicsEngine\Animation\TransformTrack.h" />
-    <ClInclude Include="GraphicsEngine\Animation\Skeleton.h" />
-    <ClInclude Include="GraphicsEngine\Component\SkinMeshRendererComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\AnimationController.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\AnimatorComponent.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Clip.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CTrack.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CFrame.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\CCurve.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CCellContents.cpp" />
     <ClCompile Include="GraphicsEngine\Physics\CColliderCell.cpp" />
@@ -289,11 +272,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\lib\glfw3.dll" "$(OutDir)" /i /s
     <ClCompile Include="GraphicsEngine\Object\RaymarchingObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\TransformTrack.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Pose.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
-    <ClCompile Include="GraphicsEngine\Animation\Skeleton.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\SkinMeshRendererComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\CollisionArt\CubeFieldRaymarching.frag" />
