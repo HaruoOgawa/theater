@@ -1,3 +1,4 @@
+#include <Windows.h>
 #include <iostream>
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 
@@ -7,7 +8,9 @@
 //#include "Assets/App/Kura02/Kura02.h"
 #include "Assets/App/AnimationLearning/AnimationLearning.h"
 
-int WinMain(int argc, char** argv) {
+int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
+//int WinMain(int argc, char** argv) 
+{
 	GraphicsMain::Create();
 	
 	if (GraphicsMain::GetInstance()->CreateApp()) {
