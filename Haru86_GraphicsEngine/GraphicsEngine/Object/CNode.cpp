@@ -71,11 +71,11 @@ namespace obj {
 
 	void CNode::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 		for (auto comp : m_ComponentList) {
-			comp.second->ProcessInput(e);
+			comp.second->ProcessInput(EventListener);
 		}
 
 		for (auto node : m_Nodes) {
-			node->ProcessInput(e);
+			node->ProcessInput(EventListener);
 		}
 	}
 

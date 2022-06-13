@@ -2,7 +2,7 @@
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/Graphics.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"

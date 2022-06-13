@@ -1,5 +1,5 @@
 #include "MeshRendererComponent.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include <glm/glm.hpp>
 #include "./TransformComponent.h"
 #include <string>

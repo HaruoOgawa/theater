@@ -14,7 +14,7 @@
 #include "./Assets/App/KuraArtApp/Script/KuraGPGPU.h"
 #include "./Assets/App/KuraArtApp/Script/KuraTrail.h"
 #include "GraphicsEngine/Object/CameraObject.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include "GraphicsEngine/Object/CNode.h"
 
 KuraArtApp::KuraArtApp()

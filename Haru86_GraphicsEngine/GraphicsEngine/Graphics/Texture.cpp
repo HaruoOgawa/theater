@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include <GL/glew.h>
+#include <glew.h>
 #include <SOIL.h>
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include <map>

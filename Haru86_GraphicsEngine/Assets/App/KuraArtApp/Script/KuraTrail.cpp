@@ -10,8 +10,7 @@
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/ComputeShader.h"
 #include <vector>
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>

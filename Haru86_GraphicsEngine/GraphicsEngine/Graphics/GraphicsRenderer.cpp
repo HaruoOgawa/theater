@@ -1,5 +1,4 @@
 #include "GraphicsRenderer.h"
-#include <glew.h>
 #include "GraphicsEngine/Message/Console.h"
 #include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"

@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 #include <vector>
 
 class ComputeBuffer

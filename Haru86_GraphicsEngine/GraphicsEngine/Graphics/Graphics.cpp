@@ -3,8 +3,7 @@
 #include <iostream>
 #include "./ComputeShader.h"
 #include "GraphicsEngine/Graphics/Primitive.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 #include "GraphicsEngine/Graphics/Material.h"
 
 void Graphics::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, int count, std::shared_ptr<Material> material, GLenum rendermode) {

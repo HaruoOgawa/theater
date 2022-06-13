@@ -1,7 +1,9 @@
 #pragma once
 #include "../GraphicsMain/GraphicsMain.h"
-#include <glm/glm.hpp>
+#include <glew.h>
 #include <glfw3.h>
+#include <glm/glm.hpp>
+
 #include <memory>
 
 class GraphicsRenderer

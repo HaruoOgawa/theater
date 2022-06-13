@@ -13,8 +13,7 @@
 #include "GraphicsEngine/Graphics/glTFLoader.h"
 #include "GraphicsEngine/Graphics/glTFData.h"
 
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 
 #include <iostream>
 #include <glm/glm.hpp>

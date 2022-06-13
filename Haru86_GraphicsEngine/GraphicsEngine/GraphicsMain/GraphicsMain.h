@@ -5,8 +5,9 @@
 
 #include <memory>
 #include <map>
-#include <glfw3.h>
+
 #include <glew.h>
+#include <glfw3.h>
 
 namespace physics { class CPhysicsEngine; }
 

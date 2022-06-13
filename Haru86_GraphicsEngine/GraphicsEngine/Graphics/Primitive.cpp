@@ -1,7 +1,6 @@
 #include "Primitive.h"
 #include <glm/glm.hpp>
-#include <GL/glew.h>
-#include <GL/glut.h>
+#include <glew.h>
 #include "GraphicsEngine/Graphics/Mesh.h"
 
 Primitive::Primitive(const std::vector<float>& vertices, const std::vector<int>& indices)
