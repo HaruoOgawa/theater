@@ -1,5 +1,6 @@
 #include "GraphicsRenderer.h"
-#include "GL/glew.h"
+#include <glew.h>
+#include "GraphicsEngine/Message/Console.h"
 #include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"
 #include "../Component/TransformComponent.h"
@@ -47,43 +48,45 @@ GraphicsRenderer::~GraphicsRenderer() {
 }
 
 bool GraphicsRenderer::Initialize(float width,float height) {
+	// OpenGLの設定
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE,8);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,24);
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL,1);
-
-	sWindow = SDL_CreateWindow(
-		"Haru86_GLVJ",
-		100,
-		100,
+	// ウィンドウ生成
+	sWindow = glfwCreateWindow(
 		static_cast<int>(sWindowWidth),
 		static_cast<int>(sWindowHeight),
-		SDL_WINDOW_OPENGL
+		"Haru86_GraphicsEngine",
+		NULL,
+		NULL
 	);
 
 	if (!sWindow) {
-		//SDL_Log("Failure! Can not initialize SDL_OpenGL Window: %s", SDL_GetError());
+		Console::Log("Error : glfwCreateWindow\n");
 		return false;
 	}
+
+	// プログラム終了時の処理
+	atexit(glfwTerminate);
 	
-	if (SDL_SetWindowFullscreen(sWindow, SDL_WINDOW_FULLSCREEN_DESKTOP)!=0) {
-		//SDL_Log("Full Screeen Error: %s", SDL_GetError());
+	// 画面最大化 
+	/*if (SDL_SetWindowFullscreen(sWindow, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0) {
+		Console::Log("Full Screeen Error: %s", SDL_GetError());
 	}
 
-	SDL_GetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);
+	// 現在のサイズを取得
+	SDL_GetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);*/
 	
-	context = SDL_GL_CreateContext(sWindow);
+	// コンテキストを作成
+	glfwMakeContextCurrent(sWindow);
 
+	// glewの初期化
 	glewExperimental = GL_TRUE;
 	const GLenum error = glewInit();
 	if (error != GLEW_OK) {
-		//SDL_Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
+		Console::Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
 		return false;
 	}
 	glGetError();
@@ -93,31 +96,31 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 	//CreateFrameBuffer
 	if (!CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer,GL_RGBA, GL_RGBA)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//SDL_Log("Can not create frame buffer");
+		Console::Log("Can not create frame buffer");
 	}
 
 	m_Mixer = std::make_unique<PolygonRaymarchingMixer>();
@@ -158,6 +161,9 @@ bool GraphicsRenderer::CreateFrameBuffer(std::shared_ptr<Texture> fTex, unsigned
 }
 
 void GraphicsRenderer::Draw() {
+	// 垂直同期の待機時間
+	glfwSwapInterval(1);
+
 	//ポリゴンオブジェクトのカラーマップをレンダリング///////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_frameBuffer);
@@ -257,14 +263,12 @@ void GraphicsRenderer::Draw() {
 		obj->meshComp->DrawBoard();
 	}
 
-	//垂直同期を実行
-	SDL_GL_SwapWindow(sWindow);
+	//カラーバッファを入れ替える
+	glfwSwapBuffers(sWindow);
+
 }
 
 void GraphicsRenderer::ShutDown() {
-	SDL_GL_DeleteContext(context);
-	SDL_DestroyWindow(sWindow);
-
 	PostProcess::DestroyInstance();
 	
 	if (polygon_frameTexture!=nullptr) {

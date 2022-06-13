@@ -7,7 +7,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <GL/glew.h>
+#include <glew.h>
 #include <typeinfo>
 #include <memory>
 #include "GraphicsEngine/Physics/EColliderType.h"

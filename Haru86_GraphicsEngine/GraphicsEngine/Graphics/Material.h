@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <GL/glew.h>
+#include <glew.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>

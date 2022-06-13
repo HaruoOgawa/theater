@@ -1,13 +1,12 @@
 #pragma once
-#include "SDL.h"
 #include "../GraphicsMain/GraphicsMain.h"
 #include <glm/glm.hpp>
-#include <GL/glew.h>
+#include <glfw3.h>
 #include <memory>
 
 class GraphicsRenderer
 {
-	SDL_Window* sWindow;
+	GLFWwindow* sWindow;
 	int sWindowWidth;
 	int sWindowHeight;
 	class GraphicsMain* mgame;

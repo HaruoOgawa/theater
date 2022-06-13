@@ -96,13 +96,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
@@ -121,15 +121,15 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
@@ -146,13 +146,13 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
@@ -171,15 +171,15 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\include;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\include;$(ProjectDir)GraphicsEngine\Library\tinygltf\include;$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\soil\include;$(ProjectDir)GraphicsEngine\Library\GLFW\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\SDL2-2.0.16\lib\x86;$(ProjectDir)GraphicsEngine\Library\SDL2_image-2.0.5\lib\x86;$(ProjectDir)GraphicsEngine\Library\soil\lib;$(ProjectDir)GraphicsEngine\Library\GLFW\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SOIL.lib;glfw3.lib;glew32d.lib;libglew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "C:\SDL2-2.0.16\lib\x86\*.dll" "$(OutDir)" /i /s /y
@@ -410,16 +410,12 @@ xcopy "C:\SDL2_ttf-2.0.15\lib\x86\*.dll" "$(OutDir)" /i /s /y
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets" Condition="Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" />
-    <Import Project="..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets" Condition="Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" />
     <Import Project="..\packages\glm.0.9.9.800\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets'))" />
     <Error Condition="!Exists('..\packages\glm.0.9.9.800\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.800\build\native\glm.targets'))" />
   </Target>
 </Project>
