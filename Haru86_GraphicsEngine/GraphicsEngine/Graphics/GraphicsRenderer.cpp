@@ -27,8 +27,8 @@ void GraphicsRenderer::Destroy() {
 GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	: mgame(game),
 	sWindow(nullptr),
-	sWindowWidth(500),
-	sWindowHeight(500),
+	sWindowWidth(1920),
+	sWindowHeight(1024),
 	deltaTime(0.0f),
 	frameResolusion(0.7),
 	polygon_frameTexture(std::make_shared<Texture>()),
@@ -64,6 +64,7 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 		sWindowHeight,
 		"Haru86_GraphicsEngine",
 		NULL,
+		//glfwGetPrimaryMonitor(),
 		NULL
 	);
 
@@ -75,13 +76,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	// プログラム終了時の処理
 	atexit(glfwTerminate);
 	
-	// 画面最大化 
-	/*if (SDL_SetWindowFullscreen(sWindow, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0) {
-		Console::Log("Full Screeen Error: %s", SDL_GetError());
-	}
-
 	// 現在のサイズを取得
-	SDL_GetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);*/
+	glfwGetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);
 	
 	// コンテキストを作成
 	glfwMakeContextCurrent(sWindow);
@@ -134,6 +130,10 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 glm::ivec2 GraphicsRenderer::GetScreenSize() {
 	return glm::ivec2(sWindowWidth, sWindowHeight);
+}
+
+GLFWwindow* GraphicsRenderer::GetWindow() {
+	return sWindow;
 }
 
 // 背景色

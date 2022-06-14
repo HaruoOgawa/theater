@@ -201,30 +201,9 @@ void GraphicsMain::UpdateTimeline() {
 }
 
 void GraphicsMain::InputProcess() {
-	// イベントを取り出す(?)
-	glfwWaitEvents();
+	// イベント
+	m_EventListener->ListenEvent(GraphicsRenderer::GetInstance()->GetWindow());
 	
-	/*SDL_Event e;
-	while (SDL_PollEvent(&e))
-	{
-		switch (e.type)
-		{
-		case SDL_QUIT:
-			isRunning = false;
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			mouseStateBool = true;
-			break;
-		case SDL_MOUSEBUTTONUP:
-			mouseStateBool = false;
-			break;
-		default:
-			break;
-		} 
-	}
-
-	const Uint8* state = SDL_GetKeyboardState(NULL);*/
-
 	for (auto obj : gameObjectList) {
 		obj->ProcessInput(m_EventListener);
 	}
@@ -306,4 +285,8 @@ void GraphicsMain::ShutDown() {
 
 physics::CPhysicsEngine* GraphicsMain::GetPhysicsEngine(){
 	return m_PhysicsEngine.get();
+}
+
+void GraphicsMain::SetIsRunning(bool state) {
+	isRunning = state;
 }

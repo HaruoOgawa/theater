@@ -8,6 +8,7 @@
 //#include "Assets/App/Kura02/Kura02.h"
 #include "Assets/App/AnimationLearning/AnimationLearning.h"
 
+//int WinMainCRTStartup()
 int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 //int main(int argc, char** argv) 
 {
