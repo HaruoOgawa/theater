@@ -8,6 +8,13 @@
 //#include "Assets/App/Kura02/Kura02.h"
 #include "Assets/App/AnimationLearning/AnimationLearning.h"
 
+/*#include <stdio.h>
+extern "C" {
+	int _is_c_termination_complete(...);
+	int __acrt_initialize(...);
+	int __acrt_uninitialize(...);
+}*/
+
 //int WinMainCRTStartup()
 int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 //int main(int argc, char** argv) 

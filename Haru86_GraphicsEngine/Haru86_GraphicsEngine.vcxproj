@@ -189,6 +189,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)GraphicsEngine\Library\GLFW\x86\include\GLFW;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -196,11 +197,11 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;comsupp.lib;delayimp.lib;libcmt.lib;libcpmt.lib;libcpmt1.lib;msvcmrt.lib;msvcprt.lib;msvcrt.lib;oldnames.lib;vcomp.lib;pgort.lib;pgobootrun.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;comsupp.lib;delayimp.lib;oldnames.lib;libcmt.lib;libcpmt.lib;libcpmt1.lib;msvcmrt.lib;msvcprt.lib;msvcrt.lib;msvcurt.lib;vcomp.lib;ptrustu.lib;pgort.lib;pgobootrun.lib;ucrt.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/CRINKLER %(AdditionalOptions)</AdditionalOptions>
-      <EntryPointSymbol>
-      </EntryPointSymbol>
+      <EntryPointSymbol>WinMain</EntryPointSymbol>
+      <NoEntryPoint>false</NoEntryPoint>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
