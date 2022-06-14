@@ -148,6 +148,13 @@
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib\glfw3.dll" "$(OutDir)" /i /s /y
+
+
+xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
+
+xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
+
+
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

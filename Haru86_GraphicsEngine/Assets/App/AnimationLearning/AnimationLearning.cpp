@@ -13,6 +13,8 @@ void AnimationLearning::Start() {
 	//m_AnimObj = std::make_shared<GameObject>("Assets/Resources/glTFData/Woman_FromUnity/Woman.gltf");
 	//m_AnimObj->SetScale(glm::vec3(50.0f));
 	
+	m_AnimObj = std::make_shared<GameObject>(PrimitiveType::CUBE);
+
 	//
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,

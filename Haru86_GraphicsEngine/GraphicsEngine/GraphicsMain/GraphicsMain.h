@@ -56,6 +56,7 @@ public:
 	void ShutDown();
 	void Restart();
 	physics::CPhysicsEngine* GetPhysicsEngine();
+	void SetIsRunning(bool state);
 
 	float time;
 	float deltaTime;
