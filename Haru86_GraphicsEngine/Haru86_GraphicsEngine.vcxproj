@@ -150,11 +150,6 @@
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib\glfw3.dll" "$(OutDir)" /i /s /y
 
 xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
-
-xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
-
-
-
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -181,11 +176,6 @@ xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib\glfw3.dll" "$(OutDir)" /i /s /y
 
 xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
-
-xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
-
-
-
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -217,11 +207,6 @@ xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib\glfw3.dll" "$(OutDir)" /i /s /y
 
 xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
-
-xcopy "$(ProjectDir)Assets\Resources" "$(OutDir)Assets\Resources" /i /s /y
-
-
-
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -296,6 +281,8 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GraphicsEngine\Graphics\CGLSLData.h" />
+    <ClInclude Include="GraphicsEngine\Graphics\CGLSLSettings.h" />
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
@@ -348,6 +335,8 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicsEngine\Graphics\CGLSLData.cpp" />
+    <ClCompile Include="GraphicsEngine\Graphics\CGLSLSettings.cpp" />
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
@@ -392,43 +381,12 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shader\CollisionArt\CubeFieldRaymarching.frag" />
-    <None Include="Assets\Shader\CollisionArt\GPUTrail_Data.comp" />
-    <None Include="Assets\Shader\CollisionArt\GPUTrail_Force.comp" />
-    <None Include="Assets\Shader\CollisionArt\InstancedBox.frag" />
-    <None Include="Assets\Shader\CollisionArt\InstancedBox.vert" />
-    <None Include="Assets\Shader\CollisionArt\PlaneMarker.frag" />
-    <None Include="Assets\Shader\CollisionArt\veda\CubeFieldRaymarching_VEDA.frag" />
     <None Include="Assets\Shader\BloomBlur.frag" />
     <None Include="Assets\Shader\BloomDemo.frag" />
     <None Include="Assets\Shader\BloomIlluminance.frag" />
     <None Include="Assets\Shader\BloomResult.frag" />
     <None Include="Assets\Shader\DepthColor.frag" />
     <None Include="Assets\Shader\GridPlane.frag" />
-    <None Include="Assets\Shader\Kura02\CubeFieldRaymarching.frag" />
-    <None Include="Assets\Shader\Kura02\GPUTrail_Data.comp" />
-    <None Include="Assets\Shader\Kura02\GPUTrail_Force.comp" />
-    <None Include="Assets\Shader\Kura02\InstancedBox.frag" />
-    <None Include="Assets\Shader\Kura02\InstancedBox.vert" />
-    <None Include="Assets\Shader\Kura02\veda\CubeFieldRaymarching_VEDA.frag" />
-    <None Include="Assets\Shader\KuraShader\Background.frag" />
-    <None Include="Assets\Shader\KuraShader\Background.vert" />
-    <None Include="Assets\Shader\KuraShader\BoidsForce.comp" />
-    <None Include="Assets\Shader\KuraShader\BoidsData.comp" />
-    <None Include="Assets\Shader\KuraShader\BoidsResult.frag" />
-    <None Include="Assets\Shader\KuraShader\BoidsResult.geom" />
-    <None Include="Assets\Shader\KuraShader\BoidsResult.vert" />
-    <None Include="Assets\Shader\KuraShader\GPUTrail_NextInputPos.comp" />
-    <None Include="Assets\Shader\KuraShader\GPUTrail_NodeInfo.comp" />
-    <None Include="Assets\Shader\KuraShader\GPUTrail_Render.frag" />
-    <None Include="Assets\Shader\KuraShader\GPUTrail_Render.geom" />
-    <None Include="Assets\Shader\KuraShader\GPUTrail_Render.vert" />
-    <None Include="Assets\Shader\KuraShader\KuraPostProcess.frag" />
-    <None Include="Assets\Shader\KuraShader\KuraTerrain.frag" />
-    <None Include="Assets\Shader\KuraShader\KuraTerrain.geom" />
-    <None Include="Assets\Shader\KuraShader\KuraTerrain.tesc" />
-    <None Include="Assets\Shader\KuraShader\KuraTerrain.tese" />
-    <None Include="Assets\Shader\KuraShader\KuraTerrain.vert" />
     <None Include="Assets\Shader\LatePostProcess.frag" />
     <None Include="Assets\Shader\MToon.frag" />
     <None Include="Assets\Shader\MToon.vert" />
@@ -453,18 +411,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
     <None Include="packages.config" />
     <None Include="Assets\Shader\Standard.frag" />
     <None Include="Assets\Shader\Standard.vert" />
-    <None Include="Assets\Shader\VedaStructuredShader\BoardRender.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\BoardRender.vert" />
-    <None Include="Assets\Shader\VedaStructuredShader\PostProcess.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\save.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\scene1.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\scene2.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\Scene3.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\Scene4.frag" />
-    <None Include="Assets\Shader\VedaStructuredShader\Scene5.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Assets\Resources\FontData\FRSCRIPT.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
