@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>E:\CppDev\theater\DemoRelease\Haru86_GraphicsEngine.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>E:\CppDev\theater\Haru86_GraphicsEngine\Assets\Shader\UIStandard.frag</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\CppDev\theater\Haru86_GraphicsEngine\Assets\Shader\UIStandard.vert</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
