@@ -160,6 +160,7 @@
     <LibraryPath>C:\SDL2-2.0.16\lib\x86;C:\SDL2_image-2.0.5\lib\x86;C:\SDL2_ttf-2.0.15\lib\x86;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories);$(LibraryPath)</LibraryPath>
     <ReferencePath>C:\SDL2-2.0.16\lib\x86;C:\SDL2_image-2.0.5\lib\x86;C:\SDL2_ttf-2.0.15\lib\x86;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories);$(ReferencePath)</ReferencePath>
     <LibraryWPath>C:\SDL2-2.0.16\lib\x86;C:\SDL2_image-2.0.5\lib\x86;C:\SDL2_ttf-2.0.15\lib\x86;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories)</LibraryWPath>
+    <ExecutablePath>$(SolutionDir)compress_tools;$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinimumRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -347,7 +348,8 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
 
-xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
+xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
+call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_GraphicsEngine.exe"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinimumRelease|x64'">
