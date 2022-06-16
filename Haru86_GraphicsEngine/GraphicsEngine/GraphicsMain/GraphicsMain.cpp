@@ -14,7 +14,6 @@
 #include <stdexcept>
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 #include "GraphicsEngine/Object/CameraObject.h"
-#include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/App/CEventListener.h"
 
@@ -45,7 +44,6 @@ GraphicsMain::GraphicsMain()
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr),
-	m_PhysicsEngine(nullptr),
 	m_EventListener(std::make_shared<app::CEventListener>())
 {
 	for (int i = 0; i < 20;i++) {
@@ -139,7 +137,6 @@ bool GraphicsMain::CreateApp() {
 bool GraphicsMain::Initialize(BaseApp* app) {
 	// ƒƒ‚ƒŠŠm•Û
 	timeObj = std::make_unique<Time>(60.0f);
-	m_PhysicsEngine = std::make_unique<physics::CPhysicsEngine>();
 	timelineObj = std::make_unique<TimelineObject>();
 	m_App = app;
 
@@ -170,8 +167,6 @@ void GraphicsMain::LoadData() {
 	m_App->Timeline(timelineObj.get());
 	timelineObj->Initialize();
 
-	//
-	m_PhysicsEngine->Initialize();
 }
 
 bool GraphicsMain::RunLoop() {
@@ -184,7 +179,6 @@ bool GraphicsMain::RunLoop() {
 			UpdateTimeline();
 			InputProcess();
 			Update();
-			m_PhysicsEngine->UpdatePhysics();
 			Draw();
 		}
 	}
@@ -262,10 +256,7 @@ bool GraphicsMain::Reflesh() {
 		m_App = nullptr; 
 	}
 	m_RaymarchingObject = nullptr;
-	if (m_PhysicsEngine) {
-		m_PhysicsEngine->Release();
-	}
-
+	
 	return true;
 }
 
@@ -281,10 +272,6 @@ void GraphicsMain::ShutDown() {
 	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
-}
-
-physics::CPhysicsEngine* GraphicsMain::GetPhysicsEngine(){
-	return m_PhysicsEngine.get();
 }
 
 void GraphicsMain::SetIsRunning(bool state) {

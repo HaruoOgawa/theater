@@ -3,7 +3,6 @@
 #include "../Component/TransformComponent.h"
 #include "../Component/ARendererComponent.h"
 #include "../Component/MeshRendererComponent.h"
-#include "GraphicsEngine/Physics/CPhysicsEngine.h"
 #include "CNode.h"
 
 GameObject::GameObject(PrimitiveType primType) 
@@ -86,8 +85,4 @@ void GameObject::ProcessInput(const std::shared_ptr<app::CEventListener>& EventL
 	for (auto comp : m_RootNode->GetComponentList()) {
 		comp.second->ProcessInput(EventListener);
 	}
-}
-
-void GameObject::AddCollider(physics::EColliderType ColliderType, physics::EObjectType ObjectType) {
-	GraphicsMain::GetInstance()->GetPhysicsEngine()->AddCollider(ColliderType, ObjectType,this);
 }
