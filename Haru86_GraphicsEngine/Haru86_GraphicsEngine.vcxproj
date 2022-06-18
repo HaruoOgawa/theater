@@ -385,14 +385,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CCellContents.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CColliderCell.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CColliderTree.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CPhysicsEngine.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CBoxCollider.h" />
-    <ClInclude Include="GraphicsEngine\Physics\CSphereCollider.h" />
-    <ClInclude Include="GraphicsEngine\Physics\ACollider.h" />
     <ClInclude Include="Assets\App\DemoApp\DemoApp.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
@@ -420,10 +413,8 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Object\RaymarchingObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
-    <ClInclude Include="GraphicsEngine\Physics\EColliderType.h" />
-    <ClInclude Include="GraphicsEngine\Physics\EObjectType.h" />
-    <ClInclude Include="GraphicsEngine\Physics\ICollider.h" />
     <ClInclude Include="GraphicsEngine\Object\CNode.h" />
+    <ClInclude Include="GraphicsEngine\Math\math.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\Time.h" />
@@ -439,13 +430,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CCellContents.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CColliderCell.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CColliderTree.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CPhysicsEngine.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CBoxCollider.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\CSphereCollider.cpp" />
-    <ClCompile Include="GraphicsEngine\Physics\ACollider.cpp" />
     <ClCompile Include="Assets\App\DemoApp\DemoApp.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
@@ -478,6 +462,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
+    <ClCompile Include="GraphicsEngine\Math\math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\BloomBlur.frag" />

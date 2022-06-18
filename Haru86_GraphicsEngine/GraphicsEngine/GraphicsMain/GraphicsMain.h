@@ -55,7 +55,6 @@ public:
 	bool RunLoop();
 	void ShutDown();
 	void Restart();
-	physics::CPhysicsEngine* GetPhysicsEngine();
 	void SetIsRunning(bool state);
 
 	float time;
@@ -72,9 +71,6 @@ public:
 	
 	//
 	BaseApp* m_App;
-
-	// •¨—ƒGƒ“ƒWƒ“
-	std::unique_ptr<physics::CPhysicsEngine> m_PhysicsEngine;
 
 	//
 	bool isRestart;
