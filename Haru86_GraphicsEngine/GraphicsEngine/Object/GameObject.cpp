@@ -13,7 +13,21 @@ GameObject::GameObject(PrimitiveType primType)
 	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
 }
 
-GameObject::GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders)
+GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType rt)
+	:Object(), renderOrder(RenderQueue::UI), renderType(rt), animTime(0.0f), m_PrimitiveType(primType)
+{
+	if (renderType == RenderType::FrameBuffer) {
+		GraphicsMain::GetInstance()->boardGameObjectList.emplace_back(this);
+	}
+	else if (renderType == RenderType::PostProcess) {
+		GraphicsMain::GetInstance()->postProcessGameObjectList.emplace_back(this);
+	}
+
+	meshComp = std::make_shared<MeshRendererComponent>(this, primType, vertexShaderName, fragmentShaderName);
+	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
+}
+
+/*GameObject::GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders)
 	: Object(), renderOrder(RenderQueue::Geometry), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(primType)
 {
 	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
@@ -43,9 +57,9 @@ GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std
 	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
 	meshComp = std::make_shared<MeshRendererComponent>(this, primType,vertexShaderName,tessellationShaderName,fragmentShaderName);
 	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
-}
+}*/
 
-GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, std::string textureString)
+/*GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, std::string textureString)
 	: Object(), renderOrder(RenderQueue::UI), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(primType)
 {
 	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
@@ -54,18 +68,14 @@ GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std
 	UseZTest(false);
 	SetRenderOlder(RenderQueue::UI);
 }
+*/
 
-GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType rt)
-	:Object(), renderOrder(RenderQueue::UI), renderType(rt), animTime(0.0f), m_PrimitiveType(primType)
+GameObject::GameObject(PrimitiveType primType,
+	std::string vert, std::string frag, std::string geom, std::string tc, std::string tv)
+	: Object(), renderOrder(RenderQueue::Geometry), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(primType)
 {
-	if (renderType == RenderType::FrameBuffer) {
-		GraphicsMain::GetInstance()->boardGameObjectList.emplace_back(this);
-	}
-	else if (renderType==RenderType::PostProcess) {
-		GraphicsMain::GetInstance()->postProcessGameObjectList.emplace_back(this);
-	}
-	
-	meshComp = std::make_shared<MeshRendererComponent>(this, primType, vertexShaderName, fragmentShaderName);
+	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
+	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, vert, frag, geom, tc, tv);
 	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
 }
 

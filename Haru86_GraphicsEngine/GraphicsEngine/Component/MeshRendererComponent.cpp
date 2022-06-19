@@ -11,6 +11,16 @@
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Object/CNode.h"
 
+MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
+	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
+	: ARendererComponent(o), primTex(nullptr)
+{
+	useZTest = true;
+	mesh = std::make_shared<Mesh>((primType));
+	mesh->glDrawType = GLDrawType::NONE;
+	material = std::make_shared<Material>(vert, frag, geom, tc, tv);
+}
+
 MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType)
 	: ARendererComponent(o), primTex(nullptr)
 {

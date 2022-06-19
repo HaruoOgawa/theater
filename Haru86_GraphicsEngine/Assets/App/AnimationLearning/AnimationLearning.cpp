@@ -7,19 +7,21 @@
 #define PI 3.14159265f
 
 void AnimationLearning::Start() {
-	Console::Log("shaderlib::ShaderLib::Standard_vert: %s\n", shaderlib::ShaderLib::Standard_vert);
+	Console::Log("shaderlib::ShaderLib::Standard_vert: %s\n", shaderlib::ShaderLib::Standard_vert.c_str());
 	Console::Log("___________________________________\n");
-	Console::Log("shaderlib::ShaderLib::Standard_frag: %s\n", shaderlib::ShaderLib::Standard_frag);
+	Console::Log("shaderlib::ShaderLib::Standard_frag: %s\n", shaderlib::ShaderLib::Standard_frag.c_str());
+	Console::Log("shaderlib::ShaderLib::GridPlane_frag: %s\n", shaderlib::ShaderLib::GridPlane_frag.c_str());
 
 	// ”wŒiF
-	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f),1.0));
+	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
 	m_AnimObj = std::make_shared<GameObject>(PrimitiveType::CUBE);
 
 	//
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
-		"./Assets/Shader/GridPlane.frag"
+		shaderlib::ShaderLib::Standard_vert,
+		shaderlib::ShaderLib::GridPlane_frag
 	);
 	m_GridPlane->SetRotation(glm::vec3(PI/2.0f, 0.0, 0.0));
 	m_GridPlane->SetPosition(glm::vec3(0.0f,0.0f,0.0f));

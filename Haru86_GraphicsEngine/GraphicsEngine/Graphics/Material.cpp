@@ -5,7 +5,28 @@
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Message/Console.h"
+
+Material::Material(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
+	: vertShaderData(-1),
+	tessControlShaderData(-1),
+	tessEvalShaderData(-1),
+	geometryShaderData(-1),
+	fragShaderData(-1),
+	shaderPrg(-1),
+	depthVertShaderData(-1),
+	depthTessControlShaderData(-1),
+	depthTessEvalShaderData(-1),
+	depthGeometryShaderData(-1),
+	depthFragShaderData(-1),
+	depthShaderPrg(-1)
+{
+	LoadShader(vert,frag,geom,tc,tv, shaderPrg
+		, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
+	LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, depthShaderPrg
+		, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+}
 
 Material::Material()
 	: vertShaderData(-1),
@@ -139,6 +160,48 @@ Material::Material(std::string vertexShaderName, std::string geometryShaderName,
 
 Material::~Material() {
 	UnLoadData();
+}
+
+void Material::LoadShader(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv,
+	GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData)
+{
+	//
+	prg = glCreateProgram();
+
+	// 各Shaderのコンパイルとアタッチ
+	if (CompileShader(vert, GL_VERTEX_SHADER, vertData, false)) {
+		glAttachShader(prg, vertData);
+	}
+
+	if (CompileShader(frag, GL_FRAGMENT_SHADER, fragData, false)) {
+		glAttachShader(prg, fragData);
+	}
+
+	if (CompileShader(geom, GL_GEOMETRY_SHADER, geomData, false)) {
+		glAttachShader(prg, geomData);
+	}
+
+	if (CompileShader(tc, GL_TESS_CONTROL_SHADER, tcData, false)) {
+		glAttachShader(prg, tcData);
+	}
+
+	if (CompileShader(tv, GL_TESS_EVALUATION_SHADER, tvData, false)) {
+		glAttachShader(prg, tvData);
+	}
+
+
+	// program dataを完成させる
+	glLinkProgram(prg);
+
+	GLint status;
+	glGetProgramiv(prg, GL_LINK_STATUS, &status);
+	if (status != GL_TRUE) {
+		Console::Log("Cannot Load Program Data");
+		char buffer[512];
+		memset(buffer, 0, 512);
+		glGetProgramInfoLog(prg, 511, nullptr, buffer);
+		Console::Log("GLSL Link Status:\n%s", buffer);
+	}
 }
 
 void Material::LoadShader(std::map<GLenum, std::string> shaders, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag) {
@@ -295,7 +358,31 @@ void Material::LoadShader(std::string vertName, std::string geomName, std::strin
 	}
 }
 
-bool Material::CompileShader(std::string shadername, GLenum shaderType, GLuint& outShader) {
+bool Material::CompileShader(const std::string shaderCode, GLenum shaderType, GLuint& outShader, bool test){
+	if (!shaderCode.empty()) {
+		outShader = glCreateShader(shaderType);
+		const char* contentsChar = shaderCode.c_str();
+		glShaderSource(outShader, 1, &(contentsChar), nullptr);
+		glCompileShader(outShader);
+	}
+	else {
+		return false;
+	}
+
+	GLint status;
+	glGetShaderiv(outShader, GL_COMPILE_STATUS, &status);
+	if (status != GL_TRUE) {
+		Console::Log("Cannnot Load Shader: %s", shaderCode.c_str());
+		
+		char buffer[512];
+		memset(buffer, 0, 512);
+		glGetShaderInfoLog(outShader, 511, nullptr, buffer);
+		Console::Log("GLSL Compile Failed: %s", buffer);
+		return false;
+	}
+
+	return true;
+}bool Material::CompileShader(std::string shadername, GLenum shaderType, GLuint& outShader) {
 	
 	std::ifstream shaderFile(shadername);
 	if (shaderFile.is_open()) {

@@ -37,12 +37,17 @@ class GameObject
 	PrimitiveType m_PrimitiveType;
 public:
 	GameObject(PrimitiveType primType);
-	GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders);
+	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType renderType);
+	
+	/*GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders);
 	GameObject(PrimitiveType primType,std::string fragmentShaderName);
 	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,RenderType renderType);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,std::string textureString);
+	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);*/
+	/*GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,std::string textureString);*/
+	
+	GameObject(PrimitiveType primType,
+		std::string vert = "",std::string frag = "",std::string geom = "",std::string tc = "",std::string tv="");
+	
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);

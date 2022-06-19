@@ -17,17 +17,23 @@ class Material
 {
 public:
     Material();
+    Material(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
     Material(std::map<GLenum, std::string> shaders);
     Material(std::string vertexShaderName, std::string fragmentShaderName);
     Material(std::string vertexShaderName, std::string fragmentShaderName, RenderingSurfaceType renderingSurfaceType);
     Material(std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);
     Material(std::string vertexShaderName, std::string geometryShaderName, std::string fragmentShaderName);
     ~Material();
+    
+    void LoadShader(const std::string& vert, const std::string& frag, const std::string& geom,const std::string& tc, const std::string& tv,
+        GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData);
+    
     void LoadShader(std::map<GLenum,std::string> shaders,GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag);
     void LoadShader(std::string vertName,std::string fragName,GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag);
     void LoadShader(std::string vertName, std::string tessellationShaderName[2],std::string fragName, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag);
     void LoadShader(std::string vertName,std::string geomName,std::string fragName, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag);
     bool CompileShader(std::string shadername,GLenum shaderType,GLuint& outShader);
+    bool CompileShader(const std::string shaderCode,GLenum shaderType,GLuint& outShader,bool test);
     void SetActive();
     void UnLoadData();
     void SetMatrixUniform(std::string uniformName,glm::mat4 matrix);
@@ -51,7 +57,7 @@ private :
     GLuint geometryShaderData;
     GLuint fragShaderData;
     GLuint shaderPrg;
-
+                    
     //Depth Render Buffer
     GLuint depthVertShaderData;
     GLuint depthTessControlShaderData;
