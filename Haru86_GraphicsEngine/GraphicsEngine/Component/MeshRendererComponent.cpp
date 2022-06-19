@@ -21,60 +21,6 @@ MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
 	material = std::make_shared<Material>(vert, frag, geom, tc, tv);
 }
 
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType)
-	: ARendererComponent(o), primTex(nullptr)
-{
-	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	mesh->glDrawType = GLDrawType::NONE;
-	material = std::make_shared<Material>();
-}
-
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, std::map<GLenum, std::string> shaders)
-	: ARendererComponent(o), primTex(nullptr)
-{
-	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	if (shaders.find(GL_TESS_CONTROL_SHADER) != shaders.end()) {
-		mesh->glDrawType = GLDrawType::TESSELLATION;
-	}
-	else {
-		mesh->glDrawType = GLDrawType::NONE;
-	}
-	material = std::make_shared<Material>(shaders);
-}
-
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName)
-	: ARendererComponent(o), primTex(nullptr)
-{
-	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	mesh->glDrawType = GLDrawType::NONE;
-	material = std::make_shared<Material>(vertexShaderName, fragmentShaderName);
-}
-
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName)
-	: ARendererComponent(o), primTex(nullptr)
-{
-	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	mesh->glDrawType = GLDrawType::TESSELLATION;
-	material = std::make_shared<Material>(vertexShaderName, tessellationShaderName, fragmentShaderName);
-}
-
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, std::string textureString)
-	: ARendererComponent(o), primTex(nullptr)
-{
-	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	mesh->glDrawType = GLDrawType::NONE;
-	material = std::make_shared<Material>(vertexShaderName, fragmentShaderName);
-	/*if (GraphicsRenderer::GetInstance()->font != nullptr) {
-		primTex = GraphicsRenderer::GetInstance()->font->GetFontTexture(textureString, glm::vec3(1.0, 1.0, 1.0), 30);
-	}*/
-
-}
-
 MeshRendererComponent::~MeshRendererComponent() {
 
 }

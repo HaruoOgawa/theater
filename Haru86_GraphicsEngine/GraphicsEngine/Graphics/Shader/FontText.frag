@@ -1,3 +1,5 @@
+R"(
+
 #version 330
 
 in vec2 uv;
@@ -22,3 +24,5 @@ void main(){
 	col.a=alpha*_alpha;
 	gl_FragColor=col;
 }
+
+)"

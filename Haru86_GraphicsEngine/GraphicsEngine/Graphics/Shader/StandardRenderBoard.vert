@@ -1,3 +1,5 @@
+R"(
+
 #version 330
 
 uniform mat4 MVPMatrix;
@@ -24,3 +26,5 @@ void main(){
 	uv=texcoord;
 	resolution=_resolution;
 }
+
+)"

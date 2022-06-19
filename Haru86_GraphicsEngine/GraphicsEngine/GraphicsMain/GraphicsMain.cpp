@@ -16,6 +16,7 @@
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/App/CEventListener.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -155,7 +156,8 @@ void GraphicsMain::LoadData() {
 
 	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
 	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/StandardRenderBoard.vert", "./Assets/Shader/StandardRenderBoard.frag", RenderType::FrameBuffer);
+		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,
+			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
 	}
 
 	if (!game_camera_instance) {
@@ -190,7 +192,7 @@ void GraphicsMain::UpdateTimeline() {
 	static_cast<std::shared_ptr<class TimelineComponent>>(timelineObj->timelineComponent)->Update();
 
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
-		return a->renderOrder < b->renderOrder;
+		return a->m_renderOrder < b->m_renderOrder;
 	});
 }
 

@@ -7,11 +7,6 @@
 #define PI 3.14159265f
 
 void AnimationLearning::Start() {
-	/*Console::Log("shaderlib::ShaderLib::Standard_vert: %s\n", shaderlib::ShaderLib::Standard_vert.c_str());
-	Console::Log("___________________________________\n");
-	Console::Log("shaderlib::ShaderLib::Standard_frag: %s\n", shaderlib::ShaderLib::Standard_frag.c_str());
-	Console::Log("shaderlib::ShaderLib::GridPlane_frag: %s\n", shaderlib::ShaderLib::GridPlane_frag.c_str());*/
-
 	// ”wŒiF
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
@@ -20,6 +15,8 @@ void AnimationLearning::Start() {
 	//
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
+		RenderType::DefaultBuffer,
+		RenderQueue::Geometry,
 		shaderlib::ShaderLib::Standard_vert,
 		shaderlib::ShaderLib::GridPlane_frag
 	);

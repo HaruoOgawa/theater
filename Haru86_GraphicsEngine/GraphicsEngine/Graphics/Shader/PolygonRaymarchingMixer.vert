@@ -1,3 +1,5 @@
+R"(
+
 #version 430
 
 layout(location=0)in vec3 vertex;
@@ -17,3 +19,5 @@ void main(){
 	gl_Position=pos;
 	uv=texcoord;
 }
+
+)"

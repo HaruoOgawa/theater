@@ -1,3 +1,5 @@
+R"(
+
 #version 330
 
 uniform mat4 MVPMatrix;
@@ -21,3 +23,5 @@ void main(){
 	gl_Position=MVPMatrix*pos;
 	uv=texcoord;
 }
+
+)"

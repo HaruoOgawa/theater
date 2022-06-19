@@ -15,11 +15,6 @@ class MeshRendererComponent :
 public:
     MeshRendererComponent(class Object* o, PrimitiveType primType,
         const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
-    MeshRendererComponent(class Object* o, PrimitiveType primType);
-    MeshRendererComponent(class Object* o, PrimitiveType primType, std::map<GLenum, std::string> shaders);
-    MeshRendererComponent(class Object* o, PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName);
-    MeshRendererComponent(class Object* o, PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);
-    MeshRendererComponent(class Object* o, PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, std::string textureString);
     ~MeshRendererComponent();
 
     void Update() override;
