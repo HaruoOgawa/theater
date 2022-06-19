@@ -1,17 +1,18 @@
 #include "AnimationLearning.h"
 #include "GraphicsEngine/Object/TimelineObject.h"
 #include "GraphicsEngine/Object/GameObject.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Message/Console.h"
 
 #define PI 3.14159265f
 
 void AnimationLearning::Start() {
+	Console::Log("shaderlib::ShaderLib::Standard_vert: %s\n", shaderlib::ShaderLib::Standard_vert);
+	Console::Log("___________________________________\n");
+	Console::Log("shaderlib::ShaderLib::Standard_frag: %s\n", shaderlib::ShaderLib::Standard_frag);
+
 	// ”wŒiF
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f),1.0));
-	
-	//
-	//m_AnimObj = std::make_shared<GameObject>("Assets/Resources/glTFData/Hakka/Hakka_v1.2.gltf");
-	//m_AnimObj = std::make_shared<GameObject>("Assets/Resources/glTFData/Woman_FromUnity/Woman.gltf");
-	//m_AnimObj->SetScale(glm::vec3(50.0f));
 	
 	m_AnimObj = std::make_shared<GameObject>(PrimitiveType::CUBE);
 
