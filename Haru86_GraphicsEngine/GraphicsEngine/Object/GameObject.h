@@ -10,6 +10,7 @@
 #include <glew.h>
 #include <typeinfo>
 #include <memory>
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 
 class ARendererComponent;
 
@@ -36,7 +37,7 @@ class GameObject
 {
 	PrimitiveType m_PrimitiveType;
 public:
-	GameObject(PrimitiveType primType);
+	//GameObject(PrimitiveType primType);
 	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType renderType);
 	
 	/*GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders);
@@ -46,7 +47,7 @@ public:
 	/*GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,std::string textureString);*/
 	
 	GameObject(PrimitiveType primType,
-		std::string vert = "",std::string frag = "",std::string geom = "",std::string tc = "",std::string tv="");
+		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="");
 	
 	~GameObject();
 	void UseZTest(bool use);

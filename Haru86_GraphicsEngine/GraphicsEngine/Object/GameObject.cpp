@@ -5,13 +5,13 @@
 #include "../Component/MeshRendererComponent.h"
 #include "CNode.h"
 
-GameObject::GameObject(PrimitiveType primType) 
+/*GameObject::GameObject(PrimitiveType primType)
 	: Object(), renderOrder(RenderQueue::Geometry), renderType(RenderType::DefaultBuffer), animTime(0.0f), m_PrimitiveType(primType)
 {
 	GraphicsMain::GetInstance()->gameObjectList.emplace_back(this);
 	meshComp =  std::make_shared<MeshRendererComponent>(this, primType);
 	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
-}
+}*/
 
 GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType rt)
 	:Object(), renderOrder(RenderQueue::UI), renderType(rt), animTime(0.0f), m_PrimitiveType(primType)
