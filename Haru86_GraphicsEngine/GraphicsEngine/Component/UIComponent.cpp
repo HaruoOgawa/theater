@@ -9,10 +9,9 @@
 #include "../GraphicsMain/Time.h"
 #include "../Object/TimelineObject.h"
 #include "./TimelineComponent.h"
-#include "../Component/AudioSourceComponent.h"
 #include <algorithm>
 #include "GraphicsEngine/Object/CNode.h"
-
+#include "GraphicsEngine/Music/MusicPlayer.h"
 
 UIComponent::UIComponent(GameObject* o)
 	: Component(o)

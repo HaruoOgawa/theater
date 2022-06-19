@@ -2,7 +2,6 @@
 #include <string>
 #include "../Object/GameObject.h"
 #include "../Graphics/Mesh.h"
-#include "../Component/AudioSourceComponent.h"
 #include "../Object/TimelineObject.h"
 #include "../Component/TimelineComponent.h"
 #include "./Time.h"
@@ -17,6 +16,7 @@
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/App/CEventListener.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Music/MusicPlayer.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -45,7 +45,8 @@ GraphicsMain::GraphicsMain()
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr),
-	m_EventListener(std::make_shared<app::CEventListener>())
+	m_EventListener(std::make_shared<app::CEventListener>()),
+	m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -169,6 +170,9 @@ void GraphicsMain::LoadData() {
 	m_App->Timeline(timelineObj.get());
 	timelineObj->Initialize();
 
+	//
+	m_MusicPlayer->Initialize();
+
 }
 
 bool GraphicsMain::RunLoop() {
@@ -178,6 +182,7 @@ bool GraphicsMain::RunLoop() {
 			if (Reflesh())return true;
 		}
 		else {
+			m_MusicPlayer->Update();
 			UpdateTimeline();
 			InputProcess();
 			Update();

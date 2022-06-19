@@ -8,7 +8,7 @@
 #include "../../../GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include <memory>
-#include "GraphicsEngine/Object/AudioObject.h"
+#include "GraphicsEngine/Music/MusicPlayer.h"
 
 DemoApp::DemoApp()
 {
