@@ -7,16 +7,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Haru86_GraphicsEngine", "Ha
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ClinklerRelease|x64 = ClinklerRelease|x64
+		ClinklerRelease|x86 = ClinklerRelease|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		DemoRelease|x64 = DemoRelease|x64
 		DemoRelease|x86 = DemoRelease|x86
-		MinimumRelease|x64 = MinimumRelease|x64
-		MinimumRelease|x86 = MinimumRelease|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.ClinklerRelease|x64.ActiveCfg = MinimumRelease|x64
+		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.ClinklerRelease|x64.Build.0 = MinimumRelease|x64
+		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.ClinklerRelease|x86.ActiveCfg = MinimumRelease|Win32
+		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.ClinklerRelease|x86.Build.0 = MinimumRelease|Win32
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Debug|x64.ActiveCfg = Debug|x64
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Debug|x64.Build.0 = Debug|x64
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Debug|x86.ActiveCfg = Debug|Win32
@@ -25,10 +29,6 @@ Global
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.DemoRelease|x64.Build.0 = DemoRelease|x64
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.DemoRelease|x86.ActiveCfg = DemoRelease|Win32
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.DemoRelease|x86.Build.0 = DemoRelease|Win32
-		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.MinimumRelease|x64.ActiveCfg = MinimumRelease|x64
-		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.MinimumRelease|x64.Build.0 = MinimumRelease|x64
-		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.MinimumRelease|x86.ActiveCfg = MinimumRelease|Win32
-		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.MinimumRelease|x86.Build.0 = MinimumRelease|Win32
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Release|x64.ActiveCfg = Release|x64
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Release|x64.Build.0 = Release|x64
 		{50DFEA6A-E7C1-453B-9ACE-5F391C56EA9B}.Release|x86.ActiveCfg = Release|Win32
