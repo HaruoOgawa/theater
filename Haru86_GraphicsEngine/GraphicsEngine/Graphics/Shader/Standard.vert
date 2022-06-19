@@ -1,3 +1,5 @@
+R"(
+
 #version 330
 
 uniform mat4 MVPMatrix;
@@ -32,3 +34,5 @@ void main(){
 	CameraPos=_CameraPos;
 	WorldVertexPos=(MMatrix*pos).xyz;
 }
+
+)"

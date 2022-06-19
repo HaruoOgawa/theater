@@ -1,3 +1,5 @@
+R"(
+
 #version 430
 
 precision highp float;
@@ -40,3 +42,5 @@ void main(){
 
 	gl_FragColor=vec4(col,1.0);
 }
+
+)"

@@ -10,6 +10,7 @@
 #include <glew.h>
 #include <typeinfo>
 #include <memory>
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 
 class ARendererComponent;
 
@@ -17,7 +18,7 @@ namespace physics {
 	class CPhysicsEngine;
 }
 
-enum RenderQueue
+enum class RenderQueue
 {
 	Background=1000,
 	Geometry=3000,
@@ -36,13 +37,10 @@ class GameObject
 {
 	PrimitiveType m_PrimitiveType;
 public:
-	GameObject(PrimitiveType primType);
-	GameObject(PrimitiveType primType, std::map<GLenum, std::string> shaders);
-	GameObject(PrimitiveType primType,std::string fragmentShaderName);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,RenderType renderType);
-	GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName,std::string textureString);
+	GameObject(PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, RenderQueue renderOrder=RenderQueue::Geometry,
+		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="");
+	//GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType renderType);
+
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
@@ -51,8 +49,8 @@ public:
 	float animTime = 0.0f;
 	friend class GraphicsRenderer;
 	friend class TimelineComponent;
-	int renderOrder;
+	int m_renderOrder;
 private:
-	RenderType renderType;
+	RenderType m_renderType;
 };
 

@@ -5,9 +5,10 @@
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Message/Console.h"
 
-Material::Material()
+Material::Material(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
 	: vertShaderData(-1),
 	tessControlShaderData(-1),
 	tessEvalShaderData(-1),
@@ -21,302 +22,73 @@ Material::Material()
 	depthFragShaderData(-1),
 	depthShaderPrg(-1)
 {
-	LoadShader("./Assets/Shader/Standard.vert", "./Assets/Shader/Standard.frag", shaderPrg
-		, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-	LoadShader("./Assets/Shader/Standard.vert", "./Assets/Shader/DepthColor.frag", depthShaderPrg
-		, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-}
-
-Material::Material(std::map<GLenum, std::string> shaders) 
-	: vertShaderData(-1),
-	tessControlShaderData(-1),
-	tessEvalShaderData(-1),
-	geometryShaderData(-1),
-	fragShaderData(-1),
-	shaderPrg(-1),
-	depthVertShaderData(-1),
-	depthTessControlShaderData(-1),
-	depthTessEvalShaderData(-1),
-	depthGeometryShaderData(-1),
-	depthFragShaderData(-1),
-	depthShaderPrg(-1)
-{
-	LoadShader(shaders, shaderPrg
-		, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-	auto depthShaders = shaders;
-	depthShaders[GL_FRAGMENT_SHADER] = "./Assets/Shader/DepthColor.frag";
-	LoadShader(depthShaders, depthShaderPrg
-		, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-}
-
-Material::Material(std::string vertexShaderName, std::string fragmentShaderName)
-	: vertShaderData(-1),
-	tessControlShaderData(-1),
-	tessEvalShaderData(-1),
-	geometryShaderData(-1),
-	fragShaderData(-1),
-	shaderPrg(-1),
-	depthVertShaderData(-1),
-	depthTessControlShaderData(-1),
-	depthTessEvalShaderData(-1),
-	depthGeometryShaderData(-1),
-	depthFragShaderData(-1),
-	depthShaderPrg(-1)
-{
-	LoadShader(vertexShaderName, fragmentShaderName, shaderPrg
-		, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-	LoadShader(vertexShaderName, "./Assets/Shader/DepthColor.frag", depthShaderPrg
-		, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-}
-
-Material::Material(std::string vertexShaderName, std::string fragmentShaderName, RenderingSurfaceType renderingSurfaceType) 
-	: vertShaderData(-1),
-	tessControlShaderData(-1),
-	tessEvalShaderData(-1),
-	geometryShaderData(-1),
-	fragShaderData(-1),
-	shaderPrg(-1),
-	depthVertShaderData(-1),
-	depthTessControlShaderData(-1),
-	depthTessEvalShaderData(-1),
-	depthGeometryShaderData(-1),
-	depthFragShaderData(-1),
-	depthShaderPrg(-1)
-{
-	if (renderingSurfaceType==RenderingSurfaceType::POLYGON) {
-		LoadShader(vertexShaderName, fragmentShaderName, shaderPrg
-			, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-		LoadShader(vertexShaderName, "./Assets/Shader/DepthColor.frag", depthShaderPrg
-			, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-	}
-	else if (renderingSurfaceType == RenderingSurfaceType::RAYMARCHING) {
-		LoadShader(vertexShaderName, fragmentShaderName, shaderPrg
-			, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-		LoadShader(vertexShaderName, fragmentShaderName, depthShaderPrg
-			, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-	}
-}
-
-Material::Material(std::string vertexShaderName, std::string tessellationShaderName[2], std::string fragmentShaderName)
-	: vertShaderData(-1),
-	tessControlShaderData(-1),
-	tessEvalShaderData(-1),
-	geometryShaderData(-1),
-	fragShaderData(-1),
-	shaderPrg(-1),
-	depthVertShaderData(-1),
-	depthTessControlShaderData(-1),
-	depthTessEvalShaderData(-1),
-	depthGeometryShaderData(-1),
-	depthFragShaderData(-1),
-	depthShaderPrg(-1)
-{
-	LoadShader(vertexShaderName,tessellationShaderName, fragmentShaderName, shaderPrg
-		, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-	LoadShader(vertexShaderName,tessellationShaderName, "./Assets/Shader/DepthColor.frag", depthShaderPrg
-		, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
-}
-
-Material::Material(std::string vertexShaderName, std::string geometryShaderName, std::string fragmentShaderName)
-	: vertShaderData(-1),
-	tessControlShaderData(-1),
-	tessEvalShaderData(-1),
-	geometryShaderData(-1),
-	fragShaderData(-1),
-	shaderPrg(-1),
-	depthVertShaderData(-1),
-	depthTessControlShaderData(-1),
-	depthTessEvalShaderData(-1),
-	depthGeometryShaderData(-1),
-	depthFragShaderData(-1),
-	depthShaderPrg(-1)
-{
-	LoadShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderPrg
-		, vertShaderData, tessControlShaderData, tessEvalShaderData, geometryShaderData, fragShaderData);
-	LoadShader(vertexShaderName, geometryShaderName, "./Assets/Shader/DepthColor.frag", depthShaderPrg
-		, depthVertShaderData, depthTessControlShaderData, depthTessEvalShaderData, depthGeometryShaderData, depthFragShaderData);
+	LoadShader(vert,frag,geom,tc,tv, shaderPrg
+		, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
+	LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, depthShaderPrg
+		, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
 }
 
 Material::~Material() {
 	UnLoadData();
 }
 
-void Material::LoadShader(std::map<GLenum, std::string> shaders, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag) {
-	bool compileResult = false;
+void Material::LoadShader(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv,
+	GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData)
+{
+	//
+	prg = glCreateProgram();
 
-	for (auto shader : shaders) {
-		switch (shader.first)
-		{
-		case GL_VERTEX_SHADER:
-			compileResult = CompileShader(shader.second, shader.first, vert);
-			break;
-		case GL_TESS_CONTROL_SHADER:
-			compileResult = CompileShader(shader.second, shader.first, tc);
-			break;
-		case GL_TESS_EVALUATION_SHADER:
-			compileResult = CompileShader(shader.second, shader.first, tv);
-			break;
-		case GL_GEOMETRY_SHADER:
-			compileResult = CompileShader(shader.second, shader.first, geom);
-			break;
-		case GL_FRAGMENT_SHADER:
-			compileResult = CompileShader(shader.second, shader.first, frag);
-			break;
-		default:
-			compileResult = false;
-			break;
-		}
-
-		if (!compileResult) {
-			printf("Compile is failure...\n");
-			break;
-		}
-		
+	// 各Shaderのコンパイルとアタッチ
+	if (CompileShader(vert, GL_VERTEX_SHADER, vertData)) {
+		glAttachShader(prg, vertData);
 	}
-	
-	if (compileResult) {
-		
-		prg = glCreateProgram();
-		
-		for (auto shader : shaders) {
-			switch (shader.first)
-			{
-			case GL_VERTEX_SHADER:
-				glAttachShader(prg, vert);
-				break;
-			case GL_TESS_CONTROL_SHADER:
-				glAttachShader(prg, tc);
-				break;
-			case GL_TESS_EVALUATION_SHADER:
-				glAttachShader(prg, tv);
-				break;
-			case GL_GEOMETRY_SHADER:
-				glAttachShader(prg, geom);
-				break;
-			case GL_FRAGMENT_SHADER:
-				glAttachShader(prg, frag);
-				break;
-			default:
-				break;
-			}
-		}
 
-		glLinkProgram(prg);
-
-		GLint status;
-		glGetProgramiv(prg, GL_LINK_STATUS, &status);
-		if (status != GL_TRUE) {
-			Console::Log("Cannot Load Program Data");
-			char buffer[512];
-			memset(buffer, 0, 512);
-			glGetProgramInfoLog(prg, 511, nullptr, buffer);
-			Console::Log("GLSL Link Status:\n%s", buffer);
-		}
+	if (CompileShader(frag, GL_FRAGMENT_SHADER, fragData)) {
+		glAttachShader(prg, fragData);
 	}
-}
-void Material::LoadShader(std::string vertName, std::string fragName, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag) {
-	if (CompileShader(vertName,GL_VERTEX_SHADER, vert)&&
-		CompileShader(fragName,GL_FRAGMENT_SHADER,frag)) {
-		
-		prg = glCreateProgram();
-		glAttachShader(prg, vert);
-		glAttachShader(prg, frag);
-		glLinkProgram(prg);
 
-		GLint status;
-		glGetProgramiv(prg, GL_LINK_STATUS, &status);
-		if (status != GL_TRUE) {
-			Console::Log("Cannot Load Program Data");
-			char buffer[512];
-			memset(buffer, 0, 512);
-			glGetProgramInfoLog(prg, 511, nullptr, buffer);
-			Console::Log("GLSL Link Status:\n%s", buffer);
-		}
-		else
-		{
-			//Console::Log("Success!! Loaded All Shader file");
-		}
+	if (CompileShader(geom, GL_GEOMETRY_SHADER, geomData)) {
+		glAttachShader(prg, geomData);
+	}
+
+	if (CompileShader(tc, GL_TESS_CONTROL_SHADER, tcData)) {
+		glAttachShader(prg, tcData);
+	}
+
+	if (CompileShader(tv, GL_TESS_EVALUATION_SHADER, tvData)) {
+		glAttachShader(prg, tvData);
+	}
+
+
+	// program dataを完成させる
+	glLinkProgram(prg);
+
+	GLint status;
+	glGetProgramiv(prg, GL_LINK_STATUS, &status);
+	if (status != GL_TRUE) {
+		Console::Log("Cannot Load Program Data");
+		char buffer[512];
+		memset(buffer, 0, 512);
+		glGetProgramInfoLog(prg, 511, nullptr, buffer);
+		Console::Log("GLSL Link Status:\n%s", buffer);
 	}
 }
 
-void Material::LoadShader(std::string vertName, std::string tessellationShaderName[2], std::string fragName, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag) {
-	if (CompileShader(vertName,GL_VERTEX_SHADER, vert)&&
-		CompileShader(tessellationShaderName[0], GL_TESS_CONTROL_SHADER, tc)&&
-		CompileShader(tessellationShaderName[1],GL_TESS_EVALUATION_SHADER, tv)&&
-		CompileShader(fragName,GL_FRAGMENT_SHADER, frag)) {
-		
-		prg = glCreateProgram();
-		glAttachShader(prg, vert);
-		glAttachShader(prg, tc);
-		glAttachShader(prg, tv);
-		glAttachShader(prg, frag);
-		glLinkProgram(prg);
-
-		GLint status;
-		glGetProgramiv(prg, GL_LINK_STATUS, &status);
-		if (status != GL_TRUE) {
-			Console::Log("Cannot Load Program Data");
-			char buffer[512];
-			memset(buffer, 0, 512);
-			glGetProgramInfoLog(prg, 511, nullptr, buffer);
-			Console::Log("GLSL Link Status:\n%s", buffer);
-		}
-		else
-		{
-			//Console::Log("Success!! Loaded All Shader file");
-		}
-	}
-}
-
-void Material::LoadShader(std::string vertName, std::string geomName, std::string fragName, GLuint& prg, GLuint& vert, GLuint& tc, GLuint& tv, GLuint& geom, GLuint& frag) {
-	if (CompileShader(vertName,GL_VERTEX_SHADER, vert)&&
-		CompileShader(geomName,GL_GEOMETRY_SHADER, geom)&&
-		CompileShader(fragName,GL_FRAGMENT_SHADER, frag)) {
-		
-		prg = glCreateProgram();
-		glAttachShader(prg, vert);
-		glAttachShader(prg, geom);
-		glAttachShader(prg, frag);
-		glLinkProgram(prg);
-
-		GLint status;
-		glGetProgramiv(prg, GL_LINK_STATUS, &status);
-		if (status != GL_TRUE) {
-			Console::Log("Cannot Load Program Data");
-			char buffer[512];
-			memset(buffer, 0, 512);
-			glGetProgramInfoLog(prg, 511, nullptr, buffer);
-			Console::Log("GLSL Link Status:\n%s", buffer);
-		}
-		else
-		{
-			//Console::Log("Success!! Loaded All Shader file");
-		}
-	}
-}
-
-bool Material::CompileShader(std::string shadername, GLenum shaderType, GLuint& outShader) {
-	
-	std::ifstream shaderFile(shadername);
-	if (shaderFile.is_open()) {
-		
-		std::stringstream sstream;
-		sstream << shaderFile.rdbuf();
-		std::string contents = sstream.str();
-		const char* contentsChar = contents.c_str();
-
+bool Material::CompileShader(const std::string shaderCode, GLenum shaderType, GLuint& outShader){
+	if (!shaderCode.empty()) {
 		outShader = glCreateShader(shaderType);
+		const char* contentsChar = shaderCode.c_str();
 		glShaderSource(outShader, 1, &(contentsChar), nullptr);
 		glCompileShader(outShader);
 	}
 	else {
-		Console::Log("Failure!! cannot open shader file...");
+		return false;
 	}
 
 	GLint status;
 	glGetShaderiv(outShader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE) {
-		Console::Log("Cannnot Load Shader: %s",shadername.c_str());
+		Console::Log("Cannnot Load Shader: %s", shaderCode.c_str());
 		
 		char buffer[512];
 		memset(buffer, 0, 512);

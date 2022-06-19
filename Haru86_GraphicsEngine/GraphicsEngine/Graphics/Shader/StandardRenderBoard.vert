@@ -1,3 +1,5 @@
+R"(
+
 #version 330
 
 uniform mat4 MVPMatrix;
@@ -16,15 +18,13 @@ out vec2 uv;
 out float time;
 out vec2 resolution;
 
-#define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
-
 void main(){
 	vec4 pos=vec4(vertex,1.0);
 	pos.xy*=2.0;
-	pos.x*=2.0;
-	pos.y*=0.5;
-	gl_Position=MVPMatrix*pos;
+	gl_Position=pos;
 	time=_time*0.001;
 	uv=texcoord;
 	resolution=_resolution;
 }
+
+)"

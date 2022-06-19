@@ -1,3 +1,5 @@
+R"(
+
 precision mediump float;
 
 in vec2 uv;
@@ -12,3 +14,6 @@ void main(void){
 	col.rgb=texture(frameTex,uv*_frameResolusion);
 	gl_FragColor=col;
 }
+
+
+)"

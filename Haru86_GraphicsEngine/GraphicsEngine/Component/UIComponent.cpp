@@ -18,7 +18,7 @@ UIComponent::UIComponent(GameObject* o)
 	: Component(o)
 {
 	o->UseZTest(false);
-	o->SetRenderOlder(RenderQueue::UI);
+	o->SetRenderOlder(static_cast<int>(RenderQueue::UI));
 }
 
 UIComponent::~UIComponent() {

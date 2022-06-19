@@ -20,7 +20,7 @@ DemoApp::~DemoApp() {
 }
 void DemoApp::Start()  {
 
-	Scene1_Frag = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/demo.vert", "./Assets/Shader/VedaStructuredShader/scene1.frag");
+	/*Scene1_Frag = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/demo.vert", "./Assets/Shader/VedaStructuredShader/scene1.frag");
 	Scene2_Frag = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/demo.vert", "./Assets/Shader/VedaStructuredShader/scene2.frag");
 	Scene3_Frag = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/demo.vert", "./Assets/Shader/VedaStructuredShader/scene3.frag");
 	Scene4_Frag = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/demo.vert", "./Assets/Shader/VedaStructuredShader/scene4.frag");
@@ -31,7 +31,7 @@ void DemoApp::Start()  {
 	uiButton->AddComponent(new UIComponent(uiButton));
 	uiButton->AddComponent(new RectTransformComponent(uiButton,0.1f,0.1f));*/
 
-	DemoText = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/FontText.vert", "./Assets/Shader/FontText.frag","Demo Scene");
+	/*DemoText = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/FontText.vert", "./Assets/Shader/FontText.frag", "Demo Scene");
 	MusicText = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/FontText.vert", "./Assets/Shader/FontText.frag","Music: lug00ber");
 	MyCreditText= std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/FontText.vert", "./Assets/Shader/FontText.frag","Mouvie: Haru86_");
 	TitleText = std::make_shared<GameObject>(PrimitiveType::BOARD, "./Assets/Shader/FontText.vert", "./Assets/Shader/FontText.frag","Labyrinth");
@@ -42,7 +42,7 @@ void DemoApp::Start()  {
 	DemoAudioObj = std::make_shared<AudioObject>("./Assets/Resources/MusicData/lug00ber_they_are_feeding.mp3");
 	if (DemoAudioObj->Initialize()) {
 		DemoAudioObj->PlayAudio();
-	}
+	}*/
 
 }
 void DemoApp::Update()  {
@@ -54,7 +54,7 @@ void DemoApp::Draw() {
 }
 
 void DemoApp::Timeline(class TimelineObject* timeline)  {
-	//Ray Activation
+	/*//Ray Activation
 	timeline->AddActivationClip(Scene1_Frag.get(),0.0f,42.0f);
 	timeline->AddActivationClip(Scene2_Frag.get(), 42.0f, 64.0f);
 	timeline->AddActivationClip(Scene3_Frag.get(), 64.0f, 85.0f);
@@ -377,6 +377,6 @@ void DemoApp::Timeline(class TimelineObject* timeline)  {
 	});
 	timeline->AddAnimationClip(GraphicsMain::GetInstance()->renderBoard.get(), 126.0f + 1.0f - adjustTime, 157.0f + 1.0f - adjustTime, [this](float val) {GraphicsMain::GetInstance()->renderBoard->meshComp->GetMaterial()->SetFloatUniform("_postProcessFlag",3); });
 	timeline->AddAnimationClip(GraphicsMain::GetInstance()->renderBoard.get(), 157.0f + 1.0f - adjustTime, 157.5f + 1.0f - adjustTime, [this](float val) {GraphicsMain::GetInstance()->renderBoard->meshComp->GetMaterial()->SetFloatUniform("_postProcessFlag",0); });
-		
+		*/
 }
 

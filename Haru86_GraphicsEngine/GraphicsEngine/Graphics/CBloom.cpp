@@ -5,6 +5,7 @@
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 
 CBloom::CBloom():
 	m_IlluminanceMap(std::make_shared<Texture>()),
@@ -26,9 +27,9 @@ void CBloom::Release() {
 }
 
 void CBloom::Initialize() {
-	m_IlluminanceMaterial = std::make_shared<Material>("./Assets/Shader/StandardRenderBoard.vert", "./Assets/Shader/BloomIlluminance.frag");
-	m_BlurMaterial = std::make_shared<Material>("./Assets/Shader/StandardRenderBoard.vert", "./Assets/Shader/BloomBlur.frag");
-	m_BloomResultMaterial = std::make_shared<Material>("./Assets/Shader/StandardRenderBoard.vert", "./Assets/Shader/BloomResult.frag");
+	m_IlluminanceMaterial = std::make_shared<Material>(shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomIlluminance_frag, "", "", "");
+	m_BlurMaterial = std::make_shared<Material>(shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomBlur_frag, "", "", "");
+	m_BloomResultMaterial = std::make_shared<Material>(shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomResult_frag, "", "", "");
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 	// Create FrameBuffer  Œã‚Ù‚ÇHDRTexture‚É‚·‚é
