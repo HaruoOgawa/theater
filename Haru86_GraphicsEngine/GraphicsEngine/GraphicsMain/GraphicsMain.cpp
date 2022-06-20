@@ -284,3 +284,7 @@ void GraphicsMain::ShutDown() {
 void GraphicsMain::SetIsRunning(bool state) {
 	isRunning = state;
 }
+
+bool GraphicsMain::GetIsRunning() {
+	return isRunning;
+}

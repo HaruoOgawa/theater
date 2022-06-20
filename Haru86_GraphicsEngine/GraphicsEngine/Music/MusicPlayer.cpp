@@ -1,4 +1,7 @@
 #include "MusicPlayer.h"
+//#include <thread>
+#include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+#include "GraphicsEngine/Message/Console.h"
 
 #define WIN32_LEAN_AND_MEAN
 #define WIN32_EXTRA_LEAN
@@ -77,15 +80,15 @@ MusicPlayer::~MusicPlayer()
 }
 
 bool MusicPlayer::Initialize() {
-	printf("Start 64klang\n");
+	Console::Log("Start 64klang\n");
 	// init synth and start filling the buffer 
 	_64klang_Init(SynthStream, SynthNodes, SynthMonoConstantOffset, SynthStereoConstantOffset, SynthMaxOffset);
 #if 1
-	printf("Sleep...\n");
+	Console::Log("Sleep...\n");
 	// threaded buffer fill with 5 seconds heads up
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)_64klang_Render, lpSoundBuffer, 0, 0);
 	Sleep(5000);
-	printf("Wake Up!!!\n");
+	Console::Log("Wake Up!!!\n");
 #else
 	// sequential (blocking) buffer fill aka precalc
 	_64klang_Render(lpSoundBuffer);
@@ -96,18 +99,17 @@ bool MusicPlayer::Initialize() {
 	waveOutPrepareHeader(hWaveOut, &WaveHDR, sizeof(WaveHDR));
 	waveOutWrite(hWaveOut, &WaveHDR, sizeof(WaveHDR));
 	
-	printf("Loaded 64klang\n");
-
+	Console::Log("Loaded 64klang\n");
 
 	return true;
 }
 
 bool MusicPlayer::Update() {
 
-	if (MMTime.u.sample < MAX_SAMPLES) {
-		printf("Sound Loop...... %d / %d\n", MMTime, hWaveOut);
+	if ((MMTime.u.sample < MAX_SAMPLES) || GraphicsMain::GetInstance()->GetIsRunning()) {
+		//Console::Log("Sound Loop...... %d / %d\n", MMTime, hWaveOut);
 		waveOutGetPosition(hWaveOut, &MMTime, sizeof(MMTIME));
-		Sleep(128);
+		//Sleep(128);
 	}
 
 	return true;

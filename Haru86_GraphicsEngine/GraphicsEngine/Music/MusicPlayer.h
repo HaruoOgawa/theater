@@ -7,5 +7,7 @@ public:
 
 	bool Initialize();
 	bool Update();
+private:
+	static void PlayMusic();
 };
 

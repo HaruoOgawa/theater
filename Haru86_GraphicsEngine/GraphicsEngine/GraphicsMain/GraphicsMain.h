@@ -60,6 +60,7 @@ public:
 	void ShutDown();
 	void Restart();
 	void SetIsRunning(bool state);
+	bool GetIsRunning();
 
 	float time;
 	float deltaTime;
