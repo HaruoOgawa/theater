@@ -10,7 +10,7 @@ class RaymarchingObject :
     public Object
 {
 public:
-    RaymarchingObject(std::string fragmentShaderName);
+    RaymarchingObject(const std::string& fragmentShaderCode);
     ~RaymarchingObject();
     void Start();
     void Update() override;

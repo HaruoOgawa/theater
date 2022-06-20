@@ -8,10 +8,10 @@
 #include "GraphicsEngine/Object/CNode.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 
-RaymarchingObject::RaymarchingObject(std::string fragmentShaderName)
+RaymarchingObject::RaymarchingObject(const std::string& fragmentShaderCode)
 	: Object()
 {
-	m_material = std::make_shared<Material>(shaderlib::ShaderLib::RaymarchingObject_vert,fragmentShaderName,"","","");
+	m_material = std::make_shared<Material>(shaderlib::ShaderLib::RaymarchingObject_vert, fragmentShaderCode,"","","");
 	//m_material = std::make_shared<Material>("./Assets/Shader/RaymarchingObject.vert",fragmentShaderName,RenderingSurfaceType::RAYMARCHING);
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 }
