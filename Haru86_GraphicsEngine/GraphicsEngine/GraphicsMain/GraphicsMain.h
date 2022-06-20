@@ -18,7 +18,7 @@ enum ERerderingTarget
 };
 
 class BaseApp;
-class MusicPlayer;
+//class MusicPlayer;
 
 namespace app {
 	class CEventListener;
@@ -41,7 +41,7 @@ class GraphicsMain
 	std::shared_ptr<app::CEventListener> m_EventListener;
 
 	//
-	std::shared_ptr<MusicPlayer> m_MusicPlayer;
+	//std::shared_ptr<MusicPlayer> m_MusicPlayer;
 
 public:
 	static GraphicsMain* GetInstance()

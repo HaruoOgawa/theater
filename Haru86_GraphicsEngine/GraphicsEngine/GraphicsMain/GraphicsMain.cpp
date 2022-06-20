@@ -16,7 +16,7 @@
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/App/CEventListener.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Music/MusicPlayer.h"
+//#include "GraphicsEngine/Music/MusicPlayer.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -45,8 +45,8 @@ GraphicsMain::GraphicsMain()
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr),
-	m_EventListener(std::make_shared<app::CEventListener>()),
-	m_MusicPlayer(std::make_shared<MusicPlayer>())
+	m_EventListener(std::make_shared<app::CEventListener>())//,
+	//m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -171,7 +171,7 @@ void GraphicsMain::LoadData() {
 	timelineObj->Initialize();
 
 	//
-	m_MusicPlayer->Initialize();
+	//m_MusicPlayer->Initialize();
 
 }
 
@@ -182,7 +182,7 @@ bool GraphicsMain::RunLoop() {
 			if (Reflesh())return true;
 		}
 		else {
-			m_MusicPlayer->Update();
+			//m_MusicPlayer->Update();
 			UpdateTimeline();
 			InputProcess();
 			Update();
