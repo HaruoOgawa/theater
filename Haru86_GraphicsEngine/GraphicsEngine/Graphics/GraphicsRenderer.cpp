@@ -9,7 +9,6 @@
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
-#include "GraphicsEngine/Object/CNode.h"
 
 GraphicsRenderer* GraphicsRenderer::renderer_instance = nullptr;
 
@@ -179,8 +178,8 @@ void GraphicsRenderer::Draw() {
 	glEnable(GL_DEPTH_TEST);
 
 	for (auto obj : mgame->gameObjectList) {
-		std::vector<glm::mat4> ModelMatrixTree;
-		obj->GetRootNode()->Draw(ModelMatrixTree);
+		obj->m_transform->CalMatrix();
+		obj->meshComp->Draw();
 	}
 
 	if (mgame->m_App) {
@@ -198,9 +197,8 @@ void GraphicsRenderer::Draw() {
 	glEnable(GL_DEPTH_TEST);
 
 	for (auto obj : mgame->gameObjectList) {
-		std::vector<glm::mat4> ModelMatrixTree;
-		obj->GetRootNode()->Draw(ModelMatrixTree);
-		ModelMatrixTree.clear();
+		obj->m_transform->CalMatrix();
+		obj->meshComp->Draw();
 	}
 
 	if (mgame->m_App) {
@@ -220,7 +218,8 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->GetRootNode()->Draw();
+		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
+		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
 	}
 
 	//レイマーチングオブジェクトのデプスマップをレンダリング
@@ -233,7 +232,8 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->GetRootNode()->Draw();
+		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
+		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
 	}
 
 	//ポリゴンオブジェクトとレイマーチングオブジェクトをブレンドする

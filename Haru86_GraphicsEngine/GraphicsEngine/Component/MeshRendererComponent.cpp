@@ -9,7 +9,6 @@
 #include "../Graphics/Texture.h"
 #include "../Graphics/Font.h"
 #include "GraphicsEngine/Object/CameraObject.h"
-#include "GraphicsEngine/Object/CNode.h"
 
 MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
@@ -42,10 +41,10 @@ void MeshRendererComponent::Draw() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	material->SetActive();
-	material->SetMatrixUniform("MVPMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMVPMatrix());
-	material->SetMatrixUniform("MMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMMatrix());
-	material->SetMatrixUniform("VMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetVMatrix());
-	material->SetMatrixUniform("PMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetPMatrix());
+	material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
+	material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
+	material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
+	material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
 	material->SetFloatUniform("_time", game->time);
 	material->SetFloatUniform("_deltaTime", game->deltaTime);
 	material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
@@ -84,10 +83,10 @@ void MeshRendererComponent::DrawBoard() {
 	}
 
 	material->SetActive();
-	material->SetMatrixUniform("MVPMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMVPMatrix());
-	material->SetMatrixUniform("MMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMMatrix());
-	material->SetMatrixUniform("VMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetVMatrix());
-	material->SetMatrixUniform("PMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetPMatrix());
+	material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
+	material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
+	material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
+	material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
 	material->SetFloatUniform("_time", game->time);
 	material->SetFloatUniform("_deltaTime", game->deltaTime);
 	material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());

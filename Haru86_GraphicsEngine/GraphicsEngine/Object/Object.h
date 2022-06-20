@@ -12,10 +12,7 @@
 #include <typeindex>
 
 class Component;
-
-namespace obj {
-	class CNode;
-}
+class TransformComponent;
 
 class Object
 {
@@ -33,10 +30,34 @@ public:
 	glm::vec3 GetPosition();
 	glm::quat GetRotation();
 	glm::vec3 GetScale();
-	
-	const std::shared_ptr<obj::CNode>& GetRootNode()const;
-	std::shared_ptr<obj::CNode>& GetRootNode();
 
+	//
+	const std::unordered_map<std::type_index, std::shared_ptr<Component>>& GetComponentList()const;
+
+	template<typename T>
+	void AddComponent(std::shared_ptr<Component> component) {
+		m_ComponentList.insert({ typeid(T),component });
+	}
+
+	template<typename T>
+	void RemoveComponent() {
+		auto item = m_ComponentList.find(typeid(T));
+		m_ComponentList.erase(item->first);
+	}
+
+	template<typename T>
+	T* GetComponent()const {
+		auto item = m_ComponentList.find(typeid(T));
+		if (item != m_ComponentList.end()) {
+			return static_cast<T*>(item->second.get());
+		}
+		else {
+			T* val = nullptr;
+			return val;
+		}
+	}
+	
+	//
 	friend class MeshRendererComponent;
 	friend class GraphicsRenderer;
 	friend class UIComponent;
@@ -44,7 +65,8 @@ public:
 private:
 	class GraphicsMain* game;
 protected:
-	std::shared_ptr<obj::CNode> m_RootNode;
+	std::shared_ptr<TransformComponent> m_transform;
+	std::unordered_map<std::type_index, std::shared_ptr<Component>> m_ComponentList;
 };
 
 

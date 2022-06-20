@@ -5,7 +5,6 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
-#include "GraphicsEngine/Object/CNode.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 
 RaymarchingObject::RaymarchingObject(const std::string& fragmentShaderCode)
@@ -30,10 +29,10 @@ void RaymarchingObject::Update() {
 
 void RaymarchingObject::Draw() {
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", GetRootNode()->GetTransform()->GetMVPMatrix());
-	m_material->SetMatrixUniform("MMatrix", GetRootNode()->GetTransform()->GetMMatrix());
-	m_material->SetMatrixUniform("VMatrix", GetRootNode()->GetTransform()->GetVMatrix());
-	m_material->SetMatrixUniform("PMatrix", GetRootNode()->GetTransform()->GetPMatrix());
+	m_material->SetMatrixUniform("MVPMatrix", m_transform->GetMVPMatrix());
+	m_material->SetMatrixUniform("MMatrix", m_transform->GetMMatrix());
+	m_material->SetMatrixUniform("VMatrix", m_transform->GetVMatrix());
+	m_material->SetMatrixUniform("PMatrix", m_transform->GetPMatrix());
 	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001);
 	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
@@ -44,7 +43,7 @@ void RaymarchingObject::Draw() {
 	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
-	m_material->SetVec3Uniform("_camerePosition", GraphicsMain::GetInstance()->game_camera_instance->GetRootNode()->GetComponent<TransformComponent>()->GetPosition());
+	m_material->SetVec3Uniform("_camerePosition", GraphicsMain::GetInstance()->game_camera_instance->GetComponent<TransformComponent>()->GetPosition());
 
 	m_mesh->Draw();
 }

@@ -10,7 +10,6 @@
 #include "../Object/TimelineObject.h"
 #include "./TimelineComponent.h"
 #include <algorithm>
-#include "GraphicsEngine/Object/CNode.h"
 #include "GraphicsEngine/Music/MusicPlayer.h"
 
 UIComponent::UIComponent(GameObject* o)
@@ -74,10 +73,10 @@ void UIComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& Event
 }
 
 bool UIComponent::CheckInnnerBox( float x,  float y)const {
-	glm::vec2 rectScale = owner->GetRootNode()->
+	glm::vec2 rectScale = owner->
 		GetComponent<RectTransformComponent>()->rectScale;
 	
-	glm::vec2 rectPosition = owner->GetRootNode()->
+	glm::vec2 rectPosition = owner->
 		GetComponent<RectTransformComponent>()->rectPosition;
 
 	glm::vec2 minPos = rectPosition - rectScale;

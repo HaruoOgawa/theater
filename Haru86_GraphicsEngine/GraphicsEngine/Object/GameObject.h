@@ -44,7 +44,6 @@ public:
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
-	void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
 	std::shared_ptr<ARendererComponent> meshComp;
 	float animTime = 0.0f;
 	friend class GraphicsRenderer;
