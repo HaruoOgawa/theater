@@ -18,6 +18,7 @@ enum ERerderingTarget
 };
 
 class BaseApp;
+class MusicPlayer;
 
 namespace app {
 	class CEventListener;
@@ -39,6 +40,9 @@ class GraphicsMain
 	//
 	std::shared_ptr<app::CEventListener> m_EventListener;
 
+	//
+	std::shared_ptr<MusicPlayer> m_MusicPlayer;
+
 public:
 	static GraphicsMain* GetInstance()
 	{
@@ -56,6 +60,7 @@ public:
 	void ShutDown();
 	void Restart();
 	void SetIsRunning(bool state);
+	bool GetIsRunning();
 
 	float time;
 	float deltaTime;

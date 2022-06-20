@@ -181,7 +181,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -208,7 +208,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
@@ -235,7 +235,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -266,7 +266,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;comsupp.lib;delayimp.lib;oldnames.lib;libcmt.lib;libcpmt.lib;libcpmt1.lib;msvcmrt.lib;msvcprt.lib;msvcrt.lib;msvcurt.lib;vcomp.lib;ptrustu.lib;pgort.lib;pgobootrun.lib;ucrt.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;comsupp.lib;delayimp.lib;oldnames.lib;libcmt.lib;libcpmt.lib;libcpmt1.lib;msvcmrt.lib;msvcprt.lib;msvcrt.lib;msvcurt.lib;vcomp.lib;ptrustu.lib;pgort.lib;pgobootrun.lib;ucrt.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/CRINKLER %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>WinMain</EntryPointSymbol>
@@ -292,7 +292,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
@@ -315,7 +315,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
@@ -339,7 +339,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
@@ -363,7 +363,7 @@ call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_Gra
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/CRINKLER %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -375,8 +375,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsEngine\Graphics\CGLSLData.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\CGLSLSettings.h" />
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
@@ -385,6 +383,12 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="Assets\App\DemoApp\DemoApp.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
+    <ClInclude Include="GraphicsEngine\Music\64k2Patch.h" />
+    <ClInclude Include="GraphicsEngine\Music\64k2Song.h" />
+    <ClInclude Include="GraphicsEngine\Music\sample_t.h" />
+    <ClInclude Include="GraphicsEngine\Music\Synth.h" />
+    <ClInclude Include="GraphicsEngine\Music\SynthAllocator.h" />
+    <ClInclude Include="GraphicsEngine\Music\SynthNode.h" />
     <ClInclude Include="GraphicsEngine\Object\CameraObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
@@ -393,8 +397,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\tiny_gltf.h" />
-    <ClInclude Include="GraphicsEngine\Object\AudioObject.h" />
-    <ClInclude Include="GraphicsEngine\Component\AudioSourceComponent.h" />
     <ClInclude Include="GraphicsEngine\App\BaseApp\BaseApp.h" />
     <ClInclude Include="GraphicsEngine\Component\Component.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Font.h" />
@@ -411,6 +413,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
     <ClInclude Include="GraphicsEngine\Object\CNode.h" />
     <ClInclude Include="GraphicsEngine\Math\math.h" />
+    <ClInclude Include="GraphicsEngine\Music\MusicPlayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\Time.h" />
@@ -421,8 +424,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GraphicsEngine\Graphics\CGLSLData.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\CGLSLSettings.cpp" />
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
@@ -431,12 +432,14 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
+    <ClCompile Include="GraphicsEngine\Music\sample_t.cpp" />
+    <ClCompile Include="GraphicsEngine\Music\Synth.cpp" />
+    <ClCompile Include="GraphicsEngine\Music\SynthAllocator.cpp" />
+    <ClCompile Include="GraphicsEngine\Music\SynthNode.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Graphics.cpp" />
-    <ClCompile Include="GraphicsEngine\Object\AudioObject.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\AudioSourceComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Component\Component.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Font.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
@@ -460,6 +463,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
     <ClCompile Include="GraphicsEngine\Math\math.cpp" />
+    <ClCompile Include="GraphicsEngine\Music\MusicPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\libfreetype-6.dll" />
