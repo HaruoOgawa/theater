@@ -376,11 +376,9 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
-    <ClInclude Include="Assets\App\AnimationLearning\AnimationLearning.h" />
     <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
-    <ClInclude Include="Assets\App\DemoApp\DemoApp.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
     <ClInclude Include="GraphicsEngine\Music\64k2Patch.h" />
@@ -422,12 +420,11 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Component\UIComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
+    <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
-    <ClCompile Include="Assets\App\AnimationLearning\AnimationLearning.cpp" />
     <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
-    <ClCompile Include="Assets\App\DemoApp\DemoApp.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
@@ -464,6 +461,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Object\CNode.cpp" />
     <ClCompile Include="GraphicsEngine\Math\math.cpp" />
     <ClCompile Include="GraphicsEngine\Music\MusicPlayer.cpp" />
+    <ClCompile Include="Assets\App\TheaterDemo\TheaterDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\libfreetype-6.dll" />
