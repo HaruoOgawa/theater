@@ -12,7 +12,7 @@
 #include <memory>
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 
-class ARendererComponent;
+class MeshRendererComponent;
 
 namespace physics {
 	class CPhysicsEngine;
@@ -44,7 +44,7 @@ public:
 	~GameObject();
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
-	std::shared_ptr<ARendererComponent> meshComp;
+	std::shared_ptr<MeshRendererComponent> meshComp;
 	float animTime = 0.0f;
 	friend class GraphicsRenderer;
 	friend class TimelineComponent;

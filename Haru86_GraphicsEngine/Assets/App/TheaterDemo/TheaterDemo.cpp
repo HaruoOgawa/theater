@@ -10,7 +10,7 @@
 
 void TheaterDemo::Start() {
 	// ”wŒiF
-	/*GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
+	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 
 	m_AnimObj = std::make_shared<GameObject>(PrimitiveType::CUBE);
 
@@ -24,14 +24,14 @@ void TheaterDemo::Start() {
 		);
 	m_GridPlane->SetRotation(glm::vec3(PI / 2.0f, 0.0, 0.0));
 	m_GridPlane->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_GridPlane->SetScale(glm::vec3(25.0f));*/
+	m_GridPlane->SetScale(glm::vec3(25.0f));
 
 	// raymarching
 	std::string sample = {
 		#include "./Shader/GlowCave.frag"
 	};
-	m_SampleRaymarchingObj = std::make_shared<RaymarchingObject>(sample);
-	GraphicsMain::GetInstance()->m_RaymarchingObject = m_SampleRaymarchingObj.get();
+	//m_SampleRaymarchingObj = std::make_shared<RaymarchingObject>(sample);
+	//GraphicsMain::GetInstance()->m_RaymarchingObject = m_SampleRaymarchingObj.get();
 }
 
 void TheaterDemo::Update() {

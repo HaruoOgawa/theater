@@ -1,6 +1,6 @@
 #include "MusicPlayer.h"
 //#include <thread>
-#include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+/*#include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Message/Console.h"
 
 #define WIN32_LEAN_AND_MEAN
@@ -67,7 +67,7 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////////////
 // entry point for the executable if msvcrt is not used
 /////////////////////////////////////////////////////////////////////////////////
-
+*/
 
 MusicPlayer::MusicPlayer() 
 {
@@ -80,7 +80,7 @@ MusicPlayer::~MusicPlayer()
 }
 
 bool MusicPlayer::Initialize() {
-	Console::Log("Start 64klang\n");
+	/*Console::Log("Start 64klang\n");
 	// init synth and start filling the buffer 
 	_64klang_Init(SynthStream, SynthNodes, SynthMonoConstantOffset, SynthStereoConstantOffset, SynthMaxOffset);
 #if 1
@@ -99,18 +99,18 @@ bool MusicPlayer::Initialize() {
 	waveOutPrepareHeader(hWaveOut, &WaveHDR, sizeof(WaveHDR));
 	waveOutWrite(hWaveOut, &WaveHDR, sizeof(WaveHDR));
 	
-	Console::Log("Loaded 64klang\n");
+	Console::Log("Loaded 64klang\n");*/
 
 	return true;
 }
 
 bool MusicPlayer::Update() {
 
-	if ((MMTime.u.sample < MAX_SAMPLES) || GraphicsMain::GetInstance()->GetIsRunning()) {
+	/*if ((MMTime.u.sample < MAX_SAMPLES) || GraphicsMain::GetInstance()->GetIsRunning()) {
 		//Console::Log("Sound Loop...... %d / %d\n", MMTime, hWaveOut);
 		waveOutGetPosition(hWaveOut, &MMTime, sizeof(MMTIME));
 		//Sleep(128);
-	}
+	}*/
 
 	return true;
 }

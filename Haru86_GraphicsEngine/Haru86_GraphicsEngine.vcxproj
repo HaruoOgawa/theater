@@ -161,6 +161,7 @@
     <ReferencePath>C:\SDL2-2.0.16\lib\x86;C:\SDL2_image-2.0.5\lib\x86;C:\SDL2_ttf-2.0.15\lib\x86;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories);$(ReferencePath)</ReferencePath>
     <LibraryWPath>C:\SDL2-2.0.16\lib\x86;C:\SDL2_image-2.0.5\lib\x86;C:\SDL2_ttf-2.0.15\lib\x86;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories)</LibraryWPath>
     <ExecutablePath>$(SolutionDir)compress_tools;$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinimumRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -376,7 +377,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
-    <ClInclude Include="GraphicsEngine\Component\ARendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
@@ -390,7 +390,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Object\CameraObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\Graphics.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\json.hpp" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
@@ -405,25 +404,21 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Component\MeshRendererComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\Object.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Primitive.h" />
-    <ClInclude Include="GraphicsEngine\Component\RectTransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\RaymarchingObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
     <ClInclude Include="GraphicsEngine\Math\math.h" />
     <ClInclude Include="GraphicsEngine\Music\MusicPlayer.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\Time.h" />
     <ClInclude Include="GraphicsEngine\Component\TimelineComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\TimelineObject.h" />
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
-    <ClInclude Include="GraphicsEngine\Component\UIComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
     <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\ARendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
@@ -435,7 +430,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\Graphics.cpp" />
     <ClCompile Include="GraphicsEngine\Component\Component.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Font.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
@@ -446,13 +440,11 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Component\MeshRendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\Object.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Primitive.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\RectTransformComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Texture.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\Time.cpp" />
     <ClCompile Include="GraphicsEngine\Component\TimelineComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\TimelineObject.cpp" />
     <ClCompile Include="GraphicsEngine\Component\TransformComponent.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\UIComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
     <ClCompile Include="GraphicsEngine\Object\RaymarchingObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />

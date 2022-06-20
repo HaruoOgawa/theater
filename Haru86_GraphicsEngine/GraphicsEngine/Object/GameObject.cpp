@@ -1,7 +1,6 @@
 #include "../Object/GameObject.h"
 #include "../GraphicsMain/GraphicsMain.h"
 #include "../Component/TransformComponent.h"
-#include "../Component/ARendererComponent.h"
 #include "../Component/MeshRendererComponent.h"
 
 GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueue renderOrder,
