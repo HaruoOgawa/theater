@@ -3,7 +3,6 @@
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
-#include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 
@@ -43,7 +42,6 @@ void RaymarchingObject::Draw() {
 	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
-	m_material->SetVec3Uniform("_camerePosition", GraphicsMain::GetInstance()->game_camera_instance->GetComponent<TransformComponent>()->GetPosition());
-
+	
 	m_mesh->Draw();
 }

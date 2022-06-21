@@ -7,7 +7,6 @@
 #include <algorithm>
 #include "Assets/App/TheaterDemo/TheaterDemo.h"
 #include "GraphicsEngine/Object/RaymarchingObject.h"
-#include "GraphicsEngine/Object/CameraObject.h"
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
@@ -161,11 +160,6 @@ void GraphicsMain::LoadData() {
 			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
 	}
 
-	if (!game_camera_instance) {
-		game_camera_instance= std::make_shared<CameraObject>(CameraType::FIXED_CAMERA);
-		game_camera_instance->SetPosition(glm::vec3(0.0f,0.0f,3.0f));
-	}
-
 	//
 	m_App->Timeline(m_timeline.get());
 	m_timeline->Initialize();
@@ -223,8 +217,6 @@ void GraphicsMain::Update() {
 		m_App->Update();
 	}
 
-	game_camera_instance->Update();
-	
 }
 void GraphicsMain::Draw() {
 	GraphicsRenderer::GetInstance()->Draw();

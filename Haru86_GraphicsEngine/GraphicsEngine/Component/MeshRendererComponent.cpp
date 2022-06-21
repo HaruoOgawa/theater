@@ -7,7 +7,6 @@
 #include "../Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "../Graphics/Texture.h"
-#include "GraphicsEngine/Object/CameraObject.h"
 
 MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
@@ -47,8 +46,7 @@ void MeshRendererComponent::Draw() {
 	m_material->SetFloatUniform("_time", game->time);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	m_material->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->game_camera_instance->GetPosition());
-
+	
 	if (primTex != nullptr) {
 		primTex->SetActive();
 		m_material->SetTexUniform("_fontTexture", primTex->GetTextureID());

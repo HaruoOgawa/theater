@@ -1,7 +1,6 @@
 #pragma once
 #include "./Component.h"
 #include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
 #include "../GraphicsMain/GraphicsMain.h"
 
 class TransformComponent :
@@ -32,13 +31,8 @@ public:
     void SetScale(const glm::vec3& scale){ m_scale = scale; }
 
     void CalMatrix();
-    void Translate(glm::vec3 MoveV);
-    void Rotate(float XRot, float YRot, float ZRot);
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
-  
-private:
-   
 };
 

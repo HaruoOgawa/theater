@@ -380,8 +380,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
-    <ClInclude Include="GraphicsEngine\Component\CameraComponent.h" />
-    <ClInclude Include="GraphicsEngine\Object\CameraObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\json.hpp" />
@@ -408,9 +406,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
-    <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
-    <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\Component\Component.cpp" />
