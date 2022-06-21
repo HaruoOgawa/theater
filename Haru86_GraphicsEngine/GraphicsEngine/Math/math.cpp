@@ -1,4 +1,5 @@
 #include "math.h"
+#include <math.h>
 
 namespace math {
 	// float
@@ -19,6 +20,15 @@ namespace math {
 
 	float& vec3::operator[](int index) {
 		return vectorVal[index];
+	}
+
+	vec3 vec3::operator/(float v) {
+		return vec3(x / v, y / v, z / v);
+	}
+
+	vec3 vec3::normalize(vec3& v) {
+		float length = sqrtf(powf(v.x, 2.0f)+ powf(v.y, 2.0f)+ powf(v.z, 2.0f));
+		return (length <= 0.0f) ? v : v / length;
 	}
 	
 	// vec2
@@ -133,6 +143,7 @@ namespace math {
 
 	mat4 mat4::perspective(float fov, float ratio, float near, float far) {
 		mat4 result = mat4();
+
 		return result;
 	}
 

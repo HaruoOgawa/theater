@@ -13,6 +13,9 @@ namespace math {
 
 		vec3(float xv, float yv, float zv);
 		float& operator[](int index);
+		vec3 operator/(float v);
+
+		static vec3 normalize(vec3& v);
 	};
 	
 	struct vec2
