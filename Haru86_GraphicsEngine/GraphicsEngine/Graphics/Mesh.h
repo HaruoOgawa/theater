@@ -22,10 +22,9 @@ class Primitive;
 class Mesh
 {
 public:
-	Mesh();
 	Mesh(PrimitiveType primType);
-	~Mesh();
-	void UnLoadData();
+	~Mesh() = default;
+
 	void Draw();
 	void Draw(GLDrawType drawType);
 
@@ -34,7 +33,6 @@ public:
 
 	friend class Graphics;
 	friend class glTFData;
-	glm::mat4 localMatrix;
 	GLDrawType glDrawType;
 private:
 	void CreateMesh(PrimitiveType primType);

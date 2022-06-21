@@ -6,7 +6,7 @@
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Component/CameraComponent.h"
 
-TransformComponent::TransformComponent(Object* o, glm::vec3 pos,glm::quat rot,glm::vec3 s)
+TransformComponent::TransformComponent(Object* o, glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
 	: Component(o), m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
@@ -16,9 +16,9 @@ void TransformComponent::Translate(glm::vec3 MoveV) {
 	m_position += MoveV;
 }
 void TransformComponent::Rotate(float XRot, float YRot, float ZRot) {
-	glm::mat4 RotMatrix= glm::mat4_cast(glm::quat(glm::vec3(XRot, YRot, ZRot)));
+	/*glm::mat4 RotMatrix = glm::mat4_cast(glm::quat(glm::vec3(XRot, YRot, ZRot)));
 	glm:: vec4 rotPosition = (RotMatrix * glm::vec4(m_position, 1.0));
-	m_position = glm::vec3(rotPosition.x, rotPosition.y, rotPosition.z);
+	m_position = glm::vec3(rotPosition.x, rotPosition.y, rotPosition.z);*/
 }
 
 void TransformComponent::CalMatrix() {
@@ -29,7 +29,7 @@ void TransformComponent::CalMatrix() {
 
 void TransformComponent::ComputeModelMatrix() {
 	glm::mat4 translationMatirx = glm::translate(glm::mat4(1.0f), glm::vec3(m_position.x, m_position.y, m_position.z));
-	glm::mat4 rotationMatrix = glm::mat4_cast(m_rotation);
+	glm::mat4 rotationMatrix = glm::mat4_cast(glm::quat(m_rotation));
 	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f),glm::vec3(m_scale.x, m_scale.y, m_scale.z));
 
 	m_mMatrix = translationMatirx* rotationMatrix * scaleMatrix;

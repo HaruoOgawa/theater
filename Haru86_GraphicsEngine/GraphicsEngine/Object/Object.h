@@ -20,15 +20,15 @@ public:
 	Object();
 	virtual ~Object();
 
-	void SetTransform(glm::vec3 pos, glm::quat rot, glm::vec3 s);
+	void SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
 	void SetPosition(glm::vec3 pos);
-	void SetRotation(glm::quat rot);
+	void SetRotation(glm::vec3 rot);
 	void SetScale(glm::vec3 s);
 	virtual void Update();
 	virtual void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener);
 	
 	glm::vec3 GetPosition();
-	glm::quat GetRotation();
+	glm::vec3 GetRotation();
 	glm::vec3 GetScale();
 
 	//

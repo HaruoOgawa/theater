@@ -12,7 +12,7 @@
 Object::Object()
 	: game(GraphicsMain::GetInstance())
 {
-	m_transform = std::make_shared<TransformComponent>(nullptr, glm::vec3(0, 0, 0), glm::quat(glm::vec3(0, 0, 0)), glm::vec3(1.0f, 1.0f, 1.0f));
+	m_transform = std::make_shared<TransformComponent>(nullptr, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
 	AddComponent<TransformComponent>(m_transform);
 }
 
@@ -32,7 +32,7 @@ void Object::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListe
 	}
 }
 
-void Object::SetTransform(glm::vec3 pos, glm::quat rot, glm::vec3 s)
+void Object::SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s)
 { 
 	m_transform->SetPosition(pos);
 	m_transform->SetRotation(rot);
@@ -47,7 +47,7 @@ void Object::SetPosition(glm::vec3 pos) {
 	m_transform->CalMatrix();
 }
 
-void Object::SetRotation(glm::quat rot) {
+void Object::SetRotation(glm::vec3 rot) {
 	m_transform->SetRotation(rot);
 
 	m_transform->CalMatrix();
@@ -62,7 +62,7 @@ glm::vec3 Object::GetPosition() {
 	return m_transform->GetPosition();
 }
 
-glm::quat Object::GetRotation() {
+glm::vec3 Object::GetRotation() {
 	return m_transform->GetRotation();
 }
 
