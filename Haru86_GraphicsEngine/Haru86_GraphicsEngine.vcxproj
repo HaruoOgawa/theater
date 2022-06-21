@@ -388,7 +388,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\tiny_gltf.h" />
     <ClInclude Include="GraphicsEngine\Component\Component.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\Font.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
     <ClInclude Include="GraphicsEngine\Object\GameObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
@@ -401,7 +400,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
     <ClInclude Include="GraphicsEngine\Math\math.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
-    <ClInclude Include="GraphicsEngine\GraphicsMain\Time.h" />
     <ClInclude Include="GraphicsEngine\Component\TimelineComponent.h" />
     <ClInclude Include="GraphicsEngine\Object\TimelineObject.h" />
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
@@ -416,17 +414,15 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\Component\Component.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\Font.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
     <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
-    <ClCompile Include="GraphicsEngine\App\BaseApp\Main.cpp" />
+    <ClCompile Include="GraphicsEngine\GraphicsMain\Main.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Material.cpp" />
     <ClCompile Include="GraphicsEngine\Component\MeshRendererComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\Object.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Primitive.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Texture.cpp" />
-    <ClCompile Include="GraphicsEngine\GraphicsMain\Time.cpp" />
     <ClCompile Include="GraphicsEngine\Component\TimelineComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Object\TimelineObject.cpp" />
     <ClCompile Include="GraphicsEngine\Component\TransformComponent.cpp" />

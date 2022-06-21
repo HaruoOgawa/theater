@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef _DEBUG
 static class Console
 {
 public:
@@ -9,5 +9,4 @@ public:
 	}
 };
 
-
-
+#endif // _DEBUG

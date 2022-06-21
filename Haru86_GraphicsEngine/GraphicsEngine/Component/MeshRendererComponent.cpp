@@ -7,7 +7,6 @@
 #include "../Graphics/GraphicsRenderer.h"
 #include "./TimelineComponent.h"
 #include "../Graphics/Texture.h"
-#include "../Graphics/Font.h"
 #include "GraphicsEngine/Object/CameraObject.h"
 
 MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,

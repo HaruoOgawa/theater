@@ -4,16 +4,15 @@
 #include "../Graphics/Mesh.h"
 #include "../Object/TimelineObject.h"
 #include "../Component/TimelineComponent.h"
-#include "./Time.h"
-#include <iostream>
 #include <vector>
 #include <algorithm>
 #include "Assets/App/TheaterDemo/TheaterDemo.h"
-#include <exception>
-#include <stdexcept>
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 #include "GraphicsEngine/Object/CameraObject.h"
+#ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
+#endif // _DEBUG
+
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 //#include "GraphicsEngine/Music/MusicPlayer.h"
 
@@ -121,13 +120,13 @@ GraphicsMain::~GraphicsMain() {
 
 bool GraphicsMain::CreateApp() {
 	if (glfwInit() == GL_FALSE) {
-		Console::Log("Could not initialize GLFW\n");
+		//Console::Log("Could not initialize GLFW\n");
 		return false;
 	}
 
 	GraphicsRenderer::Create();
 	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		Console::Log("Could not Create GraphicsRenderer\n");
+		//Console::Log("Could not Create GraphicsRenderer\n");
 		return false;
 	}
 
@@ -136,7 +135,6 @@ bool GraphicsMain::CreateApp() {
 
 bool GraphicsMain::Initialize() {
 	// ƒƒ‚ƒŠŠm•Û
-	timeObj = std::make_unique<Time>(60.0f);
 	timelineObj = std::make_unique<TimelineObject>();
 	m_App = new TheaterDemo();
 
@@ -150,6 +148,11 @@ bool GraphicsMain::Initialize() {
 }
 
 void GraphicsMain::LoadData() {
+#ifdef _DEBUG
+	Console::Log("This is _DEBUG!!!!!!!!!!!!!!!!!!!!!\n");
+#endif // DEBUG
+	
+
 	//
 	m_App->Start();
 
@@ -212,13 +215,12 @@ void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void GraphicsMain::Update() {
-	while (!(timeObj->GetTime() > previousTime + 16.0f)) { timeObj->UpdateTime(); };
-	deltaTime = (timeObj->GetTime() - previousTime) / 1000.0f;
+	while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
+	deltaTime = (time - previousTime) / 1000.0f;
 	if (deltaTime > 0.05f) {
 		deltaTime = 0.05f;
 	}
-	previousTime = static_cast<float>(timeObj->GetTime());
-	time = previousTime;
+	previousTime = time;
 
 	for (auto obj : gameObjectList) {
 		obj->Update();
@@ -254,7 +256,6 @@ bool GraphicsMain::Reflesh() {
 	//ƒƒ‚ƒŠ‚ğ‰ğ•ú
 	game_camera_instance = nullptr;
 	timelineObj.reset();
-	timeObj.reset();
 	renderBoard.reset();
 	if (m_App) {
 		delete m_App;

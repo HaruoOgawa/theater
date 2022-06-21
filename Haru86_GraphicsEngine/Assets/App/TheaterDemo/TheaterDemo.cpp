@@ -3,7 +3,6 @@
 #include "GraphicsEngine/Object/TimelineObject.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 
 #define PI 3.14159265f

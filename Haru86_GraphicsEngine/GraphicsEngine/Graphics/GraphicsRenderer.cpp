@@ -1,5 +1,9 @@
 #include "GraphicsRenderer.h"
+
+#ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
+#endif // _DEBUG
+
 #include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"
 #include "../Component/TransformComponent.h"
@@ -68,7 +72,9 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	);
 
 	if (!sWindow) {
+#ifdef _DEBUG
 		Console::Log("Error : glfwCreateWindow\n");
+#endif // _DEBUG
 		return false;
 	}
 
@@ -85,7 +91,10 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	glewExperimental = GL_TRUE;
 	const GLenum error = glewInit();
 	if (error != GLEW_OK) {
-		Console::Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
+#ifdef _DEBUG
+		Console::Log("Failure! Can not initialize Glew: %s", glewGetErrorString(error));
+#endif // _DEBUG
+
 		return false;
 	}
 	glGetError();
@@ -95,31 +104,31 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 	//CreateFrameBuffer
 	if (!CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer,GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	m_Mixer = std::make_unique<PolygonRaymarchingMixer>();
