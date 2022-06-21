@@ -9,16 +9,14 @@
 #include <glew.h>
 #include <glfw3.h>
 
-namespace physics { class CPhysicsEngine; }
-
 enum ERerderingTarget
 {
 	COLOR,
 	DEPTH
 };
 
-class BaseApp;
 //class MusicPlayer;
+class TheaterDemo;
 
 class GraphicsMain
 {
@@ -48,7 +46,7 @@ public:
 	GraphicsMain();
 	~GraphicsMain();
 	bool CreateApp();
-	bool Initialize(BaseApp* app);
+	bool Initialize();
 	bool RunLoop();
 	void ShutDown();
 	void Restart();
@@ -68,7 +66,7 @@ public:
 	class RaymarchingObject* m_RaymarchingObject;
 	
 	//
-	BaseApp* m_App;
+	TheaterDemo* m_App;
 
 	//
 	bool isRestart;

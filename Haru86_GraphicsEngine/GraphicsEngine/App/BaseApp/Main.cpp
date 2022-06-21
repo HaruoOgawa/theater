@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
-#include "Assets/App/TheaterDemo/TheaterDemo.h"
 
 int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 {
@@ -9,7 +8,7 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmd
 	if (GraphicsMain::GetInstance()->CreateApp()) {
 		do
 		{
-			if (!GraphicsMain::GetInstance()->Initialize(new TheaterDemo()))return 0;
+			if (!GraphicsMain::GetInstance()->Initialize())return 0;
 			if (!GraphicsMain::GetInstance()->RunLoop())return 0;
 		} while (GraphicsMain::GetInstance()->isRestart);
 	}

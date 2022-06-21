@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "../App/BaseApp/BaseApp.h"
+#include "Assets/App/TheaterDemo/TheaterDemo.h"
 #include <exception>
 #include <stdexcept>
 #include "GraphicsEngine/Object/RaymarchingObject.h"
@@ -134,11 +134,11 @@ bool GraphicsMain::CreateApp() {
 	return true;
 }
 
-bool GraphicsMain::Initialize(BaseApp* app) {
+bool GraphicsMain::Initialize() {
 	// メモリ確保
 	timeObj = std::make_unique<Time>(60.0f);
 	timelineObj = std::make_unique<TimelineObject>();
-	m_App = app;
+	m_App = new TheaterDemo();
 
 	// 初期化が必要なパラメーターを初期化
 	isRestart = false;

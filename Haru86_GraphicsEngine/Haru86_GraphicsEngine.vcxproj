@@ -387,7 +387,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\tiny_gltf.h" />
-    <ClInclude Include="GraphicsEngine\App\BaseApp\BaseApp.h" />
     <ClInclude Include="GraphicsEngine\Component\Component.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Font.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
@@ -411,7 +410,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
-    <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
     <ClCompile Include="GraphicsEngine\Object\CameraObject.cpp" />
