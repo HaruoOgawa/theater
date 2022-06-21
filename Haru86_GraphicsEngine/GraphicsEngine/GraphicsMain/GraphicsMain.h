@@ -20,10 +20,6 @@ enum ERerderingTarget
 class BaseApp;
 //class MusicPlayer;
 
-namespace app {
-	class CEventListener;
-}
-
 class GraphicsMain
 {
 	bool isRunning;
@@ -36,9 +32,6 @@ class GraphicsMain
 	bool mouseStateBool;
 	
 	ERerderingTarget renderingTarget;
-
-	//
-	std::shared_ptr<app::CEventListener> m_EventListener;
 
 	//
 	//std::shared_ptr<MusicPlayer> m_MusicPlayer;
@@ -96,6 +89,7 @@ public:
 private :
 	void UpdateTimeline();
 	void InputProcess();
+	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void Update();
 	void Draw();
 	void LoadData();

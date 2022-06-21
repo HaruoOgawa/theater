@@ -58,7 +58,6 @@ public:
     void Initialize();
     void ComputeTimeline(float time);
     void ResetTimeline();
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
     friend class TimelineObject;
     friend class UIComponent;
     float timeVal;

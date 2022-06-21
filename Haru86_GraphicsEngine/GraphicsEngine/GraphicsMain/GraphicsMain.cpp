@@ -14,7 +14,6 @@
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 #include "GraphicsEngine/Object/CameraObject.h"
 #include "GraphicsEngine/Message/Console.h"
-#include "GraphicsEngine/App/CEventListener.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 //#include "GraphicsEngine/Music/MusicPlayer.h"
 
@@ -44,8 +43,7 @@ GraphicsMain::GraphicsMain()
 	animTime(0.0f),
 	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_RaymarchingObject(nullptr),
-	m_EventListener(std::make_shared<app::CEventListener>())//,
+	m_RaymarchingObject(nullptr)
 	//m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
@@ -202,15 +200,15 @@ void GraphicsMain::UpdateTimeline() {
 }
 
 void GraphicsMain::InputProcess() {
-	// イベント
-	m_EventListener->ListenEvent(GraphicsRenderer::GetInstance()->GetWindow());
-	
-	for (auto obj : gameObjectList) {
-		obj->ProcessInput(m_EventListener);
+	// イベントを発行
+	glfwPollEvents();
+	glfwSetKeyCallback(GraphicsRenderer::GetInstance()->GetWindow(), key_callback);
+}
+
+void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		GraphicsMain::GetInstance()->SetIsRunning(false);
 	}
-
-	game_camera_instance->ProcessInput(m_EventListener);
-
 }
 
 void GraphicsMain::Update() {

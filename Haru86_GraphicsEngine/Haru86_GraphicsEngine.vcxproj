@@ -376,7 +376,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsEngine\App\CEventListener.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
@@ -411,7 +410,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GraphicsEngine\App\CEventListener.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\App\BaseApp\BaseApp.cpp" />
     <ClCompile Include="GraphicsEngine\Component\CameraComponent.cpp" />

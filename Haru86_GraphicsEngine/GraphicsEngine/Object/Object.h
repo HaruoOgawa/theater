@@ -25,7 +25,6 @@ public:
 	void SetRotation(glm::vec3 rot);
 	void SetScale(glm::vec3 s);
 	virtual void Update();
-	virtual void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener);
 	
 	glm::vec3 GetPosition();
 	glm::vec3 GetRotation();

@@ -37,8 +37,7 @@ public:
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override{}
-
+  
 private:
    
 };

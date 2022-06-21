@@ -40,38 +40,3 @@ void CameraComponent::Update() {
 		owner->GetComponent<TransformComponent>()->Translate(zoomVal * viewDir);
 	}
 }
-
-void CameraComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-	// 前回のフレームからのマウスの移動距離を取得する
-	/*int XMove, YMove = 0;
-	Uint32 MouseState=SDL_GetRelativeMouseState(&m_XMove, &m_YMove);
-
-	switch (MouseState)
-	{
-	case 1:
-		m_IsRightClicked = false;
-		break;
-	
-	case 4:
-		m_IsRightClicked = true;
-		break;
-
-	case 2:
-		m_IsRightClicked = false;
-		break;
-
-	default:
-		m_IsRightClicked = false;
-		break;
-	}*/
-
-	// マウスホイールの回転量を取得する
-	/*if (e.type == SDL_MOUSEWHEEL) {
-		m_IsMouseWheel = true;
-		m_WheelX = static_cast<int>(e.wheel.x);
-		m_WheelY = static_cast<int>(e.wheel.y);
-	}
-	else {
-		m_IsMouseWheel = false;
-	}*/
-}

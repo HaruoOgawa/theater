@@ -121,10 +121,6 @@ void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, in
 	}
 }
 
-void MeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-
-}
-
 const std::shared_ptr<Mesh>& MeshRendererComponent::GetMesh()const {
 	return m_mesh;
 }

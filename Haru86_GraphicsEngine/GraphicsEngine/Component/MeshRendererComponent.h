@@ -30,8 +30,7 @@ public:
     void Draw();
     void DrawBoard();
     static void DrawInstancedWithMesh(std::shared_ptr<class Mesh> mesh, int count, std::shared_ptr<class Material> material, GLenum rendermode);
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
-
+   
     const std::shared_ptr<Mesh>& GetMesh()const;
     const std::shared_ptr<Material>& GetMaterial()const;
     void SetUseZTest(bool use);

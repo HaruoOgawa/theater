@@ -22,7 +22,6 @@ public:
     ~CameraComponent();
     void Start() override;
     void Update() override;
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
     enum class CameraType m_cameraType;
     glm::vec3 cameraCenter;
     glm::vec3 cameraUp;

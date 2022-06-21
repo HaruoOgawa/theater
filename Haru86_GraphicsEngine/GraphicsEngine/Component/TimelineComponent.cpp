@@ -216,7 +216,3 @@ void TimelineComponent::ClearTimeline() {
 	runningAnimationClip.clear();
 
 }
-
-void TimelineComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-
-}

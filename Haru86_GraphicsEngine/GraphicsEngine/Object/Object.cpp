@@ -6,7 +6,6 @@
 #include "GraphicsEngine/Component/Component.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
-#include "GraphicsEngine/App/CEventListener.h"
 #include "../GraphicsMain/GraphicsMain.h"
 
 Object::Object()
@@ -23,12 +22,6 @@ Object::~Object() {
 void Object::Update() {
 	for (auto comp : m_ComponentList) {
 		comp.second->Update();
-	}
-}
-
-void Object::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-	for (auto comp : m_ComponentList) {
-		comp.second->ProcessInput(EventListener);
 	}
 }
 
