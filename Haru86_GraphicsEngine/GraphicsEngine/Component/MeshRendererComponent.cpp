@@ -9,16 +9,15 @@
 #include "../Graphics/Texture.h"
 #include "../Graphics/Font.h"
 #include "GraphicsEngine/Object/CameraObject.h"
-#include "GraphicsEngine/Object/CNode.h"
 
 MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
-	: ARendererComponent(o), primTex(nullptr)
+	: Component(o), m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr)
 {
 	useZTest = true;
-	mesh = std::make_shared<Mesh>((primType));
-	mesh->glDrawType = GLDrawType::NONE;
-	material = std::make_shared<Material>(vert, frag, geom, tc, tv);
+	m_mesh = std::make_shared<Mesh>((primType));
+	m_mesh->glDrawType = GLDrawType::NONE;
+	m_material = std::make_shared<Material>(vert, frag, geom, tc, tv);
 }
 
 MeshRendererComponent::~MeshRendererComponent() {
@@ -41,38 +40,38 @@ void MeshRendererComponent::Draw() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	material->SetActive();
-	material->SetMatrixUniform("MVPMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMVPMatrix());
-	material->SetMatrixUniform("MMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMMatrix());
-	material->SetMatrixUniform("VMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetVMatrix());
-	material->SetMatrixUniform("PMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetPMatrix());
-	material->SetFloatUniform("_time", game->time);
-	material->SetFloatUniform("_deltaTime", game->deltaTime);
-	material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	material->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->game_camera_instance->GetPosition());
+	m_material->SetActive();
+	m_material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
+	m_material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
+	m_material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
+	m_material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
+	m_material->SetFloatUniform("_time", game->time);
+	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
+	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+	m_material->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->game_camera_instance->GetPosition());
 
 	if (primTex != nullptr) {
 		primTex->SetActive();
-		material->SetTexUniform("_fontTexture", primTex->GetTextureID());
+		m_material->SetTexUniform("_fontTexture", primTex->GetTextureID());
 	}
 
 	//ここでTextureをアクティブにする
-	material->SetActiveTextureList();
+	m_material->SetActiveTextureList();
 
 	for (auto clip : animationClips) {
 		clip->callback(clip->lifeTimeRate);
 	}
 
-	if (mesh->glDrawType == GLDrawType::TESSELLATION) {
+	if (m_mesh->glDrawType == GLDrawType::TESSELLATION) {
 		//glPatchParameteri(GL_PATCH_VERTICES, 4);
-		mesh->Draw(mesh->glDrawType);
+		m_mesh->Draw(m_mesh->glDrawType);
 	}
 	else {
-		mesh->Draw();
+		m_mesh->Draw();
 	}
 
 	//使い終わったらここでTextureを非アクティブにする
-	material->SetEactiveTextureList();
+	m_material->SetEactiveTextureList();
 }
 
 void MeshRendererComponent::DrawBoard() {
@@ -83,27 +82,27 @@ void MeshRendererComponent::DrawBoard() {
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	material->SetActive();
-	material->SetMatrixUniform("MVPMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMVPMatrix());
-	material->SetMatrixUniform("MMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetMMatrix());
-	material->SetMatrixUniform("VMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetVMatrix());
-	material->SetMatrixUniform("PMatrix", owner->GetRootNode()->GetComponent<TransformComponent>()->GetPMatrix());
-	material->SetFloatUniform("_time", game->time);
-	material->SetFloatUniform("_deltaTime", game->deltaTime);
-	material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	m_material->SetActive();
+	m_material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
+	m_material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
+	m_material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
+	m_material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
+	m_material->SetFloatUniform("_time", game->time);
+	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
+	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
 	// PolygonPostProcessのテスト
 	/*if (GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture != nullptr) {
 		GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetActive();
-		material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->GetTextureID());
+		m_material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->GetTextureID());
 		GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetEactive();
 	}*/
 
 	// PostProcess後の最終結果 → m_LatePostProcess_FrameTexture
 	if (GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture != nullptr) {
 		GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetActive();
-		material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->GetTextureID());
+		m_material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->GetTextureID());
 		GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEactive();
 	}
 
@@ -111,11 +110,33 @@ void MeshRendererComponent::DrawBoard() {
 		clip->callback(clip->lifeTimeRate);
 	}
 
-	mesh->Draw();
+	m_mesh->Draw();
 }
 
-
+void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, int count, std::shared_ptr<Material> material, GLenum rendermode) {
+	const auto& prim = mesh->GetPrimitiveList();
+	for (int i = 0; i < prim.size(); i++) {
+		prim[i]->SetActive();
+		glDrawElementsInstanced(rendermode, prim[i]->GetNumIndices(), GL_UNSIGNED_SHORT, nullptr, count);
+	}
+}
 
 void MeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
 
+}
+
+const std::shared_ptr<Mesh>& MeshRendererComponent::GetMesh()const {
+	return m_mesh;
+}
+
+const std::shared_ptr<class Material>& MeshRendererComponent::GetMaterial()const {
+	return m_material;
+}
+
+void MeshRendererComponent::SetUseZTest(bool use) {
+	useZTest = use;
+}
+
+bool MeshRendererComponent::GetUseZTest()const {
+	return useZTest;
 }

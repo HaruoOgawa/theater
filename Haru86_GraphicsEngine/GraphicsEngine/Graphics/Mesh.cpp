@@ -1,20 +1,9 @@
 #include "Mesh.h"
-#include <glew.h>
 #include "./Primitive.h"
 #include <vector>
 
-//default Mesh
-Mesh::Mesh() {
-	localMatrix = glm::mat4(1.0);
-
-}
-
 Mesh::Mesh(PrimitiveType primType) {
 	CreateMesh(primType);
-}
-
-Mesh::~Mesh() {
-	UnLoadData();
 }
 
 void Mesh::CreateMesh(PrimitiveType primType) {
@@ -67,8 +56,4 @@ const std::vector<std::shared_ptr<Primitive>>& Mesh::GetPrimitiveList()const {
 
 void Mesh::SetPrimitive(const std::shared_ptr<Primitive>& Primitive) {
 	m_primitives.push_back(Primitive);
-}
-
-void Mesh::UnLoadData() {
-	
 }

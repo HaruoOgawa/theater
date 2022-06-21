@@ -3,36 +3,33 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "../GraphicsMain/GraphicsMain.h"
-#include <memory>
 
 class TransformComponent :
     public Component
 {
     glm::vec3 m_position;
-    glm::quat m_rotation;
+    glm::vec3 m_rotation;
     glm::vec3 m_scale;
     glm::mat4 m_mMatrix;
     glm::mat4 m_vMatrix;
     glm::mat4 m_pMatrix;
 public:
-    TransformComponent();
-    TransformComponent(class Object* o, glm::vec3 pos, glm::quat rot, glm::vec3 s);
-    TransformComponent(class Object* o, const glm::mat4& WorldMatrix);
-    ~TransformComponent();
-    void Update() override;
+    TransformComponent(class Object* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+    ~TransformComponent() = default;
+    void Update() override{}
     
     glm::mat4 GetMVPMatrix(){ return m_pMatrix * m_vMatrix * m_mMatrix; }
     glm::mat4 GetMMatrix(){ return m_mMatrix; }
     glm::mat4 GetInvMMatrix(){ return glm::inverse(m_mMatrix); }
     glm::mat4 GetVMatrix() { return m_vMatrix; }
     glm::mat4 GetPMatrix(){ return m_pMatrix; }
-    const glm::vec3& GetPosition()const;
-    const glm::quat& GetRotation()const;
-    const glm::vec3& GetScale()const;
+    const glm::vec3& GetPosition()const{ return m_position; }
+    const glm::vec3& GetRotation()const{ return glm::vec3(m_rotation.x, m_rotation.y, m_rotation.z); }
+    const glm::vec3& GetScale()const{ return m_scale; }
 
-    void SetPosition(const glm::vec3& position);
-    void SetRotation(const glm::quat& rotation);
-    void SetScale(const glm::vec3& scale);
+    void SetPosition(const glm::vec3& position){ m_position = position; }
+    void SetRotation(const glm::vec3& rotation){ m_rotation = rotation; }
+    void SetScale(const glm::vec3& scale){ m_scale = scale; }
 
     void CalMatrix();
     void Translate(glm::vec3 MoveV);
@@ -40,10 +37,8 @@ public:
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
+    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override{}
 
-    static std::shared_ptr<TransformComponent> Combine(const std::shared_ptr<TransformComponent>& a, const std::shared_ptr<TransformComponent>& b);
-    static std::shared_ptr<TransformComponent> inverse(const std::shared_ptr<TransformComponent>& t);
 private:
    
 };

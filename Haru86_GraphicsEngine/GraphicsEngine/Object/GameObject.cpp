@@ -1,9 +1,7 @@
 #include "../Object/GameObject.h"
 #include "../GraphicsMain/GraphicsMain.h"
 #include "../Component/TransformComponent.h"
-#include "../Component/ARendererComponent.h"
 #include "../Component/MeshRendererComponent.h"
-#include "CNode.h"
 
 GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueue renderOrder,
 	std::string vert, std::string frag, std::string geom, std::string tc, std::string tv)
@@ -22,7 +20,7 @@ GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueu
 
 	//
 	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, vert, frag, geom, tc, tv);
-	GetRootNode()->AddComponent<MeshRendererComponent>(meshComp);
+	AddComponent<MeshRendererComponent>(meshComp);
 }
 
 /*GameObject::GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType rt)
@@ -49,10 +47,4 @@ void GameObject::UseZTest(bool use) {
 
 void GameObject::SetRenderOlder(int order) {
 	m_renderOrder = order;
-}
-
-void GameObject::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-	for (auto comp : m_RootNode->GetComponentList()) {
-		comp.second->ProcessInput(EventListener);
-	}
 }
