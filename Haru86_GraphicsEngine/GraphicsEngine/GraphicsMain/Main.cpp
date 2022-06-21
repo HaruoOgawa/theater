@@ -5,15 +5,10 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmd
 {
 	GraphicsMain::Create();
 	
-	if (GraphicsMain::GetInstance()->CreateApp()) {
-		do
-		{
-			if (!GraphicsMain::GetInstance()->Initialize())return 0;
-			if (!GraphicsMain::GetInstance()->RunLoop())return 0;
-		} while (GraphicsMain::GetInstance()->isRestart);
-	}
+	if (!GraphicsMain::GetInstance()->CreateApp())return 0;
+	if (!GraphicsMain::GetInstance()->Initialize())return 0;
+	if (!GraphicsMain::GetInstance()->RunLoop())return 0;
 
-	GraphicsMain::GetInstance()->ShutDown();
 	GraphicsMain::Destroy();
 
 	return 0;

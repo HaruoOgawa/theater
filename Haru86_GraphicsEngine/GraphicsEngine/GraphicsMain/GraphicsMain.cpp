@@ -40,7 +40,6 @@ GraphicsMain::GraphicsMain()
 	previousTime(0.0f),
 	mouseStateBool(false),
 	animTime(0.0f),
-	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_RaymarchingObject(nullptr)
 	//m_MusicPlayer(std::make_shared<MusicPlayer>())
@@ -115,7 +114,13 @@ GraphicsMain::GraphicsMain()
 }
 
 GraphicsMain::~GraphicsMain() {
-	
+	GraphicsRenderer::GetInstance()->ShutDown();
+	GraphicsRenderer::Destroy();
+
+	gameObjectList.clear();
+	boardGameObjectList.clear();
+	postProcessGameObjectList.clear();
+	uiObjectList.clear();
 }
 
 bool GraphicsMain::CreateApp() {
@@ -137,11 +142,6 @@ bool GraphicsMain::Initialize() {
 	// メモリ確保
 	timelineObj = std::make_unique<TimelineObject>();
 	m_App = new TheaterDemo();
-
-	// 初期化が必要なパラメーターを初期化
-	isRestart = false;
-	
-	//
 	LoadData();
 	
 	return true;
@@ -152,7 +152,6 @@ void GraphicsMain::LoadData() {
 	Console::Log("This is _DEBUG!!!!!!!!!!!!!!!!!!!!!\n");
 #endif // DEBUG
 	
-
 	//
 	m_App->Start();
 
@@ -179,16 +178,11 @@ void GraphicsMain::LoadData() {
 bool GraphicsMain::RunLoop() {
 	while (isRunning)
 	{
-		if (isRestart) {
-			if (Reflesh())return true;
-		}
-		else {
-			//m_MusicPlayer->Update();
-			UpdateTimeline();
-			InputProcess();
-			Update();
-			Draw();
-		}
+		//m_MusicPlayer->Update();
+		UpdateTimeline();
+		InputProcess();
+		Update();
+		Draw();
 	}
 
 	return false;
@@ -210,7 +204,7 @@ void GraphicsMain::InputProcess() {
 
 void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		GraphicsMain::GetInstance()->SetIsRunning(false);
+		GraphicsMain::GetInstance()->isRunning=false;
 	}
 }
 
@@ -235,55 +229,4 @@ void GraphicsMain::Update() {
 }
 void GraphicsMain::Draw() {
 	GraphicsRenderer::GetInstance()->Draw();
-}
-
-bool GraphicsMain::Reflesh() {
-	//Listを解放
-	gameObjectList.clear();
-	boardGameObjectList.clear();
-	postProcessGameObjectList.clear();
-	uiObjectList.clear();
-
-	//メンバ変数を初期化
-	isRunning = true;
-	time = 0.0f;
-	deltaTime = 0.0f;
-	previousTime = 0.0f;
-	mouseStateBool = false;
-	animTime = 0.0f;
-	renderingTarget = ERerderingTarget::COLOR;
-
-	//メモリを解放
-	game_camera_instance = nullptr;
-	timelineObj.reset();
-	renderBoard.reset();
-	if (m_App) {
-		delete m_App;
-		m_App = nullptr; 
-	}
-	m_RaymarchingObject = nullptr;
-	
-	return true;
-}
-
-void GraphicsMain::Restart() {
-	isRestart = true;
-}
-
-void GraphicsMain::ShutDown() {
-	GraphicsRenderer::GetInstance()->ShutDown();
-	GraphicsRenderer::Destroy();
-
-	gameObjectList.clear();
-	boardGameObjectList.clear();
-	postProcessGameObjectList.clear();
-	uiObjectList.clear();
-}
-
-void GraphicsMain::SetIsRunning(bool state) {
-	isRunning = state;
-}
-
-bool GraphicsMain::GetIsRunning() {
-	return isRunning;
 }

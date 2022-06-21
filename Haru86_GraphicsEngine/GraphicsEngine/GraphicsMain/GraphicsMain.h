@@ -48,10 +48,6 @@ public:
 	bool CreateApp();
 	bool Initialize();
 	bool RunLoop();
-	void ShutDown();
-	void Restart();
-	void SetIsRunning(bool state);
-	bool GetIsRunning();
 
 	float time;
 	float deltaTime;
@@ -66,11 +62,6 @@ public:
 	
 	//
 	TheaterDemo* m_App;
-
-	//
-	bool isRestart;
-
-	
 
 	friend class Main;
 	friend class GameObject;
@@ -90,7 +81,6 @@ private :
 	void Update();
 	void Draw();
 	void LoadData();
-	bool Reflesh();
 protected:
 	static GraphicsMain* s_pInstance;
 };
