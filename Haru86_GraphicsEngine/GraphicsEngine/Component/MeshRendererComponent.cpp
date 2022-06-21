@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include "../Graphics/GraphicsRenderer.h"
-#include "./TimelineComponent.h"
+#include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "../Graphics/Texture.h"
 #include "GraphicsEngine/Object/CameraObject.h"
 

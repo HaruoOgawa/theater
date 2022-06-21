@@ -1,6 +1,6 @@
 #include "TheaterDemo.h"
 
-#include "GraphicsEngine/Object/TimelineObject.h"
+#include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Object/RaymarchingObject.h"
@@ -41,6 +41,6 @@ void TheaterDemo::Draw() {
 
 }
 
-void TheaterDemo::Timeline(class TimelineObject* timelineObj) {
+void TheaterDemo::Timeline(CTimeline* timeline) {
 
 }

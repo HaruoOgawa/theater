@@ -2,7 +2,6 @@
 
 #include "../Graphics/GraphicsRenderer.h"
 #include <vector>
-
 #include <memory>
 #include <map>
 
@@ -17,6 +16,7 @@ enum ERerderingTarget
 
 //class MusicPlayer;
 class TheaterDemo;
+class CTimeline;
 
 class GraphicsMain
 {
@@ -51,7 +51,7 @@ public:
 
 	float time;
 	float deltaTime;
-	std::unique_ptr<class TimelineObject> timelineObj;
+	std::unique_ptr<CTimeline> m_timeline;
 	float animTime;
 
 	//frame board
@@ -68,7 +68,7 @@ public:
 	friend class RaymarchingObject;
 	friend class UIObject;
 	friend class GraphicsRenderer;
-	friend class TimelineComponent;
+	friend class CTimeline;
 	friend class UIComponent;
 	friend class Material;
 	friend class PostProcess;

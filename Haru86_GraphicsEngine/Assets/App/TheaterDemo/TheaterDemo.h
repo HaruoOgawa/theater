@@ -3,6 +3,7 @@
 
 class GameObject;
 class RaymarchingObject;
+class CTimeline;
 
 class TheaterDemo
 {
@@ -17,6 +18,6 @@ public:
     void Start();
     void Update();
     void Draw();
-    void Timeline(class TimelineObject* timelineObj);
+    void Timeline(CTimeline* timeline);
 };
 

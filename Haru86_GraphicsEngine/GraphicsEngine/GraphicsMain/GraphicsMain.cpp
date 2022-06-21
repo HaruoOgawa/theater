@@ -2,8 +2,7 @@
 #include <string>
 #include "../Object/GameObject.h"
 #include "../Graphics/Mesh.h"
-#include "../Object/TimelineObject.h"
-#include "../Component/TimelineComponent.h"
+#include "CTimeline.h"
 #include <vector>
 #include <algorithm>
 #include "Assets/App/TheaterDemo/TheaterDemo.h"
@@ -41,6 +40,7 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
+	m_timeline(nullptr),
 	m_RaymarchingObject(nullptr)
 	//m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
@@ -140,7 +140,7 @@ bool GraphicsMain::CreateApp() {
 
 bool GraphicsMain::Initialize() {
 	// ÉÅÉÇÉäämï€
-	timelineObj = std::make_unique<TimelineObject>();
+	m_timeline = std::make_unique<CTimeline>();
 	m_App = new TheaterDemo();
 	LoadData();
 	
@@ -167,8 +167,8 @@ void GraphicsMain::LoadData() {
 	}
 
 	//
-	m_App->Timeline(timelineObj.get());
-	timelineObj->Initialize();
+	m_App->Timeline(m_timeline.get());
+	m_timeline->Initialize();
 
 	//
 	//m_MusicPlayer->Initialize();
@@ -189,8 +189,7 @@ bool GraphicsMain::RunLoop() {
 }
 
 void GraphicsMain::UpdateTimeline() {
-	static_cast<std::shared_ptr<class TimelineComponent>>(timelineObj->timelineComponent)->Update();
-
+	m_timeline->Update();
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
 		return a->m_renderOrder < b->m_renderOrder;
 	});
