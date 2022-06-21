@@ -1,21 +1,37 @@
 #pragma once
 
 namespace math {
-	class vec3
+	struct vec3
 	{
-		float val[3];
-	public:
-		// public func
-		vec3(float xval, float yval, float zval);
-		~vec3();
-
-		// static func
-		static vec3 abs(const vec3& v);
-
-		// variable
 		float x;
 		float y;
 		float z;
+
+		float vectorVal[3];
+
+		vec3(float xv, float yv, float zv);
+		float operator[](int index);
+	};
+	
+	struct vec2
+	{
+		float x;
+		float y;
+
+		float vectorVal[2];
+
+		vec2(float xv, float yv);
+		float operator[](int index);
+	};
+
+	struct mat4
+	{
+
+	};
+
+	struct quat
+	{
+
 	};
 }
 
