@@ -59,14 +59,12 @@ public:
 	std::unique_ptr<class GameObject> renderBoard;
 	std::shared_ptr<class CameraObject> game_camera_instance;
 	std::map<int, GLenum> texSlots;
-	class RaymarchingObject* m_RaymarchingObject;
 	
 	//
 	TheaterDemo* m_App;
 
 	friend class Main;
 	friend class GameObject;
-	friend class RaymarchingObject;
 	friend class PolygonRaymarchingMixer;
 	friend class UIObject;
 	friend class GraphicsRenderer;

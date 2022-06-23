@@ -1,6 +1,5 @@
 #pragma once
 #include "GraphicsEngine/Component/Component.h"
-#include "../Object/Object.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Material.h"
 #include <string>
@@ -10,7 +9,7 @@
 #include <memory>
 #include "GraphicsEngine/Graphics/EGraphicsParam.h"
 
-class Object;
+class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
@@ -20,10 +19,10 @@ class MeshRendererComponent :
 {
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
-    class Object* myowner;
+    class GameObject* myowner;
     bool useZTest;
 public:
-    MeshRendererComponent(class Object* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
+    MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
         const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
     ~MeshRendererComponent();
 

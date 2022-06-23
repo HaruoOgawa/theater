@@ -3,7 +3,6 @@
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Object/RaymarchingObject.h"
 
 #define PI 3.0f
 
@@ -40,8 +39,6 @@ void TheaterDemo::Start() {
 		sample
 	);
 
-	//m_SampleRaymarchingObj = std::make_shared<RaymarchingObject>(sample);
-	//GraphicsMain::GetInstance()->m_RaymarchingObject = m_SampleRaymarchingObj.get();
 }
 
 void TheaterDemo::Update() {

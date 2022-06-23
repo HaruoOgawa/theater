@@ -1,7 +1,7 @@
 #include "Component.h"
 #include "../GraphicsMain/GraphicsMain.h"
 
-Component::Component(Object* o)
+Component::Component(GameObject* o)
 	: owner(o),game(GraphicsMain::GetInstance())
 {
 	Start();

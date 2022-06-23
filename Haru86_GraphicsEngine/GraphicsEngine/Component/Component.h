@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Object/Object.h"
 #include "../GraphicsMain/GraphicsMain.h"
 #include <string>
 #include <memory>
@@ -8,14 +7,14 @@
 class Component
 {
 public:
-	Component(class Object* o);
+	Component(class GameObject* o);
 	virtual ~Component();
 	virtual void Start();
 	virtual void Update();
 	virtual void Dtaw();
-	friend Object;
+	friend GameObject;
 protected:
-	class Object* owner;
+	class GameObject* owner;
 	class GraphicsMain* game;
 	
 };

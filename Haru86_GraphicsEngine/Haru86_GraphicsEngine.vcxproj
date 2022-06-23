@@ -393,9 +393,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Material.h" />
     <ClInclude Include="GraphicsEngine\Component\MeshRendererComponent.h" />
-    <ClInclude Include="GraphicsEngine\Object\Object.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Primitive.h" />
-    <ClInclude Include="GraphicsEngine\Object\RaymarchingObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
     <ClInclude Include="GraphicsEngine\Math\math.h" />
@@ -417,12 +415,10 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\GraphicsMain\Main.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Material.cpp" />
     <ClCompile Include="GraphicsEngine\Component\MeshRendererComponent.cpp" />
-    <ClCompile Include="GraphicsEngine\Object\Object.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Primitive.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Texture.cpp" />
     <ClCompile Include="GraphicsEngine\Component\TransformComponent.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
-    <ClCompile Include="GraphicsEngine\Object\RaymarchingObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="GraphicsEngine\Math\math.cpp" />

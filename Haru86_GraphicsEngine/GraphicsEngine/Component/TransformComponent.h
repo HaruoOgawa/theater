@@ -13,7 +13,7 @@ class TransformComponent :
     glm::mat4 m_vMatrix;
     glm::mat4 m_pMatrix;
 public:
-    TransformComponent(class Object* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+    TransformComponent(class GameObject* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
     ~TransformComponent() = default;
     void Update() override{}
     

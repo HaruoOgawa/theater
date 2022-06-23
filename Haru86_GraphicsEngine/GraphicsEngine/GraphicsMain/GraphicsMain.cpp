@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include "Assets/App/TheaterDemo/TheaterDemo.h"
-#include "GraphicsEngine/Object/RaymarchingObject.h"
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
@@ -39,8 +38,7 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_timeline(nullptr),
-	m_RaymarchingObject(nullptr)
+	m_timeline(nullptr)
 	//m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
@@ -210,14 +208,6 @@ void GraphicsMain::Update() {
 	}
 	previousTime = time;
 
-	for (auto obj : gameObjectList) {
-		obj->Update();
-	}
-	
-	for (auto obj : raymarchingObjectList) {
-		obj->Update();
-	}
-	
 	if (m_App) {
 		m_App->Update();
 	}
