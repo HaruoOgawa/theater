@@ -9,7 +9,7 @@
 RaymarchingObject::RaymarchingObject(const std::string& fragmentShaderCode)
 	: Object()
 {
-	m_material = std::make_shared<Material>(shaderlib::ShaderLib::RaymarchingObject_vert, fragmentShaderCode,"","","");
+	m_material = std::make_shared<Material>(RenderingSurfaceType::RAYMARCHING, shaderlib::ShaderLib::RaymarchingObject_vert, fragmentShaderCode, "", "", "");
 	//m_material = std::make_shared<Material>("./Assets/Shader/RaymarchingObject.vert",fragmentShaderName,RenderingSurfaceType::RAYMARCHING);
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 }
@@ -32,10 +32,10 @@ void RaymarchingObject::Draw() {
 	m_material->SetMatrixUniform("MMatrix", m_transform->GetMMatrix());
 	m_material->SetMatrixUniform("VMatrix", m_transform->GetVMatrix());
 	m_material->SetMatrixUniform("PMatrix", m_transform->GetPMatrix());
-	m_material->SetFloatUniform("time", GraphicsMain::GetInstance()->time*0.001);
-	m_material->SetFloatUniform("deltaTime", GraphicsMain::GetInstance()->deltaTime);
-	m_material->SetVec2Uniform("resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	m_material->SetFloatUniform("frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001);
+	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
+	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (GraphicsMain::GetInstance()->renderingTarget==ERerderingTarget::COLOR) {
 		m_material->SetFloatUniform("_RenderingTarget", 1.0);
 	}

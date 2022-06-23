@@ -25,9 +25,9 @@ out vec3 WorldVertexPos;
 void main(){
 	vec4 pos=vec4(vertex,1.0);
 
-	pos.xy*=rot(_time*0.001);
-	pos.xz*=rot(_time*0.001);
-	pos.yz*=rot(_time*0.001);
+	pos.xy*=rot(_time);
+	pos.xz*=rot(_time);
+	pos.yz*=rot(_time);
 
 	gl_Position=MVPMatrix*pos;
 	uv=texcoord;

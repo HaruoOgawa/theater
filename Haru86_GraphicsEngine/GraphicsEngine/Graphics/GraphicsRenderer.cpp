@@ -218,7 +218,7 @@ void GraphicsRenderer::Draw() {
 	PostProcess::GetInstance()->DrawPolygonPostProcess(polygon_frameTexture, m_PolygonPostProcess_FrameBuffer);
 
 	//レイマーチングオブジェクトのカラーマップをレンダリング///////////////
-	if (GraphicsMain::GetInstance()->m_RaymarchingObject) {
+	if (mgame->raymarchingObjectList.size() > 0) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -227,12 +227,14 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
-		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
 	}
 
 	//レイマーチングオブジェクトのデプスマップをレンダリング
-	if (GraphicsMain::GetInstance()->m_RaymarchingObject) {
+	if (mgame->raymarchingObjectList.size() > 0) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -241,8 +243,10 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
-		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
 	}
 
 	//ポリゴンオブジェクトとレイマーチングオブジェクトをブレンドする

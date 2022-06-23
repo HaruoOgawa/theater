@@ -8,14 +8,14 @@
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "../Graphics/Texture.h"
 
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
+MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
 	: Component(o), m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr)
 {
 	useZTest = true;
 	m_mesh = std::make_shared<Mesh>((primType));
 	m_mesh->glDrawType = GLDrawType::NONE;
-	m_material = std::make_shared<Material>(vert, frag, geom, tc, tv);
+	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv);
 }
 
 MeshRendererComponent::~MeshRendererComponent() {
@@ -43,10 +43,17 @@ void MeshRendererComponent::Draw() {
 	m_material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
 	m_material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
 	m_material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
-	m_material->SetFloatUniform("_time", game->time);
+	m_material->SetFloatUniform("_time", game->time*0.001f);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	
+	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
+		m_material->SetFloatUniform("_RenderingTarget", 1.0);
+	}
+	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
+		m_material->SetFloatUniform("_RenderingTarget", 2.0);
+	}
+
 	if (primTex != nullptr) {
 		primTex->SetActive();
 		m_material->SetTexUniform("_fontTexture", primTex->GetTextureID());

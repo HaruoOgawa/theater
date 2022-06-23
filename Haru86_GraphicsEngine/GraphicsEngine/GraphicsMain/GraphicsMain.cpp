@@ -117,6 +117,7 @@ GraphicsMain::~GraphicsMain() {
 	GraphicsRenderer::Destroy();
 
 	gameObjectList.clear();
+	raymarchingObjectList.clear();
 	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
@@ -156,7 +157,7 @@ void GraphicsMain::LoadData() {
 
 	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
 	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,
+		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,RenderingSurfaceType::RASTERIZER,
 			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
 	}
 
@@ -210,6 +211,10 @@ void GraphicsMain::Update() {
 	previousTime = time;
 
 	for (auto obj : gameObjectList) {
+		obj->Update();
+	}
+	
+	for (auto obj : raymarchingObjectList) {
 		obj->Update();
 	}
 	

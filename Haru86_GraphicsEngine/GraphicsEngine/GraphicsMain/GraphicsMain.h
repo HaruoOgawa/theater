@@ -8,7 +8,7 @@
 #include <glew.h>
 #include <glfw3.h>
 
-enum ERerderingTarget
+enum class ERerderingTarget
 {
 	COLOR,
 	DEPTH
@@ -23,6 +23,7 @@ class GraphicsMain
 	bool isRunning;
 	float previousTime;
 	std::vector<class GameObject*> gameObjectList;
+	std::vector<class GameObject*> raymarchingObjectList;
 	std::vector<class GameObject*> boardGameObjectList;
 	std::vector<class GameObject*> postProcessGameObjectList;
 	std::vector<class UIObject*> uiObjectList;
@@ -66,8 +67,10 @@ public:
 	friend class Main;
 	friend class GameObject;
 	friend class RaymarchingObject;
+	friend class PolygonRaymarchingMixer;
 	friend class UIObject;
 	friend class GraphicsRenderer;
+	friend class MeshRendererComponent;
 	friend class CTimeline;
 	friend class UIComponent;
 	friend class Material;

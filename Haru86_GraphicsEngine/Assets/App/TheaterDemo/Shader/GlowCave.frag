@@ -2,8 +2,9 @@ R"(
 
 #version 330
 
-uniform float time;
-uniform vec2 resolution;
+uniform float _time;
+uniform vec2 _resolution;
+uniform float _RenderingTarget;
 
 in vec2 uv;
 
@@ -25,7 +26,7 @@ float c(vec3 p,vec3 s){
 
 vec3 trs(vec3 p){
   vec3 pos=p;
-  pos.z-=time*3.;
+  pos.z-=_time*3.;
   float k=8.;
   pos=mod(pos,k)-k*.5;
 
@@ -43,7 +44,7 @@ pos.xz=pmod(pos.xz,12.);
 
 float m1m(vec3 p){
   //rotation/////////////
-    // p.xz*=rot(time*0.1);
+    // p.xz*=rot(_time*0.1);
   // TRS////////////////////////
    p=trs(p);
 
@@ -128,13 +129,13 @@ vec3 gn(vec3 p){
 }
 
 void main(){
-	//vec2 st=(fragCoord.xy*2.-resolution.xy)/min(resolution.x,resolution.y);
+	//vec2 st=(fragCoord.xy*2.-_resolution.xy)/min(_resolution.x,_resolution.y);
     vec2 st=uv*2.0-1.0;
-    st.x*=(resolution.x/resolution.y);
+    st.x*=(_resolution.x/_resolution.y);
 
-    st*=rot(time*0.5);
+    st*=rot(_time*0.5);
  float radius=0.1;
-   float phi=time*0.5;
+   float phi=_time*0.5;
    
   // vec3 ro=vec3(0.0,0.0,1.0);
    vec3 ro=vec3(radius*cos(phi),radius*sin(phi),1.0);
@@ -159,9 +160,18 @@ void main(){
     acc+=exp(-6.*d);
   }
 
-  vec3 col=vec3(.9,.8,.7)*15./pi;//+vec3(1.,0.25,0.5)*acc2*0.025;
+  
  
-  gl_FragColor=vec4(col,1);
+  if(_RenderingTarget==1.0){
+    vec3 col=vec3(.9,.8,.7)*15./pi;//+vec3(1.,0.25,0.5)*acc2*0.025;
+    gl_FragColor=vec4(col,1);
+
+  }else if(_RenderingTarget==2.0){
+    vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
+    gl_FragColor=vec4(col,1);
+  }
+
+  
 }
 
 )"

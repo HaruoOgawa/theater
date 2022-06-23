@@ -8,6 +8,7 @@
 #include "../GraphicsMain/GraphicsMain.h"
 #include <functional>
 #include <memory>
+#include "GraphicsEngine/Graphics/EGraphicsParam.h"
 
 class Object;
 class Mesh;
@@ -22,7 +23,7 @@ class MeshRendererComponent :
     class Object* myowner;
     bool useZTest;
 public:
-    MeshRendererComponent(class Object* o, PrimitiveType primType,
+    MeshRendererComponent(class Object* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
         const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
     ~MeshRendererComponent();
 

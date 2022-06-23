@@ -29,6 +29,7 @@ void main(){
 		col=(polygonDepth.r<=raymarchingDepth.r)? polygonCol : raymarchingCol;
 	}
 
+	//col=raymarchingCol;
 	//col=raymarchingDepth;
 	//col=polygonCol;
 	//	col=(raymarchingDepth+polygonDepth)*0.5;

@@ -5,7 +5,7 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Object/RaymarchingObject.h"
 
-#define PI 3.14159265f
+#define PI 3.0f
 
 void TheaterDemo::Start() {
 	// îwåiêF
@@ -18,6 +18,7 @@ void TheaterDemo::Start() {
 		PrimitiveType::BOARD,
 		RenderType::DefaultBuffer,
 		RenderQueue::Geometry,
+		RenderingSurfaceType::RASTERIZER,
 		shaderlib::ShaderLib::Standard_vert,
 		shaderlib::ShaderLib::GridPlane_frag
 		);
@@ -29,6 +30,16 @@ void TheaterDemo::Start() {
 	std::string sample = {
 		#include "./Shader/GlowCave.frag"
 	};
+
+	m_Raymarching = std::make_shared<GameObject>(
+		PrimitiveType::BOARD,
+		RenderType::DefaultBuffer,
+		RenderQueue::Geometry,
+		RenderingSurfaceType::RAYMARCHING,
+		shaderlib::ShaderLib::RaymarchingObject_vert,
+		sample
+	);
+
 	//m_SampleRaymarchingObj = std::make_shared<RaymarchingObject>(sample);
 	//GraphicsMain::GetInstance()->m_RaymarchingObject = m_SampleRaymarchingObj.get();
 }
