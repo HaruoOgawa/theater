@@ -1,6 +1,4 @@
 #pragma once
-#include "GraphicsEngine/Component/Component.h"
-#include "../Object/Object.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Material.h"
 #include <string>
@@ -8,30 +6,30 @@
 #include "../GraphicsMain/GraphicsMain.h"
 #include <functional>
 #include <memory>
+#include "GraphicsEngine/Graphics/EGraphicsParam.h"
+#include "GraphicsEngine/Graphics/Texture.h"
 
-class Object;
+class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
+//class Texture;
 
-class MeshRendererComponent :
-    public Component
+class MeshRendererComponent
 {
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
-    class Object* myowner;
+    class GameObject* myowner;
     bool useZTest;
 public:
-    MeshRendererComponent(class Object* o, PrimitiveType primType,
+    MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
         const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
-    ~MeshRendererComponent();
+    ~MeshRendererComponent()=default;
 
-    void Update() override;
     void Draw();
     void DrawBoard();
     static void DrawInstancedWithMesh(std::shared_ptr<class Mesh> mesh, int count, std::shared_ptr<class Material> material, GLenum rendermode);
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override;
-
+   
     const std::shared_ptr<Mesh>& GetMesh()const;
     const std::shared_ptr<Material>& GetMaterial()const;
     void SetUseZTest(bool use);
@@ -40,6 +38,9 @@ public:
     std::vector<TimelineAnimationClip*> animationClips;
 
     friend class GraphicsRenderer;
+    friend GameObject;
 private:
-    std::unique_ptr<class Texture> primTex;
+    class GameObject* owner;
+    class GraphicsMain* game;
+    std::unique_ptr<Texture> primTex;
 };

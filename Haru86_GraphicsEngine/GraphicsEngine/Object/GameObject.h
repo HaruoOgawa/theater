@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../GraphicsMain/GraphicsMain.h"
-#include "./Object.h"
 #include "../Graphics/Mesh.h"
 
 #include <vector>
@@ -11,44 +10,38 @@
 #include <typeinfo>
 #include <memory>
 #include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Graphics/EGraphicsParam.h"
 
 class MeshRendererComponent;
-
-namespace physics {
-	class CPhysicsEngine;
-}
-
-enum class RenderQueue
-{
-	Background=1000,
-	Geometry=3000,
-	Transparent=4000,
-	UI=5000
-};
-
-enum class RenderType {
-	DefaultBuffer,
-	FrameBuffer,
-	PostProcess
-};
+class TransformComponent;
 
 class GameObject
-	: public Object
 {
 	PrimitiveType m_PrimitiveType;
 public:
-	GameObject(PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, RenderQueue renderOrder=RenderQueue::Geometry,
+	GameObject(PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, 
+		RenderQueue renderOrder=RenderQueue::Geometry, RenderingSurfaceType SurfaceType = RenderingSurfaceType::RASTERIZER,
 		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="");
-	//GameObject(PrimitiveType primType, std::string vertexShaderName, std::string fragmentShaderName, RenderType renderType);
 
-	~GameObject();
+	void SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+	void SetPosition(glm::vec3 pos);
+	void SetRotation(glm::vec3 rot);
+	void SetScale(glm::vec3 s);
+	
+	glm::vec3 GetPosition();
+	glm::vec3 GetRotation();
+	glm::vec3 GetScale();
+
 	void UseZTest(bool use);
 	void SetRenderOlder(int order);
+
 	std::shared_ptr<MeshRendererComponent> meshComp;
+	std::shared_ptr<TransformComponent> m_transform;
+
 	float animTime = 0.0f;
 	friend class GraphicsRenderer;
-	friend class TimelineComponent;
 	int m_renderOrder;
+	RenderingSurfaceType m_SurfaceType;
 private:
 	RenderType m_renderType;
 };

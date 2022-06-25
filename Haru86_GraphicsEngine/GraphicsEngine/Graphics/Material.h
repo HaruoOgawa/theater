@@ -6,17 +6,12 @@
 #include <vector>
 #include <memory>
 #include <map>
-
-enum RenderingSurfaceType
-{
-    POLYGON,
-    RAYMARCHING,
-};
+#include "GraphicsEngine/Graphics/EGraphicsParam.h"
 
 class Material 
 {
 public:
-    Material(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
+    Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
     ~Material();
     
     void LoadShader(const std::string& vert, const std::string& frag, const std::string& geom,const std::string& tc, const std::string& tv,

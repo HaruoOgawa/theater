@@ -5,27 +5,18 @@
 #include <string>
 #include <iostream>
 #include "../Graphics/GraphicsRenderer.h"
-#include "./TimelineComponent.h"
-#include "../Graphics/Texture.h"
-#include "../Graphics/Font.h"
-#include "GraphicsEngine/Object/CameraObject.h"
+#include "GraphicsEngine/GraphicsMain/CTimeline.h"
+#include "GraphicsEngine/Graphics/Texture.h"
+#include "GraphicsEngine/Object/GameObject.h"
 
-MeshRendererComponent::MeshRendererComponent(Object* o, PrimitiveType primType,
+MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
-	: Component(o), m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr)
+	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr), owner(o), game(GraphicsMain::GetInstance())
 {
 	useZTest = true;
 	m_mesh = std::make_shared<Mesh>((primType));
 	m_mesh->glDrawType = GLDrawType::NONE;
-	m_material = std::make_shared<Material>(vert, frag, geom, tc, tv);
-}
-
-MeshRendererComponent::~MeshRendererComponent() {
-
-}
-
-void MeshRendererComponent::Update() {
-
+	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv);
 }
 
 void MeshRendererComponent::Draw() {
@@ -41,14 +32,20 @@ void MeshRendererComponent::Draw() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
-	m_material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
-	m_material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
-	m_material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
-	m_material->SetFloatUniform("_time", game->time);
+	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->GetMVPMatrix());
+	m_material->SetMatrixUniform("MMatrix", owner->m_transform->GetMMatrix());
+	m_material->SetMatrixUniform("VMatrix", owner->m_transform->GetVMatrix());
+	m_material->SetMatrixUniform("PMatrix", owner->m_transform->GetPMatrix());
+	m_material->SetFloatUniform("_time", game->time*0.001f);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	m_material->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->game_camera_instance->GetPosition());
+	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
+		m_material->SetFloatUniform("_RenderingTarget", 1.0);
+	}
+	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
+		m_material->SetFloatUniform("_RenderingTarget", 2.0);
+	}
 
 	if (primTex != nullptr) {
 		primTex->SetActive();
@@ -83,10 +80,10 @@ void MeshRendererComponent::DrawBoard() {
 	}
 
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", owner->GetComponent<TransformComponent>()->GetMVPMatrix());
-	m_material->SetMatrixUniform("MMatrix", owner->GetComponent<TransformComponent>()->GetMMatrix());
-	m_material->SetMatrixUniform("VMatrix", owner->GetComponent<TransformComponent>()->GetVMatrix());
-	m_material->SetMatrixUniform("PMatrix", owner->GetComponent<TransformComponent>()->GetPMatrix());
+	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->GetMVPMatrix());
+	m_material->SetMatrixUniform("MMatrix", owner->m_transform->GetMMatrix());
+	m_material->SetMatrixUniform("VMatrix", owner->m_transform->GetVMatrix());
+	m_material->SetMatrixUniform("PMatrix", owner->m_transform->GetPMatrix());
 	m_material->SetFloatUniform("_time", game->time);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
@@ -119,10 +116,6 @@ void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, in
 		prim[i]->SetActive();
 		glDrawElementsInstanced(rendermode, prim[i]->GetNumIndices(), GL_UNSIGNED_SHORT, nullptr, count);
 	}
-}
-
-void MeshRendererComponent::ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) {
-
 }
 
 const std::shared_ptr<Mesh>& MeshRendererComponent::GetMesh()const {

@@ -1,14 +1,17 @@
 #include "GraphicsRenderer.h"
+
+#ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
+#endif // _DEBUG
+
 #include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"
 #include "../Component/TransformComponent.h"
 #include "../GraphicsMain/GraphicsMain.h"
-#include "./Texture.h"
-#include "GraphicsEngine/App/BaseApp/BaseApp.h"
-#include "GraphicsEngine/Object/RaymarchingObject.h"
+#include "Texture.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
+#include "Assets/App/TheaterDemo/TheaterDemo.h"
 
 GraphicsRenderer* GraphicsRenderer::renderer_instance = nullptr;
 
@@ -68,7 +71,9 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	);
 
 	if (!sWindow) {
+#ifdef _DEBUG
 		Console::Log("Error : glfwCreateWindow\n");
+#endif // _DEBUG
 		return false;
 	}
 
@@ -85,7 +90,10 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	glewExperimental = GL_TRUE;
 	const GLenum error = glewInit();
 	if (error != GLEW_OK) {
-		Console::Log("Failure! Can not initialize Glew: %s",glewGetErrorString(error));
+#ifdef _DEBUG
+		Console::Log("Failure! Can not initialize Glew: %s", glewGetErrorString(error));
+#endif // _DEBUG
+
 		return false;
 	}
 	glGetError();
@@ -95,31 +103,31 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 	//CreateFrameBuffer
 	if (!CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer,GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	if (!CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 	
 	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		Console::Log("Can not create frame buffer");
+		//Console::Log("Can not create frame buffer");
 	}
 
 	m_Mixer = std::make_unique<PolygonRaymarchingMixer>();
@@ -209,7 +217,7 @@ void GraphicsRenderer::Draw() {
 	PostProcess::GetInstance()->DrawPolygonPostProcess(polygon_frameTexture, m_PolygonPostProcess_FrameBuffer);
 
 	//レイマーチングオブジェクトのカラーマップをレンダリング///////////////
-	if (GraphicsMain::GetInstance()->m_RaymarchingObject) {
+	if (mgame->raymarchingObjectList.size() > 0) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -218,12 +226,14 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
-		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
 	}
 
 	//レイマーチングオブジェクトのデプスマップをレンダリング
-	if (GraphicsMain::GetInstance()->m_RaymarchingObject) {
+	if (mgame->raymarchingObjectList.size() > 0) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -232,8 +242,10 @@ void GraphicsRenderer::Draw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		GraphicsMain::GetInstance()->m_RaymarchingObject->m_transform->CalMatrix();
-		GraphicsMain::GetInstance()->m_RaymarchingObject->Draw();
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
 	}
 
 	//ポリゴンオブジェクトとレイマーチングオブジェクトをブレンドする

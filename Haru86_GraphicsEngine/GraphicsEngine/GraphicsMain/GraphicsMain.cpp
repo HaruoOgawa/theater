@@ -2,19 +2,14 @@
 #include <string>
 #include "../Object/GameObject.h"
 #include "../Graphics/Mesh.h"
-#include "../Object/TimelineObject.h"
-#include "../Component/TimelineComponent.h"
-#include "./Time.h"
-#include <iostream>
+#include "CTimeline.h"
 #include <vector>
 #include <algorithm>
-#include "../App/BaseApp/BaseApp.h"
-#include <exception>
-#include <stdexcept>
-#include "GraphicsEngine/Object/RaymarchingObject.h"
-#include "GraphicsEngine/Object/CameraObject.h"
+#include "Assets/App/TheaterDemo/TheaterDemo.h"
+#ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
-#include "GraphicsEngine/App/CEventListener.h"
+#endif // _DEBUG
+
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 //#include "GraphicsEngine/Music/MusicPlayer.h"
 
@@ -42,10 +37,8 @@ GraphicsMain::GraphicsMain()
 	previousTime(0.0f),
 	mouseStateBool(false),
 	animTime(0.0f),
-	isRestart(false),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_RaymarchingObject(nullptr),
-	m_EventListener(std::make_shared<app::CEventListener>())//,
+	m_timeline(nullptr)
 	//m_MusicPlayer(std::make_shared<MusicPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
@@ -118,57 +111,57 @@ GraphicsMain::GraphicsMain()
 }
 
 GraphicsMain::~GraphicsMain() {
-	
+	GraphicsRenderer::GetInstance()->ShutDown();
+	GraphicsRenderer::Destroy();
+
+	gameObjectList.clear();
+	raymarchingObjectList.clear();
+	boardGameObjectList.clear();
+	postProcessGameObjectList.clear();
+	uiObjectList.clear();
 }
 
 bool GraphicsMain::CreateApp() {
 	if (glfwInit() == GL_FALSE) {
-		Console::Log("Could not initialize GLFW\n");
+		//Console::Log("Could not initialize GLFW\n");
 		return false;
 	}
 
 	GraphicsRenderer::Create();
 	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		Console::Log("Could not Create GraphicsRenderer\n");
+		//Console::Log("Could not Create GraphicsRenderer\n");
 		return false;
 	}
 
 	return true;
 }
 
-bool GraphicsMain::Initialize(BaseApp* app) {
+bool GraphicsMain::Initialize() {
 	// メモリ確保
-	timeObj = std::make_unique<Time>(60.0f);
-	timelineObj = std::make_unique<TimelineObject>();
-	m_App = app;
-
-	// 初期化が必要なパラメーターを初期化
-	isRestart = false;
-	
-	//
+	m_timeline = std::make_unique<CTimeline>();
+	m_App = new TheaterDemo();
 	LoadData();
 	
 	return true;
 }
 
 void GraphicsMain::LoadData() {
+#ifdef _DEBUG
+	Console::Log("This is _DEBUG!!!!!!!!!!!!!!!!!!!!!\n");
+#endif // DEBUG
+	
 	//
 	m_App->Start();
 
 	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
 	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,
+		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,RenderingSurfaceType::RASTERIZER,
 			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
 	}
 
-	if (!game_camera_instance) {
-		game_camera_instance= std::make_shared<CameraObject>(CameraType::FIXED_CAMERA);
-		game_camera_instance->SetPosition(glm::vec3(0.0f,0.0f,3.0f));
-	}
-
 	//
-	m_App->Timeline(timelineObj.get());
-	timelineObj->Initialize();
+	m_App->Timeline(m_timeline.get());
+	m_timeline->Initialize();
 
 	//
 	//m_MusicPlayer->Initialize();
@@ -178,113 +171,48 @@ void GraphicsMain::LoadData() {
 bool GraphicsMain::RunLoop() {
 	while (isRunning)
 	{
-		if (isRestart) {
-			if (Reflesh())return true;
-		}
-		else {
-			//m_MusicPlayer->Update();
-			UpdateTimeline();
-			InputProcess();
-			Update();
-			Draw();
-		}
+		//m_MusicPlayer->Update();
+		UpdateTimeline();
+		InputProcess();
+		Update();
+		Draw();
 	}
 
 	return false;
 }
 
 void GraphicsMain::UpdateTimeline() {
-	static_cast<std::shared_ptr<class TimelineComponent>>(timelineObj->timelineComponent)->Update();
-
+	m_timeline->Update();
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
 		return a->m_renderOrder < b->m_renderOrder;
 	});
 }
 
 void GraphicsMain::InputProcess() {
-	// イベント
-	m_EventListener->ListenEvent(GraphicsRenderer::GetInstance()->GetWindow());
-	
-	for (auto obj : gameObjectList) {
-		obj->ProcessInput(m_EventListener);
+	// イベントを発行
+	glfwPollEvents();
+	glfwSetKeyCallback(GraphicsRenderer::GetInstance()->GetWindow(), key_callback);
+}
+
+void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		GraphicsMain::GetInstance()->isRunning=false;
 	}
-
-	game_camera_instance->ProcessInput(m_EventListener);
-
 }
 
 void GraphicsMain::Update() {
-	while (!(timeObj->GetTime() > previousTime + 16.0f)) { timeObj->UpdateTime(); };
-	deltaTime = (timeObj->GetTime() - previousTime) / 1000.0f;
+	while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
+	deltaTime = (time - previousTime) / 1000.0f;
 	if (deltaTime > 0.05f) {
 		deltaTime = 0.05f;
 	}
-	previousTime = static_cast<float>(timeObj->GetTime());
-	time = previousTime;
+	previousTime = time;
 
-	for (auto obj : gameObjectList) {
-		obj->Update();
-	}
-	
 	if (m_App) {
 		m_App->Update();
 	}
 
-	game_camera_instance->Update();
-	
 }
 void GraphicsMain::Draw() {
 	GraphicsRenderer::GetInstance()->Draw();
-}
-
-bool GraphicsMain::Reflesh() {
-	//Listを解放
-	gameObjectList.clear();
-	boardGameObjectList.clear();
-	postProcessGameObjectList.clear();
-	uiObjectList.clear();
-
-	//メンバ変数を初期化
-	isRunning = true;
-	time = 0.0f;
-	deltaTime = 0.0f;
-	previousTime = 0.0f;
-	mouseStateBool = false;
-	animTime = 0.0f;
-	renderingTarget = ERerderingTarget::COLOR;
-
-	//メモリを解放
-	game_camera_instance = nullptr;
-	timelineObj.reset();
-	timeObj.reset();
-	renderBoard.reset();
-	if (m_App) {
-		delete m_App;
-		m_App = nullptr; 
-	}
-	m_RaymarchingObject = nullptr;
-	
-	return true;
-}
-
-void GraphicsMain::Restart() {
-	isRestart = true;
-}
-
-void GraphicsMain::ShutDown() {
-	GraphicsRenderer::GetInstance()->ShutDown();
-	GraphicsRenderer::Destroy();
-
-	gameObjectList.clear();
-	boardGameObjectList.clear();
-	postProcessGameObjectList.clear();
-	uiObjectList.clear();
-}
-
-void GraphicsMain::SetIsRunning(bool state) {
-	isRunning = state;
-}
-
-bool GraphicsMain::GetIsRunning() {
-	return isRunning;
 }

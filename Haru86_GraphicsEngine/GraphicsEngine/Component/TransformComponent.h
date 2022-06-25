@@ -1,11 +1,8 @@
 #pragma once
-#include "./Component.h"
 #include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
 #include "../GraphicsMain/GraphicsMain.h"
 
-class TransformComponent :
-    public Component
+class TransformComponent
 {
     glm::vec3 m_position;
     glm::vec3 m_rotation;
@@ -14,9 +11,8 @@ class TransformComponent :
     glm::mat4 m_vMatrix;
     glm::mat4 m_pMatrix;
 public:
-    TransformComponent(class Object* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+    TransformComponent(class GameObject* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
     ~TransformComponent() = default;
-    void Update() override{}
     
     glm::mat4 GetMVPMatrix(){ return m_pMatrix * m_vMatrix * m_mMatrix; }
     glm::mat4 GetMMatrix(){ return m_mMatrix; }
@@ -32,14 +28,14 @@ public:
     void SetScale(const glm::vec3& scale){ m_scale = scale; }
 
     void CalMatrix();
-    void Translate(glm::vec3 MoveV);
-    void Rotate(float XRot, float YRot, float ZRot);
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
-    void ProcessInput(const std::shared_ptr<app::CEventListener>& EventListener) override{}
+
+    friend GameObject;
 
 private:
-   
+    class GameObject* owner;
+    class GraphicsMain* game;
 };
 

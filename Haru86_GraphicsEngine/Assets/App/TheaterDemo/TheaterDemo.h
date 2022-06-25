@@ -1,24 +1,22 @@
 #pragma once
 #include <memory>
-#include "GraphicsEngine/App/BaseApp/BaseApp.h"
 
 class GameObject;
-class RaymarchingObject;
+class CTimeline;
 
-class TheaterDemo :
-    public BaseApp
+class TheaterDemo
 {
     std::shared_ptr<GameObject> m_AnimObj;
     std::shared_ptr<GameObject> m_GridPlane;
-    std::shared_ptr<RaymarchingObject> m_SampleRaymarchingObj;
+    std::shared_ptr<GameObject> m_Raymarching;
 
 public:
     TheaterDemo() = default;
     ~TheaterDemo() = default;
 
-    virtual void Start() override;
-    virtual void Update() override;
-    virtual void Draw() override;
-    virtual void Timeline(class TimelineObject* timelineObj) override;
+    void Start();
+    void Update();
+    void Draw();
+    void Timeline(CTimeline* timeline);
 };
 

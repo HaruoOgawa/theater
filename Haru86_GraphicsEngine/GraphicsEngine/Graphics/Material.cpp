@@ -1,14 +1,14 @@
 #include "Material.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Message/Console.h"
 
-Material::Material(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
+#ifdef _DEBUG
+#include "GraphicsEngine/Message/Console.h"
+#endif // _DEBUG
+
+Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
 	: vertShaderData(-1),
 	tessControlShaderData(-1),
 	tessEvalShaderData(-1),
@@ -22,10 +22,18 @@ Material::Material(const std::string& vert, const std::string& frag, const std::
 	depthFragShaderData(-1),
 	depthShaderPrg(-1)
 {
-	LoadShader(vert,frag,geom,tc,tv, shaderPrg
-		, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
-	LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, depthShaderPrg
-		, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+	if (SurfaceType == RenderingSurfaceType::RASTERIZER) {
+		LoadShader(vert, frag, geom, tc, tv, shaderPrg
+			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
+		LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, depthShaderPrg
+			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+	}
+	else if (SurfaceType == RenderingSurfaceType::RAYMARCHING) {
+		LoadShader(vert, frag, geom, tc, tv, shaderPrg
+			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
+		LoadShader(vert, frag, geom, tc, tv, depthShaderPrg
+			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+	}
 }
 
 Material::~Material() {
@@ -66,11 +74,15 @@ void Material::LoadShader(const std::string& vert, const std::string& frag, cons
 	GLint status;
 	glGetProgramiv(prg, GL_LINK_STATUS, &status);
 	if (status != GL_TRUE) {
-		Console::Log("Cannot Load Program Data");
+		
 		char buffer[512];
 		memset(buffer, 0, 512);
 		glGetProgramInfoLog(prg, 511, nullptr, buffer);
+
+#ifdef _DEBUG
+		Console::Log("Cannot Load Program Data");
 		Console::Log("GLSL Link Status:\n%s", buffer);
+#endif // _DEBUG
 	}
 }
 
@@ -88,12 +100,17 @@ bool Material::CompileShader(const std::string shaderCode, GLenum shaderType, GL
 	GLint status;
 	glGetShaderiv(outShader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE) {
-		Console::Log("Cannnot Load Shader: %s", shaderCode.c_str());
 		
 		char buffer[512];
 		memset(buffer, 0, 512);
 		glGetShaderInfoLog(outShader, 511, nullptr, buffer);
+		
+#ifdef _DEBUG
+		Console::Log("Cannnot Load Shader: %s", shaderCode.c_str());
 		Console::Log("GLSL Compile Failed: %s", buffer);
+#endif // _DEBUG
+
+
 		return false;
 	}
 
