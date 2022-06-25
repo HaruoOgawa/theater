@@ -8,7 +8,7 @@
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
 
-Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
+Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs)
 	: vertShaderData(-1),
 	tessControlShaderData(-1),
 	tessEvalShaderData(-1),
@@ -23,16 +23,16 @@ Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, con
 	depthShaderPrg(-1)
 {
 	if (SurfaceType == RenderingSurfaceType::RASTERIZER) {
-		LoadShader(vert, frag, geom, tc, tv, shaderPrg
-			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
-		LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, depthShaderPrg
-			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
+			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
+		LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv,cs, depthShaderPrg
+			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
 	}
 	else if (SurfaceType == RenderingSurfaceType::RAYMARCHING) {
-		LoadShader(vert, frag, geom, tc, tv, shaderPrg
-			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData);
-		LoadShader(vert, frag, geom, tc, tv, depthShaderPrg
-			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData);
+		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
+			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
+		LoadShader(vert, frag, geom, tc, tv,cs, depthShaderPrg
+			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
 	}
 }
 
@@ -40,8 +40,8 @@ Material::~Material() {
 	UnLoadData();
 }
 
-void Material::LoadShader(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv,
-	GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData)
+void Material::LoadShader(const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs,
+	GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData, GLuint& csData)
 {
 	//
 	prg = glCreateProgram();
@@ -66,7 +66,10 @@ void Material::LoadShader(const std::string& vert, const std::string& frag, cons
 	if (CompileShader(tv, GL_TESS_EVALUATION_SHADER, tvData)) {
 		glAttachShader(prg, tvData);
 	}
-
+	
+	if (CompileShader(cs, GL_COMPUTE_SHADER, csData)) {
+		glAttachShader(prg, csData);
+	}
 
 	// program dataを完成させる
 	glLinkProgram(prg);
@@ -172,6 +175,7 @@ void Material::SetFloatVectorUniform(std::string uniformName, std::vector<float>
 	glUniform1fv(location, val.size(), reinterpret_cast<GLfloat*>(&val[0]));
 }
 
+// 普通のShaderにバッファーをアタッチ
 void Material::SetBuffer(std::shared_ptr<ComputeBuffer> buffer,int bufferIndex) {
 	SetActive();
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bufferIndex, buffer->ssbo);
@@ -241,4 +245,42 @@ void Material::UnLoadData() {
 		glDeleteShader(depthGeometryShaderData);
 	}
 	glDeleteShader(depthFragShaderData);
+}
+
+// Compute Shader Func
+void Material::Dispatch(int xGroupNum, int yGroupNum, int zGroupNum) {
+	glDispatchCompute(xGroupNum, yGroupNum, zGroupNum);
+}
+
+void Material::BindComputeBuffer(CorrectionType correctionType) {
+	if (correctionType == CorrectionType::COMPUTEBUFFER) {
+		for (int i = 0; i < m_buffers.size(); i++) {
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, i, m_buffers[i]->ssbo);
+		}
+	}
+	else if (correctionType == CorrectionType::ARRAY) {
+		for (int i = 0; i < m_buffers.size(); i++) {
+			glBindBuffer(GL_ARRAY_BUFFER, m_buffers[i]->ssbo);
+		}
+	}
+}
+
+void Material::DisBindComputeBuffer(CorrectionType correctionType) {
+	if (correctionType == CorrectionType::COMPUTEBUFFER) {
+		for (int i = 0; i < m_buffers.size(); i++) {
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, i, 0);
+		}
+	}
+	else if (correctionType == CorrectionType::ARRAY) {
+		for (int i = 0; i < m_buffers.size(); i++) {
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+	}
+}
+
+// ComputeShaderにバッファをアタッチ
+void Material::SetBuffer(std::shared_ptr<ComputeBuffer> buffer, int bufferindex, std::shared_ptr<Material> material) {
+	m_buffers.push_back(buffer);
+	SetActive();
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bufferindex, buffer->ssbo);
 }

@@ -382,7 +382,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\ComputeShader.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\json.hpp" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
@@ -395,7 +394,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\Primitive.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\PostProcess.h" />
-    <ClInclude Include="GraphicsEngine\Math\math.h" />
+    <ClInclude Include="GraphicsEngine\Math\mymath.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
@@ -406,7 +405,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\ComputeShader.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
     <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
@@ -419,7 +417,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
-    <ClCompile Include="GraphicsEngine\Math\math.cpp" />
     <ClCompile Include="Assets\App\TheaterDemo\TheaterDemo.cpp" />
   </ItemGroup>
   <ItemGroup>

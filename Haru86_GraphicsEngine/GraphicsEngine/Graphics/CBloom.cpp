@@ -27,9 +27,9 @@ void CBloom::Release() {
 }
 
 void CBloom::Initialize() {
-	m_IlluminanceMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomIlluminance_frag, "", "", "");
-	m_BlurMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomBlur_frag, "", "", "");
-	m_BloomResultMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomResult_frag, "", "", "");
+	m_IlluminanceMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomIlluminance_frag, "", "", "", "");
+	m_BlurMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomBlur_frag, "", "", "", "");
+	m_BloomResultMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomResult_frag, "", "", "", "");
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 	// Create FrameBuffer  Œã‚Ù‚ÇHDRTexture‚É‚·‚é
@@ -73,8 +73,8 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	SrcTexture->SetActive();
 	m_IlluminanceMaterial->SetTexUniform("_SrcTexture", SrcTexture->GetTextureID());
 	SrcTexture->SetEactive();
-	m_IlluminanceMaterial->SetFloatUniform("_BloomThreshold", PostProcess::GetInstance()->GetBloomThreshold());
-	m_IlluminanceMaterial->SetFloatUniform("_BloomIntensity", PostProcess::GetInstance()->GetBloomIntensity());
+	m_IlluminanceMaterial->SetFloatUniform("_BloomThreshold", PostProcess::GetInstance()->m_BloomThreshold);
+	m_IlluminanceMaterial->SetFloatUniform("_BloomIntensity", PostProcess::GetInstance()->m_BloomIntensity);
 
 	m_mesh->Draw();
 

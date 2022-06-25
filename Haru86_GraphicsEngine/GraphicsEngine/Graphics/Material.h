@@ -8,14 +8,19 @@
 #include <map>
 #include "GraphicsEngine/Graphics/EGraphicsParam.h"
 
+enum CorrectionType {
+    COMPUTEBUFFER,
+    ARRAY
+};
+
 class Material 
 {
 public:
-    Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
+    Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs);
     ~Material();
     
-    void LoadShader(const std::string& vert, const std::string& frag, const std::string& geom,const std::string& tc, const std::string& tv,
-        GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData);
+    void LoadShader(const std::string& vert, const std::string& frag, const std::string& geom,const std::string& tc, const std::string& tv, const std::string& cs,
+        GLuint& prg, GLuint& vertData, GLuint& fragData, GLuint& geomData, GLuint& tcData, GLuint& tvData, GLuint& csData);
     bool CompileShader(const std::string shaderCode,GLenum shaderType,GLuint& outShader);
     
     void SetActive();
@@ -34,6 +39,12 @@ public:
     void SetActiveTextureList();
     void SetEactiveTextureList();
     GLuint GetCurrentShaderPrg();
+
+    // Compute Shader Func
+    void Dispatch(int xGroupNum, int yGroupNum, int zGroupNum);
+    void BindComputeBuffer(CorrectionType correctionType);
+    void DisBindComputeBuffer(CorrectionType correctionType);
+    void SetBuffer(std::shared_ptr<class ComputeBuffer> buffer, int bufferindex, std::shared_ptr<class Material> material);
 private :
     //Color Render Buffer
     GLuint vertShaderData;
@@ -51,6 +62,11 @@ private :
     GLuint depthFragShaderData;
     GLuint depthShaderPrg;
 
+    //
+    GLuint computeShaderData;
+    GLuint computeShaderDepthData;
+
     std::vector<std::unique_ptr<class Texture>> m_texture_list;
+    std::vector<std::shared_ptr<ComputeBuffer>> m_buffers;
 };
 

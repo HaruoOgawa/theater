@@ -10,8 +10,6 @@ void TheaterDemo::Start() {
 	// ”wŒiF
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 
-	m_AnimObj = std::make_shared<GameObject>(PrimitiveType::CUBE);
-
 	//
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,

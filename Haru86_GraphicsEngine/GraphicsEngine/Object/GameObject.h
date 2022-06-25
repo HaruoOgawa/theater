@@ -21,7 +21,7 @@ class GameObject
 public:
 	GameObject(PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, 
 		RenderQueue renderOrder=RenderQueue::Geometry, RenderingSurfaceType SurfaceType = RenderingSurfaceType::RASTERIZER,
-		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="");
+		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="",std::string cs="");
 
 	void SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
 	void SetPosition(glm::vec3 pos);
