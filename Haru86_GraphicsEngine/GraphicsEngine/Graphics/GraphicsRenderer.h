@@ -42,7 +42,7 @@ public:
 	bool Initialize(float width, float height);
 	void Draw();
 	bool CreateFrameBuffer(std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE);
-	glm::ivec2 GetScreenSize();
+	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	
 	float deltaTime;

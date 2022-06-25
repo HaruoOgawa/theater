@@ -120,8 +120,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	return true;
 }
 
-glm::ivec2 GraphicsRenderer::GetScreenSize() {
-	return glm::ivec2(sWindowWidth, sWindowHeight);
+glm::vec2 GraphicsRenderer::GetScreenSize() {
+	return glm::vec2(sWindowWidth, sWindowHeight);
 }
 
 GLFWwindow* GraphicsRenderer::GetWindow() {
