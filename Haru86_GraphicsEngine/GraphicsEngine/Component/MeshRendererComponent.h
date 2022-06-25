@@ -7,12 +7,13 @@
 #include <functional>
 #include <memory>
 #include "GraphicsEngine/Graphics/EGraphicsParam.h"
+#include "GraphicsEngine/Graphics/Texture.h"
 
 class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
-class Texture;
+//class Texture;
 
 class MeshRendererComponent
 {

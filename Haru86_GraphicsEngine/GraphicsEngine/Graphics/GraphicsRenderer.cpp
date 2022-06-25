@@ -8,7 +8,7 @@
 #include "../Component/MeshRendererComponent.h"
 #include "../Component/TransformComponent.h"
 #include "../GraphicsMain/GraphicsMain.h"
-#include "./Texture.h"
+#include "Texture.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
 #include "Assets/App/TheaterDemo/TheaterDemo.h"

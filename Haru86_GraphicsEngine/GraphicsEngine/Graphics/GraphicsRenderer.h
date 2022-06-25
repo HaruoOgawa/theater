@@ -6,6 +6,8 @@
 
 #include <memory>
 
+class Texture;
+
 class GraphicsRenderer
 {
 	GLFWwindow* sWindow;
@@ -40,7 +42,7 @@ public:
 	bool Initialize(float width, float height);
 	void ShutDown();
 	void Draw();
-	bool CreateFrameBuffer(std::shared_ptr<class Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE);
+	bool CreateFrameBuffer(std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE);
 	glm::ivec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	
@@ -48,14 +50,14 @@ public:
 	float frameResolusion;
 
 	//FrameTextures
-	std::shared_ptr<class Texture> polygon_frameTexture;
-	std::shared_ptr<class Texture> polygon_depthTexture;
-	std::shared_ptr<class Texture> raymarching_frameTexture;
-	std::shared_ptr<class Texture> raymarching_depthTexture;
-	std::shared_ptr<class Texture> p_r_BlendingTexture;
+	std::shared_ptr<Texture> polygon_frameTexture;
+	std::shared_ptr<Texture> polygon_depthTexture;
+	std::shared_ptr<Texture> raymarching_frameTexture;
+	std::shared_ptr<Texture> raymarching_depthTexture;
+	std::shared_ptr<Texture> p_r_BlendingTexture;
 	//PostProcess FrameTexture
-	std::shared_ptr<class Texture> m_PolygonPostProcess_FrameTexture;
-	std::shared_ptr<class Texture> m_LatePostProcess_FrameTexture;
+	std::shared_ptr<Texture> m_PolygonPostProcess_FrameTexture;
+	std::shared_ptr<Texture> m_LatePostProcess_FrameTexture;
 
 	// îwåiêF
 	void SetBackgroudColor(glm::vec4 BackgroudColor);
