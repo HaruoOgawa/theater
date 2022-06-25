@@ -59,13 +59,7 @@ void MeshRendererComponent::Draw() {
 		clip->callback(clip->lifeTimeRate);
 	}
 
-	if (m_mesh->glDrawType == GLDrawType::TESSELLATION) {
-		//glPatchParameteri(GL_PATCH_VERTICES, 4);
-		m_mesh->Draw(m_mesh->glDrawType);
-	}
-	else {
-		m_mesh->Draw();
-	}
+    m_mesh->Draw();
 
 	//使い終わったらここでTextureを非アクティブにする
 	m_material->SetEactiveTextureList();
@@ -89,13 +83,6 @@ void MeshRendererComponent::DrawBoard() {
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
-	// PolygonPostProcessのテスト
-	/*if (GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture != nullptr) {
-		GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetActive();
-		m_material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->GetTextureID());
-		GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetEactive();
-	}*/
-
 	// PostProcess後の最終結果 → m_LatePostProcess_FrameTexture
 	if (GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture != nullptr) {
 		GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetActive();
@@ -111,10 +98,10 @@ void MeshRendererComponent::DrawBoard() {
 }
 
 void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, int count, std::shared_ptr<Material> material, GLenum rendermode) {
-	const auto& prim = mesh->GetPrimitiveList();
+	const auto& prim = mesh->m_primitives;
 	for (int i = 0; i < prim.size(); i++) {
 		prim[i]->SetActive();
-		glDrawElementsInstanced(rendermode, prim[i]->GetNumIndices(), GL_UNSIGNED_SHORT, nullptr, count);
+		glDrawElementsInstanced(rendermode, prim[i]->mNumIndices, GL_UNSIGNED_SHORT, nullptr, count);
 	}
 }
 

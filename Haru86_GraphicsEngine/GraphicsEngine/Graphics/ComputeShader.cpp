@@ -6,8 +6,8 @@
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Graphics/Material.h"
 
-ComputeShader::ComputeShader(std::string shaderPath) {
-	LoadComputeShader(shaderPath);
+ComputeShader::ComputeShader(std::string shaderCode) {
+	LoadComputeShader(shaderCode);
 }
 
 ComputeShader::~ComputeShader() {

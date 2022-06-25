@@ -6,8 +6,6 @@
 
 enum class PrimitiveType {
 	BOARD,
-	CUBE,
-	SPHERE,
 	POINT,
 	CUSTOM,
 };
@@ -26,16 +24,10 @@ public:
 	~Mesh() = default;
 
 	void Draw();
-	void Draw(GLDrawType drawType);
-
-	const std::vector<std::shared_ptr<Primitive>>& GetPrimitiveList()const;
-	void SetPrimitive(const std::shared_ptr<Primitive>& Primitive);
-
-	friend class Graphics;
-	friend class glTFData;
+	
 	GLDrawType glDrawType;
+	std::vector<std::shared_ptr<Primitive>> m_primitives;
 private:
 	void CreateMesh(PrimitiveType primType);
-	std::vector<std::shared_ptr<Primitive>> m_primitives;
 };
 

@@ -6,7 +6,6 @@ class CTimeline;
 
 class TheaterDemo
 {
-    std::shared_ptr<GameObject> m_AnimObj;
     std::shared_ptr<GameObject> m_GridPlane;
     std::shared_ptr<GameObject> m_Raymarching;
 

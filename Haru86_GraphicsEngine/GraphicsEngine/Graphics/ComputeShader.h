@@ -13,7 +13,7 @@ enum CorrectionType {
 class ComputeShader
 {
 public:
-	ComputeShader(std::string shaderPath);
+	ComputeShader(std::string shaderCode);
 	~ComputeShader();
 	void SetBuffer(std::shared_ptr<class ComputeBuffer> buffer,int bufferindex,std::shared_ptr<class Material> material);
 	void SetMatrixUniform(std::string uniformName, glm::mat4 matrix);
