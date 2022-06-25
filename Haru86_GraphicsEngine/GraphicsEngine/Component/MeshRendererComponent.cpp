@@ -1,12 +1,6 @@
 #include "MeshRendererComponent.h"
-#include <glew.h>
-#include <glm/glm.hpp>
 #include "./TransformComponent.h"
-#include <string>
-#include <iostream>
-#include "../Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
-#include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/Object/GameObject.h"
 
 MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
@@ -32,10 +26,10 @@ void MeshRendererComponent::Draw() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->GetMVPMatrix());
-	m_material->SetMatrixUniform("MMatrix", owner->m_transform->GetMMatrix());
-	m_material->SetMatrixUniform("VMatrix", owner->m_transform->GetVMatrix());
-	m_material->SetMatrixUniform("PMatrix", owner->m_transform->GetPMatrix());
+	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix * owner->m_transform->m_mMatrix);
+	m_material->SetMatrixUniform("MMatrix", owner->m_transform->m_mMatrix);
+	m_material->SetMatrixUniform("VMatrix", owner->m_transform->m_vMatrix);
+	m_material->SetMatrixUniform("PMatrix", owner->m_transform->m_pMatrix);
 	m_material->SetFloatUniform("_time", game->time*0.001f);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());

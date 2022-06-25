@@ -18,14 +18,6 @@ CBloom::CBloom():
 	Initialize();
 }
 
-CBloom::~CBloom() {
-
-}
-
-void CBloom::Release() {
-
-}
-
 void CBloom::Initialize() {
 	m_IlluminanceMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomIlluminance_frag, "", "", "", "");
 	m_BlurMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::BloomBlur_frag, "", "", "", "");

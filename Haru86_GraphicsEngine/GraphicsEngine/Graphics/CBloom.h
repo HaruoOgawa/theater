@@ -25,10 +25,8 @@ class CBloom
 
 public:
 	CBloom();
-	~CBloom();
+	~CBloom()=default;
 	void Initialize();
 	void Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int& DestBuffer);
-private:
-	void Release();
 };
 

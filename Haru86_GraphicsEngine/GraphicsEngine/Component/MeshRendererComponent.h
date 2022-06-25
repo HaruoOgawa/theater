@@ -1,19 +1,13 @@
 #pragma once
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Material.h"
-#include <string>
 #include "../Graphics/Primitive.h"
-#include "../GraphicsMain/GraphicsMain.h"
-#include <functional>
-#include <memory>
-#include "GraphicsEngine/Graphics/EGraphicsParam.h"
 #include "GraphicsEngine/Graphics/Texture.h"
 
 class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
-//class Texture;
 
 class MeshRendererComponent
 {
