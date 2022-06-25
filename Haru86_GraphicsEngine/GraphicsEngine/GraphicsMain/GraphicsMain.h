@@ -14,7 +14,7 @@ enum class ERerderingTarget
 	DEPTH
 };
 
-//class MusicPlayer;
+class MusicPlayer;
 class TheaterDemo;
 class CTimeline;
 
@@ -33,7 +33,7 @@ class GraphicsMain
 	ERerderingTarget renderingTarget;
 
 	//
-	//std::shared_ptr<MusicPlayer> m_MusicPlayer;
+	std::shared_ptr<MusicPlayer> m_MusicPlayer;
 
 public:
 	static GraphicsMain* GetInstance()
@@ -68,6 +68,7 @@ public:
 	friend class PolygonRaymarchingMixer;
 	friend class UIObject;
 	friend class GraphicsRenderer;
+	friend class MusicPlayer;
 	friend class MeshRendererComponent;
 	friend class CTimeline;
 	friend class UIComponent;
