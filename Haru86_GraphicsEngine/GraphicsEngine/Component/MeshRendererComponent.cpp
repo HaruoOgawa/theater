@@ -6,25 +6,17 @@
 #include <iostream>
 #include "../Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
-#include "../Graphics/Texture.h"
+#include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/Object/GameObject.h"
 
 MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv)
-	: Component(o), m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr)
+	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr), owner(o), game(GraphicsMain::GetInstance())
 {
 	useZTest = true;
 	m_mesh = std::make_shared<Mesh>((primType));
 	m_mesh->glDrawType = GLDrawType::NONE;
 	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv);
-}
-
-MeshRendererComponent::~MeshRendererComponent() {
-
-}
-
-void MeshRendererComponent::Update() {
-
 }
 
 void MeshRendererComponent::Draw() {

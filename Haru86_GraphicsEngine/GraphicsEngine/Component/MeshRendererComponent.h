@@ -1,5 +1,4 @@
 #pragma once
-#include "GraphicsEngine/Component/Component.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Material.h"
 #include <string>
@@ -13,9 +12,9 @@ class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
+class Texture;
 
-class MeshRendererComponent :
-    public Component
+class MeshRendererComponent
 {
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
@@ -24,9 +23,8 @@ class MeshRendererComponent :
 public:
     MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
         const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
-    ~MeshRendererComponent();
+    ~MeshRendererComponent()=default;
 
-    void Update() override;
     void Draw();
     void DrawBoard();
     static void DrawInstancedWithMesh(std::shared_ptr<class Mesh> mesh, int count, std::shared_ptr<class Material> material, GLenum rendermode);
@@ -39,6 +37,9 @@ public:
     std::vector<TimelineAnimationClip*> animationClips;
 
     friend class GraphicsRenderer;
+    friend GameObject;
 private:
-    std::unique_ptr<class Texture> primTex;
+    class GameObject* owner;
+    class GraphicsMain* game;
+    std::unique_ptr<Texture> primTex;
 };

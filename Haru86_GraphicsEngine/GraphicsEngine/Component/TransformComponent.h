@@ -1,10 +1,8 @@
 #pragma once
-#include "./Component.h"
 #include <glm/glm.hpp>
 #include "../GraphicsMain/GraphicsMain.h"
 
-class TransformComponent :
-    public Component
+class TransformComponent
 {
     glm::vec3 m_position;
     glm::vec3 m_rotation;
@@ -15,7 +13,6 @@ class TransformComponent :
 public:
     TransformComponent(class GameObject* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
     ~TransformComponent() = default;
-    void Update() override{}
     
     glm::mat4 GetMVPMatrix(){ return m_pMatrix * m_vMatrix * m_mMatrix; }
     glm::mat4 GetMMatrix(){ return m_mMatrix; }
@@ -34,5 +31,11 @@ public:
     void ComputeModelMatrix();
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
+
+    friend GameObject;
+
+private:
+    class GameObject* owner;
+    class GraphicsMain* game;
 };
 

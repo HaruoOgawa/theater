@@ -3,7 +3,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 TransformComponent::TransformComponent(GameObject* o, glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: Component(o), m_position(pos), m_rotation(rot), m_scale(s)
+	: m_position(pos), m_rotation(rot), m_scale(s), owner(o), game(GraphicsMain::GetInstance())
 {
 	CalMatrix();
 }
