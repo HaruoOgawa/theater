@@ -46,8 +46,8 @@ PostProcess::~PostProcess() {
 void PostProcess::Initialize() {
 
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
-	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "");
-	m_LateMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::LatePostProcess_frag, "", "", "");
+	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "", "");
+	m_LateMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::LatePostProcess_frag, "", "", "", "");
 
 	if (!GraphicsRenderer::GetInstance()->CreateFrameBuffer(m_BloomTexture, m_BloomFrameBuffer,GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
 		printf("Cannot Create FrameBuffer\n");

@@ -4,7 +4,7 @@
 #include "../Component/MeshRendererComponent.h"
 
 GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueue renderOrder,RenderingSurfaceType SurfaceType,
-	std::string vert, std::string frag, std::string geom, std::string tc, std::string tv)
+	std::string vert, std::string frag, std::string geom, std::string tc, std::string tv, std::string cs)
 	:  m_renderType(renderType),m_renderOrder(static_cast<int>(renderOrder)), animTime(0.0f), m_PrimitiveType(primType), m_SurfaceType(SurfaceType)
 {
 	//
@@ -25,7 +25,7 @@ GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueu
 
 	//
 	m_transform = std::make_shared<TransformComponent>(nullptr, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
-	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, SurfaceType, vert, frag, geom, tc, tv);
+	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
 }
 
 void GameObject::SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s) { m_transform->SetPosition(pos); m_transform->SetRotation(rot); m_transform->SetScale(s); m_transform->CalMatrix(); }

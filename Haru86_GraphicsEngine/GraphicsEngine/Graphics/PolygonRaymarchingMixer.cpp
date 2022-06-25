@@ -6,7 +6,7 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 
 PolygonRaymarchingMixer::PolygonRaymarchingMixer() {
-	m_material = std::make_unique<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::PolygonRaymarchingMixer_vert, shaderlib::ShaderLib::PolygonRaymarchingMixer_frag, "", "", "");
+	m_material = std::make_unique<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::PolygonRaymarchingMixer_vert, shaderlib::ShaderLib::PolygonRaymarchingMixer_frag, "", "", "", "");
 	m_mesh = std::make_unique<Mesh>(PrimitiveType::BOARD);
 }
 

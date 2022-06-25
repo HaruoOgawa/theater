@@ -23,7 +23,7 @@ class MeshRendererComponent
     bool useZTest;
 public:
     MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
-        const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv);
+        const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv,const std::string& cs);
     ~MeshRendererComponent()=default;
 
     void Draw();
