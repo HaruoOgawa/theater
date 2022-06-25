@@ -12,12 +12,9 @@ class PostProcess
 	std::shared_ptr<Mesh> m_mesh;
 	std::shared_ptr<Material> m_material;
 	std::shared_ptr<Material> m_LateMaterial;
-	bool m_UsePostProcess;
+	
 
 	//bloom
-	bool m_UseBloom;
-	float m_BloomIntensity;
-	float m_BloomThreshold;
 	std::unique_ptr<CBloom> m_Bloom;
 	std::shared_ptr<Texture> m_BloomTexture;
 	unsigned int m_BloomFrameBuffer;
@@ -28,20 +25,17 @@ public:
 	static void DestroyInstance();
 	
 	PostProcess();
-	~PostProcess();
-	void EnablePostProcess();
-	const bool GetUsePostProcess()const;
+	virtual ~PostProcess()=default;
 	void DrawPolygonPostProcess(const std::shared_ptr<Texture> SrcTexture,const unsigned int& DestBuffer)const;
 	void DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture, const unsigned int& DestBuffer)const;
-	void EnableBloom(float bloomThreshold,float bloomIntensity);
 	
-	const float GetBloomThreshold()const;
-	const float GetBloomIntensity()const;
+	//
+	bool m_UsePostProcess;
 
-private:
-	void Initialize();
-	void Release();
-	void DrawBloom();
+	//bloom
+	bool m_UseBloom;
+	float m_BloomIntensity;
+	float m_BloomThreshold;
 protected:
 	static PostProcess* instance;
 };

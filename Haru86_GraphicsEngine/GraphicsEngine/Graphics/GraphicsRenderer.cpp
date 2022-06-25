@@ -52,7 +52,11 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 }
 
 GraphicsRenderer::~GraphicsRenderer() {
-
+	PostProcess::DestroyInstance();
+	if (polygon_frameBuffer != 0)glDeleteFramebuffers(1, &polygon_frameBuffer);
+	if (polygon_depthBuffer != 0)glDeleteFramebuffers(1, &polygon_depthBuffer);
+	if (raymarching_frameBuffer != 0)glDeleteFramebuffers(1, &raymarching_frameBuffer);
+	if (raymarching_depthBuffer != 0)glDeleteFramebuffers(1, &raymarching_depthBuffer);
 }
 
 bool GraphicsRenderer::Initialize(float width,float height) {
@@ -102,34 +106,15 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	PostProcess::CreateInstance();
 
 	//CreateFrameBuffer
-	if (!CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//Console::Log("Can not create frame buffer");
-	}
-	
-	if (!CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer,GL_RGBA, GL_RGBA)) {
-		//Console::Log("Can not create frame buffer");
-	}
+	CreateFrameBuffer(polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+	CreateFrameBuffer(polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA);
+	CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);
+	CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA);
+	CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+	CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+	CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 
-	if (!CreateFrameBuffer(raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA)) {
-		//Console::Log("Can not create frame buffer");
-	}
-
-	if (!CreateFrameBuffer(raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA)) {
-		//Console::Log("Can not create frame buffer");
-	}
-	
-	if (!CreateFrameBuffer(p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//Console::Log("Can not create frame buffer");
-	}
-	
-	if (!CreateFrameBuffer(m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//Console::Log("Can not create frame buffer");
-	}
-	
-	if (!CreateFrameBuffer(m_LatePostProcess_FrameTexture, m_LatePostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
-		//Console::Log("Can not create frame buffer");
-	}
-
+	//
 	m_Mixer = std::make_unique<PolygonRaymarchingMixer>();
 
 	return true;
@@ -276,42 +261,10 @@ void GraphicsRenderer::Draw() {
 	glDisable(GL_BLEND);
 
 	for (auto obj : mgame->boardGameObjectList) {
-		obj->meshComp->DrawBoard();
+		obj->meshComp->Draw();
 	}
 
 	//カラーバッファを入れ替える
 	glfwSwapBuffers(sWindow);
 
-}
-
-void GraphicsRenderer::ShutDown() {
-	PostProcess::DestroyInstance();
-	
-	if (polygon_frameTexture) {
-		if(polygon_frameBuffer!=0)glDeleteFramebuffers(1, &polygon_frameBuffer);
-		polygon_frameTexture->Unload();
-		polygon_frameTexture.reset();
-		polygon_frameTexture = nullptr;
-	}
-
-	if (polygon_depthTexture) {
-		if (polygon_depthBuffer != 0)glDeleteFramebuffers(1, &polygon_depthBuffer);
-		polygon_depthTexture->Unload();
-		polygon_depthTexture.reset();
-		polygon_depthTexture = nullptr;
-	}
-
-	if (raymarching_frameTexture) {
-		if (raymarching_frameBuffer != 0)glDeleteFramebuffers(1, &raymarching_frameBuffer);
-		raymarching_frameTexture->Unload();
-		raymarching_frameTexture.reset();
-		raymarching_frameTexture = nullptr;
-	}
-
-	if (raymarching_depthTexture) {
-		if (raymarching_depthBuffer != 0)glDeleteFramebuffers(1, &raymarching_depthBuffer);
-		raymarching_depthTexture->Unload();
-		raymarching_depthTexture.reset();
-		raymarching_depthTexture = nullptr;
-	}
 }

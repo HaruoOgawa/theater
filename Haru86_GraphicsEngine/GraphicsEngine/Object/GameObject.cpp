@@ -37,5 +37,5 @@ glm::vec3 GameObject::GetPosition() { return m_transform->GetPosition(); }
 glm::vec3 GameObject::GetRotation() { return m_transform->GetRotation(); }
 glm::vec3 GameObject::GetScale() { return m_transform->GetScale(); }
 
-void GameObject::UseZTest(bool use) { meshComp->SetUseZTest(use); }
+void GameObject::UseZTest(bool use) { meshComp->useZTest = use; }
 void GameObject::SetRenderOlder(int order) { m_renderOrder = order; }

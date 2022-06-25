@@ -77,15 +77,12 @@ namespace shaderlib { // プリプロセッサでどれをリンクするか選ぶのもありかも？？ 
 	};
 	
 #ifdef DEBUG
-
-#endif // DEBUG
-
 	const std::string ShaderLib::UIStandard_vert = {
 		#include "GraphicsEngine/Graphics/Shader/UIStandard.vert"
-	};
-	
+};
+
 	const std::string ShaderLib::UIStandard_frag = {
 		#include "GraphicsEngine/Graphics/Shader/UIStandard.frag"
 	};
-	
+#endif // DEBUG
 }

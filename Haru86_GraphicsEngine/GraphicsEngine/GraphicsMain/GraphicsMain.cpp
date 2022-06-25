@@ -111,7 +111,6 @@ GraphicsMain::GraphicsMain()
 }
 
 GraphicsMain::~GraphicsMain() {
-	GraphicsRenderer::GetInstance()->ShutDown();
 	GraphicsRenderer::Destroy();
 
 	gameObjectList.clear();
