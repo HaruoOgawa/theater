@@ -3,6 +3,7 @@
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
 #define PI 3.0f
 
@@ -19,9 +20,8 @@ void TheaterDemo::Start() {
 		shaderlib::ShaderLib::Standard_vert,
 		shaderlib::ShaderLib::GridPlane_frag
 		);
-	m_GridPlane->SetRotation(glm::vec3(PI / 2.0f, 0.0, 0.0));
-	m_GridPlane->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_GridPlane->SetScale(glm::vec3(25.0f));
+	m_GridPlane->m_transform->m_rotation= glm::vec3(PI / 2.0f, 0.0, 0.0);
+	m_GridPlane->m_transform->m_scale= glm::vec3(25.0f);
 
 	// raymarching
 	std::string sample = {

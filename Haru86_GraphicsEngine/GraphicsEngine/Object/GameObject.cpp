@@ -27,15 +27,3 @@ GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueu
 	m_transform = std::make_shared<TransformComponent>(nullptr, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
 	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
 }
-
-void GameObject::SetTransform(glm::vec3 pos, glm::vec3 rot, glm::vec3 s) { m_transform->SetPosition(pos); m_transform->SetRotation(rot); m_transform->SetScale(s); m_transform->CalMatrix(); }
-void GameObject::SetPosition(glm::vec3 pos) { m_transform->SetPosition(pos); m_transform->CalMatrix(); }
-void GameObject::SetRotation(glm::vec3 rot) { m_transform->SetRotation(rot); m_transform->CalMatrix(); }
-void GameObject::SetScale(glm::vec3 s) { m_transform->SetScale(s); m_transform->CalMatrix(); }
-
-glm::vec3 GameObject::GetPosition() { return m_transform->GetPosition(); }
-glm::vec3 GameObject::GetRotation() { return m_transform->GetRotation(); }
-glm::vec3 GameObject::GetScale() { return m_transform->GetScale(); }
-
-void GameObject::UseZTest(bool use) { meshComp->useZTest = use; }
-void GameObject::SetRenderOlder(int order) { m_renderOrder = order; }
