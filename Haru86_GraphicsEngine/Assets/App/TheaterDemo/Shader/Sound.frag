@@ -386,12 +386,16 @@ vec2 mainSound(float time){
 ///////////////////////////
 
 uniform float _sampleRate;
-uniform float _offset;
+uniform float _soundLength;
 
 in vec2 uv;
 
 void main(){
-    gl_FragColor=vec4(0.0,1.0,0.0,1.0);
+    //vec2 st=gl_FragCoord.xy/_resolution.xy; 
+    vec2 st=gl_FragCoord.xy; 
+    float time=(st.x+st.y) ;
+    vec2 sound=mainSound(time);
+    gl_FragColor=vec4(sound.r,sound.g,0.0,0.0);
 }
 
 )"

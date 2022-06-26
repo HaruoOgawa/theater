@@ -27,9 +27,12 @@ void GraphicsRenderer::Destroy() {
 }
 
 void GraphicsRenderer::CheckError() {
+#ifdef _DEBUG
 	GLenum err;
 	err = glGetError();
 	Console::Log("CheckError GLErr: %d\n", err);
+#endif // _DEBUG
+
 }
 
 GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)

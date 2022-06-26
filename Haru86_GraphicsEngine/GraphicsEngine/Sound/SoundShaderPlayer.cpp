@@ -6,10 +6,12 @@
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 
+#include <Windows.h>
+//#include <mmeapi.h>
+
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
-
 
 namespace sound {
 	SoundShaderPlayer::SoundShaderPlayer(const std::string& soundCode):
@@ -23,15 +25,43 @@ namespace sound {
 	}
 
 	bool SoundShaderPlayer::Initialize() {
+		//
 		DrawSound();
+
+		// mmeapi sound apiの準備
+		HWAVEOUT hWaveOut;
+		HGLOBAL hWaveHdr;
+		LPWAVEHDR IpWaveHdr; // たぶんこれがサウンドデータを取り扱うやつ
+		HANDLE hFormat;
+		WAVEFORMAT* pFormat;
+
+		// データを渡す
+		hWaveHdr = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE,
+			(DWORD)sizeof(WAVEHDR));
+
+		IpWaveHdr = (LPWAVEHDR)GlobalLock(hWaveHdr);
+		memset(IpWaveHdr[0].lpData, 0,m_SoundDataL.size());
+		memset(IpWaveHdr[1].lpData, 0,m_SoundDataR.size());
+
+		memcpy(&IpWaveHdr[0].lpData[0], &m_SoundDataL[0], m_SoundDataL.size());
+		memcpy(&IpWaveHdr[1].lpData[0], &m_SoundDataR[0], m_SoundDataR.size());
+
+		//
+		waveOutOpen((LPHWAVEOUT)&hWaveOut, WAVE_MAPPER, (LPWAVEFORMATEX)&pFormat,NULL, 0, CALLBACK_WINDOW);
+		waveOutPrepareHeader(hWaveOut, IpWaveHdr,sizeof(WAVEHDR));
+		waveOutWrite(hWaveOut, IpWaveHdr, sizeof(WAVEHDR));
+
 		return true;
 	}
 
 	bool SoundShaderPlayer::Update() {
 #ifdef _DEBUG
-		Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f / m_SoundData.size(): %d\n",
-			static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]), m_SoundData.size());
+		//Console::Log("m_SoundDataL=> [0]:%f, [1]:%f / m_SoundDataR=> [0]:%f, [1]:%f\n",
+		//	static_cast<float>(m_SoundDataL[0]), static_cast<float>(m_SoundDataL[1]), static_cast<float>(m_SoundDataR[0]), static_cast<float>(m_SoundDataR[1]));
 #endif // _DEBUG
+
+		// サウンドを再生する
+		// waveOutGetPosition
 
 		return true;
 	}
@@ -66,15 +96,26 @@ namespace sound {
 		int x = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().x * GraphicsRenderer::GetInstance()->frameResolusion);
 		int y = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().y * GraphicsRenderer::GetInstance()->frameResolusion);
 
-		m_SoundData.resize(x * y * 4);
+		m_SoundDataL.resize(x * y);
 		glReadPixels(
 			0,
 			0,
 			x,
 			y,
-			GL_RGBA,
+			GL_RED,
 			GL_FLOAT,
-			m_SoundData.data()
+			m_SoundDataL.data()
+		);
+		
+		m_SoundDataR.resize(x * y);
+		glReadPixels(
+			0,
+			0,
+			x,
+			y,
+			GL_GREEN,
+			GL_FLOAT,
+			m_SoundDataR.data()
 		);
 	}
 }
