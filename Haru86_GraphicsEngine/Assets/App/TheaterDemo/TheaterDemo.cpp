@@ -4,10 +4,18 @@
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 
 #define PI 3.0f
 
 void TheaterDemo::Start() {
+	// サウンド
+	std::string soundCode = {
+		#include "Shader/Sound.frag"
+	};
+	m_SoundPlayer = std::make_shared<sound::SoundShaderPlayer>(soundCode);
+	m_SoundPlayer->Initialize();
+
 	// 背景色
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 
@@ -40,7 +48,8 @@ void TheaterDemo::Start() {
 }
 
 void TheaterDemo::Update() {
-
+	// サウンド
+	m_SoundPlayer->Update();
 }
 
 void TheaterDemo::Draw() {

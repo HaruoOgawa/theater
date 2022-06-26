@@ -423,6 +423,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\TheaterDemo\Shader\GlowCave.frag" />
+    <None Include="Assets\App\TheaterDemo\Shader\Sound.frag" />
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
     <None Include="bin\zlib1.dll" />

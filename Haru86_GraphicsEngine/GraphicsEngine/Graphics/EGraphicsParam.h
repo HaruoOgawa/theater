@@ -16,6 +16,7 @@ enum class RenderType {
 
 enum class RenderingSurfaceType
 {
+	None,
 	RASTERIZER,
 	RAYMARCHING,
 };

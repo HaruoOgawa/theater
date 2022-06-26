@@ -16,7 +16,7 @@ enum CorrectionType {
 class Material 
 {
 public:
-    Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs);
+    Material(RenderingSurfaceType SurfaceType,const std::string& vert, const std::string& frag, const std::string& geom="", const std::string& tc = "", const std::string& tv = "", const std::string& cs = "");
     ~Material();
     
     void LoadShader(const std::string& vert, const std::string& frag, const std::string& geom,const std::string& tc, const std::string& tv, const std::string& cs,

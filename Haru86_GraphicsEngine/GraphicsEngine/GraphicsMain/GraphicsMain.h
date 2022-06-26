@@ -17,10 +17,6 @@ enum class ERerderingTarget
 class TheaterDemo;
 class CTimeline;
 
-namespace sound {
-	class SoundShaderPlayer;
-}
-
 class GraphicsMain
 {
 	bool isRunning;
@@ -33,9 +29,6 @@ class GraphicsMain
 
 	bool mouseStateBool;
 	
-	ERerderingTarget renderingTarget;
-
-
 public:
 	static GraphicsMain* GetInstance()
 	{
@@ -63,9 +56,7 @@ public:
 	
 	//
 	TheaterDemo* m_App;
-
-	//
-	std::shared_ptr<sound::SoundShaderPlayer> m_SoundPlayer;
+	ERerderingTarget renderingTarget;
 
 	friend class Main;
 	friend class GameObject;
@@ -78,6 +69,7 @@ public:
 	friend class Material;
 	friend class PostProcess;
 	friend class CBloom;
+	friend class SoundShaderPlayer;
 
 private :
 	void UpdateTimeline();

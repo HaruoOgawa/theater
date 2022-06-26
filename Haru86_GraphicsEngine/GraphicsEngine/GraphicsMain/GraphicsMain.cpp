@@ -6,12 +6,13 @@
 #include <vector>
 #include <algorithm>
 #include "Assets/App/TheaterDemo/TheaterDemo.h"
+#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
+
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
 
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -38,8 +39,7 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_timeline(nullptr),
-	m_SoundPlayer(std::make_shared<sound::SoundShaderPlayer>())
+	m_timeline(nullptr)
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -161,16 +161,11 @@ void GraphicsMain::LoadData() {
 	//
 	m_App->Timeline(m_timeline.get());
 	m_timeline->Initialize();
-
-	//
-	m_SoundPlayer->Initialize();
-
 }
 
 bool GraphicsMain::RunLoop() {
 	while (isRunning)
 	{
-		m_SoundPlayer->Update();
 		UpdateTimeline();
 		InputProcess();
 		Update();
