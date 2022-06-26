@@ -17,7 +17,7 @@ namespace sound {
 		m_FrameIndex(0)
 	{
 		m_Mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
-		m_Material = std::make_shared<Material>(RenderingSurfaceType::None, shaderlib::ShaderLib::StandardRenderBoard_vert, soundCode);
+		m_Material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, soundCode);
 		m_FrameTex = std::make_shared<Texture>();
 		GraphicsRenderer::GetInstance()->CreateFrameBuffer(m_FrameTex, m_FrameIndex, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	}
@@ -29,8 +29,8 @@ namespace sound {
 
 	bool SoundShaderPlayer::Update() {
 #ifdef _DEBUG
-		Console::Log("m_SoundData.size(): %d\n", m_SoundData.size());
-		Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f\n", static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]));
+		Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f / m_SoundData.size(): %d\n",
+			static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]), m_SoundData.size());
 #endif // _DEBUG
 
 		return true;
@@ -46,6 +46,15 @@ namespace sound {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		m_Material->SetActive();
+		
+		m_Material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+		m_Material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+		if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
+			m_Material->SetFloatUniform("_RenderingTarget", 1.0);
+		}
+		else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
+			m_Material->SetFloatUniform("_RenderingTarget", 2.0);
+		}
 		m_Material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
 		m_Mesh->Draw();
@@ -57,13 +66,7 @@ namespace sound {
 		int x = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().x * GraphicsRenderer::GetInstance()->frameResolusion);
 		int y = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().y * GraphicsRenderer::GetInstance()->frameResolusion);
 
-		m_SoundData.clear();
 		m_SoundData.resize(x * y * 4);
-
-		//char[x * y * 4] buf;
-
-		//glReadBuffer(GL_FRONT);
-
 		glReadPixels(
 			0,
 			0,
@@ -71,7 +74,7 @@ namespace sound {
 			y,
 			GL_RGBA,
 			GL_FLOAT,
-			&m_SoundData[0]
+			m_SoundData.data()
 		);
 	}
 }

@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <glew.h>
 
 class Mesh;
 class Material;
@@ -17,7 +18,7 @@ namespace sound {
 		std::shared_ptr<Texture>  m_FrameTex;
 		unsigned int		      m_FrameIndex;
 
-		std::vector<float>		  m_SoundData;
+		std::vector<GLfloat>		  m_SoundData;
 		
 	public:
 		SoundShaderPlayer(const std::string& soundCode);
