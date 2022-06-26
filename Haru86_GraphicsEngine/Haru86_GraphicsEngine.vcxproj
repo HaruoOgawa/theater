@@ -387,13 +387,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\tiny_gltf.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
-    <ClInclude Include="GraphicsEngine\Music\64k2Patch.h" />
-    <ClInclude Include="GraphicsEngine\Music\64k2Song.h" />
-    <ClInclude Include="GraphicsEngine\Music\MusicPlayer.h" />
-    <ClInclude Include="GraphicsEngine\Music\sample_t.h" />
-    <ClInclude Include="GraphicsEngine\Music\Synth.h" />
-    <ClInclude Include="GraphicsEngine\Music\SynthAllocator.h" />
-    <ClInclude Include="GraphicsEngine\Music\SynthNode.h" />
     <ClInclude Include="GraphicsEngine\Object\GameObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Material.h" />
@@ -406,6 +399,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
     <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
+    <ClInclude Include="GraphicsEngine\Sound\SoundShaderPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
@@ -413,11 +407,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
-    <ClCompile Include="GraphicsEngine\Music\MusicPlayer.cpp" />
-    <ClCompile Include="GraphicsEngine\Music\sample_t.cpp" />
-    <ClCompile Include="GraphicsEngine\Music\Synth.cpp" />
-    <ClCompile Include="GraphicsEngine\Music\SynthAllocator.cpp" />
-    <ClCompile Include="GraphicsEngine\Music\SynthNode.cpp" />
     <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\Main.cpp" />
@@ -430,6 +419,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="Assets\App\TheaterDemo\TheaterDemo.cpp" />
+    <ClCompile Include="GraphicsEngine\Sound\SoundShaderPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\TheaterDemo\Shader\GlowCave.frag" />

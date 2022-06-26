@@ -14,9 +14,12 @@ enum class ERerderingTarget
 	DEPTH
 };
 
-class MusicPlayer;
 class TheaterDemo;
 class CTimeline;
+
+namespace sound {
+	class SoundShaderPlayer;
+}
 
 class GraphicsMain
 {
@@ -32,8 +35,6 @@ class GraphicsMain
 	
 	ERerderingTarget renderingTarget;
 
-	//
-	std::shared_ptr<MusicPlayer> m_MusicPlayer;
 
 public:
 	static GraphicsMain* GetInstance()
@@ -63,12 +64,14 @@ public:
 	//
 	TheaterDemo* m_App;
 
+	//
+	std::shared_ptr<sound::SoundShaderPlayer> m_SoundPlayer;
+
 	friend class Main;
 	friend class GameObject;
 	friend class PolygonRaymarchingMixer;
 	friend class UIObject;
 	friend class GraphicsRenderer;
-	friend class MusicPlayer;
 	friend class MeshRendererComponent;
 	friend class CTimeline;
 	friend class UIComponent;

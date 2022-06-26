@@ -11,7 +11,7 @@
 #endif // _DEBUG
 
 #include "GraphicsEngine/Graphics/ShaderLib.h"
-#include "GraphicsEngine/Music/MusicPlayer.h"
+#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 
 GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
@@ -39,7 +39,7 @@ GraphicsMain::GraphicsMain()
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_timeline(nullptr),
-	m_MusicPlayer(std::make_shared<MusicPlayer>())
+	m_SoundPlayer(std::make_shared<sound::SoundShaderPlayer>())
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -163,14 +163,14 @@ void GraphicsMain::LoadData() {
 	m_timeline->Initialize();
 
 	//
-	m_MusicPlayer->Initialize();
+	m_SoundPlayer->Initialize();
 
 }
 
 bool GraphicsMain::RunLoop() {
 	while (isRunning)
 	{
-		m_MusicPlayer->Update();
+		m_SoundPlayer->Update();
 		UpdateTimeline();
 		InputProcess();
 		Update();
