@@ -36,12 +36,13 @@ public:
 	}
 	static void Create();
 	static void Destroy();
+	static void CheckError();
 
 	GraphicsRenderer(class GraphicsMain* game);
 	~GraphicsRenderer();
 	bool Initialize(float width, float height);
 	void Draw();
-	bool CreateFrameBuffer(std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE);
+	bool CreateFrameBuffer(std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE,bool UseTex=true);
 	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	

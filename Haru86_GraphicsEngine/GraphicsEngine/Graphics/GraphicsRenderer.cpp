@@ -26,6 +26,15 @@ void GraphicsRenderer::Destroy() {
 	renderer_instance = nullptr;
 }
 
+void GraphicsRenderer::CheckError() {
+#ifdef _DEBUG
+	GLenum err;
+	err = glGetError();
+	Console::Log("CheckError GLErr: %d\n", err);
+#endif // _DEBUG
+
+}
+
 GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	: mgame(game),
 	sWindow(nullptr),
@@ -133,23 +142,40 @@ void GraphicsRenderer::SetBackgroudColor(glm::vec4 BackgroudColor) {
 	m_BackgroudColor = BackgroudColor;
 }
 
-bool GraphicsRenderer::CreateFrameBuffer(std::shared_ptr<Texture> fTex, unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type) {
+bool GraphicsRenderer::CreateFrameBuffer(std::shared_ptr<Texture> fTex, unsigned int& fBuffer,
+	GLint internalformat, GLint format, GLenum type, bool UseTex) {
 	int width = static_cast<int>(GetScreenSize().x) ;
 	int height = static_cast<int>(GetScreenSize().y );
 	
+	// フレームバッファ生成
 	glGenFramebuffers(1, &fBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, fBuffer);
+
+	// デプスバッファ生成
 	GLuint depthBuffer;
 	glGenRenderbuffers(1, &depthBuffer);
-
-	fTex->CreateForRendering(width, height,internalformat, format, type);
-	
 	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, fBuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
+	// カラーバッファ生成
+	if (UseTex) // カラーテクスチャバッファ
+	{ 
+		fTex->CreateForRendering(width, height, internalformat, format, type);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
+	}
+	else // カラーレンダーバッファ
+	{
+		GLuint colorRenderBuffer;
+		glGenRenderbuffers(1, &colorRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, colorRenderBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	}
+	
+	// バインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return true;

@@ -14,7 +14,6 @@ enum class ERerderingTarget
 	DEPTH
 };
 
-class MusicPlayer;
 class TheaterDemo;
 class CTimeline;
 
@@ -30,11 +29,6 @@ class GraphicsMain
 
 	bool mouseStateBool;
 	
-	ERerderingTarget renderingTarget;
-
-	//
-	std::shared_ptr<MusicPlayer> m_MusicPlayer;
-
 public:
 	static GraphicsMain* GetInstance()
 	{
@@ -62,19 +56,20 @@ public:
 	
 	//
 	TheaterDemo* m_App;
+	ERerderingTarget renderingTarget;
 
 	friend class Main;
 	friend class GameObject;
 	friend class PolygonRaymarchingMixer;
 	friend class UIObject;
 	friend class GraphicsRenderer;
-	friend class MusicPlayer;
 	friend class MeshRendererComponent;
 	friend class CTimeline;
 	friend class UIComponent;
 	friend class Material;
 	friend class PostProcess;
 	friend class CBloom;
+	friend class SoundShaderPlayer;
 
 private :
 	void UpdateTimeline();
