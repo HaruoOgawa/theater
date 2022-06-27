@@ -7,7 +7,8 @@
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 
 #include <Windows.h>
-//#include <mmeapi.h>
+#include <mmsystem.h>
+#include <mmreg.h>
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -16,7 +17,8 @@
 namespace sound {
 	SoundShaderPlayer::SoundShaderPlayer(const std::string& soundCode):
 		m_FrameTex(nullptr),
-		m_FrameIndex(0)
+		m_FrameIndex(0),
+		m_SoundLength(180.0f)
 	{
 		m_Mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 		m_Material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, soundCode);
@@ -25,43 +27,20 @@ namespace sound {
 	}
 
 	bool SoundShaderPlayer::Initialize() {
-		//
+		// SoundShaderの読み込み
 		DrawSound();
 
 		// mmeapi sound apiの準備
-		HWAVEOUT hWaveOut;
-		HGLOBAL hWaveHdr;
-		LPWAVEHDR IpWaveHdr; // たぶんこれがサウンドデータを取り扱うやつ
-		HANDLE hFormat;
-		WAVEFORMAT* pFormat;
-
-		// データを渡す
-		hWaveHdr = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE,
-			(DWORD)sizeof(WAVEHDR));
-
-		IpWaveHdr = (LPWAVEHDR)GlobalLock(hWaveHdr);
-		memset(IpWaveHdr[0].lpData, 0,m_SoundDataL.size());
-		memset(IpWaveHdr[1].lpData, 0,m_SoundDataR.size());
-
-		memcpy(&IpWaveHdr[0].lpData[0], &m_SoundDataL[0], m_SoundDataL.size());
-		memcpy(&IpWaveHdr[1].lpData[0], &m_SoundDataR[0], m_SoundDataR.size());
-
-		//
-		waveOutOpen((LPHWAVEOUT)&hWaveOut, WAVE_MAPPER, (LPWAVEFORMATEX)&pFormat,NULL, 0, CALLBACK_WINDOW);
-		waveOutPrepareHeader(hWaveOut, IpWaveHdr,sizeof(WAVEHDR));
-		waveOutWrite(hWaveOut, IpWaveHdr, sizeof(WAVEHDR));
+		//PlaySoundShader();
 
 		return true;
 	}
 
 	bool SoundShaderPlayer::Update() {
 #ifdef _DEBUG
-		//Console::Log("m_SoundDataL=> [0]:%f, [1]:%f / m_SoundDataR=> [0]:%f, [1]:%f\n",
-		//	static_cast<float>(m_SoundDataL[0]), static_cast<float>(m_SoundDataL[1]), static_cast<float>(m_SoundDataR[0]), static_cast<float>(m_SoundDataR[1]));
+		Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f, [3]:%f\n",
+			static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]), static_cast<float>(m_SoundData[3]));
 #endif // _DEBUG
-
-		// サウンドを再生する
-		// waveOutGetPosition
 
 		return true;
 	}
@@ -79,13 +58,7 @@ namespace sound {
 		
 		m_Material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 		m_Material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
-			m_Material->SetFloatUniform("_RenderingTarget", 1.0);
-		}
-		else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
-			m_Material->SetFloatUniform("_RenderingTarget", 2.0);
-		}
-		m_Material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+		m_Material->SetFloatUniform("_soundLength", m_SoundLength); //
 
 		m_Mesh->Draw();
 
@@ -96,26 +69,56 @@ namespace sound {
 		int x = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().x * GraphicsRenderer::GetInstance()->frameResolusion);
 		int y = static_cast<int>(GraphicsRenderer::GetInstance()->GetScreenSize().y * GraphicsRenderer::GetInstance()->frameResolusion);
 
-		m_SoundDataL.resize(x * y);
+		m_SoundData.resize(x * y * 2);
 		glReadPixels(
 			0,
 			0,
 			x,
 			y,
-			GL_RED,
+			GL_RG,
 			GL_FLOAT,
-			m_SoundDataL.data()
+			m_SoundData.data()
 		);
-		
-		m_SoundDataR.resize(x * y);
-		glReadPixels(
+
+		//GraphicsRenderer::CheckError();
+	}
+
+#define SAMPLE_RATE 44100
+#define SAMPLE_TYPE float
+
+	// mmeapi sound apiによる音楽の再生
+	void SoundShaderPlayer::PlaySoundShader() {
+		// サウンドマネージャー
+		HWAVEOUT hWaveOut;
+		unsigned int MAX_SAMPLES = static_cast<unsigned int>(m_SoundData.size());
+		unsigned int SamplesPerSec = static_cast<unsigned int>(static_cast<float>(MAX_SAMPLES) / m_SoundLength);
+
+		// サウンドの設定
+		WAVEFORMATEX WaveFMT = {
+			WAVE_FORMAT_IEEE_FLOAT,
+			2,
+			MAX_SAMPLES * sizeof(SAMPLE_TYPE),
+			4,
+			SamplesPerSec,
+			SamplesPerSec * 4,
+			0
+		};
+			
+		// サウンドデータ
+		WAVEHDR WaveHDR = {
+			(LPSTR)&m_SoundData[0],
+			MAX_SAMPLES * sizeof(SAMPLE_TYPE),
 			0,
 			0,
-			x,
-			y,
-			GL_GREEN,
-			GL_FLOAT,
-			m_SoundDataR.data()
-		);
+			0,
+			0,
+			0,
+			0
+		};
+
+		//
+		waveOutOpen(&hWaveOut, WAVE_MAPPER, &WaveFMT, NULL, 0, CALLBACK_NULL);
+		waveOutPrepareHeader(hWaveOut, &WaveHDR, sizeof(WaveHDR));
+		waveOutWrite(hWaveOut, &WaveHDR, sizeof(WaveHDR));
 	}
 }

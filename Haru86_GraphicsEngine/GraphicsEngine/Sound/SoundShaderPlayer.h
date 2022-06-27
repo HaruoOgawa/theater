@@ -18,8 +18,9 @@ namespace sound {
 		std::shared_ptr<Texture>  m_FrameTex;
 		unsigned int		      m_FrameIndex;
 
-		std::vector<GLfloat>		  m_SoundDataL;
-		std::vector<GLfloat>		  m_SoundDataR;
+		std::vector<GLfloat>	  m_SoundData;
+
+		float					  m_SoundLength;
 		
 	public:
 		SoundShaderPlayer(const std::string& soundCode);
@@ -30,6 +31,7 @@ namespace sound {
 	private:
 		void DrawSound();
 		void ReadSoundBuffer();
+		void PlaySoundShader();
 	};
 }
 
