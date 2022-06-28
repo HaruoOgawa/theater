@@ -9,8 +9,6 @@
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
 
-#define PI 3.0f
-
 void GenocideCronus::Start() {
 	// カメラ
 	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(1.0f));
@@ -25,6 +23,7 @@ void GenocideCronus::Start() {
 	// 背景色
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
+#ifdef _DEBUG
 	// デバッグ用グリッド
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
@@ -34,8 +33,10 @@ void GenocideCronus::Start() {
 		shaderlib::ShaderLib::Standard_vert,
 		shaderlib::ShaderLib::GridPlane_frag
 		);
-	m_GridPlane->m_transform->m_rotation = glm::vec3(PI / 2.0f, 0.0, 0.0);
+	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
 	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
+#endif // _DEBUG
+
 
 	//
 	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();

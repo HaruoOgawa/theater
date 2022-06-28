@@ -16,6 +16,7 @@ struct v2g{
 	vec4 position;
 	vec2 uv;
 	vec3 randPos;
+	int id;
 };
 
 out v2g v2g_o; 
@@ -27,14 +28,16 @@ float rand(vec2 seeds){
 void main(){
 	int id=gl_InstanceID;
 	vec3 randPos=vec3(0.0);
-	//randPos.xz=( vec2( rand( vec2(float(gl_InstanceID),0.321)),rand( vec2(float(gl_InstanceID),0.741)) ) * 2.0-1.0 )*50.0;
-	
+	randPos.xz=( vec2( rand( vec2(float(gl_InstanceID),0.321)),rand( vec2(float(gl_InstanceID),0.741)) ) * 2.0-1.0 )*25.0;
+	//randPos
+
 	vec4 pos=vec4(vertex,1.0);
 
 	gl_Position=pos;
 	v2g_o.position=pos;
 	v2g_o.uv=texcoord;
 	v2g_o.randPos=randPos;
+	v2g_o.id=id;
 }
 
 )"
