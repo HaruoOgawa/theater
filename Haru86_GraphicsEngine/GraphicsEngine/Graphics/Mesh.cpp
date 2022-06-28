@@ -30,8 +30,8 @@ void Mesh::CreateMesh(PrimitiveType primType) {
 
 }
 
-void Mesh::Draw() {
+void Mesh::Draw(GLenum DrawVertexWay) {
 	for (int i = 0; i < m_primitives.size();i++) {
-		m_primitives[i]->Draw();
+		m_primitives[i]->Draw(DrawVertexWay);
 	}
 }

@@ -46,9 +46,9 @@ void Primitive::CreatePrimitive(const std::vector<std::vector<float>>& vertices,
 
 }
 
-void Primitive::Draw() {
+void Primitive::Draw(GLenum DrawVertexWay) {
 	SetActive();
-	glDrawElements(GL_TRIANGLES, mNumIndices, GL_UNSIGNED_SHORT, nullptr);
+	glDrawElements(DrawVertexWay, mNumIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
 void Primitive::SetActive() {

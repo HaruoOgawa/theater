@@ -1,11 +1,7 @@
 R"(
 
-#version 330
+#version 430
 
-uniform mat4 MVPMatrix;
-uniform mat4 MMatrix;
-uniform mat4 VMatrix;
-uniform mat4 PMatrix;
 uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _CameraPos;
@@ -16,17 +12,21 @@ layout(location=2)in vec2 texcoord;
 layout(location=3)in vec4 weights;
 layout(location=4)in ivec4 joints;
 
-out vec2 uv;
-out vec3 CameraPos;
-out vec3 WorldVertexPos;
+struct v2g{
+	vec4 position;
+	vec2 uv;
+	vec3 worldPos;
+};
+
+out v2g v2g_o; 
 
 void main(){
 	vec4 pos=vec4(vertex,1.0);
 
-	gl_Position=MVPMatrix*pos;
-	uv=texcoord;
-	CameraPos=_CameraPos;
-	WorldVertexPos=(MMatrix*pos).xyz;
+	gl_Position=pos;
+	v2g_o.position=pos;
+	v2g_o.uv=texcoord;
+	v2g_o.worldPos=pos.xyz;
 }
 
 )"

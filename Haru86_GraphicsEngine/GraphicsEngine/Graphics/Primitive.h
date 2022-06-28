@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <glew.h>
 
 class Primitive
 {
@@ -8,7 +9,7 @@ public:
 	Primitive(const std::vector<std::vector<float>>& vertices,const std::vector<int>& dimention,const std::vector<unsigned short>& indices);
 	~Primitive();
 	void CreatePrimitive(const std::vector<std::vector<float>>& vertices,const std::vector<int>& dimention,const std::vector<unsigned short>& indices);
-	void Draw();
+	void Draw(GLenum DrawVertexWay);
 	
 	void SetActive();
 

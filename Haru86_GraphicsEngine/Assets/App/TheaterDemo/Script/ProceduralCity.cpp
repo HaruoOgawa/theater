@@ -13,7 +13,7 @@ namespace myapp {
 		m_transform(std::make_shared<TransformComponent>())
 	{
 		//
-		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::BOARD); // Œã‚ÅPOINT‚É‚·‚é
+		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::POINT);
 		std::string ProceduralCity_vert = {
 			#include "../Shader/ProceduralCity.vert"
 		};
@@ -25,7 +25,7 @@ namespace myapp {
 		std::string ProceduralCity_geom = {
 			#include "../Shader/ProceduralCity.geom"
 		};
-		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag);
+		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag, ProceduralCity_geom);
 
 		//
 		m_BillWindowGenerator = std::make_shared<BillWindowGenerator>();
@@ -40,7 +40,7 @@ namespace myapp {
 	}
 
 	void ProceduralCity::Draw() {
-		Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
+		//Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 
 		m_BillMaterial4Instanced->SetActive();
 		m_transform->CalMatrix();
@@ -54,6 +54,6 @@ namespace myapp {
 		m_BillMaterial4Instanced->SetTexUniform("_BillWindowTex", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 		m_BillWindowGenerator->m_BillWindowTex->SetEactive();
 
-		m_BillMesh4Instanced->Draw();
+		m_BillMesh4Instanced->Draw(GL_POINTS);
 	}
 }
