@@ -5,7 +5,7 @@ class TransformComponent
 {
     
 public:
-    TransformComponent(glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+    TransformComponent(glm::vec3 pos=glm::vec3(0.0f), glm::vec3 rot = glm::vec3(0.0f), glm::vec3 s = glm::vec3(1.0f));
     ~TransformComponent() = default;
     
     void CalMatrix();

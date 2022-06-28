@@ -39,7 +39,8 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_timeline(nullptr)
+	m_timeline(nullptr),
+	m_CameraTransform(nullptr)
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)

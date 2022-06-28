@@ -24,11 +24,20 @@ void TransformComponent::ComputeModelMatrix() {
 }
 
 void TransformComponent::ComputeViewMatrix() {
-	m_vMatrix = glm::lookAt(
-		glm::vec3(0.0f, 0.0f, -3.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f)
-	);
+	if (GraphicsMain::GetInstance()->m_CameraTransform) {
+		m_vMatrix = glm::lookAt(
+			GraphicsMain::GetInstance()->m_CameraTransform->m_position,
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
+	}
+	else {
+		m_vMatrix = glm::lookAt(
+			glm::vec3(0.0f, 0.0f, -3.0f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
+	}
 }
 
 void TransformComponent::ComputePerspectiveMatrix() {
