@@ -15,18 +15,26 @@ layout(location=4)in ivec4 joints;
 struct v2g{
 	vec4 position;
 	vec2 uv;
-	vec3 worldPos;
+	vec3 randPos;
 };
 
 out v2g v2g_o; 
 
+float rand(vec2 seeds){
+  return fract(sin(dot(seeds, vec2(12.9898,78.233))) * 43758.5453);
+}
+
 void main(){
+	int id=gl_InstanceID;
+	vec3 randPos=vec3(0.0);
+	//randPos.xz=( vec2( rand( vec2(float(gl_InstanceID),0.321)),rand( vec2(float(gl_InstanceID),0.741)) ) * 2.0-1.0 )*50.0;
+	
 	vec4 pos=vec4(vertex,1.0);
 
 	gl_Position=pos;
 	v2g_o.position=pos;
 	v2g_o.uv=texcoord;
-	v2g_o.worldPos=pos.xyz;
+	v2g_o.randPos=randPos;
 }
 
 )"

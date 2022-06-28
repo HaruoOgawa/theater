@@ -14,7 +14,7 @@ enum class ERerderingTarget
 	DEPTH
 };
 
-class TheaterDemo;
+class GenocideCronus;
 class CTimeline;
 class TransformComponent;
 
@@ -46,7 +46,7 @@ public:
 	std::map<int, GLenum> texSlots;
 	
 	//
-	TheaterDemo* m_App;
+	GenocideCronus* m_App;
 	ERerderingTarget renderingTarget;
 	bool isRunning;
 	float previousTime;

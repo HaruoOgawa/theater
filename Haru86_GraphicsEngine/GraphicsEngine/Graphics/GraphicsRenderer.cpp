@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
-#include "Assets/App/TheaterDemo/TheaterDemo.h"
+#include "Assets/App/GenocideCronus/GenocideCronus.h"
 
 GraphicsRenderer* GraphicsRenderer::renderer_instance = nullptr;
 

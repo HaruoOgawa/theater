@@ -5,7 +5,7 @@
 #include "CTimeline.h"
 #include <vector>
 #include <algorithm>
-#include "Assets/App/TheaterDemo/TheaterDemo.h"
+#include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 
 #ifdef _DEBUG
@@ -139,7 +139,7 @@ bool GraphicsMain::CreateApp() {
 bool GraphicsMain::Initialize() {
 	// ÉÅÉÇÉäämï€
 	m_timeline = std::make_unique<CTimeline>();
-	m_App = new TheaterDemo();
+	m_App = new GenocideCronus();
 	LoadData();
 	
 	return true;

@@ -60,11 +60,3 @@ void MeshRendererComponent::Draw() {
 	//使い終わったらここでTextureを非アクティブにする
 	m_material->SetEactiveTextureList();
 }
-
-void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, int count, std::shared_ptr<Material> material, GLenum rendermode) {
-	const auto& prim = mesh->m_primitives;
-	for (int i = 0; i < prim.size(); i++) {
-		prim[i]->SetActive();
-		glDrawElementsInstanced(rendermode, prim[i]->mNumIndices, GL_UNSIGNED_SHORT, nullptr, count);
-	}
-}

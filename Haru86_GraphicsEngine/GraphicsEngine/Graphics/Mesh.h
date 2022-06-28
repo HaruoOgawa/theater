@@ -25,7 +25,8 @@ public:
 	~Mesh() = default;
 
 	void Draw(GLenum DrawVertexWay= GL_TRIANGLES);
-	
+	void DrawInstancedWithMesh(int count, GLenum rendermode);
+
 	GLDrawType glDrawType;
 	std::vector<std::shared_ptr<Primitive>> m_primitives;
 private:

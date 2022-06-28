@@ -54,6 +54,7 @@ namespace myapp {
 		m_BillMaterial4Instanced->SetTexUniform("_BillWindowTex", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 		m_BillWindowGenerator->m_BillWindowTex->SetEactive();
 
+		//m_BillMesh4Instanced->DrawInstancedWithMesh(1024, GL_POINTS);
 		m_BillMesh4Instanced->Draw(GL_POINTS);
 	}
 }

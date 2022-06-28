@@ -12,7 +12,7 @@ namespace myapp {
     class ProceduralCity;
 }
 
-class TheaterDemo
+class GenocideCronus
 {
     //
     std::shared_ptr<sound::SoundShaderPlayer> m_SoundPlayer;
@@ -24,8 +24,8 @@ class TheaterDemo
     //
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
 public:
-    TheaterDemo() = default;
-    ~TheaterDemo() = default;
+    GenocideCronus() = default;
+    ~GenocideCronus() = default;
 
     void Start();
     void Update();
