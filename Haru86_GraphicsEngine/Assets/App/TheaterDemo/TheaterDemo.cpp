@@ -6,6 +6,7 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 #include "Assets/App/TheaterDemo/Script/ProceduralCity.h"
+#include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 
 #define PI 3.0f
 

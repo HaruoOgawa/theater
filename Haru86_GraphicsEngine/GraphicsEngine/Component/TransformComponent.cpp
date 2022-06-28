@@ -1,9 +1,10 @@
 #include "TransformComponent.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "../GraphicsMain/GraphicsMain.h"
 
-TransformComponent::TransformComponent(GameObject* o, glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: m_position(pos), m_rotation(rot), m_scale(s), owner(o), game(GraphicsMain::GetInstance())
+TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
+	: m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
 }

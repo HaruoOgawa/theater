@@ -24,6 +24,6 @@ GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueu
 	}
 
 	//
-	m_transform = std::make_shared<TransformComponent>(nullptr, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
+	m_transform = std::make_shared<TransformComponent>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
 	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
 }

@@ -4,6 +4,7 @@
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
