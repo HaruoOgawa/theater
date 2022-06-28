@@ -400,6 +400,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
     <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
     <ClInclude Include="GraphicsEngine\Sound\SoundShaderPlayer.h" />
+    <ClInclude Include="Assets\App\TheaterDemo\Script\ProceduralCity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
@@ -420,8 +421,10 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="Assets\App\TheaterDemo\TheaterDemo.cpp" />
     <ClCompile Include="GraphicsEngine\Sound\SoundShaderPlayer.cpp" />
+    <ClCompile Include="Assets\App\TheaterDemo\Script\ProceduralCity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\App\TheaterDemo\Shader\BillWindow.frag" />
     <None Include="Assets\App\TheaterDemo\Shader\GlowCave.frag" />
     <None Include="Assets\App\TheaterDemo\Shader\Sound.frag" />
     <None Include="bin\libfreetype-6.dll" />

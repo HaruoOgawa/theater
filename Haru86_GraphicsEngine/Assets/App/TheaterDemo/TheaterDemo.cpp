@@ -5,6 +5,7 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
+#include "Assets/App/TheaterDemo/Script/ProceduralCity.h"
 
 #define PI 3.0f
 
@@ -20,7 +21,7 @@ void TheaterDemo::Start() {
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 
 	//
-	m_GridPlane = std::make_shared<GameObject>(
+	/*m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
 		RenderType::DefaultBuffer,
 		RenderQueue::Geometry,
@@ -29,21 +30,10 @@ void TheaterDemo::Start() {
 		shaderlib::ShaderLib::GridPlane_frag
 		);
 	m_GridPlane->m_transform->m_rotation= glm::vec3(PI / 2.0f, 0.0, 0.0);
-	m_GridPlane->m_transform->m_scale= glm::vec3(25.0f);
+	m_GridPlane->m_transform->m_scale= glm::vec3(25.0f);*/
 
-	// raymarching
-	std::string sample = {
-		#include "./Shader/GlowCave.frag"
-	};
-
-	m_Raymarching = std::make_shared<GameObject>(
-		PrimitiveType::BOARD,
-		RenderType::DefaultBuffer,
-		RenderQueue::Geometry,
-		RenderingSurfaceType::RAYMARCHING,
-		shaderlib::ShaderLib::RaymarchingObject_vert,
-		sample
-	);
+	//
+	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 
 }
 
@@ -53,7 +43,8 @@ void TheaterDemo::Update() {
 }
 
 void TheaterDemo::Draw() {
-
+	//
+	m_ProceduralCity->Draw();
 }
 
 void TheaterDemo::Timeline(CTimeline* timeline) {

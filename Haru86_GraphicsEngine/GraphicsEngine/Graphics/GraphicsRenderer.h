@@ -42,7 +42,7 @@ public:
 	~GraphicsRenderer();
 	bool Initialize(float width, float height);
 	void Draw();
-	bool CreateFrameBuffer(std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE,bool UseTex=true);
+	bool CreateFrameBuffer(int width, int height,std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE,bool UseTex=true);
 	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	

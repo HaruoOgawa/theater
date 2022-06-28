@@ -8,6 +8,10 @@ namespace sound {
     class SoundShaderPlayer;
 }
 
+namespace myapp {
+    class ProceduralCity;
+}
+
 class TheaterDemo
 {
     //
@@ -17,6 +21,8 @@ class TheaterDemo
     std::shared_ptr<GameObject> m_GridPlane;
     std::shared_ptr<GameObject> m_Raymarching;
 
+    //
+    std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
 public:
     TheaterDemo() = default;
     ~TheaterDemo() = default;
