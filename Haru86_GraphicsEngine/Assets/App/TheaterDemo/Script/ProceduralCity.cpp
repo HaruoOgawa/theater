@@ -5,20 +5,30 @@
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "BillWindowGenerator.h"
+#include "GraphicsEngine/Message/Console.h"
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
-		m_BillTexIndex(0),
-		m_BillTex(std::make_shared<Texture>()),
 		m_transform(std::make_shared<TransformComponent>())
 	{
 		//
-		GraphicsRenderer::GetInstance()->CreateFrameBuffer(512, 512, m_BillTex, m_BillTexIndex, GL_RGBA, GL_RGBA, true);
 		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::BOARD); // Œã‚ÅPOINT‚É‚·‚é
-		std::string billWin_frag = {
-			#include "../Shader/BillWindow.frag"
+		std::string ProceduralCity_vert = {
+			#include "../Shader/ProceduralCity.vert"
 		};
-		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, billWin_frag);
+
+		std::string ProceduralCity_frag = {
+			#include "../Shader/ProceduralCity.frag"
+		};
+
+		std::string ProceduralCity_geom = {
+			#include "../Shader/ProceduralCity.geom"
+		};
+		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag);
+
+		//
+		m_BillWindowGenerator = std::make_shared<BillWindowGenerator>();
 	}
 
 	void ProceduralCity::Start() 
@@ -30,6 +40,7 @@ namespace myapp {
 	}
 
 	void ProceduralCity::Draw() {
+		Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 
 		m_BillMaterial4Instanced->SetActive();
 		m_transform->CalMatrix();
@@ -39,7 +50,10 @@ namespace myapp {
 		m_BillMaterial4Instanced->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
 		m_BillMaterial4Instanced->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 		m_BillMaterial4Instanced->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		
+		m_BillWindowGenerator->m_BillWindowTex->SetActive();
+		m_BillMaterial4Instanced->SetTexUniform("_BillWindowTex", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
+		m_BillWindowGenerator->m_BillWindowTex->SetEactive();
+
 		m_BillMesh4Instanced->Draw();
 	}
 }

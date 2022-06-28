@@ -376,6 +376,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\App\TheaterDemo\Script\BillWindowGenerator.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
@@ -403,6 +404,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="Assets\App\TheaterDemo\Script\ProceduralCity.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\App\TheaterDemo\Script\BillWindowGenerator.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
@@ -426,6 +428,9 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   <ItemGroup>
     <None Include="Assets\App\TheaterDemo\Shader\BillWindow.frag" />
     <None Include="Assets\App\TheaterDemo\Shader\GlowCave.frag" />
+    <None Include="Assets\App\TheaterDemo\Shader\ProceduralCity.frag" />
+    <None Include="Assets\App\TheaterDemo\Shader\ProceduralCity.geom" />
+    <None Include="Assets\App\TheaterDemo\Shader\ProceduralCity.vert" />
     <None Include="Assets\App\TheaterDemo\Shader\Sound.frag" />
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
