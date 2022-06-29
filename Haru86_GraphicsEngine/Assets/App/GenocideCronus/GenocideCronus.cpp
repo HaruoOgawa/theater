@@ -46,9 +46,9 @@ void GenocideCronus::Start() {
 void GenocideCronus::Update() {
 	// カメラ
 	GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
-		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*3.0f,
-		1.0f,
-		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*3.0f
+		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*6.0f,
+		5.0f,
+		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*6.0f
 	);
 
 	// サウンド
