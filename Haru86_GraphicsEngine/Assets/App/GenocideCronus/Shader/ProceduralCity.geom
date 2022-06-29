@@ -170,12 +170,109 @@ void CreateCube(vec4 position,vec3 size){
 	EndPrimitive();
 }
 
+void Tri(vec4 position,vec2 size){
+	// 底面
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+	
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	EndPrimitive();
+
+	// 三角形
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
+	g2f_o.uv=vec2(0.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	EndPrimitive();
+
+	// 三角形
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
+	g2f_o.uv=vec2(0.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	EndPrimitive();
+
+	// 三角形
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
+	g2f_o.uv=vec2(0.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	EndPrimitive();
+
+	// 三角形
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
+	g2f_o.uv=vec2(0.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
+	g2f_o.uv=vec2(1.0,0.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
+	g2f_o.uv=vec2(0.0,1.0);
+	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
+	EmitVertex();
+
+	EndPrimitive();
+}
+
 void Bill0(vec4 position,int id){
 	
-	vec3 size=vec3(0.5,2.0,0.5);
+	vec3 size=vec3(1.0,2.0,1.0);
 	for(int level=0;level<3;level++)
 	{
-		vec2 offset=vec2( rand(vec2(float(level+id),0.973))*0.3,rand(vec2(0.197,float(level+id)))*0.3 );
+		vec2 offset=vec2( rand(vec2(float(level+id),0.973))*2.0-1.0,rand(vec2(0.197,float(level+id)))*2.0-1.0 )*0.15;
 		CreateCube(position+vec4(offset.x,0.0,offset.y,0.0),size);
 		size*=vec3( rand(vec2(float((level+id)*10.0),0.156)),rand(vec2(0.732,float((level+id)*10.0))),rand(vec2(0.9755,float((level+id)*10.0)))+vec3(0.25) );
 	}
@@ -183,9 +280,32 @@ void Bill0(vec4 position,int id){
 
 }
 
+void Bill1(vec4 position,int id){	
+	// 後で乱数にする
+	float height=1.0;
+	float halfHeight=height;
+	float width=0.5;
+
+	// キューブ
+	for(int i=0;i<3;i++){
+		CreateCube(position,vec3(width,height,width));
+		halfHeight*=0.5;
+		height+=halfHeight;
+		width*=0.8;
+	}
+
+	// 三角柱
+	Tri(position+vec4(0.0,height-halfHeight,0.0,0.0) ,vec2(width));
+}
+
+void Bill2(vec4 position,int id){
+
+}
+
 void main()
 {
-	Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
+	//Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
+	Bill1(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
 }
 
 )"

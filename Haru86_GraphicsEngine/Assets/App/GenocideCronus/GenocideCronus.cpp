@@ -12,7 +12,7 @@
 
 void GenocideCronus::Start() {
 	// カメラ
-	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 3.0f, -6.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.5f, -2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 
 	// サウンド
 	std::string soundCode = {
@@ -51,11 +51,11 @@ void GenocideCronus::Start() {
 
 void GenocideCronus::Update() {
 	// カメラ
-	/*GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
-		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*6.0f,
-		5.0f,
-		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*6.0f
-	);*/
+	GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
+		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*2.0f,
+		2.5f,
+		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*2.0f
+	);
 
 	// サウンド
 	m_SoundPlayer->Update();

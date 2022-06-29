@@ -21,7 +21,7 @@ void main(){
 	vec3 col=vec3(1.0);
 	
 	vec2 st=g2f_o.uv;
-	st.y*=(_resolution.x/_resolution.y);
+	st.x*=(_resolution.y/_resolution.x);
 	st=st*2.0-1.0;
 	vec2 domainID=floor(st*10.0);
 	st=fract(st*10.0);

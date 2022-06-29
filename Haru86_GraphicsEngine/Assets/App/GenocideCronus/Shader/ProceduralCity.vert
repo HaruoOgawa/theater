@@ -34,7 +34,7 @@ void main(){
 	
 	vec3 randPos=vec3(0.0);
 	//randPos.xz=( vec2( rand( vec2(float(gl_InstanceID),0.321)),rand( vec2(float(gl_InstanceID),0.741)) ) * 2.0-1.0 )*25.0;
-	randPos.xz=domainID-32.0*0.5;
+	//randPos.xz=domainID-32.0*0.5;
 
 	vec4 pos=vec4(vertex,1.0);
 
