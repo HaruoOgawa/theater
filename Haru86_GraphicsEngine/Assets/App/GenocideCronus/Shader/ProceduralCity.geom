@@ -173,7 +173,7 @@ void CreateCube(vec4 position,vec3 size){
 void Bill0(vec4 position,int id){
 	
 	vec3 size=vec3(0.5,2.0,0.5);
-	for(int level=0;level<4;level++)
+	for(int level=0;level<3;level++)
 	{
 		vec2 offset=vec2( rand(vec2(float(level+id),0.973))*0.3,rand(vec2(0.197,float(level+id)))*0.3 );
 		CreateCube(position+vec4(offset.x,0.0,offset.y,0.0),size);

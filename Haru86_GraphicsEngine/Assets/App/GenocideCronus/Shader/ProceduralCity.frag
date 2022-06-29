@@ -35,10 +35,8 @@ void main(){
 	// y•ûŒü‚É‚Í‘‹‚ð•`‚©‚È‚¢
 	vec3 n=normalize(g2f_o.normal);
 	float ndy=abs(dot(n,vec3(0.0,1.0,0.0)));
-	//col*=vec3(1.0-ndy);
-	//col*=ndy;
-	//col=n*0.5+0.5;
-
+	col*=(1.0-ndy);
+	
 	gl_FragColor=vec4(col,1.0);
 }
 
