@@ -8,6 +8,7 @@
 #include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/Graphics/PostProcess.h"
 
 void GenocideCronus::Start() {
 	// カメラ
@@ -21,7 +22,7 @@ void GenocideCronus::Start() {
 	m_SoundPlayer->Initialize();
 
 	// 背景色
-	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
+	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
 #ifdef _DEBUG
 	// デバッグ用グリッド
@@ -41,6 +42,11 @@ void GenocideCronus::Start() {
 	//
 	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 
+	//
+	PostProcess::GetInstance()->m_UsePostProcess = true;
+	PostProcess::GetInstance()->m_UseBloom = true;
+	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
+	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
 }
 
 void GenocideCronus::Update() {

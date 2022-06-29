@@ -21,7 +21,7 @@ void main(){
 	vec3 col=vec3(1.0);
 	
 	vec2 st=g2f_o.uv;
-	//st.x*=(_resolution.x/_resolution.y);
+	st.y*=(_resolution.x/_resolution.y);
 	st=st*2.0-1.0;
 	vec2 domainID=floor(st*10.0);
 	st=fract(st*10.0);
@@ -30,7 +30,8 @@ void main(){
 	col.rgb*=( length(max(vec2(0.0),abs(st)-vec2(0.9))) < 0.001 )? 1.0 : 0.0;
 	
 	// ‘‹‚Ì–¾‚©‚è
-	col*=vec3(1.0,1.0,1.0)*rand(vec2(domainID.x,domainID.y))*0.5;
+	col*=vec3(1.0,1.0,1.0)*rand(vec2(domainID.x*10.0,domainID.y*10.0));
+	col*=( rand(vec2(domainID.x*10.0,domainID.y*10.0))>0.9 )? 1.5*vec3(1.0,1.0,2.0) : vec3(1.0);
 
 	// y•ûŒü‚É‚Í‘‹‚ð•`‚©‚È‚¢
 	vec3 n=normalize(g2f_o.normal);
