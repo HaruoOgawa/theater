@@ -4,7 +4,7 @@
 #include "../GraphicsMain/GraphicsMain.h"
 
 TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: m_position(pos), m_rotation(rot), m_scale(s)
+	: m_center(glm::vec3(0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
 }
@@ -27,14 +27,14 @@ void TransformComponent::ComputeViewMatrix() {
 	if (GraphicsMain::GetInstance()->m_CameraTransform) {
 		m_vMatrix = glm::lookAt(
 			GraphicsMain::GetInstance()->m_CameraTransform->m_position,
-			glm::vec3(0.0f, 0.0f, 0.0f),
+			GraphicsMain::GetInstance()->m_CameraTransform->m_center,
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 	}
 	else {
 		m_vMatrix = glm::lookAt(
 			glm::vec3(0.0f, 0.0f, -3.0f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 	}

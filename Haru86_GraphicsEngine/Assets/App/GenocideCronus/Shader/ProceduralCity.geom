@@ -269,12 +269,23 @@ void Tri(vec4 position,vec2 size){
 
 void Bill0(vec4 position,int id){
 	
-	vec3 size=vec3(1.0,2.0,1.0);
+	vec3 size=vec3(0.5,2.0,0.5);
+	vec2 offset=vec2(0.0);
+	float so=0.8;
+
 	for(int level=0;level<3;level++)
 	{
-		vec2 offset=vec2( rand(vec2(float(level+id),0.973))*2.0-1.0,rand(vec2(0.197,float(level+id)))*2.0-1.0 )*0.15;
 		CreateCube(position+vec4(offset.x,0.0,offset.y,0.0),size);
-		size*=vec3( rand(vec2(float((level+id)*10.0),0.156)),rand(vec2(0.732,float((level+id)*10.0))),rand(vec2(0.9755,float((level+id)*10.0)))+vec3(0.25) );
+
+		offset=vec2( (rand(vec2(float(level+id),0.973))*2.0-1.0)*size.x*0.5 , (rand(vec2(0.197,float(level+id)))*2.0-1.0)*size.z*0.5 );
+		if(level==0)
+		{
+			size=vec3( 0.5+rand(vec2(float((level+id)*10.0),0.156))*so , size.y*0.5 , rand(vec2(0.9755,float((level+id)*10.0)))*so );
+		}
+		else if(level==1)
+		{
+			size=vec3( rand(vec2(0.156,float((level+id)*10.0)))*so , size.y*0.5 , 0.5+rand(vec2(float((level+id)*10.0),0.9755))*so );
+		}
 	}
 	CreateCube(position+vec4(0.0,0.0,0.0,0.0),vec3(1.0,0.05,1.0));
 
@@ -313,22 +324,22 @@ void Bill2(vec4 position,int id){
 		angle=nextAngle,nextAngle+=omega+off;
 		// float angle=omega*p,nextAngle=omega*(p+1.0)+off;
 
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),-0.5*height,radius*sin(angle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),0.0,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(0.0,0.0);
 		g2f_o.normal=normalize(vec3(radius*cos(angle),0.0,radius*sin(angle)));
 		EmitVertex();
 
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),0.5*height,radius*sin(angle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),height,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(1.0,0.0);
 		g2f_o.normal=normalize(vec3(radius*cos(angle),0.0,radius*sin(angle)));
 		EmitVertex();
 
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),-0.5*height,radius*sin(nextAngle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(0.0,1.0);
 		g2f_o.normal=normalize(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)));
 		EmitVertex();
 	
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),0.5*height,radius*sin(nextAngle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),height,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(1.0,1.0);
 		g2f_o.normal=normalize(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)));
 		EmitVertex();
@@ -336,17 +347,17 @@ void Bill2(vec4 position,int id){
 		EndPrimitive();
 
 		// ãŠW
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),0.5*height,radius*sin(angle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),height,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(1.0,0.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
 		EmitVertex();
 
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),0.5*height,radius*sin(nextAngle)))),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),height,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(0.0,1.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
 		EmitVertex();
 	
-		gl_Position=MVPMatrix*vec4(vec3(position.xyz+ vec3(0.0,0.5*height,0.0) ),1.0);
+		gl_Position=MVPMatrix*vec4(vec3(position.xyz+ vec3(0.0,height,0.0) ),1.0);
 		g2f_o.uv=vec2(1.0,1.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
 		EmitVertex();
@@ -359,9 +370,22 @@ void Bill2(vec4 position,int id){
 
 void main()
 {
-	//Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
-	//Bill1(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
-	Bill2(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
+	int billID=int(floor( rand(vec2(v2g_o[0].id*100,v2g_o[0].id))*3.0 ));
+	//int billID=0;
+
+	if(billID==0)
+	{
+		Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
+	}
+	else if(billID==1)
+	{
+		Bill1(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);
+	}
+	else if(billID==2)
+	{
+		Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
+		//Bill2(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
+	}
 }
 
 )"

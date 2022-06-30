@@ -12,7 +12,9 @@
 
 void GenocideCronus::Start() {
 	// カメラ
-	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.5f, -2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, .5f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	GraphicsMain::GetInstance()->m_CameraTransform->m_center = glm::vec3(1.0f,10.0f,0.0f);
+	//GraphicsMain::GetInstance()->m_CameraTransform->CalMatrix();
 
 	// サウンド
 	std::string soundCode = {
@@ -22,7 +24,7 @@ void GenocideCronus::Start() {
 	m_SoundPlayer->Initialize();
 
 	// 背景色
-	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
+	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
 #ifdef _DEBUG
 	// デバッグ用グリッド
@@ -51,11 +53,11 @@ void GenocideCronus::Start() {
 
 void GenocideCronus::Update() {
 	// カメラ
-	GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
+	/*GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*2.0f,
 		2.5f,
 		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*2.0f
-	);
+	);*/
 
 	// サウンド
 	m_SoundPlayer->Update();
