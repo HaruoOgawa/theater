@@ -20,6 +20,8 @@ struct v2g{
 struct g2f{
 	vec2 uv;
 	vec3 normal;
+	float id;
+	float billID;
 };
 
 in v2g v2g_o[]; 
@@ -34,23 +36,23 @@ void CreateCube(vec4 position,vec3 size){
 	// +x
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
-	g2f_o.normal=normalize(vec3(1.0,0.0,0.0));
-	EmitVertex();
-
+	g2f_o.normal=normalize(vec3(1.0,0.0,0.0)); 
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
+	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 	
@@ -58,22 +60,22 @@ void CreateCube(vec4 position,vec3 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(-1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(-1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(-1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(-1.0,0.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -81,22 +83,22 @@ void CreateCube(vec4 position,vec3 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 	
@@ -104,22 +106,22 @@ void CreateCube(vec4 position,vec3 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -127,22 +129,22 @@ void CreateCube(vec4 position,vec3 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 	
@@ -150,22 +152,22 @@ void CreateCube(vec4 position,vec3 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,-1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,-1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,-1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,size.y,-0.5*size.z))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,0.0,-1.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 }
@@ -175,22 +177,22 @@ void Tri(vec4 position,vec2 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 	
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -198,17 +200,17 @@ void Tri(vec4 position,vec2 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -216,17 +218,17 @@ void Tri(vec4 position,vec2 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -234,17 +236,17 @@ void Tri(vec4 position,vec2 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(-0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 
@@ -252,17 +254,17 @@ void Tri(vec4 position,vec2 size){
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,-0.5*size.x))),1.0);
 	g2f_o.uv=vec2(0.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.5*size.x,0.0,0.5*size.x))),1.0);
 	g2f_o.uv=vec2(1.0,0.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(0.0,size.y,0.0))),1.0);
 	g2f_o.uv=vec2(0.0,1.0);
 	g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-	EmitVertex();
+	g2f_o.id=float(v2g_o[0].id); g2f_o.billID=1.0; EmitVertex(); 
 
 	EndPrimitive();
 }
@@ -311,7 +313,7 @@ void Bill1(vec4 position,int id){
 
 void Bill2(vec4 position,int id){
 	float height=2.0;
-	float radius=0.25,num=16.0,pi=3.1415,offnum=2.0;
+	float radius=0.25,num=12.0,pi=3.1415,offnum=2.0;
 	float omega=(2.0*pi)/num;
 	float angle=0.0,nextAngle=omega;
 
@@ -327,22 +329,22 @@ void Bill2(vec4 position,int id){
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),0.0,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(0.0,0.0);
 		g2f_o.normal=normalize(vec3(radius*cos(angle),0.0,radius*sin(angle)));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),height,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(1.0,0.0);
 		g2f_o.normal=normalize(vec3(radius*cos(angle),0.0,radius*sin(angle)));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(0.0,1.0);
 		g2f_o.normal=normalize(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 	
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),height,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(1.0,1.0);
 		g2f_o.normal=normalize(vec3(radius*cos(nextAngle),0.0,radius*sin(nextAngle)));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 
 		EndPrimitive();
 
@@ -350,17 +352,17 @@ void Bill2(vec4 position,int id){
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(angle),height,radius*sin(angle)))),1.0);
 		g2f_o.uv=vec2(1.0,0.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+(vec3(radius*cos(nextAngle),height,radius*sin(nextAngle)))),1.0);
 		g2f_o.uv=vec2(0.0,1.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 	
 		gl_Position=MVPMatrix*vec4(vec3(position.xyz+ vec3(0.0,height,0.0) ),1.0);
 		g2f_o.uv=vec2(1.0,1.0);
 		g2f_o.normal=normalize(vec3(0.0,-1.0,0.0));
-		EmitVertex();
+		g2f_o.id=float(v2g_o[0].id); g2f_o.billID=2.0; EmitVertex(); 
 
 		EndPrimitive();
 
@@ -370,7 +372,7 @@ void Bill2(vec4 position,int id){
 
 void main()
 {
-	int billID=int(floor( rand(vec2(v2g_o[0].id*100,v2g_o[0].id))*3.0 ));
+	int billID=int(floor( rand(vec2(v2g_o[0].id*100,v2g_o[0].id*100.0))*3.0 ));
 	//int billID=0;
 
 	if(billID==0)
@@ -383,8 +385,8 @@ void main()
 	}
 	else if(billID==2)
 	{
-		Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
-		//Bill2(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
+		//Bill0(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
+		Bill2(gl_in[0].gl_Position+vec4(v2g_o[0].randPos,0.0),v2g_o[0].id);	
 	}
 }
 

@@ -12,10 +12,9 @@
 
 void GenocideCronus::Start() {
 	// カメラ
-	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, .5f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-	GraphicsMain::GetInstance()->m_CameraTransform->m_center = glm::vec3(1.0f,10.0f,0.0f);
-	//GraphicsMain::GetInstance()->m_CameraTransform->CalMatrix();
-
+	GraphicsMain::GetInstance()->m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	GraphicsMain::GetInstance()->m_CameraTransform->m_center = glm::vec3(1.0f,6.0f,0.0f);
+	
 	// サウンド
 	std::string soundCode = {
 		#include "Shader/Sound.frag"
@@ -26,7 +25,7 @@ void GenocideCronus::Start() {
 	// 背景色
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.85f), 1.0));
 	
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	// デバッグ用グリッド
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
@@ -38,7 +37,7 @@ void GenocideCronus::Start() {
 		);
 	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
 	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
-#endif // _DEBUG
+//#endif // _DEBUG
 
 
 	//
@@ -49,6 +48,20 @@ void GenocideCronus::Start() {
 	PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
 	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
+
+	// raymarching
+	std::string sample = {
+		#include "./Shader/MandelboxSample.frag"
+	};
+
+	m_Raymarching = std::make_shared<GameObject>(
+		PrimitiveType::BOARD,
+		RenderType::DefaultBuffer,
+		RenderQueue::Geometry,
+		RenderingSurfaceType::RAYMARCHING,
+		shaderlib::ShaderLib::RaymarchingObject_vert,
+		sample
+		);
 }
 
 void GenocideCronus::Update() {

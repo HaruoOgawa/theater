@@ -428,6 +428,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\GlowCave.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\MandelboxSample.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.vert" />
