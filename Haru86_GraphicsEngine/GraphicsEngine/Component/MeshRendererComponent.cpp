@@ -2,6 +2,7 @@
 #include "./TransformComponent.h"
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "GraphicsEngine/Object/GameObject.h"
+#include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 
 MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs)
@@ -58,12 +59,4 @@ void MeshRendererComponent::Draw() {
 
 	//使い終わったらここでTextureを非アクティブにする
 	m_material->SetEactiveTextureList();
-}
-
-void MeshRendererComponent::DrawInstancedWithMesh(std::shared_ptr<Mesh> mesh, int count, std::shared_ptr<Material> material, GLenum rendermode) {
-	const auto& prim = mesh->m_primitives;
-	for (int i = 0; i < prim.size(); i++) {
-		prim[i]->SetActive();
-		glDrawElementsInstanced(rendermode, prim[i]->mNumIndices, GL_UNSIGNED_SHORT, nullptr, count);
-	}
 }

@@ -23,7 +23,7 @@ namespace sound {
 		m_Mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 		m_Material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, soundCode);
 		m_FrameTex = std::make_shared<Texture>();
-		GraphicsRenderer::GetInstance()->CreateFrameBuffer(m_FrameTex, m_FrameIndex, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+		GraphicsRenderer::GetInstance()->CreateFrameBuffer(GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y, m_FrameTex, m_FrameIndex, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	}
 
 	bool SoundShaderPlayer::Initialize() {
@@ -38,8 +38,8 @@ namespace sound {
 
 	bool SoundShaderPlayer::Update() {
 #ifdef _DEBUG
-		Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f, [3]:%f\n",
-			static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]), static_cast<float>(m_SoundData[3]));
+		//Console::Log("m_SoundData=> [0]:%f, [1]:%f, [2]:%f, [3]:%f\n",
+		//	static_cast<float>(m_SoundData[0]), static_cast<float>(m_SoundData[1]), static_cast<float>(m_SoundData[2]), static_cast<float>(m_SoundData[3]));
 #endif // _DEBUG
 
 		return true;

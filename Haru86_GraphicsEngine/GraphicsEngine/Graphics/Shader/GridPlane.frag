@@ -21,9 +21,10 @@ void main(){
 		((abs(st.y) > (1.0-gridWidth))? 0.5 : 1.0) 
 	);
 
-	col*=(1.0-t);
+	//col*=(1.0-t);
 
-	gl_FragColor=vec4(col,1.0-t);
+	//gl_FragColor=vec4(col,1.0-t);
+	gl_FragColor=vec4(col,0.5);
 }
 
 )"

@@ -3,6 +3,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glew.h>
 
 enum class PrimitiveType {
 	BOARD,
@@ -23,8 +24,9 @@ public:
 	Mesh(PrimitiveType primType);
 	~Mesh() = default;
 
-	void Draw();
-	
+	void Draw(GLenum DrawVertexWay= GL_TRIANGLES);
+	void DrawInstancedWithMesh(int count, GLenum rendermode);
+
 	GLDrawType glDrawType;
 	std::vector<std::shared_ptr<Primitive>> m_primitives;
 private:

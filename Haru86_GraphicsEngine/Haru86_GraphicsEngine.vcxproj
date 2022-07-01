@@ -376,6 +376,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\App\GenocideCronus\Script\BillWindowGenerator.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
@@ -398,10 +399,12 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Graphics\Texture.h" />
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
-    <ClInclude Include="Assets\App\TheaterDemo\TheaterDemo.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\GenocideCronus.h" />
     <ClInclude Include="GraphicsEngine\Sound\SoundShaderPlayer.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\App\GenocideCronus\Script\BillWindowGenerator.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
@@ -418,12 +421,18 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\Mesh.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
-    <ClCompile Include="Assets\App\TheaterDemo\TheaterDemo.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\GenocideCronus.cpp" />
     <ClCompile Include="GraphicsEngine\Sound\SoundShaderPlayer.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\App\TheaterDemo\Shader\GlowCave.frag" />
-    <None Include="Assets\App\TheaterDemo\Shader\Sound.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\GlowCave.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\MandelboxSample.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\Sound.frag" />
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
     <None Include="bin\zlib1.dll" />

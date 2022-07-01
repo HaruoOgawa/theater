@@ -5,7 +5,7 @@
 #include "CTimeline.h"
 #include <vector>
 #include <algorithm>
-#include "Assets/App/TheaterDemo/TheaterDemo.h"
+#include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 
 #ifdef _DEBUG
@@ -39,7 +39,8 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_timeline(nullptr)
+	m_timeline(nullptr),
+	m_CameraTransform(nullptr)
 {
 	for (int i = 0; i < 20;i++) {
 		switch (i)
@@ -138,7 +139,7 @@ bool GraphicsMain::CreateApp() {
 bool GraphicsMain::Initialize() {
 	// ƒƒ‚ƒŠŠm•Û
 	m_timeline = std::make_unique<CTimeline>();
-	m_App = new TheaterDemo();
+	m_App = new GenocideCronus();
 	LoadData();
 	
 	return true;

@@ -37,7 +37,7 @@ PostProcess::PostProcess():
 	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "", "");
 	m_LateMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::LatePostProcess_frag, "", "", "", "");
 
-	if (!GraphicsRenderer::GetInstance()->CreateFrameBuffer(m_BloomTexture, m_BloomFrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
+	if (!GraphicsRenderer::GetInstance()->CreateFrameBuffer(GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y, m_BloomTexture, m_BloomFrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT)) {
 		printf("Cannot Create FrameBuffer\n");
 	}
 }

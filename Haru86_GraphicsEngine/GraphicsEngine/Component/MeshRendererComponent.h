@@ -17,8 +17,7 @@ public:
     ~MeshRendererComponent()=default;
 
     void Draw();
-    static void DrawInstancedWithMesh(std::shared_ptr<class Mesh> mesh, int count, std::shared_ptr<class Material> material, GLenum rendermode);
-   
+    
     std::vector<TimelineAnimationClip*> animationClips;
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;

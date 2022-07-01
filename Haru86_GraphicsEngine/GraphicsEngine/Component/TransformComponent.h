@@ -1,12 +1,11 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../GraphicsMain/GraphicsMain.h"
 
 class TransformComponent
 {
     
 public:
-    TransformComponent(class GameObject* o, glm::vec3 pos, glm::vec3 rot, glm::vec3 s);
+    TransformComponent(glm::vec3 pos=glm::vec3(0.0f), glm::vec3 rot = glm::vec3(0.0f), glm::vec3 s = glm::vec3(1.0f));
     ~TransformComponent() = default;
     
     void CalMatrix();
@@ -14,8 +13,7 @@ public:
     void ComputeViewMatrix();
     void ComputePerspectiveMatrix();
 
-    friend GameObject;
-
+    glm::vec3 m_center;
     glm::vec3 m_position;
     glm::vec3 m_rotation;
     glm::vec3 m_scale;
@@ -23,8 +21,5 @@ public:
     glm::mat4 m_vMatrix;
     glm::mat4 m_pMatrix;
 
-private:
-    class GameObject* owner;
-    class GraphicsMain* game;
 };
 

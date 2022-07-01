@@ -30,8 +30,15 @@ void Mesh::CreateMesh(PrimitiveType primType) {
 
 }
 
-void Mesh::Draw() {
+void Mesh::Draw(GLenum DrawVertexWay) {
 	for (int i = 0; i < m_primitives.size();i++) {
-		m_primitives[i]->Draw();
+		m_primitives[i]->Draw(DrawVertexWay);
+	}
+}
+
+void Mesh::DrawInstancedWithMesh(int count, GLenum rendermode) {
+	for (int i = 0; i < m_primitives.size(); i++) {
+		m_primitives[i]->SetActive();
+		glDrawElementsInstanced(rendermode, m_primitives[i]->mNumIndices, GL_UNSIGNED_SHORT, nullptr, count);
 	}
 }
