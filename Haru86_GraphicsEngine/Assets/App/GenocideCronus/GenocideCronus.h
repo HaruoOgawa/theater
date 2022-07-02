@@ -14,14 +14,13 @@ namespace myapp {
 
 class GenocideCronus
 {
-    //
+    // Sound Shader
     std::shared_ptr<sound::SoundShaderPlayer> m_SoundPlayer;
 
-    //
+    // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
-    std::shared_ptr<GameObject> m_Raymarching;
-
-    //
+    
+    // シーンオブジェクト
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
 public:
     GenocideCronus() = default;

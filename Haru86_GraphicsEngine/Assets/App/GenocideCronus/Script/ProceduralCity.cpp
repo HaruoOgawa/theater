@@ -7,11 +7,17 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "BillWindowGenerator.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/Object/GameObject.h"
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_transform(std::make_shared<TransformComponent>())
 	{
+		Start();
+	}
+
+	void ProceduralCity::Start() 
+	{	
 		//
 		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::POINT);
 		std::string ProceduralCity_vert = {
@@ -29,10 +35,20 @@ namespace myapp {
 
 		//
 		m_BillWindowGenerator = std::make_shared<BillWindowGenerator>();
-	}
+		
+		// raymarching
+		std::string MandelboxShader = {
+			#include "../Shader/MandelboxSample.frag"
+		};
 
-	void ProceduralCity::Start() 
-	{	
+		m_Mandelbox = std::make_shared<GameObject>(
+			PrimitiveType::BOARD,
+			RenderType::DefaultBuffer,
+			RenderQueue::Geometry,
+			RenderingSurfaceType::RAYMARCHING,
+			shaderlib::ShaderLib::RaymarchingObject_vert,
+			MandelboxShader
+			);
 	}
 
 	void ProceduralCity::Update() 

@@ -39,29 +39,15 @@ void GenocideCronus::Start() {
 	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
 //#endif // _DEBUG
 
-
-	//
+	// シーンオブジェクトの初期化
 	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 
-	//
+	// ポストプロセスの設定
 	PostProcess::GetInstance()->m_UsePostProcess = true;
 	PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
 	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
 
-	// raymarching
-	std::string sample = {
-		#include "./Shader/MandelboxSample.frag"
-	};
-
-	m_Raymarching = std::make_shared<GameObject>(
-		PrimitiveType::BOARD,
-		RenderType::DefaultBuffer,
-		RenderQueue::Geometry,
-		RenderingSurfaceType::RAYMARCHING,
-		shaderlib::ShaderLib::RaymarchingObject_vert,
-		sample
-		);
 }
 
 void GenocideCronus::Update() {
