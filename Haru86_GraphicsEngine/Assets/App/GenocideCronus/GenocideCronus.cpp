@@ -5,10 +5,12 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
-#include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
+
+#include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
+#include "Assets/App/GenocideCronus/Script/SacredLake.h"
 
 void GenocideCronus::Start() {
 	// カメラ
@@ -27,7 +29,7 @@ void GenocideCronus::Start() {
 	
 //#ifdef _DEBUG
 	// デバッグ用グリッド
-	m_GridPlane = std::make_shared<GameObject>(
+	/*m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
 		RenderType::DefaultBuffer,
 		RenderQueue::Geometry,
@@ -36,11 +38,12 @@ void GenocideCronus::Start() {
 		shaderlib::ShaderLib::GridPlane_frag
 		);
 	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
+	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);*/
 //#endif // _DEBUG
 
 	// シーンオブジェクトの初期化
-	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	m_SacredLake = std::make_shared<myapp::SacredLake>();
 
 	// ポストプロセスの設定
 	PostProcess::GetInstance()->m_UsePostProcess = true;
@@ -57,6 +60,11 @@ void GenocideCronus::Update() {
 		2.5f,
 		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*2.0f
 	);*/
+	GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
+		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*20.0f,
+		2.5f,
+		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*20.0f
+	);
 
 	// サウンド
 	m_SoundPlayer->Update();
@@ -64,7 +72,8 @@ void GenocideCronus::Update() {
 
 void GenocideCronus::Draw() {
 	//
-	m_ProceduralCity->Draw();
+	//m_ProceduralCity->Draw();
+	m_SacredLake->Draw();
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) {

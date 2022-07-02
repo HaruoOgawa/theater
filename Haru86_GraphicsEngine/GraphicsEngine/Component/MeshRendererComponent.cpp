@@ -42,6 +42,9 @@ void MeshRendererComponent::Draw() {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
 
+	if (GraphicsMain::GetInstance()->m_CameraTransform) {
+		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_CameraTransform->m_position);
+	}
 
 	//ここでTextureをアクティブにする
 	m_material->SetActiveTextureList();

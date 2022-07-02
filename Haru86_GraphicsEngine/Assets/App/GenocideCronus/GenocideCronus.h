@@ -10,6 +10,7 @@ namespace sound {
 
 namespace myapp {
     class ProceduralCity;
+    class SacredLake;
 }
 
 class GenocideCronus
@@ -22,6 +23,8 @@ class GenocideCronus
     
     // シーンオブジェクト
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
+    std::shared_ptr<myapp::SacredLake> m_SacredLake;
+
 public:
     GenocideCronus() = default;
     ~GenocideCronus() = default;

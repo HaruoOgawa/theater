@@ -434,6 +434,10 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredGPUParticle.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredGPUParticle.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredGPUParticle.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredLake_Mandelbox.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Sound.frag" />
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
