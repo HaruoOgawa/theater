@@ -12,6 +12,7 @@ public:
 	bool Load(const std::string& fileName);
 	unsigned int GetTextureID() const { return mTextureID; }
 	void SetActive(GLenum slot);
+	void SetEnactive(GLenum slot);
 	void Unload();
 	friend class Material;
 private:

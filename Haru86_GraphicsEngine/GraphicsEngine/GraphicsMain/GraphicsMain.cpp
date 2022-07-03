@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
+#include "GraphicsEngine/Graphics/RealtimeReflectionProbe.h"
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -18,10 +19,7 @@ GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
 void GraphicsMain::Create()
 {
-	if (!s_pInstance)
-	{
-		s_pInstance = new GraphicsMain;
-	}
+	if (!s_pInstance)s_pInstance = new GraphicsMain;
 }
 
 void GraphicsMain::Destroy()
@@ -40,7 +38,8 @@ GraphicsMain::GraphicsMain()
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_timeline(nullptr),
-	m_CameraTransform(nullptr)
+	m_UseCameraIndex(0),
+	m_RealtimeReflectionProbe(nullptr)
 {
 }
 
@@ -55,16 +54,9 @@ GraphicsMain::~GraphicsMain() {
 }
 
 bool GraphicsMain::CreateApp() {
-	if (glfwInit() == GL_FALSE) {
-		//Console::Log("Could not initialize GLFW\n");
-		return false;
-	}
-
+	if (glfwInit() == GL_FALSE)return false;
 	GraphicsRenderer::Create();
-	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		//Console::Log("Could not Create GraphicsRenderer\n");
-		return false;
-	}
+	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500))return false;
 
 	return true;
 }
@@ -79,10 +71,6 @@ bool GraphicsMain::Initialize() {
 }
 
 void GraphicsMain::LoadData() {
-#ifdef _DEBUG
-	Console::Log("This is _DEBUG!!!!!!!!!!!!!!!!!!!!!\n");
-#endif // DEBUG
-	
 	//
 	m_App->Start();
 
@@ -141,6 +129,23 @@ void GraphicsMain::Update() {
 	}
 
 }
+
+// ここのDrawではカメラ位置を変える
 void GraphicsMain::Draw() {
-	GraphicsRenderer::GetInstance()->Draw();
+	// 垂直同期の待機時間
+	glfwSwapInterval(1);
+
+	// 通常の描画(画面に表示される部分)
+	m_UseCameraIndex = 0;
+	GraphicsRenderer::GetInstance()->Draw(0);
+
+	// リアルタイムリフレクションプローブ
+	if (m_RealtimeReflectionProbe) {
+		m_RealtimeReflectionProbe->Draw();
+	}
+
+	//カラーバッファを入れ替える
+	glfwSwapBuffers(GraphicsRenderer::GetInstance()->GetWindow());
+
+	m_UseCameraIndex = 0;
 }

@@ -24,6 +24,8 @@ void main(){
 	vec3 lightDir=normalize(vec3(1.0,-1.0,1.0));
 	float diff=max( 0.0,dot(lightDir,g2f_o.normal) );
 	col*=diff;
+	
+	col=g2f_o.normal*0.5+0.5;
 	//col=vec3(g2f_o.uv,0.0);
 
 	gl_FragColor=vec4(col,1.0);

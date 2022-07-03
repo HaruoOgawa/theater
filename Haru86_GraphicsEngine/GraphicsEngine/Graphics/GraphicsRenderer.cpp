@@ -180,10 +180,7 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 
 }
 
-void GraphicsRenderer::Draw() {
-	// 垂直同期の待機時間
-	glfwSwapInterval(1);
-
+void GraphicsRenderer::Draw(int ResultFrameBufferIndex) {
 	//ポリゴンオブジェクトのカラーマップをレンダリング///////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_frameBuffer);
@@ -275,7 +272,7 @@ void GraphicsRenderer::Draw() {
 
 	//最終的な結果を作成する///////////////////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, ResultFrameBufferIndex);
 	glViewport(0, 0, GetScreenSize().x, GetScreenSize().y);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -287,8 +284,4 @@ void GraphicsRenderer::Draw() {
 	for (auto obj : mgame->boardGameObjectList) {
 		obj->meshComp->Draw();
 	}
-
-	//カラーバッファを入れ替える
-	glfwSwapBuffers(sWindow);
-
 }

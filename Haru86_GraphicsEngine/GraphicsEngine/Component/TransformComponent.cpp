@@ -24,10 +24,14 @@ void TransformComponent::ComputeModelMatrix() {
 }
 
 void TransformComponent::ComputeViewMatrix() {
-	if (GraphicsMain::GetInstance()->m_CameraTransform) {
+	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	if (
+		(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
+		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	{
 		m_vMatrix = glm::lookAt(
-			GraphicsMain::GetInstance()->m_CameraTransform->m_position,
-			GraphicsMain::GetInstance()->m_CameraTransform->m_center,
+			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position,
+			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_center,
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 	}

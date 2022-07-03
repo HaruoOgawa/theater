@@ -42,8 +42,13 @@ void MeshRendererComponent::Draw() {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
 
-	if (GraphicsMain::GetInstance()->m_CameraTransform) {
-		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_CameraTransform->m_position);
+	//
+	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	if(
+		(CamIndex >= 0 && CamIndex < GraphicsMain::GetInstance()->m_CameraTransformList.size())
+		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	{
+		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position);
 	}
 
 	// framebuffer
@@ -55,4 +60,7 @@ void MeshRendererComponent::Draw() {
 	}
 
     m_mesh->Draw();
+
+	//
+	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 }

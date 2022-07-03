@@ -17,6 +17,7 @@ enum class ERerderingTarget
 class GenocideCronus;
 class CTimeline;
 class TransformComponent;
+class RealtimeReflectionProbe;
 
 class GraphicsMain
 {
@@ -56,7 +57,13 @@ public:
 	std::vector<class UIObject*> uiObjectList;
 
 	bool mouseStateBool;
-	std::shared_ptr<TransformComponent> m_CameraTransform;
+
+	// カメラパラメーター
+	std::vector<std::shared_ptr<TransformComponent>> m_CameraTransformList;
+	int m_UseCameraIndex;
+
+	// 
+	std::shared_ptr<RealtimeReflectionProbe> m_RealtimeReflectionProbe;
 	
 private :
 	void UpdateTimeline();

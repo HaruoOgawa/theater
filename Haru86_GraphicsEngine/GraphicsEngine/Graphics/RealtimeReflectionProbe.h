@@ -1,0 +1,24 @@
+#pragma once
+#include <vector>
+#include <memory>
+
+class Texture;
+class TransformComponent;
+
+class RealtimeReflectionProbe
+{
+	
+public:
+	RealtimeReflectionProbe();
+	virtual ~RealtimeReflectionProbe()=default;
+
+	void Start();
+	void Update();
+	void Draw();
+
+	//
+	std::vector<std::shared_ptr<Texture>> m_CubeTexList;
+	std::vector<unsigned int>			  m_FramebufferIndexList;
+	std::vector<std::shared_ptr<TransformComponent>> m_CubeCameraTRS;
+};
+

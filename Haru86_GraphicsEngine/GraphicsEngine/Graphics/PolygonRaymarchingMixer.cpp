@@ -22,11 +22,13 @@ void PolygonRaymarchingMixer::Draw() {
 	if (GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture != nullptr) {
 		GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetActive(GL_TEXTURE0);
 		m_material->SetTexUniform("polygon_frameTexture", 0);
+		
 	}
 	//polygon_depthTexture
 	if (GraphicsRenderer::GetInstance()->polygon_depthTexture != nullptr) {
 		GraphicsRenderer::GetInstance()->polygon_depthTexture->SetActive(GL_TEXTURE1);
 		m_material->SetTexUniform("polygon_depthTexture", 1);
+		
 	}
 
 	if (GraphicsMain::GetInstance()->raymarchingObjectList.size() > 0) {
@@ -34,11 +36,13 @@ void PolygonRaymarchingMixer::Draw() {
 		if (GraphicsRenderer::GetInstance()->raymarching_frameTexture != nullptr) {
 			GraphicsRenderer::GetInstance()->raymarching_frameTexture->SetActive(GL_TEXTURE2);
 			m_material->SetTexUniform("raymarching_frameTexture", 2);
+			
 		}
 		//raymarching_depthTexture
 		if (GraphicsRenderer::GetInstance()->raymarching_depthTexture != nullptr) {
 			GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetActive(GL_TEXTURE3);
 			m_material->SetTexUniform("raymarching_depthTexture", 3);
+			
 		}
 	}
 	else {
@@ -46,4 +50,8 @@ void PolygonRaymarchingMixer::Draw() {
 	}
 	
 	m_mesh->Draw();
+	GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
+	GraphicsRenderer::GetInstance()->polygon_depthTexture->SetEnactive(GL_TEXTURE1);
+	GraphicsRenderer::GetInstance()->raymarching_frameTexture->SetEnactive(GL_TEXTURE2);
+	GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetEnactive(GL_TEXTURE3);
 }

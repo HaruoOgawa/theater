@@ -6,6 +6,8 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/GameObject.h"
+#include "GraphicsEngine/Graphics/RealtimeReflectionProbe.h"
+#include "GraphicsEngine/Graphics/Texture.h"
 
 namespace myapp {
 	SacredLake::SacredLake():
@@ -19,13 +21,24 @@ namespace myapp {
 
 	void SacredLake::Start() {
 		// Object
-		m_ReflectPlane = std::make_shared<GameObject>(PrimitiveType::BOARD);
+		std::string SacredLake_WaterReflection = {
+			#include "../Shader/SacredLake_WaterReflection.frag"
+		};
+		/*m_ReflectPlane = std::make_shared<GameObject>(PrimitiveType::BOARD, RenderType::DefaultBuffer,
+			RenderQueue::Geometry,RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert, SacredLake_WaterReflection);
 		m_ReflectPlane->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
 		m_ReflectPlane->m_transform->m_scale = glm::vec3(100.0f);
-		m_ReflectPlane->m_transform->m_position = glm::vec3(0.0f, -1.0f, 0.0f);
+		m_ReflectPlane->m_transform->m_position = glm::vec3(0.0f, -1.0f, 0.0f);*/
+		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::Standard_vert,SacredLake_WaterReflection);
+		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
+		m_ReflectPlaneTRS->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
+		m_ReflectPlaneTRS->m_scale = glm::vec3(100.0f);
+		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -1.0f, 0.0f);
+		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 		// raymarching
-		std::string MandelboxShader = {
+		/*std::string MandelboxShader = {
 			#include "../Shader/SacredLake_Mandelbox.frag"
 		};
 
@@ -36,7 +49,7 @@ namespace myapp {
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
-			);
+			);*/
 
 		// GPU particle
 		std::string GPUVert = {
@@ -52,6 +65,10 @@ namespace myapp {
 
 		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 		m_GPUTRS = std::make_shared<TransformComponent>();
+
+		// リアルタイムリフレクションプローブ
+		m_RP = std::make_shared<RealtimeReflectionProbe>();
+		GraphicsMain::GetInstance()->m_RealtimeReflectionProbe = m_RP;
 	}
 
 	void SacredLake::Update() {
@@ -70,5 +87,21 @@ namespace myapp {
 		m_GPUMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);
+
+		//
+		m_ReflectPlaneMaterial->SetActive();
+		m_ReflectPlaneTRS->CalMatrix();
+		m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
+		m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
+		m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
+		m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
+		m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+		m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+		
+		//m_RP->m_CubeTexList[1]->SetActive(GL_TEXTURE0);
+		//m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
+		
+		m_ReflectPlaneMesh->Draw();
+		//m_RP->m_CubeTexList[1]->SetEnactive(GL_TEXTURE0);
 	}
 }
