@@ -11,8 +11,7 @@ public:
 	void CreateForRendering(int width, int height,GLint internalformat,GLint format,GLenum type= GL_UNSIGNED_BYTE);
 	bool Load(const std::string& fileName);
 	unsigned int GetTextureID() const { return mTextureID; }
-	void SetActive();
-	void SetEactive();
+	void SetActive(GLenum slot);
 	void Unload();
 	friend class Material;
 private:

@@ -2,7 +2,6 @@
 
 #include <memory>
 
-class Texture;
 class Mesh;
 class Material;
 class TransformComponent;

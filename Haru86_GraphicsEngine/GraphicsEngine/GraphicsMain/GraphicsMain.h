@@ -43,7 +43,6 @@ public:
 	//frame board
 	std::unique_ptr<class GameObject> renderBoard;
 	std::shared_ptr<class CameraObject> game_camera_instance;
-	std::map<int, GLenum> texSlots;
 	
 	//
 	GenocideCronus* m_App;

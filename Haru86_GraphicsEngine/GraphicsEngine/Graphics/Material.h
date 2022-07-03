@@ -66,7 +66,6 @@ private :
     GLuint computeShaderData;
     GLuint computeShaderDepthData;
 
-    std::vector<std::unique_ptr<class Texture>> m_texture_list;
     std::vector<std::shared_ptr<ComputeBuffer>> m_buffers;
 };
 

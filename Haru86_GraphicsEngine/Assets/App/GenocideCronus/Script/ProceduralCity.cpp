@@ -1,11 +1,9 @@
 #include "ProceduralCity.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
-#include "GraphicsEngine/Graphics/Texture.h"
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
-#include "BillWindowGenerator.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/GameObject.h"
 
@@ -33,9 +31,6 @@ namespace myapp {
 		};
 		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag, ProceduralCity_geom);
 
-		//
-		m_BillWindowGenerator = std::make_shared<BillWindowGenerator>();
-		
 		// raymarching
 		std::string MandelboxShader = {
 			#include "../Shader/MandelboxSample.frag"
@@ -66,10 +61,7 @@ namespace myapp {
 		m_BillMaterial4Instanced->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
 		m_BillMaterial4Instanced->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 		m_BillMaterial4Instanced->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		m_BillWindowGenerator->m_BillWindowTex->SetActive();
-		m_BillMaterial4Instanced->SetTexUniform("_BillWindowTex", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
-		m_BillWindowGenerator->m_BillWindowTex->SetEactive();
-
+		
 		m_BillMesh4Instanced->DrawInstancedWithMesh(1024, GL_POINTS);
 		//m_BillMesh4Instanced->Draw(GL_POINTS);
 	}

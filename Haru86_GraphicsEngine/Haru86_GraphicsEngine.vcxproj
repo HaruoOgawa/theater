@@ -376,7 +376,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\App\GenocideCronus\Script\BillWindowGenerator.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
@@ -405,7 +404,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\App\GenocideCronus\Script\BillWindowGenerator.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />

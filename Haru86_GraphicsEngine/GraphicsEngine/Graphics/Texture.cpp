@@ -71,17 +71,10 @@ void Texture::CreateForRendering(int width, int height, GLint internalformat, GL
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::SetActive()
+void Texture::SetActive(GLenum slot)
 {
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glEnable(GL_TEXTURE_2D);
+	glActiveTexture(slot);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
-}
-
-void Texture::SetEactive()
-{
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glDisable(GL_TEXTURE_2D);
 }
 
 void Texture::Unload()

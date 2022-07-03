@@ -30,5 +30,4 @@ public:
 private:
     class GameObject* owner;
     class GraphicsMain* game;
-    std::unique_ptr<Texture> primTex;
 };

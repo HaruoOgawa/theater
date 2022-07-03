@@ -182,7 +182,7 @@ void Material::SetBuffer(std::shared_ptr<ComputeBuffer> buffer,int bufferIndex) 
 }
 
 void Material::LoadTextureList(std::vector<std::string> texPathList, std::vector<std::string> texUniformNameList) {
-	for (int i = 0; i < texPathList.size();i++) {
+	/*for (int i = 0; i < texPathList.size(); i++) {
 		
 		std::unique_ptr<Texture> tex = std::make_unique<Texture>();
 		tex->texUniformName = texUniformNameList[i];
@@ -193,19 +193,19 @@ void Material::LoadTextureList(std::vector<std::string> texPathList, std::vector
 
 			m_texture_list.push_back(std::move(tex));
 		}
-	}
+	}*/
 }
 void Material::SetActiveTextureList() {
-	for (int i = 0; i < m_texture_list.size(); i++) {
+	/*for (int i = 0; i < m_texture_list.size(); i++) {
 		m_texture_list[i]->SetActive();
 		SetTexUniform(m_texture_list[i]->texUniformName, m_texture_list[i]->GetTextureID());
-	}
+	}*/
 }
 
 void Material::SetEactiveTextureList() {
-	for (int i = 0; i < m_texture_list.size(); i++) {
+	/*for (int i = 0; i < m_texture_list.size(); i++) {
 		m_texture_list[i]->SetEactive();
-	}
+	}*/
 }
 
 GLuint Material::GetCurrentShaderPrg() {
