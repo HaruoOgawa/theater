@@ -99,6 +99,7 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
 			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[0]->m_position);
 
 			m_RP->m_CubeTex->SetActive(GL_TEXTURE0,GL_TEXTURE_CUBE_MAP);
 			//m_RP->m_CubeTexList[1]->SetActive(GL_TEXTURE0);
@@ -117,6 +118,7 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectSphereTRS->m_pMatrix);
 			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[0]->m_position);
 
 			m_RP->m_CubeTex->SetActive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
 			//m_RP->m_CubeTexList[2]->SetActive(GL_TEXTURE0);

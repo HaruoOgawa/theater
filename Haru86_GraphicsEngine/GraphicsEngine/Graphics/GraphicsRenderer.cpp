@@ -187,7 +187,8 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 
 }
 
-void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)> callback) {
+void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
+{
 	//ポリゴンオブジェクトのカラーマップをレンダリング///////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_frameBuffer);
@@ -284,7 +285,7 @@ void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)
 	// 最終結果前に何かしたいならコールバックを呼び出す
 	callback();
 
-	glViewport(0, 0, GetScreenSize().x, GetScreenSize().y);
+	glViewport(0, 0, width, height);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
