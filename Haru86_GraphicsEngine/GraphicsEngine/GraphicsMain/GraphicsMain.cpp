@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
+#include "GraphicsEngine/Graphics/RealtimeReflectionProbe.h"
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -18,10 +19,7 @@ GraphicsMain* GraphicsMain::s_pInstance = nullptr;
 
 void GraphicsMain::Create()
 {
-	if (!s_pInstance)
-	{
-		s_pInstance = new GraphicsMain;
-	}
+	if (!s_pInstance)s_pInstance = new GraphicsMain;
 }
 
 void GraphicsMain::Destroy()
@@ -40,75 +38,9 @@ GraphicsMain::GraphicsMain()
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_timeline(nullptr),
-	m_CameraTransform(nullptr)
+	m_UseCameraIndex(0),
+	m_RealtimeReflectionProbe(nullptr)
 {
-	for (int i = 0; i < 20;i++) {
-		switch (i)
-		{
-		case 0:
-			texSlots.emplace(i, GL_TEXTURE0);
-			break;
-		case 1:
-			texSlots.emplace(i, GL_TEXTURE1);
-			break;
-		case 2:
-			texSlots.emplace(i, GL_TEXTURE2);
-			break;
-		case 3:
-			texSlots.emplace(i, GL_TEXTURE3);
-			break;
-		case 4:
-			texSlots.emplace(i, GL_TEXTURE4);
-			break;
-		case 5:
-			texSlots.emplace(i, GL_TEXTURE5);
-			break;
-		case 6:
-			texSlots.emplace(i, GL_TEXTURE6);
-			break;
-		case 7:
-			texSlots.emplace(i, GL_TEXTURE7);
-			break;
-		case 8:
-			texSlots.emplace(i, GL_TEXTURE8);
-			break;
-		case 9:
-			texSlots.emplace(i, GL_TEXTURE9);
-			break;
-		case 10:
-			texSlots.emplace(i, GL_TEXTURE10);
-			break;
-		case 11:
-			texSlots.emplace(i, GL_TEXTURE11);
-			break;
-		case 12:
-			texSlots.emplace(i, GL_TEXTURE12);
-			break;
-		case 13:
-			texSlots.emplace(i, GL_TEXTURE13);
-			break;
-		case 14:
-			texSlots.emplace(i, GL_TEXTURE14);
-			break;
-		case 15:
-			texSlots.emplace(i, GL_TEXTURE15);
-			break;
-		case 16:
-			texSlots.emplace(i, GL_TEXTURE16);
-			break;
-		case 17:
-			texSlots.emplace(i, GL_TEXTURE17);
-			break;
-		case 18:
-			texSlots.emplace(i, GL_TEXTURE18);
-			break;
-		case 19:
-			texSlots.emplace(i, GL_TEXTURE19);
-			break;
-		default:
-			break;
-		}
-	}
 }
 
 GraphicsMain::~GraphicsMain() {
@@ -122,16 +54,9 @@ GraphicsMain::~GraphicsMain() {
 }
 
 bool GraphicsMain::CreateApp() {
-	if (glfwInit() == GL_FALSE) {
-		//Console::Log("Could not initialize GLFW\n");
-		return false;
-	}
-
+	if (glfwInit() == GL_FALSE)return false;
 	GraphicsRenderer::Create();
-	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500)) {
-		//Console::Log("Could not Create GraphicsRenderer\n");
-		return false;
-	}
+	if (!GraphicsRenderer::GetInstance()->Initialize(500, 500))return false;
 
 	return true;
 }
@@ -146,10 +71,6 @@ bool GraphicsMain::Initialize() {
 }
 
 void GraphicsMain::LoadData() {
-#ifdef _DEBUG
-	Console::Log("This is _DEBUG!!!!!!!!!!!!!!!!!!!!!\n");
-#endif // DEBUG
-	
 	//
 	m_App->Start();
 
@@ -208,6 +129,23 @@ void GraphicsMain::Update() {
 	}
 
 }
+
+// ここのDrawではカメラ位置を変える
 void GraphicsMain::Draw() {
-	GraphicsRenderer::GetInstance()->Draw();
+	// 垂直同期の待機時間
+	glfwSwapInterval(1);
+
+	// 通常の描画(画面に表示される部分)
+	m_UseCameraIndex = 0;
+	GraphicsRenderer::GetInstance()->Draw(0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
+
+	// リアルタイムリフレクションプローブ
+	if (m_RealtimeReflectionProbe) {
+		m_RealtimeReflectionProbe->Draw();
+	}
+
+	//カラーバッファを入れ替える
+	glfwSwapBuffers(GraphicsRenderer::GetInstance()->GetWindow());
+
+	m_UseCameraIndex = 0;
 }

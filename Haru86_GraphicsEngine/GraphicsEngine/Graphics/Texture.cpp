@@ -1,55 +1,21 @@
 #include "Texture.h"
 #include <glew.h>
-//#include <SOIL.h>
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
-#include <map>
 
 Texture::Texture()
-	//:mTextureID(0)
 	:mTextureID(-1)
 	, mWidth(0)
 	, mHeight(0)
 {
-
 }
 
 Texture::~Texture()
 {
-	Unload();
+	glDeleteTextures(1, &mTextureID);
 }
 
 bool Texture::Load(const std::string& fileName)
 {
-	int channels = 0;
-
-	//unsigned char* image = SOIL_load_image(fileName.c_str(),
-	//	&mWidth, &mHeight, &channels, SOIL_LOAD_AUTO);
-
-	/*if (image == nullptr)
-	{
-		//SDL_Log("SOIL failed to load image %s: %s", fileName.c_str(), SOIL_last_result());
-		return false;
-	}*/
-
-	/*int format = GL_RGB;
-	if (channels == 4)
-	{
-		format = GL_RGBA;
-	}
-
-	glGenTextures(1, &mTextureID);
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glBindTexture(GL_TEXTURE_2D, mTextureID);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format,
-		GL_UNSIGNED_BYTE, image);*/
-
-	//SOIL_free_image_data(image);
-
-	// Enable linear filtering
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 	return true;
 }
 
@@ -65,26 +31,42 @@ void Texture::CreateForRendering(int width, int height, GLint internalformat, GL
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, internalformat, mWidth, mHeight, 0, format,
-		type, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::SetActive()
+void Texture::CreateForCubemap(int width, int height, GLint internalformat, GLint format, GLenum type)
 {
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	mWidth = width;
+	mHeight = height;
+	
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureID);
+	
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void Texture::SetEactive()
+void Texture::SetActive(GLenum slot, GLenum texType)
 {
-	glActiveTexture(GraphicsMain::GetInstance()->texSlots.find(mTextureID)->second);
-	glDisable(GL_TEXTURE_2D);
+	glActiveTexture(slot);
+	glBindTexture(texType, mTextureID);
 }
 
-void Texture::Unload()
-{
-	glDeleteTextures(1, &mTextureID);
+void Texture::SetEnactive(GLenum slot, GLenum texType) {
+	glActiveTexture(slot);
+	glBindTexture(texType, 0);
 }

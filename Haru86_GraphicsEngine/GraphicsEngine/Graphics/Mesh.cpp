@@ -20,6 +20,9 @@ void Mesh::CreateMesh(PrimitiveType primType) {
 	case PrimitiveType::POINT:
 		Primitive::CreatePoint(&vertices, &dimention, &indices);
 		break;
+	case PrimitiveType::SPHERE:
+		Primitive::CreateSphere(&vertices, &dimention, &indices);
+		break;
 	default:
 		Primitive::CreateBoard(&vertices, &dimention, &indices);
 		break;

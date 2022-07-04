@@ -6,7 +6,7 @@
 
 MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
 	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs)
-	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), primTex(nullptr), owner(o), game(GraphicsMain::GetInstance())
+	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), /*primTex(nullptr),*/ owner(o), game(GraphicsMain::GetInstance())
 {
 	useZTest = true;
 	m_mesh = std::make_shared<Mesh>((primType));
@@ -42,21 +42,25 @@ void MeshRendererComponent::Draw() {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
 
-
-	//ここでTextureをアクティブにする
-	m_material->SetActiveTextureList();
+	//
+	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	if(
+		(CamIndex >= 0 && CamIndex < GraphicsMain::GetInstance()->m_CameraTransformList.size())
+		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	{
+		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position);
+	}
 
 	// framebuffer
-	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetActive();
-	m_material->SetTexUniform("frameTex", GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->GetTextureID());
-	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEactive();
-
+	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetActive(GL_TEXTURE0);
+	m_material->SetTexUniform("frameTex", 0);
+	
 	for (auto clip : animationClips) {
 		clip->callback(clip->lifeTimeRate);
 	}
 
     m_mesh->Draw();
 
-	//使い終わったらここでTextureを非アクティブにする
-	m_material->SetEactiveTextureList();
+	//
+	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 }

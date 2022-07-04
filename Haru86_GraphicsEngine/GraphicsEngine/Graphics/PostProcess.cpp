@@ -63,17 +63,18 @@ void PostProcess::DrawPolygonPostProcess(const std::shared_ptr<Texture> SrcTextu
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
 	// Bloom
-	m_BloomTexture->SetActive();
-	m_material->SetTexUniform("_BloomTexture", m_BloomTexture->GetTextureID());
+	m_BloomTexture->SetActive(GL_TEXTURE0);
+	m_material->SetTexUniform("_BloomTexture", 0);
 	m_material->SetFloatUniform("_UseBloom", (m_BloomTexture && m_UseBloom)? 1.0 : 0.0);
-	m_BloomTexture->SetEactive();
+	
 
 	// Set SrcTexture
-	SrcTexture->SetActive();
-	m_material->SetTexUniform("_SrcTexture", SrcTexture->GetTextureID());
-	SrcTexture->SetEactive();
-
+	SrcTexture->SetActive(GL_TEXTURE1);
+	m_material->SetTexUniform("_SrcTexture", 1);
+	
 	m_mesh->Draw();
+	m_BloomTexture->SetEnactive(GL_TEXTURE0);
+	SrcTexture->SetEnactive(GL_TEXTURE1);
 }
 
 void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture, const unsigned int& DestBuffer)const {
@@ -90,8 +91,9 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
 	m_LateMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_LateMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-	SrcTexture->SetActive();
-	m_LateMaterial->SetTexUniform("_SrcTexture", SrcTexture->GetTextureID());
-	SrcTexture->SetEactive();
+	SrcTexture->SetActive(GL_TEXTURE0);
+	m_LateMaterial->SetTexUniform("_SrcTexture", 0);
+	
 	m_mesh->Draw();
+	SrcTexture->SetEnactive(GL_TEXTURE0);
 }

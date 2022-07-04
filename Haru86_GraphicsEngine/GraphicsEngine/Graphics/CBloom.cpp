@@ -62,13 +62,14 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	m_IlluminanceMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
 	m_IlluminanceMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_IlluminanceMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-	SrcTexture->SetActive();
-	m_IlluminanceMaterial->SetTexUniform("_SrcTexture", SrcTexture->GetTextureID());
-	SrcTexture->SetEactive();
+	SrcTexture->SetActive(GL_TEXTURE0);
+	m_IlluminanceMaterial->SetTexUniform("_SrcTexture", 0);
 	m_IlluminanceMaterial->SetFloatUniform("_BloomThreshold", PostProcess::GetInstance()->m_BloomThreshold);
 	m_IlluminanceMaterial->SetFloatUniform("_BloomIntensity", PostProcess::GetInstance()->m_BloomIntensity);
-
+	
 	m_mesh->Draw();
+	SrcTexture->SetEnactive(GL_TEXTURE0);
+
 
 	// BlurX
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
@@ -85,13 +86,13 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	m_BlurMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BlurMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_IlluminanceMap) {
-		m_IlluminanceMap->SetActive();
-		m_BlurMaterial->SetTexUniform("_IlluminanceTexture", m_IlluminanceMap->GetTextureID());
-		m_IlluminanceMap->SetEactive();
+		m_IlluminanceMap->SetActive(GL_TEXTURE0);
+		m_BlurMaterial->SetTexUniform("_IlluminanceTexture", 0);
 	}
 	m_BlurMaterial->SetFloatVectorUniform("_weights", weights);
 	m_BlurMaterial->SetFloatUniform("_IsHorizontal", 1.0);
 	m_mesh->Draw();
+	m_IlluminanceMap->SetEnactive(GL_TEXTURE0);
 	
 	// BlurY
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
@@ -108,13 +109,14 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	m_BlurMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BlurMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_BlurMapX) {
-		m_BlurMapX->SetActive();
-		m_BlurMaterial->SetTexUniform("_IlluminanceTexture", m_BlurMapX->GetTextureID());
-		m_BlurMapX->SetEactive();
+		m_BlurMapX->SetActive(GL_TEXTURE0);
+		m_BlurMaterial->SetTexUniform("_IlluminanceTexture", 0);
+		
 	}
 	m_BlurMaterial->SetFloatVectorUniform("_weights", weights);
 	m_BlurMaterial->SetFloatUniform("_IsHorizontal", 0.0);
 	m_mesh->Draw();
+	m_BlurMapX->SetEnactive(GL_TEXTURE0);
 
 	// Result
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
@@ -131,13 +133,14 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	m_BloomResultMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BloomResultMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_BlurMapY) {
-		m_BlurMapY->SetActive();
-		m_BloomResultMaterial->SetTexUniform("_BlurTexture", m_BlurMapY->GetTextureID());
-		m_BlurMapY->SetEactive();
+		m_BlurMapY->SetActive(GL_TEXTURE0);
+		m_BloomResultMaterial->SetTexUniform("_BlurTexture", 0);
+		
 	}
-	SrcTexture->SetActive();
-	m_BloomResultMaterial->SetTexUniform("_SrcTexture", SrcTexture->GetTextureID());
-	SrcTexture->SetEactive();
+	SrcTexture->SetActive(GL_TEXTURE1);
+	m_BloomResultMaterial->SetTexUniform("_SrcTexture", 1);
+	
 	m_mesh->Draw();
-
+	m_BlurMapY->SetEnactive(GL_TEXTURE0);
+	SrcTexture->SetEnactive(GL_TEXTURE1);
 }

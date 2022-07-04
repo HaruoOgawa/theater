@@ -143,7 +143,7 @@ void GraphicsRenderer::SetBackgroudColor(glm::vec4 BackgroudColor) {
 }
 
 bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<Texture> fTex, unsigned int& fBuffer,
-	GLint internalformat, GLint format, GLenum type, bool UseTex) {
+	GLint internalformat, GLint format, GLenum type, ERenderTargetType RenderTargetType) {
 	
 	// フレームバッファ生成
 	glGenFramebuffers(1, &fBuffer);
@@ -158,12 +158,12 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// カラーバッファ生成
-	if (UseTex) // カラーテクスチャバッファ
+	if (RenderTargetType==ERenderTargetType::COLOR_TEXTURE_BUFFER) // カラーテクスチャバッファ
 	{ 
 		fTex->CreateForRendering(width, height, internalformat, format, type);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
 	}
-	else // カラーレンダーバッファ
+	else if(RenderTargetType == ERenderTargetType::COLOR_RENDER_BUFFER) // カラーレンダーバッファ
 	{
 		GLuint colorRenderBuffer;
 		glGenRenderbuffers(1, &colorRenderBuffer);
@@ -171,6 +171,13 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 		glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	}
+	else if (RenderTargetType == ERenderTargetType::REALTIME_CUBEMAP) // 動的キューブマップ
+	{
+		fTex->CreateForCubemap(width, height, internalformat, format, type);
+	}
+	else {
+		return false;
 	}
 	
 	// バインド解除
@@ -180,10 +187,8 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 
 }
 
-void GraphicsRenderer::Draw() {
-	// 垂直同期の待機時間
-	glfwSwapInterval(1);
-
+void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
+{
 	//ポリゴンオブジェクトのカラーマップをレンダリング///////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_frameBuffer);
@@ -275,8 +280,12 @@ void GraphicsRenderer::Draw() {
 
 	//最終的な結果を作成する///////////////////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, GetScreenSize().x, GetScreenSize().y);
+	glBindFramebuffer(GL_FRAMEBUFFER, ResultFrameBufferIndex);
+	
+	// 最終結果前に何かしたいならコールバックを呼び出す
+	callback();
+
+	glViewport(0, 0, width, height);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -287,8 +296,4 @@ void GraphicsRenderer::Draw() {
 	for (auto obj : mgame->boardGameObjectList) {
 		obj->meshComp->Draw();
 	}
-
-	//カラーバッファを入れ替える
-	glfwSwapBuffers(sWindow);
-
 }
