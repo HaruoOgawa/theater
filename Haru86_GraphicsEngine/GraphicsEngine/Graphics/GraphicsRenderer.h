@@ -5,6 +5,13 @@
 #include <glm/glm.hpp>
 
 #include <memory>
+#include <functional>
+
+enum class ERenderTargetType {
+	COLOR_TEXTURE_BUFFER,
+	COLOR_RENDER_BUFFER,
+	REALTIME_CUBEMAP,
+};
 
 class Texture;
 
@@ -41,8 +48,9 @@ public:
 	GraphicsRenderer(class GraphicsMain* game);
 	~GraphicsRenderer();
 	bool Initialize(float width, float height);
-	void Draw(int ResultFrameBufferIndex);
-	bool CreateFrameBuffer(int width, int height,std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, GLenum type = GL_UNSIGNED_BYTE,bool UseTex=true);
+	void Draw(int ResultFrameBufferIndex,std::function<void(void)> callback);
+	bool CreateFrameBuffer(int width, int height,std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, 
+		GLenum type = GL_UNSIGNED_BYTE, ERenderTargetType RenderTargetType = ERenderTargetType::COLOR_TEXTURE_BUFFER);
 	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	

@@ -15,6 +15,7 @@ public:
 
 	static void CreateBoard(std::vector<std::vector<float>>* vertices, std::vector<int>* dimention, std::vector<unsigned short>* indices);
 	static void CreatePoint(std::vector<std::vector<float>>* vertices, std::vector<int>* dimention, std::vector<unsigned short>* indices);
+	static void CreateSphere(std::vector<std::vector<float>>* vertices, std::vector<int>* dimention, std::vector<unsigned short>* indices, float row = 16.0f, float column = 16.0f, float rad = 1.0f);
 
 	unsigned int mNumIndices;
 private:

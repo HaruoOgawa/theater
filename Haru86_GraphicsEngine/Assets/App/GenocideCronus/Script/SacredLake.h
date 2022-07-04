@@ -17,11 +17,13 @@ namespace myapp {
 		// 
 		std::shared_ptr<GameObject> m_Mandelbox;
 
-
-		std::shared_ptr<GameObject> m_ReflectPlane;
+		//
 		std::shared_ptr<Material> m_ReflectPlaneMaterial;
 		std::shared_ptr<TransformComponent> m_ReflectPlaneTRS;
 		std::shared_ptr<Mesh> m_ReflectPlaneMesh;
+
+		std::shared_ptr<TransformComponent> m_ReflectSphereTRS;
+		std::shared_ptr<Mesh> m_ReflectSphereMesh;
 
 		// GPU Object
 		std::shared_ptr<Material> m_GPUMaterial;

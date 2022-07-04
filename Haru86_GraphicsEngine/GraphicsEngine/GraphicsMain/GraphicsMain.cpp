@@ -137,7 +137,7 @@ void GraphicsMain::Draw() {
 
 	// 通常の描画(画面に表示される部分)
 	m_UseCameraIndex = 0;
-	GraphicsRenderer::GetInstance()->Draw(0);
+	GraphicsRenderer::GetInstance()->Draw(0, []() {});
 
 	// リアルタイムリフレクションプローブ
 	if (m_RealtimeReflectionProbe) {

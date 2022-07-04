@@ -19,6 +19,7 @@ layout(location=4)in ivec4 joints;
 out vec2 uv;
 out vec3 CameraPos;
 out vec3 WorldVertexPos;
+out vec3 WorldNormal;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 
@@ -29,6 +30,7 @@ void main(){
 	uv=texcoord;
 	CameraPos=_CameraPos;
 	WorldVertexPos=(MMatrix*pos).xyz;
+	WorldNormal=normalize((MMatrix*vec4(normal,0.0)).xyz);
 }
 
 )"

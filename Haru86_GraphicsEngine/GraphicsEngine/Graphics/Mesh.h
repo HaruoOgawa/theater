@@ -8,6 +8,7 @@
 enum class PrimitiveType {
 	BOARD,
 	POINT,
+	SPHERE,
 	CUSTOM,
 };
 

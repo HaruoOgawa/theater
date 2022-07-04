@@ -41,15 +41,37 @@ void Texture::CreateForRendering(int width, int height, GLint internalformat, GL
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::SetActive(GLenum slot)
+void Texture::CreateForCubemap(int width, int height, GLint internalformat, GLint format, GLenum type)
 {
-	glActiveTexture(slot);
-	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	mWidth = width;
+	mHeight = height;
+	
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureID);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, internalformat, mWidth, mHeight, 0, format,type, 0);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void Texture::SetEnactive(GLenum slot) {
+void Texture::SetActive(GLenum slot, GLenum texType)
+{
 	glActiveTexture(slot);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(texType, mTextureID);
+}
+
+void Texture::SetEnactive(GLenum slot, GLenum texType) {
+	glActiveTexture(slot);
+	glBindTexture(texType, 0);
 }
 
 void Texture::Unload()
