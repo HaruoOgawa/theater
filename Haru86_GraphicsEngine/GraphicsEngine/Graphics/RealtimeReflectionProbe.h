@@ -7,7 +7,6 @@ class TransformComponent;
 
 class RealtimeReflectionProbe
 {
-	
 public:
 	RealtimeReflectionProbe();
 	virtual ~RealtimeReflectionProbe()=default;
@@ -20,8 +19,5 @@ public:
 	std::shared_ptr<Texture>                         m_CubeTex;
 	unsigned int									 m_FramebufferIndex;
 	std::vector<std::shared_ptr<TransformComponent>> m_CubeCameraTRS;
-
-	//std::vector<std::shared_ptr<Texture>>            m_CubeTexList;
-	//std::vector<unsigned int>						 m_FramebufferIndexList;
 };
 

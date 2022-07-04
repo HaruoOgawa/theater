@@ -27,7 +27,7 @@ namespace myapp {
 		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::Standard_vert,SacredLake_WaterReflection);
 		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
 		m_ReflectPlaneTRS->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
-		m_ReflectPlaneTRS->m_scale = glm::vec3(100.0f);
+		m_ReflectPlaneTRS->m_scale = glm::vec3(1000.0f);
 		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -1.0f, 0.0f);
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
@@ -102,12 +102,10 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[0]->m_position);
 
 			m_RP->m_CubeTex->SetActive(GL_TEXTURE0,GL_TEXTURE_CUBE_MAP);
-			//m_RP->m_CubeTexList[1]->SetActive(GL_TEXTURE0);
 			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
 
 			m_ReflectPlaneMesh->Draw();
 			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
-			//m_RP->m_CubeTexList[1]->SetEnactive(GL_TEXTURE0);
 			
 			// Sphere
 			m_ReflectPlaneMaterial->SetActive();
@@ -121,12 +119,10 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[0]->m_position);
 
 			m_RP->m_CubeTex->SetActive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
-			//m_RP->m_CubeTexList[2]->SetActive(GL_TEXTURE0);
 			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
 
 			m_ReflectSphereMesh->Draw();
-			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
-			//m_RP->m_CubeTexList[2]->SetEnactive(GL_TEXTURE0);
+			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);	
 		}
 	}
 }
