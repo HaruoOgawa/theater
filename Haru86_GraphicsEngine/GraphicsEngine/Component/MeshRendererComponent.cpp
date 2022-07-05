@@ -9,6 +9,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primTy
 	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), /*primTex(nullptr),*/ owner(o), game(GraphicsMain::GetInstance())
 {
 	useZTest = true;
+	m_SurfaceType = SurfaceType;
 	m_mesh = std::make_shared<Mesh>((primType));
 	m_mesh->glDrawType = GLDrawType::NONE;
 	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv,cs);
@@ -23,8 +24,16 @@ void MeshRendererComponent::Draw() {
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	if (m_SurfaceType == RenderingSurfaceType::RAYMARCHING) 
+	{
+		glDisable(GL_BLEND);
+	}
+	else
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
 
 	m_material->SetActive();
 	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix * owner->m_transform->m_mMatrix);

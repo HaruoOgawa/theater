@@ -16,6 +16,7 @@ namespace myapp {
 
 		// 
 		std::shared_ptr<GameObject> m_Mandelbox;
+		std::shared_ptr<GameObject> m_VolumetricCloud;
 
 		//
 		std::shared_ptr<Material> m_ReflectPlaneMaterial;

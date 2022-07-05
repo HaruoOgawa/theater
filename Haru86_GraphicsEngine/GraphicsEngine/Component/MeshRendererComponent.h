@@ -22,7 +22,9 @@ public:
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
     class GameObject* myowner;
+    
     bool useZTest;
+    RenderingSurfaceType m_SurfaceType;
 
     friend class GraphicsRenderer;
     friend GameObject;

@@ -71,7 +71,7 @@ void GenocideCronus::Update() {
 	);*/
 	m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f,
-		10.0f,
+		1.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f
 	);
 
