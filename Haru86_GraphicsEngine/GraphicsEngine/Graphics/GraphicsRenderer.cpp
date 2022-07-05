@@ -231,33 +231,17 @@ void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)
 	PostProcess::GetInstance()->DrawPolygonPostProcess(polygon_frameTexture, m_PolygonPostProcess_FrameBuffer);
 
 	// レイマーチングをレンダリングするのはデフォルトバッファのみ(リフレクションプローブでは無視)
-	if (ResultFrameBufferIndex == 0) {
-		//レイマーチングオブジェクトのカラーマップをレンダリング///////////////
-		if (mgame->raymarchingObjectList.size() > 0) {
-			GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-			glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
-			glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
+	//レイマーチングオブジェクトのカラーマップをレンダリング///////////////
+	if (mgame->raymarchingObjectList.size() > 0) {
+		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
+		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
+		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glEnable(GL_DEPTH_TEST);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 
-			for (auto obj : mgame->raymarchingObjectList) {
-				obj->m_transform->CalMatrix();
-				obj->meshComp->Draw();
-			}
-		}
-
-		//レイマーチングオブジェクトのデプスマップをレンダリング
-		if (mgame->raymarchingObjectList.size() > 0) {
-			GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
-			glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
-			glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
-
-			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glEnable(GL_DEPTH_TEST);
-
+		if (ResultFrameBufferIndex == 0) {
 			for (auto obj : mgame->raymarchingObjectList) {
 				obj->m_transform->CalMatrix();
 				obj->meshComp->Draw();
@@ -265,6 +249,24 @@ void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)
 		}
 	}
 
+	//レイマーチングオブジェクトのデプスマップをレンダリング
+	if (mgame->raymarchingObjectList.size() > 0) {
+		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
+		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
+		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
+
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+
+		if (ResultFrameBufferIndex == 0) {
+			for (auto obj : mgame->raymarchingObjectList) {
+				obj->m_transform->CalMatrix();
+				obj->meshComp->Draw();
+			}
+		}
+	}
+	
 	//ポリゴンオブジェクトとレイマーチングオブジェクトをブレンドする
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, p_r_BlendingBuffer);

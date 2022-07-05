@@ -33,10 +33,10 @@ namespace myapp {
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 		//
-		/*m_ReflectSphereTRS = std::make_shared<TransformComponent>();
+		m_ReflectSphereTRS = std::make_shared<TransformComponent>();
 		m_ReflectSphereTRS->m_scale = glm::vec3(7.0f);
 		m_ReflectSphereTRS->m_position = glm::vec3(0.0f, 10.0f, 0.0f);
-		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);*/
+		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);
 	
 		// raymarching
 		/*std::string MandelboxShader = {
@@ -91,7 +91,7 @@ namespace myapp {
 
 	void SacredLake::Draw() {
 		// GPU particle
-		/*m_GPUMaterial->SetActive();
+		m_GPUMaterial->SetActive();
 		m_GPUTRS->CalMatrix();
 		m_GPUMaterial->SetMatrixUniform("MVPMatrix", m_GPUTRS->m_pMatrix * m_GPUTRS->m_vMatrix * m_GPUTRS->m_mMatrix);
 		m_GPUMaterial->SetMatrixUniform("MMatrix", m_GPUTRS->m_mMatrix);
@@ -99,7 +99,7 @@ namespace myapp {
 		m_GPUMaterial->SetMatrixUniform("PMatrix", m_GPUTRS->m_pMatrix);
 		m_GPUMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 		m_GPUMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		m_GPUMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);*/
+		m_GPUMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
 
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);
 
@@ -122,7 +122,7 @@ namespace myapp {
 			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
 			
 			// Sphere
-			/*m_ReflectPlaneMaterial->SetActive();
+			m_ReflectPlaneMaterial->SetActive();
 			m_ReflectSphereTRS->CalMatrix();
 			m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectSphereTRS->m_pMatrix * m_ReflectSphereTRS->m_vMatrix * m_ReflectSphereTRS->m_mMatrix);
 			m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectSphereTRS->m_mMatrix);
@@ -136,7 +136,7 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
 
 			m_ReflectSphereMesh->Draw();
-			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);	*/
+			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);	
 		}
 	}
 }

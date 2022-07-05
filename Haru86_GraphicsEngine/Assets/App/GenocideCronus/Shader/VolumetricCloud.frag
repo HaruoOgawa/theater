@@ -63,6 +63,9 @@ void main()
     st.x*=(_resolution.x/_resolution.y);
     
     vec4 col =vec4(0.4, 0.6, 1.0,0.0); 
+    if(_RenderingTarget==2.0){
+        col =vec4(vec3(1.0)*0.5,0.0); 
+    }
     //vec4 col =vec4(0.0); 
     //vec4 col =vec4(0.85,0.85,0.85,0.0); 
     vec3 ta=vec3(0.0,1.0,0.0),ro=vec3(0.0,1.0,1.0);

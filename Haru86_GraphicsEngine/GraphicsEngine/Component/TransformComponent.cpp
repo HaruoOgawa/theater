@@ -4,7 +4,7 @@
 #include "../GraphicsMain/GraphicsMain.h"
 
 TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: m_center(glm::vec3(0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
+	: m_center(glm::vec3(0.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
 }
@@ -32,7 +32,7 @@ void TransformComponent::ComputeViewMatrix() {
 		m_vMatrix = glm::lookAt(
 			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position,
 			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_center,
-			glm::vec3(0.0f, 1.0f, 0.0f)
+			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_up
 		);
 	}
 	else {
