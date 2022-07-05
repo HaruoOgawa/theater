@@ -24,15 +24,16 @@ void TransformComponent::ComputeModelMatrix() {
 }
 
 void TransformComponent::ComputeViewMatrix() {
-	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
-	if (
-		(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
-		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	//int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	//if (
+		//(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
+		//&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
 		m_vMatrix = glm::lookAt(
-			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position,
-			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_center,
-			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_up
+			GraphicsMain::GetInstance()->m_UsingCamera->m_position,
+			GraphicsMain::GetInstance()->m_UsingCamera->m_center,
+			GraphicsMain::GetInstance()->m_UsingCamera->m_up
 		);
 	}
 	else {

@@ -5,11 +5,16 @@
 class Texture;
 class TransformComponent;
 
-class RealtimeReflectionProbe
+enum class EReflectionType {
+	CUBEMAP,
+	MONODIRECTIONAL,
+};
+
+class ReflectionProbe
 {
 public:
-	RealtimeReflectionProbe();
-	virtual ~RealtimeReflectionProbe()=default;
+	ReflectionProbe(EReflectionType ReflectionType);
+	virtual ~ReflectionProbe()=default;
 
 	void Start();
 	void Update();
@@ -19,5 +24,6 @@ public:
 	std::shared_ptr<Texture>                         m_CubeTex;
 	unsigned int									 m_FramebufferIndex;
 	std::vector<std::shared_ptr<TransformComponent>> m_CubeCameraTRS;
+	EReflectionType								     m_ReflectionType;
 };
 

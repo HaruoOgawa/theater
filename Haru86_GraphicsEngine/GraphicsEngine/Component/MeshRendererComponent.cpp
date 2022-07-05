@@ -52,12 +52,13 @@ void MeshRendererComponent::Draw() {
 	}
 
 	//
-	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	/*int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
 	if(
 		(CamIndex >= 0 && CamIndex < GraphicsMain::GetInstance()->m_CameraTransformList.size())
-		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])*/
+	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
-		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position);
+		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_UsingCamera->m_position);
 	}
 
 	// framebuffer

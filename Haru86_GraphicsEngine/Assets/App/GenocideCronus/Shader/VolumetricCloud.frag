@@ -5,8 +5,8 @@ R"(
 in vec2 uv;
 in vec3 WorldNormal;
 in vec3 WorldVertexPos;
-in vec3 CameraPos;
 
+uniform vec3 _WorldCameraPos;
 uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
@@ -68,7 +68,9 @@ void main()
     }
     //vec4 col =vec4(0.0); 
     //vec4 col =vec4(0.85,0.85,0.85,0.0); 
-    vec3 ta=vec3(0.0,1.0,0.0),ro=vec3(0.0,1.0,1.0);
+    vec3 ta=vec3(0.0,0.0,0.0);
+    //vec3 ro=vec3(0.0,1.0,1.0);
+    vec3 ro=_WorldCameraPos;
     
     vec3 cdir=normalize(ta-ro);
     vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));

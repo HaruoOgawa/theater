@@ -6,7 +6,7 @@
 
 #include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"
-#include "../Component/TransformComponent.h"
+
 #include "../GraphicsMain/GraphicsMain.h"
 #include "Texture.h"
 #include "GraphicsEngine/Graphics/PolygonRaymarchingMixer.h"
@@ -187,8 +187,11 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 
 }
 
-void GraphicsRenderer::Draw(int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
+void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCamera,int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
 {
+	// これからレンダリングするカメラをセット
+	GraphicsMain::GetInstance()->m_UsingCamera = UsingCamera;
+
 	//ポリゴンオブジェクトのカラーマップをレンダリング///////////////////
 	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_frameBuffer);

@@ -16,10 +16,11 @@ void GenocideCronus::Start() {
 	
 	// カメラ
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-	//m_CameraTransform->m_center = glm::vec3(1.0f,6.0f,0.0f);
+	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 1.0f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	m_CameraTransform->m_center = glm::vec3(0.0f,0.0f,0.0f);
-	GraphicsMain::GetInstance()->m_CameraTransformList.push_back(m_CameraTransform);
+	//GraphicsMain::GetInstance()->m_CameraTransformList.push_back(m_CameraTransform);
+	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
 	// サウンド
 	std::string soundCode = {
@@ -69,11 +70,11 @@ void GenocideCronus::Update() {
 		2.5f,
 		glm::sin(GraphicsMain::GetInstance()->time*0.001f)*20.0f
 	);*/
-	m_CameraTransform->m_position = glm::vec3(
+	/*m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f,
 		10.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f
-	);
+	);*/
 
 	// サウンド
 	m_SoundPlayer->Update();
