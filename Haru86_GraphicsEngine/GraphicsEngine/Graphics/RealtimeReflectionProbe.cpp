@@ -26,8 +26,8 @@ void RealtimeReflectionProbe::Start() {
 	float RP_Size = 50.0f;
 	m_CubeCameraTRS[0]->m_position = glm::vec3(1.0 * RP_Size * 0.5 , 0.0                  , 0.0)+ offset;
 	m_CubeCameraTRS[1]->m_position = glm::vec3(-1.0 * RP_Size * 0.5, 0.0                  , 0.0) + offset;
-	m_CubeCameraTRS[2]->m_position = glm::vec3(0.0                 , 1.0 * RP_Size * 0.5  , 0.0) + offset;
-	m_CubeCameraTRS[3]->m_position = glm::vec3(0.0                 , -1.0 * RP_Size * 0.5 , 0.0) + offset;
+	m_CubeCameraTRS[2]->m_position = glm::vec3(0.0                 , -1.0 * RP_Size * 0.5  , 0.0) + offset;
+	m_CubeCameraTRS[3]->m_position = glm::vec3(0.0                 , 1.0 * RP_Size * 0.5 , 0.0) + offset;
 	m_CubeCameraTRS[4]->m_position = glm::vec3(0.0                 , 0.0                  , 1.0 * RP_Size * 0.5) + offset;
 	m_CubeCameraTRS[5]->m_position = glm::vec3(0.0                 , 0.0                  , -1.0 * RP_Size * 0.5) + offset;
 
@@ -40,8 +40,8 @@ void RealtimeReflectionProbe::Start() {
 
 	m_CubeCameraTRS[0]->m_up = glm::vec3(0.0f, -1.0f, 0.0f);
 	m_CubeCameraTRS[1]->m_up = glm::vec3(0.0f, -1.0f, 0.0f);
-	m_CubeCameraTRS[2]->m_up = glm::vec3(0.0f, 0.0f, 1.0f);
-	m_CubeCameraTRS[3]->m_up = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_CubeCameraTRS[2]->m_up = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_CubeCameraTRS[3]->m_up = glm::vec3(0.0f, 0.0f, 1.0f);
 	m_CubeCameraTRS[4]->m_up = glm::vec3(0.0f, -1.0f, 0.0f);
 	m_CubeCameraTRS[5]->m_up = glm::vec3(0.0f, -1.0f, 0.0f);
 

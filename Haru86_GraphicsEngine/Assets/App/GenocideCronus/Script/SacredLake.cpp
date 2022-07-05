@@ -25,12 +25,12 @@ namespace myapp {
 			#include "../Shader/SacredLake_WaterReflection.frag"
 		};
 		
-		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::Standard_vert,SacredLake_WaterReflection);
-		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
+		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, SacredLake_WaterReflection);
+		/*m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
 		m_ReflectPlaneTRS->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
 		m_ReflectPlaneTRS->m_scale = glm::vec3(1000.0f);
 		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -1.0f, 0.0f);
-		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
+		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);*/
 
 		//
 		m_ReflectSphereTRS = std::make_shared<TransformComponent>();
@@ -105,7 +105,7 @@ namespace myapp {
 
 		if (GraphicsMain::GetInstance()->m_UseCameraIndex==0) {
 			// Plane
-			m_ReflectPlaneMaterial->SetActive();
+			/*m_ReflectPlaneMaterial->SetActive();
 			m_ReflectPlaneTRS->CalMatrix();
 			m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
 			m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
@@ -119,7 +119,7 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
 
 			m_ReflectPlaneMesh->Draw();
-			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
+			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);*/
 			
 			// Sphere
 			m_ReflectPlaneMaterial->SetActive();
