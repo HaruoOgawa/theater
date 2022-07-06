@@ -13,7 +13,8 @@ enum class EReflectionType {
 class ReflectionProbe
 {
 public:
-	ReflectionProbe(EReflectionType ReflectionType);
+	ReflectionProbe();
+	ReflectionProbe(std::shared_ptr<TransformComponent> TRS);
 	virtual ~ReflectionProbe()=default;
 
 	void Start();

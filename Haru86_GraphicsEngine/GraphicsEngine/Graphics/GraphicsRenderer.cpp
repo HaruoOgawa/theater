@@ -187,7 +187,7 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 
 }
 
-void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCamera,int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
+void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCamera, bool IsDrawRay,int ResultFrameBufferIndex, std::function<void(void)> callback, int width, int height)
 {
 	// これからレンダリングするカメラをセット
 	GraphicsMain::GetInstance()->m_UsingCamera = UsingCamera;
@@ -244,7 +244,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		if (ResultFrameBufferIndex == 0) {
+		if (IsDrawRay) {
 			for (auto obj : mgame->raymarchingObjectList) {
 				obj->m_transform->CalMatrix();
 				obj->meshComp->Draw();
@@ -262,7 +262,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		if (ResultFrameBufferIndex == 0) {
+		if (IsDrawRay) {
 			for (auto obj : mgame->raymarchingObjectList) {
 				obj->m_transform->CalMatrix();
 				obj->meshComp->Draw();

@@ -59,6 +59,7 @@ void MeshRendererComponent::Draw() {
 	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
 		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_UsingCamera->m_position);
+		m_material->SetVec3Uniform("_WorldCameraCenter", GraphicsMain::GetInstance()->m_UsingCamera->m_center);
 	}
 
 	// framebuffer

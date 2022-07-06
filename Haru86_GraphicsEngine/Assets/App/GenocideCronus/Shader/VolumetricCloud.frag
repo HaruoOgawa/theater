@@ -7,6 +7,7 @@ in vec3 WorldNormal;
 in vec3 WorldVertexPos;
 
 uniform vec3 _WorldCameraPos;
+uniform vec3 _WorldCameraCenter;
 uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
@@ -68,7 +69,8 @@ void main()
     }
     //vec4 col =vec4(0.0); 
     //vec4 col =vec4(0.85,0.85,0.85,0.0); 
-    vec3 ta=vec3(0.0,0.0,0.0);
+    //vec3 ta=vec3(0.0,0.0,0.0);
+    vec3 ta=_WorldCameraCenter;
     //vec3 ro=vec3(0.0,1.0,1.0);
     vec3 ro=_WorldCameraPos;
     
@@ -78,9 +80,9 @@ void main()
     vec3 rd=normalize(st.x*cside+st.y*cup+1.0*cdir);
     
     float d=1.0,t=0.0,pi=0.0;
-    for(;++pi<64.;){
+    for(;++pi<100.;){
         d=map(ro+rd*t);
-        if(d>0.01){
+        if(d>1e-2){
             vec4 lcol=vec4( mix(vec3(0.0),vec3(1.0),d) ,d);
             lcol.a*=0.4;
             lcol.rgb*=lcol.a;

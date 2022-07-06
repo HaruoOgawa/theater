@@ -13,6 +13,7 @@ namespace myapp {
 	{
 		//
 		std::shared_ptr<ReflectionProbe> m_RP;
+		std::shared_ptr<ReflectionProbe> m_MonoDirRP;
 
 		// 
 		std::shared_ptr<GameObject> m_Mandelbox;

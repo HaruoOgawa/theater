@@ -143,7 +143,7 @@ void GraphicsMain::Draw() {
 
 	// 通常の描画(画面に表示される部分)
 	//m_UseCameraIndex = 0;
-	GraphicsRenderer::GetInstance()->Draw(m_MainCamera,0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
+	GraphicsRenderer::GetInstance()->Draw(m_MainCamera, true,0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
 
 	// リアルタイムリフレクションプローブ
 	for (const auto& ReflectionProbe : m_ReflectionProbeList) {
