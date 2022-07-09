@@ -17,9 +17,9 @@ void main(){
 	//vec3 ref=reflect(-normalize(WorldVertexPos-CameraPos),WorldNormal);
 	//col=texture(_WaterRP,ref).rgb;
 	
-	vec2 st=vec2(uv.x,1.0-uv.y);
-	col=texture(_MonoDirRP,st).rgb;
-	//col=vec3(uv,0.0);
+	//vec2 st=vec2(uv.x,1.0-uv.y);
+	//col=texture(_MonoDirRP,st).rgb;
+	col=vec3(uv,0.0);
 
 	gl_FragColor=vec4(col,1.0);
 }

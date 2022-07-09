@@ -27,6 +27,7 @@ class GraphicsRenderer
 	//FrameBuffer
 	unsigned int polygon_frameBuffer;
 	unsigned int polygon_depthBuffer;
+	unsigned int polygon_normalBuffer;
 	unsigned int raymarching_frameBuffer;
 	unsigned int raymarching_depthBuffer;
 	unsigned int p_r_BlendingBuffer;
@@ -62,6 +63,7 @@ public:
 	//FrameTextures
 	std::shared_ptr<Texture> polygon_frameTexture;
 	std::shared_ptr<Texture> polygon_depthTexture;
+	std::shared_ptr<Texture> polygon_normalTexture;
 	std::shared_ptr<Texture> raymarching_frameTexture;
 	std::shared_ptr<Texture> raymarching_depthTexture;
 	std::shared_ptr<Texture> p_r_BlendingTexture;

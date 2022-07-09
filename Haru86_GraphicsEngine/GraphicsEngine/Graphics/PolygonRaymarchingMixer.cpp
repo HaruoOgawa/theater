@@ -32,7 +32,7 @@ void PolygonRaymarchingMixer::Draw() {
 		m_material->SetTexUniform("polygon_depthTexture", 1);
 		
 	}
-
+	
 	if (GraphicsMain::GetInstance()->raymarchingObjectList.size() > 0) {
 		//raymarching_frameTexture
 		if (GraphicsRenderer::GetInstance()->raymarching_frameTexture != nullptr) {
@@ -51,9 +51,17 @@ void PolygonRaymarchingMixer::Draw() {
 		m_material->SetFloatUniform("_existRaymarching", 1.0);
 	}
 	
+	//polygon_normalTexture
+	if (GraphicsRenderer::GetInstance()->polygon_normalTexture != nullptr) {
+		GraphicsRenderer::GetInstance()->polygon_normalTexture->SetActive(GL_TEXTURE4);
+		m_material->SetTexUniform("polygon_normalTexture", 4);
+
+	}
+
 	m_mesh->Draw();
 	GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 	GraphicsRenderer::GetInstance()->polygon_depthTexture->SetEnactive(GL_TEXTURE1);
 	GraphicsRenderer::GetInstance()->raymarching_frameTexture->SetEnactive(GL_TEXTURE2);
 	GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetEnactive(GL_TEXTURE3);
+	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetEnactive(GL_TEXTURE4);
 }

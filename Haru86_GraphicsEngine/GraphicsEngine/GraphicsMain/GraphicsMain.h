@@ -11,7 +11,8 @@
 enum class ERerderingTarget
 {
 	COLOR,
-	DEPTH
+	DEPTH,
+	NORMAL,
 };
 
 class GenocideCronus;

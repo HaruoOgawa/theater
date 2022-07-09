@@ -62,9 +62,18 @@ private :
     GLuint depthFragShaderData;
     GLuint depthShaderPrg;
 
+    // Normal Render Buffer
+    GLuint normalVertShaderData;
+    GLuint normalTessControlShaderData;
+    GLuint normalTessEvalShaderData;
+    GLuint normalGeometryShaderData;
+    GLuint normalFragShaderData;
+    GLuint normalShaderPrg;
+
     //
     GLuint computeShaderData;
     GLuint computeShaderDepthData;
+    GLuint computeShadernormalData;
 
     std::vector<std::shared_ptr<ComputeBuffer>> m_buffers;
 };
