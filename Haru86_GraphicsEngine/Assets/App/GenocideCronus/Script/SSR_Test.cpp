@@ -34,7 +34,7 @@ namespace myapp {
 		m_Plane->m_transform->m_scale = glm::vec3(10.0f);
 		m_Plane->meshComp->m_calllback = [this]() {
 			m_Plane->meshComp->m_material->SetIntUniform("_UseColor", 1);
-			m_Plane->meshComp->m_material->SetVec4Uniform("_Color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			m_Plane->meshComp->m_material->SetVec4Uniform("_Color", glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		};
 
 		//

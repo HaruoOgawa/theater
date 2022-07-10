@@ -39,8 +39,29 @@ vec3 CalSSRColor(vec3 color){
 	//
 	vec3 refDir=reflect(viewDir,normal);
 
+	// ƒŒƒC‚ÅÕ“Ë”»’è‚ğ‚·‚é
+	float RAYNUM=100;
+	vec3 step= (2.0/RAYNUM) * refDir;
+
+	for(float n=0.0;n<RAYNUM;n++)
+	{
+		vec3 rayPos= pos.xyz + step * n;
+		vec4 vpPos = VPMatrix * vec4(rayPos,1.0);
+		vec2 rayUV = (vpPos.xy/vpPos.z) * 0.5 +0.5;
+
+		float rayDepth= clamp(vpPos.z,0.0,1.0);
+		float depthOfBuffer = texture(_DepthMapPolygone,rayUV).r;
+
+		if(rayDepth - depthOfBuffer > 0.0)
+		{
+			col+=texture(_SrcTexture,rayUV).rgb * 0.2;
+			break;
+		}
+	}
+
 	//return pos.xyz;
-	return refDir.xyz;
+	//return refDir.xyz;
+	return col;
 }
 
 void main(){
