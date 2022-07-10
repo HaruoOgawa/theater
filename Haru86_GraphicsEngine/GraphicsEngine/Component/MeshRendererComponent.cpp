@@ -42,16 +42,19 @@ void MeshRendererComponent::Draw() {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
-
 	m_material->SetActive();
 	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix * owner->m_transform->m_mMatrix);
 	m_material->SetMatrixUniform("MMatrix", owner->m_transform->m_mMatrix);
 	m_material->SetMatrixUniform("VMatrix", owner->m_transform->m_vMatrix);
 	m_material->SetMatrixUniform("PMatrix", owner->m_transform->m_pMatrix);
+	m_material->SetMatrixUniform("VPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix);
+	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix));
 	m_material->SetFloatUniform("_time", game->time*0.001f);
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+
+	// レイマーチングのデプスマップ用
 	if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
 		m_material->SetFloatUniform("_RenderingTarget", 1.0);
 	}
@@ -59,11 +62,7 @@ void MeshRendererComponent::Draw() {
 		m_material->SetFloatUniform("_RenderingTarget", 2.0);
 	}
 
-	//
-	/*int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
-	if(
-		(CamIndex >= 0 && CamIndex < GraphicsMain::GetInstance()->m_CameraTransformList.size())
-		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])*/
+	// カメラが定義されているなら情報を渡す
 	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
 		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_UsingCamera->m_position);
