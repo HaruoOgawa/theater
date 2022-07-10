@@ -5,8 +5,16 @@
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 
 MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
-	const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv, const std::string& cs)
-	: m_mesh(nullptr), m_material(nullptr), myowner(o), useZTest(true), /*primTex(nullptr),*/ owner(o), game(GraphicsMain::GetInstance())
+	const std::string& vert, const std::string& frag, const std::string& geom,
+	const std::string& tc, const std::string& tv, const std::string& cs, std::function<void(void)> calllback) : 
+	m_mesh(nullptr), 
+	m_material(nullptr), 
+	myowner(o), 
+	useZTest(true), 
+	/*primTex(nullptr),*/ 
+	owner(o), 
+	game(GraphicsMain::GetInstance()), 
+	m_calllback(calllback)
 {
 	useZTest = true;
 	m_SurfaceType = SurfaceType;
@@ -69,6 +77,9 @@ void MeshRendererComponent::Draw() {
 	for (auto clip : animationClips) {
 		clip->callback(clip->lifeTimeRate);
 	}
+
+	//
+	m_calllback();
 
     m_mesh->Draw();
 

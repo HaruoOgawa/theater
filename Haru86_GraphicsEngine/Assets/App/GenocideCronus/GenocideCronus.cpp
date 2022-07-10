@@ -11,15 +11,16 @@
 
 #include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "Assets/App/GenocideCronus/Script/SacredLake.h"
+#include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 
 void GenocideCronus::Start() {
 	
 	// カメラ
-	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 1.0f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.0f, 2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	m_CameraTransform->m_center = glm::vec3(0.0f,0.0f,0.0f);
-	//GraphicsMain::GetInstance()->m_CameraTransformList.push_back(m_CameraTransform);
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
 	// サウンド
@@ -34,7 +35,7 @@ void GenocideCronus::Start() {
 	
 //#ifdef _DEBUG
 	// デバッグ用グリッド
-	m_GridPlane = std::make_shared<GameObject>(
+	/*m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
 		RenderType::DefaultBuffer,
 		RenderQueue::Geometry,
@@ -43,12 +44,13 @@ void GenocideCronus::Start() {
 		shaderlib::ShaderLib::GridPlane_frag
 		);
 	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
+	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);*/
 //#endif // _DEBUG
 
 	// シーンオブジェクトの初期化
-	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 	//m_SacredLake = std::make_shared<myapp::SacredLake>();
+	m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
 	// ポストプロセスの設定
 	PostProcess::GetInstance()->m_UsePostProcess = true;
@@ -82,8 +84,9 @@ void GenocideCronus::Update() {
 
 void GenocideCronus::Draw() {
 	//
-	m_ProceduralCity->Draw();
+	//m_ProceduralCity->Draw();
 	//m_SacredLake->Draw();
+	m_SSR_Test->Draw();
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) {

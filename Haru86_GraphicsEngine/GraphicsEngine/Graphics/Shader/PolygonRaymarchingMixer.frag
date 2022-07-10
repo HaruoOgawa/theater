@@ -36,7 +36,7 @@ void main(){
 
 	//col=raymarchingCol;
 	//col=raymarchingDepth;
-	col=polygonNormal;
+	//col=polygonNormal;
 	//col=polygonCol;
 	//col=polygonDepth;
 	//col=(raymarchingCol+polygonCol)*0.5;

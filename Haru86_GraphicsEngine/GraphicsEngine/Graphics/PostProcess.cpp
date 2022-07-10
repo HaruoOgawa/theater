@@ -77,6 +77,7 @@ void PostProcess::DrawPolygonPostProcess(const std::shared_ptr<Texture> SrcTextu
 	SrcTexture->SetEnactive(GL_TEXTURE1);
 }
 
+// SSR
 void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture, const unsigned int& DestBuffer)const {
 	// Draw PostProcess Result
 	glBindFramebuffer(GL_FRAMEBUFFER, DestBuffer);
@@ -91,9 +92,14 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
 	m_LateMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_LateMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	
 	SrcTexture->SetActive(GL_TEXTURE0);
 	m_LateMaterial->SetTexUniform("_SrcTexture", 0);
 	
+	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetActive(GL_TEXTURE1);
+	m_LateMaterial->SetTexUniform("_NormalMap", 1);
+
 	m_mesh->Draw();
 	SrcTexture->SetEnactive(GL_TEXTURE0);
+	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetEnactive(GL_TEXTURE1);
 }
