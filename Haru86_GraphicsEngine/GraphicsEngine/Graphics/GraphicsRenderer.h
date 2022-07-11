@@ -14,6 +14,11 @@ enum class ERenderTargetType {
 	REALTIME_CUBEMAP,
 };
 
+enum class EDepthTargetType {
+	DEPTH_RENDER_BUFFER,
+	DEPTH_TEXTURE_BUFFER,
+};
+
 class Texture;
 
 
@@ -53,7 +58,8 @@ public:
 	bool Initialize(float width, float height);
 	void Draw(const std::shared_ptr<TransformComponent>& UsingCamera,bool IsDrawRay,int ResultFrameBufferIndex,std::function<void(void)> callback,int width,int height);
 	bool CreateFrameBuffer(int width, int height,std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, 
-		GLenum type = GL_UNSIGNED_BYTE, ERenderTargetType RenderTargetType = ERenderTargetType::COLOR_TEXTURE_BUFFER);
+		GLenum type = GL_UNSIGNED_BYTE, 
+		ERenderTargetType RenderTargetType = ERenderTargetType::COLOR_TEXTURE_BUFFER, EDepthTargetType DepthTargetType = EDepthTargetType::DEPTH_RENDER_BUFFER);
 	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	
