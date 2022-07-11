@@ -20,8 +20,8 @@ class Texture;
 class GraphicsRenderer
 {
 	GLFWwindow* sWindow;
-	int sWindowWidth;
-	int sWindowHeight;
+	float sWindowWidth;
+	float sWindowHeight;
 	class GraphicsMain* mgame;
 
 	//FrameBuffer

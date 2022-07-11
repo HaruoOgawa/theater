@@ -18,10 +18,11 @@ uniform vec3 _WorldCameraCenter;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
-	vec2 st=gl_FragCoord.xy/_resolution.xy;
+	vec2 st=gl_FragCoord.xy/(_resolution.xy *_frameResolusion);
+	//vec2 st=uv;
 	 
 	//
-	float depth=texture(_DepthMapPolygone,st).r;
+	float depth=texture(_DepthMapPolygone,gl_FragCoord.xy/_resolution.xy).r;
 	if(depth >= 1.0) return col;
 
 	//vec2 uvpos= (gl_FragCoord.xy*2.0-_resolution.xy)/min(_resolution.x,_resolution.y);
@@ -29,15 +30,23 @@ vec3 CalSSRColor(vec3 color){
 	vec4 pos = InvVPMatrix * vec4(uvpos,depth,1.0);
 	pos=pos/pos.w;
 
+	//return vec3(st,0.0);
+	//return vec3(uvpos,0.0);
+	//return pos.xyz;
+	//return vec3(depth);
+
 	// レイを作成
 	vec3 viewDir=-normalize(pos.xyz-_WorldCameraPos);
-	vec3 normal=texture(_NormalMap,st).rgb*2.0-1.0;
+	//vec3 normal=texture(_NormalMap,st).rgb*2.0-1.0;
+	vec3 normal=texture(_NormalMap,gl_FragCoord.xy/_resolution.xy).rgb*2.0-1.0;
 
 	// ノーマルを使わない場合は『0』としているのでその場合は抜ける
 	if(length(normal)<=0.0) return col;
 
 	//
 	vec3 refDir=reflect(viewDir,normal);
+
+	//return refDir;
 
 	// レイで衝突判定をする
 	float RAYNUM=100;

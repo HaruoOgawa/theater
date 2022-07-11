@@ -97,8 +97,12 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	atexit(glfwTerminate);
 	
 	// 現在のサイズを取得
-	glfwGetWindowSize(sWindow, &sWindowWidth, &sWindowHeight);
-	
+	int w, h;
+	//glfwGetWindowSize(sWindow, &w, &h);
+	glfwGetFramebufferSize(sWindow, &w, &h);
+	sWindowWidth = static_cast<float>(w);
+	sWindowHeight = static_cast<float>(h);
+
 	// コンテキストを作成
 	glfwMakeContextCurrent(sWindow);
 
@@ -321,7 +325,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
