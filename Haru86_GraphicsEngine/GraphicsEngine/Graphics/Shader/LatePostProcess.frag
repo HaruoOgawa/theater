@@ -55,6 +55,8 @@ vec3 CalSSRColor(vec3 color){
 	float RAYNUM=100;
 	vec3 step= (2.0/RAYNUM) * refDir;
 	float sampledNum=0.0;
+	//float objWidth=0.3/RAYNUM;
+	float objWidth=0.3/RAYNUM;
 	vec3 ssrColor=vec3(0.0);
 
 	for(float n=0.0;n<RAYNUM;n++)
@@ -66,7 +68,7 @@ vec3 CalSSRColor(vec3 color){
 		float rayDepth= vpPos.z;
 		float depthOfBuffer = texture(_DepthMapPolygone,rayUV*_frameResolusion).r;
 		
-		if(rayDepth - depthOfBuffer > 0.0)
+		if( (rayDepth - depthOfBuffer > 0.0) /*&& (rayDepth - depthOfBuffer < objWidth)*/ )
 		{
 			ssrColor+=texture(_SrcTexture,rayUV*_frameResolusion).rgb * 0.2;
 			//break;
