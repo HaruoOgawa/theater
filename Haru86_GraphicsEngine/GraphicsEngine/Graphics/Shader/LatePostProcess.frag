@@ -45,31 +45,40 @@ vec3 CalSSRColor(vec3 color){
 
 	//
 	vec3 refDir=reflect(viewDir,normal);
+	refDir*=-1.0;
 
 	//return refDir;
+	//return normal*0.5+0.5;
+	//return normal;
 
 	// ÉåÉCÇ≈è’ìÀîªíËÇÇ∑ÇÈ
 	float RAYNUM=100;
 	vec3 step= (2.0/RAYNUM) * refDir;
+	float sampledNum=0.0;
+	vec3 ssrColor=vec3(0.0);
 
 	for(float n=0.0;n<RAYNUM;n++)
 	{
 		vec3 rayPos= pos.xyz + step * n;
 		vec4 vpPos = VPMatrix * vec4(rayPos,1.0);
-		vec2 rayUV = (vpPos.xy/vpPos.z) * 0.5 +0.5;
+		vec2 rayUV = (vpPos.xy/vpPos.w) * 0.5 +0.5;
 
-		float rayDepth= clamp(vpPos.z,0.0,1.0);
-		float depthOfBuffer = texture(_DepthMapPolygone,rayUV).r;
-
+		float rayDepth= vpPos.z;
+		float depthOfBuffer = texture(_DepthMapPolygone,rayUV*_frameResolusion).r;
+		
 		if(rayDepth - depthOfBuffer > 0.0)
 		{
-			col+=texture(_SrcTexture,rayUV).rgb * 0.2;
-			break;
+			ssrColor+=texture(_SrcTexture,rayUV*_frameResolusion).rgb * 0.2;
+			//break;
+			sampledNum++;
 		}
 	}
 
 	//return pos.xyz;
 	//return refDir.xyz;
+
+	col=col+ssrColor* (1.0/sampledNum);
+
 	return col;
 }
 

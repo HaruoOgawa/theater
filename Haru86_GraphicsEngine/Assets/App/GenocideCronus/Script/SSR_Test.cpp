@@ -30,7 +30,7 @@ namespace myapp {
 			shaderlib::ShaderLib::Standard_vert,
 			shaderlib::ShaderLib::Standard_frag
 		);
-		m_Plane->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
+		m_Plane->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_Plane->m_transform->m_scale = glm::vec3(10.0f);
 		m_Plane->meshComp->m_calllback = [this]() {
 			m_Plane->meshComp->m_material->SetIntUniform("_UseColor", 1);

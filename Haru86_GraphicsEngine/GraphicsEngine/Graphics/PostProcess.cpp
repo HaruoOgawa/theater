@@ -91,6 +91,7 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 
 	glEnable(GL_DEPTH_TEST);
 
+	m_TRS->CalMatrix();
 	m_LateMaterial->SetActive();
 	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
 	m_LateMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());

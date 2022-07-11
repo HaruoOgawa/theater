@@ -53,8 +53,8 @@ void GenocideCronus::Start() {
 	m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
 	// ポストプロセスの設定
-	PostProcess::GetInstance()->m_UsePostProcess = true;
-	PostProcess::GetInstance()->m_UseBloom = true;
+	//PostProcess::GetInstance()->m_UsePostProcess = true;
+	//PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
 	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
 
@@ -77,6 +77,11 @@ void GenocideCronus::Update() {
 		10.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f
 	);*/
+	m_CameraTransform->m_position = glm::vec3(
+		glm::cos(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f,
+		2.0f,
+		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f
+	);
 
 	// サウンド
 	m_SoundPlayer->Update();
