@@ -19,7 +19,8 @@ void main(){
 	
 	//vec2 st=vec2(uv.x,1.0-uv.y);
 	//col=texture(_MonoDirRP,st).rgb;
-	col=vec3(uv,0.0);
+	//col=vec3(uv,0.0);
+	col=vec3(0.0);
 
 	gl_FragColor=vec4(col,1.0);
 }

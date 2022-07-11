@@ -10,6 +10,7 @@ uniform sampler2D _SrcTexture;
 uniform sampler2D _NormalMap;
 uniform sampler2D _DepthMapPolygone;
 uniform sampler2D _DepthMapRaymarch;
+uniform sampler2D _DepthMapMixed;
 uniform float _frameResolusion;
 uniform mat4 VPMatrix;
 uniform mat4 InvVPMatrix;
@@ -21,7 +22,9 @@ vec3 CalSSRColor(vec3 color){
 	vec2 st=gl_FragCoord.xy/(_resolution.xy *_frameResolusion);
 	//vec2 st=uv;
 	 
-	//
+	// OpenGL のデプスは 『0.0(手前)』--> 『1.0(奥)』 なのかい？？？
+	// http://www.opengl-tutorial.org/ru/intermediate-tutorials/tutorial-14-render-to-texture/
+
 	float depth=texture(_DepthMapPolygone,gl_FragCoord.xy/_resolution.xy).r;
 	if(depth >= 1.0) return col;
 
@@ -45,10 +48,9 @@ vec3 CalSSRColor(vec3 color){
 
 	//
 	vec3 refDir=reflect(viewDir,normal);
-	refDir*=-1.0;
+	refDir*=-1.0;  // なんとなく反転 --> なんか見栄えよくなった
 
 	//return refDir;
-	//return normal*0.5+0.5;
 	//return normal;
 
 	// レイで衝突判定をする
@@ -65,19 +67,21 @@ vec3 CalSSRColor(vec3 color){
 		vec4 vpPos = VPMatrix * vec4(rayPos,1.0);
 		vec2 rayUV = (vpPos.xy/vpPos.w) * 0.5 +0.5;
 
-		float rayDepth= vpPos.z;
-		float depthOfBuffer = texture(_DepthMapPolygone,rayUV*_frameResolusion).r;
+		//  rayDepthの定義、たぶん間違っている
+		float rayDepth= (vpPos.z/vpPos.w)*0.5+0.5;
 		
+		float depthOfBuffer = texture(_DepthMapMixed,rayUV*_frameResolusion).r;
+		
+		// rayDepth < depthOfBuffer --> rayDepthが手前ならそこのピクセル色を塗る
+		// 奥ならレイが通りすぎているので塗らない
 		if( (rayDepth - depthOfBuffer > 0.0) /*&& (rayDepth - depthOfBuffer < objWidth)*/ )
+		//if( (rayDepth < depthOfBuffer) )
 		{
 			ssrColor+=texture(_SrcTexture,rayUV*_frameResolusion).rgb * 0.2;
 			//break;
 			sampledNum++;
 		}
 	}
-
-	//return pos.xyz;
-	//return refDir.xyz;
 
 	col=col+ssrColor* (1.0/sampledNum);
 
@@ -90,6 +94,7 @@ void main(){
 	
 	col=texture(_SrcTexture,st).rgb;
 	//col=texture(_DepthMapPolygone,st).rgb;
+	//col=texture(_DepthMapMixed,st).rgb;
 	col=CalSSRColor(col);
 
 	gl_FragColor=vec4(col,1.0);

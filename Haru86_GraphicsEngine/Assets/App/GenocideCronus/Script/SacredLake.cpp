@@ -27,7 +27,7 @@ namespace myapp {
 		
 		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, SacredLake_WaterReflection);
 		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
-		m_ReflectPlaneTRS->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
+		m_ReflectPlaneTRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
 		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, -100.0f);
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);

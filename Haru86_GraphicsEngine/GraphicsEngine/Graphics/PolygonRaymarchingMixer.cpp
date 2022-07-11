@@ -14,11 +14,22 @@ PolygonRaymarchingMixer::~PolygonRaymarchingMixer() {
 
 }
 
-void PolygonRaymarchingMixer::Draw() {
+void PolygonRaymarchingMixer::Draw(bool IsDepthMix) {
+	// 基本パラメーター
 	m_material->SetActive();
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
+
+	// デプスマップをミックスするかどうか
+	if (IsDepthMix) 
+	{
+		m_material->SetFloatUniform("_IsDepthMix", 1.0);
+	}
+	else 
+	{
+		m_material->SetFloatUniform("_IsDepthMix", 0.0);
+	}
 
 	//m_PolygonPostProcess_FrameTexture
 	if (GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture != nullptr) {

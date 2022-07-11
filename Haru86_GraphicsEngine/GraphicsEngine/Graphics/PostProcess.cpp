@@ -119,9 +119,13 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 	GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetActive(GL_TEXTURE3);
 	m_LateMaterial->SetTexUniform("_DepthMapRaymarch", 3);
 
+	GraphicsRenderer::GetInstance()->p_r_DepthBlendingTexture->SetActive(GL_TEXTURE4);
+	m_LateMaterial->SetTexUniform("_DepthMapMixed", 4);
+
 	m_mesh->Draw();
 	SrcTexture->SetEnactive(GL_TEXTURE0);
 	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetEnactive(GL_TEXTURE1);
 	GraphicsRenderer::GetInstance()->polygon_depthTexture->SetEnactive(GL_TEXTURE2);
 	GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetEnactive(GL_TEXTURE3);
+	GraphicsRenderer::GetInstance()->p_r_DepthBlendingTexture->SetEnactive(GL_TEXTURE4);
 }

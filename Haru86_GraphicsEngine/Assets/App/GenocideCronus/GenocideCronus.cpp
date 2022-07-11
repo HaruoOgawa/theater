@@ -17,9 +17,9 @@ void GenocideCronus::Start() {
 	
 	// ÉJÉÅÉâ
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 1.0f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 1.0f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 10.0f, 10.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.0f, 2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.0f, 2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	m_CameraTransform->m_center = glm::vec3(0.0f,0.0f,0.0f);
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
@@ -91,7 +91,7 @@ void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
 	//m_SacredLake->Draw();
-	m_SSR_Test->Draw();
+	//m_SSR_Test->Draw();
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) {

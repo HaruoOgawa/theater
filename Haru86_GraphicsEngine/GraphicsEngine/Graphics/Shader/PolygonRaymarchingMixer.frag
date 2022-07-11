@@ -13,6 +13,7 @@ uniform sampler2D raymarching_depthTexture;
 
 uniform float _existRaymarching;
 uniform float _time;
+uniform float _IsDepthMix;
 
 in vec2 uv;
 
@@ -34,15 +35,16 @@ void main(){
 		col=(polygonDepth.r<=raymarchingDepth.r)? polygonCol : raymarchingCol;
 	}
 
+	if(_IsDepthMix==1.0){
+		col=(polygonDepth+raymarchingDepth)*0.5;
+	}
+
 	//col=raymarchingCol;
 	//col=raymarchingDepth;
 	//col=polygonNormal;
 	//col=polygonCol;
 	//col=polygonDepth;
-	//col=(raymarchingCol+polygonCol)*0.5;
-	//col=(raymarchingDepth+polygonDepth)*0.5;
-	//col=mix( (raymarchingCol+polygonCol)*0.5 , (raymarchingDepth+polygonDepth)*0.5 ,abs(sin(_time)));
-    
+
 	gl_FragColor=vec4(col,1.0);
 }
 
