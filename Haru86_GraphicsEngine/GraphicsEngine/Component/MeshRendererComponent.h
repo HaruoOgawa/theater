@@ -26,6 +26,7 @@ public:
     class GameObject* myowner;
     
     bool useZTest;
+    bool useAlphaTest;
     RenderingSurfaceType m_SurfaceType;
     std::function<void(void)> m_calllback;
 

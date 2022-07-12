@@ -4,6 +4,7 @@
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
@@ -38,20 +39,6 @@ namespace myapp {
 		m_ReflectSphereTRS->m_position = glm::vec3(0.0f, 10.0f, 0.0f);
 		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);
 	
-		// raymarching
-		std::string MandelboxShader = {
-			#include "../Shader/SacredLake_Mandelbox.frag"
-		};
-
-		/*m_Mandelbox = std::make_shared<GameObject>(
-			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
-			RenderingSurfaceType::RAYMARCHING,
-			shaderlib::ShaderLib::RaymarchingObject_vert,
-			MandelboxShader
-			);*/
-
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
 			#include "../Shader/VolumetricCloud.frag"
@@ -64,6 +51,23 @@ namespace myapp {
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			VolumetricCloud_frag
 			);
+		m_VolumetricCloud->meshComp->useZTest = false;
+
+		// Mandelbox
+		std::string MandelboxShader = {
+			#include "../Shader/SacredLake_Mandelbox.frag"
+		};
+
+		m_Mandelbox = std::make_shared<GameObject>(
+			PrimitiveType::BOARD,
+			RenderType::DefaultBuffer,
+			RenderQueue::Geometry,
+			RenderingSurfaceType::RAYMARCHING,
+			shaderlib::ShaderLib::RaymarchingObject_vert,
+			MandelboxShader
+			);
+		m_Mandelbox->meshComp->useAlphaTest = true;
+		m_Mandelbox->meshComp->useZTest = false;
 
 		// GPU particle
 		std::string GPUVert = {
