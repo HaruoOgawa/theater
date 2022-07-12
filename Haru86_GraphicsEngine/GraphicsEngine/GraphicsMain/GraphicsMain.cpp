@@ -145,12 +145,12 @@ void GraphicsMain::Draw() {
 	//m_UseCameraIndex = 0;
 	GraphicsRenderer::GetInstance()->Draw(m_MainCamera, true,0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
 
-	// リアルタイムリフレクションプローブ
-	for (const auto& ReflectionProbe : m_ReflectionProbeList) {
+	// リアルタイムリフレクションプローブ (重いので使用しない or シーンによって使い分ける)
+	/*for (const auto& ReflectionProbe : m_ReflectionProbeList) {
 		if (ReflectionProbe) {
 			ReflectionProbe->Draw();
 		}
-	}
+	}*/
 	
 	//カラーバッファを入れ替える
 	glfwSwapBuffers(GraphicsRenderer::GetInstance()->GetWindow());
