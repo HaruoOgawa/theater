@@ -34,10 +34,10 @@ namespace myapp {
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 		//
-		m_ReflectSphereTRS = std::make_shared<TransformComponent>();
+		/*m_ReflectSphereTRS = std::make_shared<TransformComponent>();
 		m_ReflectSphereTRS->m_scale = glm::vec3(7.0f);
 		m_ReflectSphereTRS->m_position = glm::vec3(0.0f, 10.0f, 0.0f);
-		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);
+		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);*/
 	
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
@@ -85,7 +85,7 @@ namespace myapp {
 		m_GPUTRS = std::make_shared<TransformComponent>();
 
 		// リフレクションプローブ
-		m_RP = std::make_shared<ReflectionProbe>();
+		/*m_RP = std::make_shared<ReflectionProbe>();
 		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_RP);
 
 		// モノディル
@@ -96,7 +96,7 @@ namespace myapp {
 		MonoDirTRS->m_center = m_ReflectPlaneTRS->m_position + refDir + glm::vec3(0.0f, 10.0f, 0.0f);
 
 		m_MonoDirRP = std::make_shared<ReflectionProbe>(MonoDirTRS);
-		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_MonoDirRP);
+		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_MonoDirRP);*/
 	}
 
 	void SacredLake::Update() {
@@ -128,16 +128,7 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-
-			m_RP->m_CubeTex->SetActive(GL_TEXTURE0,GL_TEXTURE_CUBE_MAP);
-			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
-
-			m_MonoDirRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_2D);
-			m_ReflectPlaneMaterial->SetTexUniform("_MonoDirRP", 1);
-
 			m_ReflectPlaneMesh->Draw();
-			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
-			m_MonoDirRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_2D);
 			
 			// Sphere
 			/*m_ReflectPlaneMaterial->SetActive();

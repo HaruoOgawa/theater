@@ -67,9 +67,11 @@ float map(vec3 p){
     p.y+=3.0; 
     
     // ‰ñ“]
-    p.xy*=rot(PI/4.0);
-    p.yz*=rot(PI/6.0);
     p.xz*=rot(PI/4.0);
+
+   /* p.xy*=rot(PI/4.0);
+    p.yz*=rot(PI/6.0);
+    p.xz*=rot(PI/4.0);*/
     
     /*p.xy*=rot(_time*0.1);
     p.yz*=rot(_time*0.1);

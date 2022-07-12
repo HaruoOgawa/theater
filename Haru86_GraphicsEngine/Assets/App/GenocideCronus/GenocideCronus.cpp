@@ -82,6 +82,11 @@ void GenocideCronus::Update() {
 		2.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f
 	);*/
+	m_CameraTransform->m_position = glm::vec3(
+		glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * 30.0f,
+		0.5f,
+		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+	);
 
 	// ƒTƒEƒ“ƒh
 	m_SoundPlayer->Update();
