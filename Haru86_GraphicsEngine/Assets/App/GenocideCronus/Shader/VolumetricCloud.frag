@@ -99,6 +99,7 @@ void main()
     //col=vec4(0.0,0.0,0.0,1.0);
     //col=vec4( clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0) , 1.0 );
     //col.rgb=1.0-col.rgb;
+    //col.rgb*=2.0;
   }
 
     gl_FragColor = col;

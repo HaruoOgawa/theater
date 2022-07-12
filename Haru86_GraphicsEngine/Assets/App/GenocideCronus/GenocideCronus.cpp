@@ -49,8 +49,8 @@ void GenocideCronus::Start() {
 
 	// シーンオブジェクトの初期化
 	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
-	//m_SacredLake = std::make_shared<myapp::SacredLake>();
-	m_SSR_Test = std::make_shared<myapp::SSR_Test>();
+	m_SacredLake = std::make_shared<myapp::SacredLake>();
+	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
 	// ポストプロセスの設定
 	//PostProcess::GetInstance()->m_UsePostProcess = true;
@@ -77,11 +77,11 @@ void GenocideCronus::Update() {
 		10.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f
 	);*/
-	m_CameraTransform->m_position = glm::vec3(
+	/*m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f,
 		2.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f
-	);
+	);*/
 
 	// サウンド
 	m_SoundPlayer->Update();
@@ -90,7 +90,7 @@ void GenocideCronus::Update() {
 void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
-	//m_SacredLake->Draw();
+	m_SacredLake->Draw();
 	//m_SSR_Test->Draw();
 }
 

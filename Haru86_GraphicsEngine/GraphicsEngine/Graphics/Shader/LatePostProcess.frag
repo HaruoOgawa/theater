@@ -77,7 +77,10 @@ vec3 CalSSRColor(vec3 color){
 		if( (rayDepth - depthOfBuffer > 0.0) /*&& (rayDepth - depthOfBuffer < objWidth)*/ )
 		//if( (rayDepth < depthOfBuffer) )
 		{
-			ssrColor+=texture(_SrcTexture,rayUV*_frameResolusion).rgb * 0.2;
+			// レイマーチングの場合はこの反転でうまくいく --> でもラスタライザの場合はおかしくなる...(無かったら正常描画)
+			rayUV.y=1.0-rayUV.y;
+			
+			ssrColor+=texture(_SrcTexture,rayUV*_frameResolusion).rgb * 0.4;
 			//break;
 			sampledNum++;
 		}
