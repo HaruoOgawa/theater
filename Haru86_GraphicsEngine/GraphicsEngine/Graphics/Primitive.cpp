@@ -57,11 +57,18 @@ void Primitive::SetActive() {
 
 
 void Primitive::CreateBoard(std::vector<std::vector<float>>* vertices, std::vector<int>* dimention, std::vector<unsigned short>* indices) {
-	std::vector<float> vertex= {
+	/*std::vector<float> vertex = {
 		-0.5f, 0.5f, 0.f,  // top left
 		0.5f, 0.5f, 0.f, // top right
 		0.5f,-0.5f, 0.f,// bottom right
 		-0.5f,-0.5f, 0.f,    // bottom left
+	};*/
+	
+	std::vector<float> vertex= {
+		-1.0f, 1.0f, 0.f,  // top left
+		1.0f, 1.0f, 0.f, // top right
+		1.0f,-1.0f, 0.f,// bottom right
+		-1.0f,-1.0f, 0.f,    // bottom left
 	};
 
 	std::vector<float> normal = {

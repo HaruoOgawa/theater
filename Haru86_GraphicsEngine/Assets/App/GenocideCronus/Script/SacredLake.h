@@ -6,16 +6,18 @@ class Mesh;
 class Material;
 class TransformComponent;
 class GameObject;
-class RealtimeReflectionProbe;
+class ReflectionProbe;
 
 namespace myapp {
 	class SacredLake
 	{
 		//
-		std::shared_ptr<RealtimeReflectionProbe> m_RP;
+		std::shared_ptr<ReflectionProbe> m_RP;
+		std::shared_ptr<ReflectionProbe> m_MonoDirRP;
 
 		// 
 		std::shared_ptr<GameObject> m_Mandelbox;
+		std::shared_ptr<GameObject> m_VolumetricCloud;
 
 		//
 		std::shared_ptr<Material> m_ReflectPlaneMaterial;

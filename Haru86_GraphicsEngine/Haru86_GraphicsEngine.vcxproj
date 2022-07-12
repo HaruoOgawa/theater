@@ -402,7 +402,8 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Sound\SoundShaderPlayer.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake.h" />
-    <ClInclude Include="GraphicsEngine\Graphics\RealtimeReflectionProbe.h" />
+    <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\SSR_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
@@ -425,7 +426,8 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Sound\SoundShaderPlayer.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\SacredLake.cpp" />
-    <ClCompile Include="GraphicsEngine\Graphics\RealtimeReflectionProbe.cpp" />
+    <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\SSR_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
@@ -440,9 +442,11 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake_Mandelbox.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Sound.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\VolumetricCloud.frag" />
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
     <None Include="bin\zlib1.dll" />
+    <None Include="GraphicsEngine\Graphics\Shader\NormalMapColor.frag" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

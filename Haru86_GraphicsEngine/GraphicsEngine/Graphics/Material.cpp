@@ -20,13 +20,22 @@ Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, con
 	depthTessEvalShaderData(-1),
 	depthGeometryShaderData(-1),
 	depthFragShaderData(-1),
-	depthShaderPrg(-1)
+	depthShaderPrg(-1),
+	normalVertShaderData(-1),
+	normalTessControlShaderData(-1),
+	normalTessEvalShaderData(-1),
+	normalGeometryShaderData(-1),
+	normalFragShaderData(-1),
+	normalShaderPrg(-1)
 {
 	if (SurfaceType == RenderingSurfaceType::RASTERIZER) {
 		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
 			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
 		LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv,cs, depthShaderPrg
 			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
+
+		LoadShader(vert, shaderlib::ShaderLib::NormalMapColor_frag, geom, tc, tv,cs, normalShaderPrg
+			, normalVertShaderData, normalFragShaderData, normalGeometryShaderData, normalTessControlShaderData, normalTessEvalShaderData, computeShadernormalData);
 	}
 	else if (SurfaceType == RenderingSurfaceType::RAYMARCHING) {
 		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
@@ -161,6 +170,12 @@ void Material::SetVec3Uniform(std::string uniformName, glm::vec3 val) {
 	glUniform3fv(location,1, reinterpret_cast<GLfloat*>(&val));
 }
 
+void Material::SetVec4Uniform(std::string uniformName, glm::vec4 val) {
+	auto prg = GetCurrentShaderPrg();
+	GLuint location = glGetUniformLocation(prg, uniformName.c_str());
+	glUniform4fv(location,1, reinterpret_cast<GLfloat*>(&val));
+}
+
 void Material::SetTexUniform(std::string uniformName, unsigned int val) {
 	auto prg = GetCurrentShaderPrg();
 	GLuint location = glGetUniformLocation(prg, uniformName.c_str());
@@ -214,6 +229,9 @@ GLuint Material::GetCurrentShaderPrg() {
 	}
 	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
 		return depthShaderPrg;
+	}
+	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::NORMAL) {
+		return normalShaderPrg;
 	}
 }
 

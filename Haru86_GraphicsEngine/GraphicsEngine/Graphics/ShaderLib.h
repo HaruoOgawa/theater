@@ -7,6 +7,7 @@ namespace shaderlib {
 		static const std::string Standard_vert;
 		static const std::string Standard_frag;
 		static const std::string DepthColor_frag;
+		static const std::string NormalMapColor_frag;
 		static const std::string GridPlane_frag;
 		static const std::string StandardRenderBoard_vert;
 		static const std::string StandardRenderBoard_frag;

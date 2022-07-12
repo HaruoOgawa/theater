@@ -3,6 +3,7 @@
 #include "../Graphics/Material.h"
 #include "../Graphics/Primitive.h"
 #include "GraphicsEngine/Graphics/Texture.h"
+#include <functional>
 
 class GameObject;
 class Mesh;
@@ -13,7 +14,8 @@ class MeshRendererComponent
 {
 public:
     MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
-        const std::string& vert, const std::string& frag, const std::string& geom, const std::string& tc, const std::string& tv,const std::string& cs);
+        const std::string& vert, const std::string& frag, const std::string& geom,
+        const std::string& tc, const std::string& tv, const std::string& cs, std::function<void(void)> calllback = []() {});
     ~MeshRendererComponent()=default;
 
     void Draw();
@@ -22,7 +24,11 @@ public:
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
     class GameObject* myowner;
+    
     bool useZTest;
+    bool useAlphaTest;
+    RenderingSurfaceType m_SurfaceType;
+    std::function<void(void)> m_calllback;
 
     friend class GraphicsRenderer;
     friend GameObject;

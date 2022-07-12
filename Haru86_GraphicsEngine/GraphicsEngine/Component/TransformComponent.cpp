@@ -4,7 +4,7 @@
 #include "../GraphicsMain/GraphicsMain.h"
 
 TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: m_center(glm::vec3(0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
+	: m_center(glm::vec3(0.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
 }
@@ -24,15 +24,16 @@ void TransformComponent::ComputeModelMatrix() {
 }
 
 void TransformComponent::ComputeViewMatrix() {
-	int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
-	if (
-		(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
-		&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	//int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
+	//if (
+		//(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
+		//&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
+	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
 		m_vMatrix = glm::lookAt(
-			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_position,
-			GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex]->m_center,
-			glm::vec3(0.0f, 1.0f, 0.0f)
+			GraphicsMain::GetInstance()->m_UsingCamera->m_position,
+			GraphicsMain::GetInstance()->m_UsingCamera->m_center,
+			GraphicsMain::GetInstance()->m_UsingCamera->m_up
 		);
 	}
 	else {

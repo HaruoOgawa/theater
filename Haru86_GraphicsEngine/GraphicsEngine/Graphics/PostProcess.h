@@ -5,6 +5,7 @@ class Texture;
 class CBloom;
 class Mesh;
 class Material;
+class TransformComponent;
 
 class PostProcess
 {
@@ -13,11 +14,13 @@ class PostProcess
 	std::shared_ptr<Material> m_material;
 	std::shared_ptr<Material> m_LateMaterial;
 	
-
 	//bloom
 	std::unique_ptr<CBloom> m_Bloom;
 	std::shared_ptr<Texture> m_BloomTexture;
 	unsigned int m_BloomFrameBuffer;
+
+	// VPMatrixŽæ“¾—pTRS
+	std::shared_ptr<TransformComponent> m_TRS;
 
 public:
 	static void CreateInstance();

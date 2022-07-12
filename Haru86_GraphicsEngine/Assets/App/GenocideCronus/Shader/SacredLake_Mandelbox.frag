@@ -62,14 +62,24 @@ vec3 boxFold(vec3 z, float dz) {
 }
 
 float map(vec3 p){
-    p.xy*=rot(_time*0.1);
-    p.yz*=rot(_time*0.1);
-    p.xz*=rot(_time*0.1);
     
-    /*p.xy*=rot(PI/4.0);
+    // à⁄ìÆ
+    p.y+=3.0; 
+    
+    // âÒì]
+    p.xz*=rot(PI/4.0);
+
+   /* p.xy*=rot(PI/4.0);
     p.yz*=rot(PI/6.0);
     p.xz*=rot(PI/4.0);*/
     
+    /*p.xy*=rot(_time*0.1);
+    p.yz*=rot(_time*0.1);
+    p.xz*=rot(_time*0.1);*/
+    
+    // ägëÂèkè¨
+    p*=2.0;
+
     float scale=2.0;
     vec3 z = p;
     float dr = 1.0;
@@ -115,7 +125,7 @@ void main(){
     t+=d;
   }
  
-  if(_RenderingTarget==1.0){
+  /*if(_RenderingTarget==1.0){
     if(d<0.001)
     {
          vec3 col=vec3(1.0)*25./pi;
@@ -124,9 +134,14 @@ void main(){
   }else if(_RenderingTarget==2.0){
     vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
     gl_FragColor=vec4(col,1);
+  }*/
+
+  if(d<0.001)
+  {
+    vec3 col=vec3(1.0)*15./pi;
+    gl_FragColor=vec4(col,1);
   }
 
-  
 }
 
 )"

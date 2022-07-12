@@ -20,7 +20,7 @@ out vec2 resolution;
 
 void main(){
 	vec4 pos=vec4(vertex,1.0);
-	pos.xy*=2.0;
+	//pos.xy*=2.0;
 	gl_Position=pos;
 	time=_time*0.001;
 	uv=texcoord;

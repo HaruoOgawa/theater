@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Sound/SoundShaderPlayer.h"
-#include "GraphicsEngine/Graphics/RealtimeReflectionProbe.h"
+#include "GraphicsEngine/Graphics/ReflectionProbe.h"
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -38,8 +38,9 @@ GraphicsMain::GraphicsMain()
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
 	m_timeline(nullptr),
-	m_UseCameraIndex(0),
-	m_RealtimeReflectionProbe(nullptr)
+	//m_UseCameraIndex(0)
+	m_MainCamera(nullptr),
+	m_UsingCamera(nullptr)
 {
 }
 
@@ -83,6 +84,11 @@ void GraphicsMain::LoadData() {
 	//
 	m_App->Timeline(m_timeline.get());
 	m_timeline->Initialize();
+
+	//
+	if (m_MainCamera == nullptr) {
+		m_MainCamera = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	}
 }
 
 bool GraphicsMain::RunLoop() {
@@ -136,16 +142,18 @@ void GraphicsMain::Draw() {
 	glfwSwapInterval(1);
 
 	// 通常の描画(画面に表示される部分)
-	m_UseCameraIndex = 0;
-	GraphicsRenderer::GetInstance()->Draw(0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
+	//m_UseCameraIndex = 0;
+	GraphicsRenderer::GetInstance()->Draw(m_MainCamera, true,0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
 
-	// リアルタイムリフレクションプローブ
-	if (m_RealtimeReflectionProbe) {
-		m_RealtimeReflectionProbe->Draw();
-	}
-
+	// リアルタイムリフレクションプローブ (重いので使用しない or シーンによって使い分ける)
+	/*for (const auto& ReflectionProbe : m_ReflectionProbeList) {
+		if (ReflectionProbe) {
+			ReflectionProbe->Draw();
+		}
+	}*/
+	
 	//カラーバッファを入れ替える
 	glfwSwapBuffers(GraphicsRenderer::GetInstance()->GetWindow());
 
-	m_UseCameraIndex = 0;
+	//m_UseCameraIndex = 0;
 }

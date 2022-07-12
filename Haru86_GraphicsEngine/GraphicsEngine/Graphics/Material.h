@@ -32,6 +32,7 @@ public:
     void SetIntUniform(std::string uniformName,int val);
     void SetVec2Uniform(std::string uniformName, glm::vec2 val);
     void SetVec3Uniform(std::string uniformName, glm::vec3 val);
+    void SetVec4Uniform(std::string uniformName, glm::vec4 val);
     void SetTexUniform(std::string uniformName, unsigned int val);
     void SetFloatVectorUniform(std::string uniformName, std::vector<float> val);
     void SetBuffer(std::shared_ptr<class ComputeBuffer> buffer, int bufferIndex);
@@ -62,9 +63,18 @@ private :
     GLuint depthFragShaderData;
     GLuint depthShaderPrg;
 
+    // Normal Render Buffer
+    GLuint normalVertShaderData;
+    GLuint normalTessControlShaderData;
+    GLuint normalTessEvalShaderData;
+    GLuint normalGeometryShaderData;
+    GLuint normalFragShaderData;
+    GLuint normalShaderPrg;
+
     //
     GLuint computeShaderData;
     GLuint computeShaderDepthData;
+    GLuint computeShadernormalData;
 
     std::vector<std::shared_ptr<ComputeBuffer>> m_buffers;
 };
