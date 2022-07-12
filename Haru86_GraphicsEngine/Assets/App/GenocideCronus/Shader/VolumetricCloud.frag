@@ -81,9 +81,9 @@ void main()
     vec3 rd=normalize(st.x*cside+st.y*cup+1.0*cdir);
     
     float d=1.0,t=0.0,pi=0.0;
-    for(;++pi<100.;){
+    for(;++pi<150.;){
         d=map(ro+rd*t);
-        if(d>1e-2){
+        if(d>0.001){
             vec4 lcol=vec4( mix(vec3(0.0),vec3(1.0),d) ,d);
             lcol.a*=0.4;
             lcol.rgb*=lcol.a;
