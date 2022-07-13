@@ -70,24 +70,53 @@ void main()
     }
     //vec4 col =vec4(0.0); 
     //vec4 col =vec4(0.85,0.85,0.85,0.0); 
-    //vec3 ta=vec3(0.0,0.0,0.0);
-    vec3 ta=_WorldCameraCenter;
-    //vec3 ro=vec3(0.0,1.0,1.0);
-    vec3 ro=_WorldCameraPos;
     
+    // カメラ
+    vec3 ta=_WorldCameraCenter;
+    vec3 ro=_WorldCameraPos;
     vec3 cdir=normalize(ta-ro);
     vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));
     vec3 cup=normalize(cross(cdir,cside));
     vec3 rd=normalize(st.x*cside+st.y*cup+1.0*cdir);
     
+    // ライティングパラメーター
+    vec3 LightVector=normalize(vec3(1.0,1.0,1.0));
+    float ShadowStep=5.0;
+    float shadowStepSize = 1.0 / ShadowStep;
+    LightVector*=ShadowStep;
+    float ShadowDensity = 0.5;
+    ShadowDensity*=shadowStepSize;
+
+    // レイマーチング
     float d=1.0,t=0.0,pi=0.0;
     for(;++pi<150.;){
         d=map(ro+rd*t);
         if(d>0.001){
-            vec4 lcol=vec4( mix(vec3(0.0),vec3(1.0),d) ,d);
+            // ライティング
+            /*vec3 lpos=ro+rd*t;
+            float shadowDist=0.0;
+
+            for(float s=0.0;s<ShadowStep;s++)
+            {
+                lpos+=LightVector;
+                float lsample=map(lpos);
+                shadowDist+=lsample;
+            }
+            float shadowterm=exp(- clamp(shadowDist,0.1,1.0) * ShadowDensity);*/
+            
+            float d2=map(ro+rd*t+LightVector*0.1); 
+            float shadowterm=exp(-1.0*d2*10.0);
+            //float shadowterm=1.0;
+            
+            // モデリング
+            vec4 lcol=vec4( mix(vec3(0.0),vec3(1.0)*(1.0-d),sqrt(d)) ,d);
             lcol.a*=0.4;
             lcol.rgb*=lcol.a;
             
+            // 合成
+            lcol.rgb=lcol.rgb*shadowterm;
+
+            // 結果
             col+=lcol*(1.0-col.a);
         }
         t+=max(0.05,0.02*d);
