@@ -22,15 +22,33 @@ namespace myapp {
 
 	void SacredLake::Start() {
 		// Object
-		std::string SacredLake_WaterReflection = {
+		std::string SacredLake_WaterReflection_vert = {
+			#include "../Shader/SacredLake_WaterReflection.vert"
+		};
+
+		std::string SacredLake_WaterReflection_frag = {
 			#include "../Shader/SacredLake_WaterReflection.frag"
 		};
+
+		std::string SacredLake_WaterReflection_tesc = {
+			#include "../Shader/SacredLake_WaterReflection.tesc"
+		};
+
+		std::string SacredLake_WaterReflection_tese = {
+			#include "../Shader/SacredLake_WaterReflection.tese"
+		};
+
+		std::string SacredLake_WaterReflection_geom = {
+			#include "../Shader/SacredLake_WaterReflection.geom"
+		};
 		
-		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, SacredLake_WaterReflection);
+		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
+			SacredLake_WaterReflection_geom, SacredLake_WaterReflection_tesc, SacredLake_WaterReflection_tese);
 		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
 		m_ReflectPlaneTRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
-		m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
-		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, -100.0f);
+		//m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
+		m_ReflectPlaneTRS->m_scale = glm::vec3(15.0f);
+		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, 0.0f);
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
 		//
@@ -128,7 +146,8 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-			m_ReflectPlaneMesh->Draw();
+			m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
+			m_ReflectPlaneMesh->Draw(GL_PATCHES);
 			
 			// Sphere
 			/*m_ReflectPlaneMaterial->SetActive();

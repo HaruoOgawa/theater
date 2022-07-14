@@ -121,24 +121,13 @@ void main(){
   for(int i=0;i<128;i++){
     d=map(ro+rd*t);
     pi=float(i);
-    if(d<0.001||t>1000.0)break;
+    if(abs(d)<0.001||t>100.0)break;
     t+=d;
   }
  
-  /*if(_RenderingTarget==1.0){
-    if(d<0.001)
-    {
-         vec3 col=vec3(1.0)*25./pi;
-         gl_FragColor=vec4(col,1);
-    }
-  }else if(_RenderingTarget==2.0){
-    vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
-    gl_FragColor=vec4(col,1);
-  }*/
-
-  if(d<0.001)
+  if(abs(d)<0.001)
   {
-    vec3 col=vec3(1.0)*15./pi;
+    vec3 col=vec3(1.0)*10./pi;
     gl_FragColor=vec4(col,1);
   }
 
