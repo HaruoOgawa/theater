@@ -99,7 +99,7 @@ void main(){
 	col=texture(_SrcTexture,st).rgb;
 	//col=texture(_DepthMapPolygone,st).rgb;
 	//col=texture(_DepthMapMixed,st).rgb;
-	//col=CalSSRColor(col);
+	col=CalSSRColor(col);
 
 	gl_FragColor=vec4(col,1.0);
 }

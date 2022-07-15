@@ -117,18 +117,27 @@ void main(){
   
   vec3 rd=normalize(st.x*cside+st.y*cup+cdir*1.0);
 
-  float d,t,acc=0.0,pi=0.0;
+  float d,t,acc=0.0,pi=0.0,dmin=0.01;
   for(int i=0;i<128;i++){
     d=map(ro+rd*t);
     pi=float(i);
-    if(abs(d)<0.001||t>100.0)break;
+    if(abs(d)<dmin||t>100.0)break;
     t+=d;
   }
  
-  if(abs(d)<0.001)
+  if(abs(d)<dmin)
   {
-    vec3 col=vec3(1.0)*10./pi;
-    gl_FragColor=vec4(col,1);
+    if(_RenderingTarget==2.0) // ZTest
+    {
+        vec3 col=vec3(1.0)*1./pi;
+        gl_FragColor=vec4(col,1.0);
+    }
+    else
+    {
+        vec3 col=vec3(1.0)*10./pi;
+        gl_FragColor=vec4(col,1.0);
+    }
+    
   }
 
 }

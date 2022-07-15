@@ -22,7 +22,7 @@ void main()
 	t2f_normal=normal;*/
 
 	vec4 pos=vec4(v0.xyz*gl_TessCoord.x+v1.xyz*gl_TessCoord.y+v2.xyz*gl_TessCoord.z,1.0); 
-	pos.z+= 0.1 * sin( dot(vec2(0.0,1.0),pos.xy)*440.0 +_time );
+	//pos.z+= 0.1 * sin( dot(vec2(0.0,1.0),pos.xy)*440.0 +_time );
 
 	gl_Position=pos;
 }
