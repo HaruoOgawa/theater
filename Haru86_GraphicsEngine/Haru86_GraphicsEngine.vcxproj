@@ -441,6 +441,10 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <None Include="Assets\App\GenocideCronus\Shader\SacredGPUParticle.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake_Mandelbox.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.tesc" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.tese" />
+    <None Include="Assets\App\GenocideCronus\Shader\SacredLake_WaterReflection.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\Sound.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\VolumetricCloud.frag" />
     <None Include="bin\libfreetype-6.dll" />

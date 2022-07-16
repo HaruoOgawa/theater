@@ -22,23 +22,38 @@ namespace myapp {
 
 	void SacredLake::Start() {
 		// Object
-		std::string SacredLake_WaterReflection = {
+		std::string SacredLake_WaterReflection_vert = {
+			#include "../Shader/SacredLake_WaterReflection.vert"
+		};
+
+		std::string SacredLake_WaterReflection_frag = {
 			#include "../Shader/SacredLake_WaterReflection.frag"
 		};
+
+		std::string SacredLake_WaterReflection_tesc = {
+			#include "../Shader/SacredLake_WaterReflection.tesc"
+		};
+
+		std::string SacredLake_WaterReflection_tese = {
+			#include "../Shader/SacredLake_WaterReflection.tese"
+		};
+
+		std::string SacredLake_WaterReflection_geom = {
+			#include "../Shader/SacredLake_WaterReflection.geom"
+		};
 		
-		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, SacredLake_WaterReflection);
+		//m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
+		//	SacredLake_WaterReflection_geom, SacredLake_WaterReflection_tesc, SacredLake_WaterReflection_tese);
+		
+		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert,shaderlib::ShaderLib::Standard_frag);
+		
 		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
 		m_ReflectPlaneTRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
-		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, -100.0f);
+		//m_ReflectPlaneTRS->m_scale = glm::vec3(15.0f);
+		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, 0.0f);
 		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 
-		//
-		/*m_ReflectSphereTRS = std::make_shared<TransformComponent>();
-		m_ReflectSphereTRS->m_scale = glm::vec3(7.0f);
-		m_ReflectSphereTRS->m_position = glm::vec3(0.0f, 10.0f, 0.0f);
-		m_ReflectSphereMesh = std::make_shared<Mesh>(PrimitiveType::SPHERE);*/
-	
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
 			#include "../Shader/VolumetricCloud.frag"
@@ -83,24 +98,10 @@ namespace myapp {
 
 		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 		m_GPUTRS = std::make_shared<TransformComponent>();
-
-		// リフレクションプローブ
-		/*m_RP = std::make_shared<ReflectionProbe>();
-		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_RP);
-
-		// モノディル
-		glm::vec3 viewDir = m_ReflectPlaneTRS->m_position - GraphicsMain::GetInstance()->m_MainCamera->m_position;
-		glm::vec3 refDir = glm::reflect(-glm::normalize(viewDir), glm::vec3(0.0f, 1.0f, 0.0f));
-		std::shared_ptr<TransformComponent> MonoDirTRS = std::make_shared<TransformComponent>();
-		MonoDirTRS->m_position = m_ReflectPlaneTRS->m_position+glm::vec3(0.0f,10.0f,0.0f);
-		MonoDirTRS->m_center = m_ReflectPlaneTRS->m_position + refDir + glm::vec3(0.0f, 10.0f, 0.0f);
-
-		m_MonoDirRP = std::make_shared<ReflectionProbe>(MonoDirTRS);
-		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_MonoDirRP);*/
 	}
 
-	void SacredLake::Update() {
-		// GPU particle
+	void SacredLake::Update() 
+	{
 	}
 
 	void SacredLake::Draw() {
@@ -114,7 +115,7 @@ namespace myapp {
 		m_GPUMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 		m_GPUMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 		m_GPUMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
-
+		m_GPUMaterial->SetIntUniform("_NotUseNormal", 1);
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
 
 		if (GraphicsMain::GetInstance()->m_UsingCamera== GraphicsMain::GetInstance()->m_MainCamera) {
@@ -128,28 +129,13 @@ namespace myapp {
 			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-			m_ReflectPlaneMesh->Draw();
+			m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
+
+			m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
+			m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 			
-			// Sphere
-			/*m_ReflectPlaneMaterial->SetActive();
-			m_ReflectSphereTRS->CalMatrix();
-			m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectSphereTRS->m_pMatrix * m_ReflectSphereTRS->m_vMatrix * m_ReflectSphereTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectSphereTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectSphereTRS->m_vMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectSphereTRS->m_pMatrix);
-			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-
-			m_RP->m_CubeTex->SetActive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
-			m_ReflectPlaneMaterial->SetTexUniform("_WaterRP", 0);
-
-			m_MonoDirRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_2D);
-			m_ReflectPlaneMaterial->SetTexUniform("_MonoDirRP", 1);
-
-			m_ReflectSphereMesh->Draw();
-			m_RP->m_CubeTex->SetEnactive(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);	
-			m_MonoDirRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_2D);*/
+			//m_ReflectPlaneMesh->Draw(GL_PATCHES);
+			m_ReflectPlaneMesh->Draw();
 		}
 	}
 }
