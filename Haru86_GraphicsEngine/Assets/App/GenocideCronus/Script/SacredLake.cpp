@@ -44,7 +44,9 @@ namespace myapp {
 		
 		//m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
 		//	SacredLake_WaterReflection_geom, SacredLake_WaterReflection_tesc, SacredLake_WaterReflection_tese);
+		
 		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert,shaderlib::ShaderLib::Standard_frag);
+		
 		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
 		m_ReflectPlaneTRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
@@ -131,6 +133,7 @@ namespace myapp {
 
 			m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
 			m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+			
 			//m_ReflectPlaneMesh->Draw(GL_PATCHES);
 			m_ReflectPlaneMesh->Draw();
 		}
