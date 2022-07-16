@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
-#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
+#include "GraphicsEngine/Sound/SoundPlayer.h"
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -40,7 +40,8 @@ GraphicsMain::GraphicsMain()
 	m_timeline(nullptr),
 	//m_UseCameraIndex(0)
 	m_MainCamera(nullptr),
-	m_UsingCamera(nullptr)
+	m_UsingCamera(nullptr),
+	m_SoundPlayer(nullptr)
 {
 }
 
@@ -89,6 +90,10 @@ void GraphicsMain::LoadData() {
 	if (m_MainCamera == nullptr) {
 		m_MainCamera = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	}
+
+	//
+	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
+	m_SoundPlayer->Play();
 }
 
 bool GraphicsMain::RunLoop() {

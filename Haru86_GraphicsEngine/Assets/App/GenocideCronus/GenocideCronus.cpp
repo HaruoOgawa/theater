@@ -4,7 +4,6 @@
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
-#include "GraphicsEngine/Sound/SoundShaderPlayer.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
@@ -27,8 +26,6 @@ void GenocideCronus::Start() {
 	std::string soundCode = {
 		#include "Shader/Sound.frag"
 	};
-	m_SoundPlayer = std::make_shared<sound::SoundShaderPlayer>(soundCode);
-	m_SoundPlayer->Initialize();
 
 	// ”wŒiF
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
@@ -88,8 +85,6 @@ void GenocideCronus::Update() {
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
 	);
 
-	// ƒTƒEƒ“ƒh
-	m_SoundPlayer->Update();
 }
 
 void GenocideCronus::Draw() {

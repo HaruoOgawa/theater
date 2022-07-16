@@ -184,6 +184,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
@@ -210,6 +211,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x86\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x86\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>Winmm.lib;$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
@@ -240,6 +242,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
+      <OutputFile>Winmm.lib;$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
@@ -272,6 +275,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <AdditionalOptions>/CRINKLER %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>WinMain</EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
+      <OutputFile>Winmm.lib;$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x86\bin\Release\Win32\glew32.dll" "$(OutDir)" /i /s /y
@@ -294,10 +298,13 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y</Command>
+xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -317,11 +324,12 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
-</Command>
+xcopy "$(ProjectDir)Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DemoRelease|x64'">
@@ -341,11 +349,13 @@ xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib;$(ProjectDir)GraphicsEngine\Library\GLEW\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
-call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_GraphicsEngine.exe"</Command>
+call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_GraphicsEngine.exe"
+xcopy "$(ProjectDir)Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinimumRelease|x64'">
@@ -367,12 +377,14 @@ call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_Gra
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32d.lib;WinMM.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/CRINKLER %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>Winmm.lib;$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
 
-xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
+xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
+xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -399,7 +411,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="GraphicsEngine\Component\TransformComponent.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Mesh.h" />
     <ClInclude Include="Assets\App\GenocideCronus\GenocideCronus.h" />
-    <ClInclude Include="GraphicsEngine\Sound\SoundShaderPlayer.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
@@ -424,7 +435,6 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="GraphicsEngine\Graphics\PolygonRaymarchingMixer.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\PostProcess.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\GenocideCronus.cpp" />
-    <ClCompile Include="GraphicsEngine\Sound\SoundShaderPlayer.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\SacredLake.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
