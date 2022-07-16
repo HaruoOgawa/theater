@@ -404,6 +404,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\SSR_Test.h" />
+    <ClInclude Include="GraphicsEngine\Sound\SoundPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
@@ -428,6 +429,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y</Command>
     <ClCompile Include="Assets\App\GenocideCronus\Script\SacredLake.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\SSR_Test.cpp" />
+    <ClCompile Include="GraphicsEngine\Sound\SoundPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
