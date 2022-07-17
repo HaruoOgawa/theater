@@ -5,8 +5,11 @@ namespace sound
 	class SoundPlayer
 	{
 	public:
-		SoundPlayer()=default;
+		SoundPlayer();
 		virtual ~SoundPlayer();
+		bool Initialize();
 		bool Play();
+		bool Pause();
+		void Release();
 	};
 }
