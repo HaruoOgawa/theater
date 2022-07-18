@@ -17,7 +17,6 @@ MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primTy
 {
 	m_SurfaceType = SurfaceType;
 	m_mesh = std::make_shared<Mesh>((primType));
-	m_mesh->glDrawType = GLDrawType::NONE;
 	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv,cs);
 
 	// アルファブレンドの初期値
@@ -58,6 +57,8 @@ void MeshRendererComponent::Draw() {
 	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	m_material->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));
+	m_material->SetIntUniform("_UseLighting", 1);
 
 	// レイマーチングのデプスマップ用
 	if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {

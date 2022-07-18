@@ -18,10 +18,10 @@ namespace myapp
 	}
 
 	void Forest::Update() {
-
+		m_Flower->Update();
 	}
 
 	void Forest::Draw() {
-
+		m_Flower->Draw();
 	}
 }

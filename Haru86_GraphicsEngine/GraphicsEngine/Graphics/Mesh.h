@@ -23,16 +23,14 @@ class Mesh
 {
 public:
 	explicit Mesh(PrimitiveType primType);
-	//Mesh(std::)
+	Mesh(std::vector<std::vector<float>> vertices,std::vector<int> dimention,std::vector<unsigned short> indices);
 	~Mesh() = default;
 
 	void Draw(GLenum DrawVertexWay= GL_TRIANGLES);
 	void DrawInstancedWithMesh(int count, GLenum rendermode);
 
-	GLDrawType glDrawType;
 	std::vector<std::shared_ptr<Primitive>> m_primitives;
 private:
 	void CreateMesh(PrimitiveType primType);
-	//void CreateMesh();
 };
 

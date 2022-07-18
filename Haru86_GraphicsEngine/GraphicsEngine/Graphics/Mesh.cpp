@@ -6,6 +6,12 @@ Mesh::Mesh(PrimitiveType primType) {
 	CreateMesh(primType);
 }
 
+Mesh::Mesh(std::vector<std::vector<float>> vertices, std::vector<int> dimention, std::vector<unsigned short> indices) 
+{
+	std::shared_ptr<Primitive> prim = std::make_shared<Primitive>(vertices, dimention, indices);
+	m_primitives.push_back(prim);
+}
+
 void Mesh::CreateMesh(PrimitiveType primType) {
 	
 	std::vector<std::vector<float>> vertices;

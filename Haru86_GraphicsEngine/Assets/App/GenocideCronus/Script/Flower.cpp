@@ -1,13 +1,53 @@
 #include "Flower.h"
+#include "GraphicsEngine/Graphics/Mesh.h"
+#include "GraphicsEngine/Graphics/Material.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
 namespace myapp
 {
-	Flower::Flower() {
-
+	Flower::Flower():
+        m_FlowerMesh(nullptr),
+        m_FlowerMaterial(nullptr),
+        m_FlowerTRS(std::make_shared<TransformComponent>())
+    {
+        Start();
 	}
 
 	void Flower::Start() {
+        // base
+        std::vector<std::vector<float>> vertices;
+        std::vector<int> dimentions;
+        std::vector<unsigned short> indices;
 
+        // SplineData
+        std::vector<glm::vec3> controlPoints;
+        controlPoints.push_back(glm::vec3(0.0f,0.0f, -0.1389077f));
+        controlPoints.push_back(glm::vec3(1.16f, 0.5f, 0.2524655f));
+        controlPoints.push_back(glm::vec3(2.95f, 0.45f, -0.1389077f));
+        controlPoints.push_back(glm::vec3(3.26f, 1.39f, 0.2733917f));
+        controlPoints.push_back(glm::vec3(5.68f, -0.03f, 0.9092102f));
+        controlPoints.push_back(glm::vec3(8.6f, -0.48f, 0.08377504f));
+
+        float knotMin = 0.0f;
+        float knotMax = 1.0f;
+        float tWidth = 0.0625f;
+
+        // Create Mesh Data
+        const auto& data = Cal_BSpline_Surface(controlPoints, knotMin, knotMax, tWidth);
+
+        // test
+        vertices.push_back(CastVec3ToLine_float(data->vertices));
+        vertices.push_back(CastVec3ToLine_float(data->normals));
+        dimentions.push_back(3);
+        dimentions.push_back(3);
+        indices = data->triangles;
+
+        // set data to mesh
+        m_FlowerMesh = std::make_shared<Mesh>(vertices, dimentions, indices);
+
+        // material
+        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::Standard_vert,shaderlib::ShaderLib::Standard_frag);
 	}
 
 	void Flower::Update() {
@@ -15,7 +55,16 @@ namespace myapp
 	}
 
 	void Flower::Draw() {
+        m_FlowerMaterial->SetActive();
+        m_FlowerTRS->CalMatrix();
+        m_FlowerMaterial->SetMatrixUniform("MVPMatrix", m_FlowerTRS->m_pMatrix * m_FlowerTRS->m_vMatrix * m_FlowerTRS->m_mMatrix);
+        m_FlowerMaterial->SetMatrixUniform("MMatrix", m_FlowerTRS->m_mMatrix);
+        m_FlowerMaterial->SetMatrixUniform("VMatrix", m_FlowerTRS->m_vMatrix);
+        m_FlowerMaterial->SetMatrixUniform("PMatrix", m_FlowerTRS->m_pMatrix);
+        m_FlowerMaterial->SetIntUniform("_UseLighting", 1);
+        m_FlowerMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0) );
 
+        m_FlowerMesh->Draw();
 	}
 
     // Bスプライン曲線で花びらを構築
