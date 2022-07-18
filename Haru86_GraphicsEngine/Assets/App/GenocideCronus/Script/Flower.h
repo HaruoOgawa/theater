@@ -1,7 +1,28 @@
 #pragma once
+#include <vector>
+#include <memory>
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace myapp
 {
+	struct BaseFlower_Data
+	{
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec3> normals;
+		std::vector<int> triangles;
+	};
+
+	struct B_Spline_Data {
+		glm::vec3 position;
+		int index;
+
+		B_Spline_Data(glm::vec3 p, int i) {
+			this->position = p;
+			this->index = i;
+		}
+	};
+
 	class Flower
 	{
 	public:
@@ -10,6 +31,12 @@ namespace myapp
 		void Start();
 		void Update();
 		void Draw();
+
+	private:
+		static std::shared_ptr<BaseFlower_Data> Cal_BSpline_Surface(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth = 0.01f);
+		static std::vector<std::shared_ptr<B_Spline_Data>> Cal_BSplineCurve(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth = 0.01f);
+		static std::vector<float> GetKnotVector(int m, int n, float knotMin, float knotMax);
+		static float GetBasisFunction(std::vector<float> u, int j, int k, float t);
 	};
 
 }

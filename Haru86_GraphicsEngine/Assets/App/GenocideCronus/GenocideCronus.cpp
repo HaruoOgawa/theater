@@ -10,6 +10,8 @@
 
 #include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "Assets/App/GenocideCronus/Script/SacredLake.h"
+#include "Assets/App/GenocideCronus/Script/Forest.h"
+
 #include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 
 void GenocideCronus::Start() {
@@ -28,7 +30,7 @@ void GenocideCronus::Start() {
 	};
 
 	// 背景色
-	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
+	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 	
 //#ifdef _DEBUG
 	// デバッグ用グリッド
@@ -46,7 +48,8 @@ void GenocideCronus::Start() {
 
 	// シーンオブジェクトの初期化
 	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
-	m_SacredLake = std::make_shared<myapp::SacredLake>();
+	//m_SacredLake = std::make_shared<myapp::SacredLake>();
+	m_Forest = std::make_shared<myapp::Forest>();
 	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
 	// ポストプロセスの設定
@@ -79,18 +82,20 @@ void GenocideCronus::Update() {
 		2.0f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 2.0f
 	);*/
-	m_CameraTransform->m_position = glm::vec3(
+	/*m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * 30.0f,
 		0.5f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
-	);
+	);*/
 
+	m_Forest->Update();
 }
 
 void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
-	m_SacredLake->Draw();
+	//m_SacredLake->Draw();
+	m_Forest->Draw();
 	//m_SSR_Test->Draw();
 }
 

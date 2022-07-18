@@ -22,7 +22,8 @@ class Primitive;
 class Mesh
 {
 public:
-	Mesh(PrimitiveType primType);
+	explicit Mesh(PrimitiveType primType);
+	//Mesh(std::)
 	~Mesh() = default;
 
 	void Draw(GLenum DrawVertexWay= GL_TRIANGLES);
@@ -32,5 +33,6 @@ public:
 	std::vector<std::shared_ptr<Primitive>> m_primitives;
 private:
 	void CreateMesh(PrimitiveType primType);
+	//void CreateMesh();
 };
 

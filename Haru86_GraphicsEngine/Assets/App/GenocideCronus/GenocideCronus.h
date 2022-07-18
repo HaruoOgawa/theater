@@ -8,6 +8,7 @@ class TransformComponent;
 namespace myapp {
     class ProceduralCity;
     class SacredLake;
+    class Forest;
     class SSR_Test;
 }
 
@@ -23,6 +24,8 @@ class GenocideCronus
     // シーンオブジェクト
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
     std::shared_ptr<myapp::SacredLake> m_SacredLake;
+    std::shared_ptr<myapp::Forest> m_Forest;
+
     std::shared_ptr<myapp::SSR_Test> m_SSR_Test;
 
 public:
