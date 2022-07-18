@@ -39,6 +39,9 @@ public:
 	bool m_UseBloom;
 	float m_BloomIntensity;
 	float m_BloomThreshold;
+
+	// SSR
+	bool m_UseSSR;
 protected:
 	static PostProcess* instance;
 };

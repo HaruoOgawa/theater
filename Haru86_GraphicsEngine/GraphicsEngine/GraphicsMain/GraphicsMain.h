@@ -15,6 +15,10 @@ enum class ERerderingTarget
 	NORMAL,
 };
 
+namespace sound {
+	class SoundPlayer;
+}
+
 class GenocideCronus;
 class CTimeline;
 class TransformComponent;
@@ -69,6 +73,9 @@ public:
 
 	// 
 	std::vector<std::shared_ptr<ReflectionProbe>> m_ReflectionProbeList;
+
+	//
+	std::shared_ptr<sound::SoundPlayer> m_SoundPlayer;
 	
 private :
 	void UpdateTimeline();

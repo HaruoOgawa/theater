@@ -5,10 +5,6 @@ class GameObject;
 class CTimeline;
 class TransformComponent;
 
-namespace sound {
-    class SoundShaderPlayer;
-}
-
 namespace myapp {
     class ProceduralCity;
     class SacredLake;
@@ -20,8 +16,6 @@ class GenocideCronus
     // カメラ
     std::shared_ptr<TransformComponent> m_CameraTransform;
 
-    // Sound Shader
-    std::shared_ptr<sound::SoundShaderPlayer> m_SoundPlayer;
 
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;

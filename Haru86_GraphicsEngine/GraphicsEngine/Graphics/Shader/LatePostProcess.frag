@@ -16,6 +16,7 @@ uniform mat4 VPMatrix;
 uniform mat4 InvVPMatrix;
 uniform vec3 _WorldCameraPos;
 uniform vec3 _WorldCameraCenter;
+uniform int _UseSSR;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -99,7 +100,8 @@ void main(){
 	col=texture(_SrcTexture,st).rgb;
 	//col=texture(_DepthMapPolygone,st).rgb;
 	//col=texture(_DepthMapMixed,st).rgb;
-	col=CalSSRColor(col);
+	
+	if(_UseSSR == 1)col=CalSSRColor(col);
 
 	gl_FragColor=vec4(col,1.0);
 }
