@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <mmsystem.h>
 #include <array>
+#include "GraphicsEngine/Message/Console.h"
 #pragma comment(lib, "Winmm.lib")
 
 namespace sound 
@@ -15,10 +16,17 @@ namespace sound
 	}
 
 	bool SoundPlayer::Initialize() {
+		char ExePath[256];
+		GetModuleFileName(NULL, ExePath, 256);
+		std::string ExeDir = GetExeDir(ExePath);
+
+		std::string AudioPath ="\"" + ExeDir + "\\" + "stroke.mp3" + "\"";
+		std::string cmd = "open " + AudioPath + " type mpegvideo alias mp3";
+		
 		std::array<char, MAXERRORLENGTH> errorString;
 		mciGetErrorStringA(
 			mciSendStringA(
-				"open \" E:\\CppDev\\theater\\Haru86_GraphicsEngine\\Assets\\Sound\\stroke.mp3\" type mpegvideo alias mp3",
+				cmd.c_str(),
 				nullptr,
 				0,
 				nullptr),
@@ -49,5 +57,12 @@ namespace sound
 
 	void SoundPlayer::Release() {
 		mciSendStringA("close mp3", NULL, 0, NULL);
+	}
+
+	std::string SoundPlayer::GetExeDir(char path[]) {
+		std::string path_str(path);
+		int pathBlockOrder=path_str.rfind("\\");
+		std::string ExeDir = path_str.erase(pathBlockOrder);
+		return ExeDir;
 	}
 }

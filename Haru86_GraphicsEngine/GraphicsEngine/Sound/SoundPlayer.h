@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <string>
 
 namespace sound 
 {
@@ -11,5 +13,8 @@ namespace sound
 		bool Play();
 		bool Pause();
 		void Release();
+
+	private:
+		std::string GetExeDir(char path[]);
 	};
 }
