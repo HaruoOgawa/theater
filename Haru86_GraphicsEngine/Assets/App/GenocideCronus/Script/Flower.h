@@ -10,6 +10,14 @@ class TransformComponent;
 
 namespace myapp
 {
+	// â‘(â‘Ç—ÇÁÇÃèWçá)
+	struct Multi_Flower_Data {
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec3> normals;
+		std::vector<unsigned short> triangles;
+	};
+
+	// â‘Ç—ÇÁ
 	struct BaseFlower_Data
 	{
 		std::vector<glm::vec3> vertices;
@@ -40,6 +48,13 @@ namespace myapp
 		void Draw();
 
 	private:
+		// â‘ÇÃç\íz
+		static std::shared_ptr<Multi_Flower_Data> RenderMultiFlower(const std::shared_ptr<BaseFlower_Data>& flower_data, glm::vec3 flowerPosition,
+			glm::vec3 flowerTangent, glm::vec3 flowerBioNormal, float flowerTime = 1.0f, int N = 50);
+
+		static void CalFibonacciPosition(std::vector<glm::vec3>& FibonacciPosition, std::vector<glm::quat>& FibonacciRotation, std::vector<glm::vec4>& FibonacciGrowthData, int N = 50);
+
+		// â‘Ç—ÇÁä÷òA
 		static std::shared_ptr<BaseFlower_Data> Cal_BSpline_Surface(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth = 0.01f);
 		static std::vector<std::shared_ptr<B_Spline_Data>> Cal_BSplineCurve(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth = 0.01f);
 		static std::vector<float> GetKnotVector(int m, int n, float knotMin, float knotMax);

@@ -33,15 +33,18 @@ namespace myapp
         float knotMax = 1.0f;
         float tWidth = 0.0625f;
 
-        // Create Mesh Data
+        // 花びら
         const auto& data = Cal_BSpline_Surface(controlPoints, knotMin, knotMax, tWidth);
 
+        // 花
+        std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data,glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f));
+
         // test
-        vertices.push_back(CastVec3ToLine_float(data->vertices));
-        vertices.push_back(CastVec3ToLine_float(data->normals));
+        vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->vertices));
+        vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->normals));
         dimentions.push_back(3);
         dimentions.push_back(3);
-        indices = data->triangles;
+        indices = multi_Flower_Data->triangles;
 
         // set data to mesh
         m_FlowerMesh = std::make_shared<Mesh>(vertices, dimentions, indices);
@@ -66,6 +69,84 @@ namespace myapp
 
         m_FlowerMesh->Draw();
 	}
+
+    // 花びらから花を構築
+    std::shared_ptr<Multi_Flower_Data> Flower::RenderMultiFlower(const std::shared_ptr<BaseFlower_Data>& flower_data, glm::vec3 flowerPosition,
+        glm::vec3 flowerTangent, glm::vec3 flowerBioNormal, float flowerTime, int N)
+    {
+        std::shared_ptr<Multi_Flower_Data> data = std::make_shared<Multi_Flower_Data>();
+        
+        std::vector<glm::vec3> FibonacciPosition;
+        std::vector<glm::quat> FibonacciRotation;
+        std::vector<glm::vec4> FibonacciGrowthData;
+        CalFibonacciPosition(FibonacciPosition,FibonacciRotation,FibonacciGrowthData, N);
+
+        std::vector<glm::vec3> fibonacciVertices;
+        std::vector<int> fibonacciIndices;
+        std::vector<glm::vec3> fibonacciNormals;
+
+        for (int i = 0; i < FibonacciPosition.size(); i++) {
+            glm::vec3 fibPos = FibonacciPosition[i];
+            
+            glm::vec4 fibGroth = FibonacciGrowthData[i];
+            glm::quat fibRot = glm::angleAxis(flowerTime * fibGroth.w, glm::vec3(fibGroth.x, fibGroth.y, fibGroth.z) ) * FibonacciRotation[i];
+            fibRot = glm::angleAxis(
+                glm::acos(dot(flowerTangent, glm::vec3(0.0f, 0.0f, 1.0f))) / (glm::length(flowerTangent) * glm::length(glm::vec3(0.0f, 0.0f, 1.0f))),
+                flowerBioNormal
+            ) * fibRot;
+            
+            for (int q = 0; q < flower_data->vertices.size(); q++) {
+                float size = (float)(i + 1) * 0.01f;
+                fibonacciVertices.push_back((flowerTime * size * (fibRot * flower_data->vertices[q] + fibPos * (1.0f / (float)(i + 1.0f))) + flowerPosition));
+            }
+            
+            for (int p = 0; p < flower_data->normals.size(); p++) {
+                fibonacciNormals.push_back((fibRot * flower_data->normals[p]));
+            }
+        }
+
+        for (int i = 0; i < FibonacciPosition.size(); i++) {
+            for (int p = 0; p < flower_data->triangles.size(); p++) {
+                fibonacciIndices.push_back(i * (flower_data->vertices.size()) + flower_data->triangles[p]);
+            }
+        }
+
+        for (int i = 0; i < fibonacciVertices.size(); i++) {
+            data->vertices.push_back(fibonacciVertices[i]);
+        }
+
+        for (int i = 0; i < fibonacciNormals.size(); i++) {
+            data->normals.push_back(fibonacciNormals[i]);
+        }
+
+        for (int i = 0; i < fibonacciIndices.size(); i++) {
+            data->triangles.push_back(fibonacciIndices[i]);
+        }
+
+        return data;
+    }
+
+    // フィボナッチ数列の計算(花びらはフィボナッチ数列)
+    void Flower::CalFibonacciPosition(std::vector<glm::vec3>& FibonacciPosition, std::vector<glm::quat>& FibonacciRotation,
+        std::vector<glm::vec4>& FibonacciGrowthData, int N)
+    {
+        float goldenAngle = 137.509f;
+        for (int i = 1; i < N + 1; i++) {
+            glm::vec3 pos = glm::vec3(0.0f);
+            float r = glm::sqrt((float)i);
+            float ang = (float)(i - 1) * goldenAngle * (3.14f/180.0f);
+            pos.x = r * glm::sin(ang);
+            pos.z = r * glm::cos(ang);
+
+            glm::vec3 crossVec = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::normalize(pos));
+            glm::quat fibRot = glm::quat(glm::vec3(0.0f, ang, 0.0f));
+            float angVal = glm::pow((float)(i - 1) * 0.175f, 2.0f);
+
+            FibonacciPosition.push_back(pos);
+            FibonacciRotation.push_back(fibRot);
+            FibonacciGrowthData.push_back(glm::vec4(crossVec.x, crossVec.y, crossVec.z, angVal));
+        }
+    }
 
     // Bスプライン曲線で花びらを構築
 	std::shared_ptr<BaseFlower_Data> Flower::Cal_BSpline_Surface(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth) {
