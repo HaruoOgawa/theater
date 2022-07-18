@@ -33,7 +33,8 @@ PostProcess::PostProcess():
 	m_BloomIntensity(0.0),
 	m_Bloom(std::make_unique<CBloom>()),
 	m_BloomTexture(std::make_shared<Texture>()),
-	m_TRS(std::make_shared<TransformComponent>())
+	m_TRS(std::make_shared<TransformComponent>()),
+	m_UseSSR(false)
 {
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "", "");
@@ -121,6 +122,8 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 
 	GraphicsRenderer::GetInstance()->p_r_DepthBlendingTexture->SetActive(GL_TEXTURE4);
 	m_LateMaterial->SetTexUniform("_DepthMapMixed", 4);
+
+	m_LateMaterial->SetIntUniform("_UseSSR", (m_UseSSR) ? 1 : 0);
 
 	m_mesh->Draw();
 	SrcTexture->SetEnactive(GL_TEXTURE0);

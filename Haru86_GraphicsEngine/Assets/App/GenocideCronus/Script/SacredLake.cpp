@@ -9,6 +9,7 @@
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Graphics/Texture.h"
+#include "GraphicsEngine/Graphics/PostProcess.h"
 
 namespace myapp {
 	SacredLake::SacredLake():
@@ -98,6 +99,8 @@ namespace myapp {
 
 		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 		m_GPUTRS = std::make_shared<TransformComponent>();
+
+		PostProcess::GetInstance()->m_UseSSR = true;
 	}
 
 	void SacredLake::Update() 
