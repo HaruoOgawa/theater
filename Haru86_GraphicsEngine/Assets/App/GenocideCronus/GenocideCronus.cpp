@@ -32,6 +32,7 @@ void GenocideCronus::Start() {
 
 	// 背景色
 	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
+	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 	
 //#ifdef _DEBUG
 	// デバッグ用グリッド

@@ -37,7 +37,7 @@ namespace myapp
         const auto& data = Cal_BSpline_Surface(controlPoints, knotMin, knotMax, tWidth);
 
         // 花
-        std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data,glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f));
+        std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data,glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // test
         vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->vertices));
@@ -91,7 +91,7 @@ namespace myapp
             glm::vec4 fibGroth = FibonacciGrowthData[i];
             glm::quat fibRot = glm::angleAxis(flowerTime * fibGroth.w, glm::vec3(fibGroth.x, fibGroth.y, fibGroth.z) ) * FibonacciRotation[i];
             fibRot = glm::angleAxis(
-                glm::acos(dot(flowerTangent, glm::vec3(0.0f, 0.0f, 1.0f))) / (glm::length(flowerTangent) * glm::length(glm::vec3(0.0f, 0.0f, 1.0f))),
+                glm::acos(dot(flowerTangent, glm::vec3(0.0f, 0.0f, 1.0f)) / glm::abs(glm::length(flowerTangent) * glm::length(glm::vec3(0.0f, 0.0f, 1.0f)))),
                 flowerBioNormal
             ) * fibRot;
             
@@ -140,7 +140,8 @@ namespace myapp
 
             glm::vec3 crossVec = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), glm::normalize(pos));
             glm::quat fibRot = glm::quat(glm::vec3(0.0f, ang, 0.0f));
-            float angVal = glm::pow((float)(i - 1) * 0.175f, 2.0f);
+            // 弧度法を使用する
+            float angVal = glm::pow((float)(i - 1) * 0.175f, 2.0f) * (3.14f / 180.0f);
 
             FibonacciPosition.push_back(pos);
             FibonacciRotation.push_back(fibRot);
