@@ -5,6 +5,7 @@
 
 namespace myapp {
 	FlowerModel::FlowerModel() :
+		count(2048),
 		m_Flower(nullptr),
 		m_Stem(nullptr),
 		m_Leaf(nullptr)
@@ -14,7 +15,7 @@ namespace myapp {
 
 	void FlowerModel::Start() {
 		m_Flower = std::make_shared<Flower>();
-		m_Stem = std::make_shared<Stem>();
+		m_Stem = std::make_shared<Stem>(this);
 		m_Leaf = std::make_shared<Leaf>();
 	}
 
