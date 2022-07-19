@@ -10,7 +10,7 @@
 
 #include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "Assets/App/GenocideCronus/Script/SacredLake.h"
-#include "Assets/App/GenocideCronus/Script/Forest.h"
+#include "Assets/App/GenocideCronus/Script/Forest/Forest.h"
 
 #include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 

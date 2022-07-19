@@ -3,11 +3,11 @@
 
 namespace myapp 
 {
-	class Flower;
+	class FlowerModel;
 
 	class Forest
 	{
-		std::shared_ptr<Flower> m_Flower;
+		std::shared_ptr<FlowerModel> m_FlowerModel;
 	public:
 		Forest();
 		~Forest() = default;

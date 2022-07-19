@@ -1,27 +1,27 @@
 #include "Forest.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
-#include "Flower.h"
+#include "FlowerModel.h"
 
 namespace myapp
 {
 	Forest::Forest():
-		m_Flower(nullptr)
+		m_FlowerModel(nullptr)
 	{
 		Start();
 	}
 
 	void Forest::Start() {
-		m_Flower = std::make_shared<Flower>();
+		m_FlowerModel = std::make_shared<FlowerModel>();
 
 		// Not Use SSR
 		PostProcess::GetInstance()->m_UseSSR = false;
 	}
 
 	void Forest::Update() {
-		m_Flower->Update();
+		m_FlowerModel->Update();
 	}
 
 	void Forest::Draw() {
-		m_Flower->Draw();
+		m_FlowerModel->Draw();
 	}
 }

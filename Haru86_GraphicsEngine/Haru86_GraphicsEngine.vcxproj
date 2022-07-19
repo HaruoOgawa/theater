@@ -388,8 +388,9 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest.h" />
-    <ClInclude Include="Assets\App\GenocideCronus\Script\Flower.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Forest.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Flower.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
@@ -418,10 +419,13 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\SSR_Test.h" />
     <ClInclude Include="GraphicsEngine\Sound\SoundPlayer.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Leaf.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Stem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest.cpp" />
-    <ClCompile Include="Assets\App\GenocideCronus\Script\Flower.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Forest.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Flower.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
@@ -444,9 +448,17 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\SSR_Test.cpp" />
     <ClCompile Include="GraphicsEngine\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Leaf.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Stem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Flowers_Renderer.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Leaf_Renderer.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Stem_Renderer.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Stem_Renderer.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Leaf.comp" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Stem.comp" />
     <None Include="Assets\App\GenocideCronus\Shader\GlowCave.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\MandelboxSample.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />
@@ -466,6 +478,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="bin\libfreetype-6.dll" />
     <None Include="bin\SDL2_ttf.dll" />
     <None Include="bin\zlib1.dll" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Flowers.comp" />
     <None Include="GraphicsEngine\Graphics\Shader\NormalMapColor.frag" />
     <None Include="packages.config" />
   </ItemGroup>
