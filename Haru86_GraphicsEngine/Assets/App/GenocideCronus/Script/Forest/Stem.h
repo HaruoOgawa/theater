@@ -13,17 +13,19 @@ namespace myapp {
 
     //stem–{‘Ì‚Ìî•ñ
     struct StemVertex {
-        glm::vec3 vertice;
-        glm::vec3 tangent;
-        glm::vec3 normal;
-        glm::vec3 bioNormal;
+        float vertice[3];
+        float tangent[3];
+        float normal[3];
+        float bioNormal[3];
         int index;
-        StemVertex(int i) {
-            this->vertice = glm::vec3(0, 0, 0);
-            this->tangent = glm::vec3(0, 0, 0);
-            this->normal = glm::vec3(0, 0, 0);
-            this->bioNormal = glm::vec3(0, 0, 0);
-            this->index = i;
+
+        StemVertex(int i):
+            vertice{ 0.0f, 0.0f, 0.0f },
+            tangent{ 0.0f, 0.0f, 0.0f },
+            normal{ 0.0f, 0.0f, 0.0f },
+            bioNormal{ 0.0f, 0.0f, 0.0f },
+            index(i)
+        {
         }
     };
 

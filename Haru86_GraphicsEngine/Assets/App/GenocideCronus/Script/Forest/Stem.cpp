@@ -81,9 +81,15 @@ namespace myapp {
         stemResult_buffer = std::make_shared<ComputeBuffer>(stemVertexCount * m_FlowerModel->count * sizeof(StemVertex) );
         stemVertex_buffer = std::make_shared<ComputeBuffer>(stemVertexCount * m_FlowerModel->count * sizeof(StemVertex));
         stemManage_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count * sizeof(StemManage));
-        stemBasePosition_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count *sizeof(glm::vec3));
+        stemBasePosition_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count *sizeof(float) * 3);
 
         InitBufferData();
+
+        // コンピュートシェーダーにバッファをセット
+        cal_stem_cs->SetBuffer(stemResult_buffer, stemResult_buffer_index, stem_mat); // _write_stemResult_buffer
+        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, stem_mat); // _read_stemBasePosition_buffer
+        cal_stem_cs->SetBuffer(stemVertex_buffer, stemVertex_buffer_index, stem_mat); // _write_stemVertex_buffer
+        cal_stem_cs->SetBuffer(stemManage_buffer, stemManage_buffer_index, stem_mat); // _read_stemManage_buffer
 
         // マテリアルにバッファをセット
         stem_mat->SetBuffer(stemVertex_buffer,stemVertex_buffer_index); // _stemVertex_buffer
@@ -91,37 +97,46 @@ namespace myapp {
     }
 
     void Stem::InitBufferData() {
-        std::vector<std::shared_ptr<StemVertex>> initStemVertex;
-        std::vector<std::shared_ptr<StemManage>> initStemManege;
+        std::vector<StemVertex> initStemVertex;
+        std::vector<StemManage> initStemManege;
 
         std::vector<glm::vec3> initStemBasePosition;
+        std::vector<float> initStemBasePosition_Array;
 
         std::vector<glm::mat4> initStemDebugMatrix;
 
         for (int i = 0; i < m_FlowerModel->count; i++) {
-            initStemVertex.push_back(std::make_shared<StemVertex>(i));
+            //
+            for (int vertex = 0; vertex < stemVertexCount;vertex++) {
+                initStemVertex.push_back(StemVertex(i));
+            }
 
-            std::shared_ptr<StemManage> stemManage = std::make_shared<StemManage>(1);
-            if (stemManage->stemLifeVal == 0.0f || stemManage->stemLifeVal == 1.0f) {
-                stemManage->stemWaitTime = glm::gaussRand(1.0f, 3.0f);
-                stemManage->manageLifeCountFlag = 0;
+            //
+            StemManage stemManage = StemManage(1);
+            if (stemManage.stemLifeVal == 0.0f || stemManage.stemLifeVal == 1.0f) {
+                stemManage.stemWaitTime = glm::gaussRand(1.0f, 3.0f);
+                stemManage.manageLifeCountFlag = 0;
             }
             initStemManege.push_back(stemManage);
             
+            //
             glm::vec2 initBasePos = glm::sphericalRand(stemGrowthRange);
             initStemBasePosition.push_back(glm::vec3(initBasePos.x, 0.0f, initBasePos.y));
 
             initStemDebugMatrix.push_back(glm::mat4());
+
+            initStemBasePosition_Array.push_back(initBasePos.x);
+            initStemBasePosition_Array.push_back(0.0f);
+            initStemBasePosition_Array.push_back(initBasePos.y);
         }
-        stemResult_buffer->SetData(initStemVertex);
-        stemVertex_buffer->SetData(initStemVertex);
-        stemManage_buffer->SetData(initStemManege);
-        stemBasePosition_buffer->SetData(initStemBasePosition);
+        stemResult_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
+        stemVertex_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
+        stemManage_buffer->SetData<std::vector<StemManage>>(initStemManege);
+        stemBasePosition_buffer->SetData<std::vector<glm::vec3>>(initStemBasePosition);
     }
 
     void Stem::Cal_Stem_Result() {
-        cal_stem_cs->SetBuffer(stemResult_buffer,stemResult_buffer_index, stem_mat); // _write_stemResult_buffer
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, stem_mat); // _read_stemBasePosition_buffer
+        cal_stem_cs->SetActive();
         std::vector<glm::vec4> contPos;
         cal_stem_cs->SetIntUniform("_contPosArrayLength", bSplineData->controlPoints.size());
         for (int i = 0; i < bSplineData->controlPoints.size(); i++) {
@@ -140,22 +155,18 @@ namespace myapp {
     }
 
     void Stem::Init_Stem_Growth() {
-        cal_stem_cs->SetBuffer(stemResult_buffer,stemResult_buffer_index); // _read_stemResult_buffer
-        cal_stem_cs->SetBuffer(stemVertex_buffer,stemVertex_buffer_index); // _write_stemVertex_buffer
-        cal_stem_cs->SetBuffer(stemManage_buffer,stemManage_buffer_index); // _read_stemManage_buffer
-
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer,stemBasePosition_buffer_index); // _read_stemBasePosition_buffer
-
+        cal_stem_cs->SetActive();
+        
         cal_stem_cs->SetIntUniform("_stemVertexCount", stemVertexCount);
+        cal_stem_cs->SetFloatUniform("_testLife", 1.0f);
         // 
         cal_stem_cs->SetIntUniform("_KernelIndex", InitStemGrowth_kernel);
         cal_stem_cs->Dispatch((stemVertexCount * m_FlowerModel->count) / numthreds_val, 1, 1);
     }
 
     void Stem::Cal_Stem_Manage() {
-        cal_stem_cs->SetBuffer(stemManage_buffer,stemManage_buffer_index); // _write_stemManage_buffer
-
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer,stemBasePosition_buffer_index); // _read_stemBasePosition_buffer
+        cal_stem_cs->SetActive();
+       
         cal_stem_cs->SetFloatUniform("_stemGrowthRange", stemGrowthRange);
         cal_stem_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->deltaTime);
 
@@ -163,19 +174,16 @@ namespace myapp {
         cal_stem_cs->Dispatch(m_FlowerModel->count / numthreds_val, 1, 1);
     }
     void Stem::Cal_Stem_Growth() {
+        cal_stem_cs->SetActive();
         cal_stem_cs->SetIntUniform("_stemVertexCount", stemVertexCount);
-        cal_stem_cs->SetBuffer(stemResult_buffer,stemResult_buffer_index); // _read_stemResult_buffer
-        cal_stem_cs->SetBuffer(stemVertex_buffer,stemVertex_buffer_index); // _write_stemVertex_buffer
-        cal_stem_cs->SetBuffer(stemManage_buffer,stemManage_buffer_index); // _read_stemManage_buffer
-
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer,stemBasePosition_buffer_index); // _read_stemBasePosition_buffer
-
+        
         cal_stem_cs->SetIntUniform("_KernelIndex", stemGrowth_kernel);
         cal_stem_cs->Dispatch((stemVertexCount * m_FlowerModel->count) / numthreds_val, 1, 1);
     }
 
     void Stem::Render_Stem() {
-        
+        __glewMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
         stem_mat->SetActive();
         stem_mat->SetIntUniform("_stemVertexCount", stemVertexCount);
         stem_mat->SetIntUniform("_stemSegments", stemSegments);

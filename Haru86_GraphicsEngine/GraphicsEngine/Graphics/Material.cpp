@@ -26,22 +26,33 @@ Material::Material(RenderingSurfaceType SurfaceType,const std::string& vert, con
 	normalTessEvalShaderData(-1),
 	normalGeometryShaderData(-1),
 	normalFragShaderData(-1),
-	normalShaderPrg(-1)
+	normalShaderPrg(-1),
+	computeShaderData(-1),
+	computeShaderDepthData(-1),
+	computeShadernormalData(-1)
 {
-	if (SurfaceType == RenderingSurfaceType::RASTERIZER) {
-		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
-			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
-		LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv,cs, depthShaderPrg
-			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
+	if (cs.empty()) 
+	{
+		if (SurfaceType == RenderingSurfaceType::RASTERIZER) {
+			LoadShader(vert, frag, geom, tc, tv, cs, shaderPrg
+				, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
+			LoadShader(vert, shaderlib::ShaderLib::DepthColor_frag, geom, tc, tv, cs, depthShaderPrg
+				, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
 
-		LoadShader(vert, shaderlib::ShaderLib::NormalMapColor_frag, geom, tc, tv,cs, normalShaderPrg
-			, normalVertShaderData, normalFragShaderData, normalGeometryShaderData, normalTessControlShaderData, normalTessEvalShaderData, computeShadernormalData);
+			LoadShader(vert, shaderlib::ShaderLib::NormalMapColor_frag, geom, tc, tv, cs, normalShaderPrg
+				, normalVertShaderData, normalFragShaderData, normalGeometryShaderData, normalTessControlShaderData, normalTessEvalShaderData, computeShadernormalData);
+		}
+		else if (SurfaceType == RenderingSurfaceType::RAYMARCHING) {
+			LoadShader(vert, frag, geom, tc, tv, cs, shaderPrg
+				, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
+			LoadShader(vert, frag, geom, tc, tv, cs, depthShaderPrg
+				, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
+		}
 	}
-	else if (SurfaceType == RenderingSurfaceType::RAYMARCHING) {
-		LoadShader(vert, frag, geom, tc, tv,cs, shaderPrg
+	else
+	{
+		LoadShader(vert, frag, geom, tc, tv, cs, shaderPrg
 			, vertShaderData, fragShaderData, geometryShaderData, tessControlShaderData, tessEvalShaderData, computeShaderData);
-		LoadShader(vert, frag, geom, tc, tv,cs, depthShaderPrg
-			, depthVertShaderData, depthFragShaderData, depthGeometryShaderData, depthTessControlShaderData, depthTessEvalShaderData, computeShaderDepthData);
 	}
 }
 
@@ -230,14 +241,21 @@ void Material::SetEactiveTextureList() {
 }
 
 GLuint Material::GetCurrentShaderPrg() {
-	if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
+	if (computeShaderData == -1) 
+	{
+		if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::COLOR) {
+			return shaderPrg;
+		}
+		else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
+			return depthShaderPrg;
+		}
+		else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::NORMAL) {
+			return normalShaderPrg;
+		}
+	}
+	else 
+	{
 		return shaderPrg;
-	}
-	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::DEPTH) {
-		return depthShaderPrg;
-	}
-	else if (GraphicsMain::GetInstance()->renderingTarget == ERerderingTarget::NORMAL) {
-		return normalShaderPrg;
 	}
 }
 

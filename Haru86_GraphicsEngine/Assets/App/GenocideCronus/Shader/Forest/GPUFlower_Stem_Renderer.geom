@@ -5,6 +5,14 @@ R"(
 layout(points) in;
 layout(triangle_strip,max_vertices=72) out;
 
+uniform mat4 MVPMatrix;
+uniform mat4 MMatrix;
+uniform mat4 VMatrix;
+uniform mat4 PMatrix;
+uniform float _time;
+uniform float _deltaTime;
+uniform vec3 _CameraPos;
+
 #define PI 3.14159265
 
 struct StemVertex{
@@ -78,67 +86,67 @@ void main(){
         for(int i=0;i<_stemSegments;i++){
                         
             vec4 pos0=vec4(
-                lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*(float)(i))
-                +v2g_o[0].bioNormal*sin(angleVal*(float)(i)))
+                lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*float(i))
+                +v2g_o[0].bioNormal*sin(angleVal*float(i)))
                 +v2g_o[0].vertex.xyz
                 ,1.0);
 
             vec4 pos1=vec4(
-                lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*(float)(i+1))
-                +v2g_o[0].bioNormal*sin(angleVal*(float)(i+1)))
+                lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*float(i+1))
+                +v2g_o[0].bioNormal*sin(angleVal*float(i+1)))
                 +v2g_o[0].vertex.xyz
                 ,1.0);
 
             vec4 pos2=vec4(
-                lifeTime*_stemRadius*normalize(v2g_o[0].nextNormal*cos(angleVal*(float)(i))
-                +v2g_o[0].nextBioNormal*sin(angleVal*(float)(i)))
+                lifeTime*_stemRadius*normalize(v2g_o[0].nextNormal*cos(angleVal*float(i))
+                +v2g_o[0].nextBioNormal*sin(angleVal*float(i)))
                 +v2g_o[0].nextStemVertex.xyz
                 ,1.0);
 
             vec4 pos3=vec4(
-                lifeTime*_stemRadius*normalize(v2g_o[0].nextNormal*cos(angleVal*(float)(i+1))
-                +v2g_o[0].nextBioNormal*sin(angleVal*(float)(i+1)))
+                lifeTime*_stemRadius*normalize(v2g_o[0].nextNormal*cos(angleVal*float(i+1))
+                +v2g_o[0].nextBioNormal*sin(angleVal*float(i+1)))
                 +v2g_o[0].nextStemVertex.xyz
                 ,1.0);
                         
             //first
-            g2f_o.vertex=UnityObjectToClipPos(pos0);
+            g2f_o.vertex=MVPMatrix*(pos0);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos0-v2g_o[0].vertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos0)).xyz;
+            g2f_o.normal=normalize(pos0.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos0).xyz;
             EmitVertex();
 
-            g2f_o.vertex=UnityObjectToClipPos(pos1);
+            g2f_o.vertex=MVPMatrix*(pos1);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos1-v2g_o[0].vertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos1)).xyz;
+            g2f_o.normal=normalize(pos1.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos1).xyz;
             EmitVertex();  
 
-            g2f_o.vertex=UnityObjectToClipPos(pos3);
+            g2f_o.vertex=MVPMatrix*(pos3);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos3-v2g_o[0].nextStemVertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos3)).xyz;
+            g2f_o.normal=normalize(pos3.xyz-v2g_o[0].nextStemVertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos3).xyz;
             EmitVertex();    
 
             EndPrimitive();
 
             //second
-            g2f_o.vertex=UnityObjectToClipPos(pos0);
+            g2f_o.vertex=MVPMatrix*(pos0);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos0-v2g_o[0].vertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos0)).xyz;
+            g2f_o.normal=normalize(pos0.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos0).xyz;
             EmitVertex();
 
-            g2f_o.vertex=UnityObjectToClipPos(pos3);
+            g2f_o.vertex=MVPMatrix*(pos3);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos3-v2g_o[0].nextStemVertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos3)).xyz;
+            g2f_o.normal=normalize(pos3.xyz-v2g_o[0].nextStemVertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos3).xyz;
             EmitVertex();  
 
-            g2f_o.vertex=UnityObjectToClipPos(pos2);
+            g2f_o.vertex=MVPMatrix*(pos2);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos2-v2g_o[0].nextStemVertex.xyz);
-            g2f_o.worldPos=(mul(UNITY_MATRIX_M,pos2)).xyz;
+            g2f_o.normal=normalize(pos2.xyz-v2g_o[0].nextStemVertex.xyz);
+            g2f_o.worldPos=(MMatrix*pos2).xyz;
             EmitVertex();    
 
             EndPrimitive();
@@ -150,19 +158,19 @@ void main(){
         g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         EndPrimitive();
@@ -170,19 +178,19 @@ void main(){
             g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         g2f_o.vertex=v2g_o[0].vertex;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(mul(UNITY_MATRIX_M,v2g_o[0].vertex)).xyz;
+        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
         EmitVertex();
 
         EndPrimitive();

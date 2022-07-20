@@ -42,12 +42,12 @@ struct StemData{
 
 layout(std430,binding = 1) buffer stemVertex_buffer
 {
-    StemVertex[] stemVertex;
+    StemVertex stemVertex[];
 } out_stemVertex_buffer;
 
 layout(std430,binding = 2) buffer stemManage_buffer
 {
-    StemManage[] stemManage;
+    StemManage stemManage[];
 } out_stemManage_buffer;
 
 struct v2g
@@ -74,17 +74,17 @@ out v2g v2g_o;
 void main(){
     int id=gl_InstanceID;
 
-    StemVertex sVertex=out_stemVertex_buffer[id];
-    StemVertex nextVertex=out_stemVertex_buffer[id+1];
+    StemVertex sVertex=out_stemVertex_buffer.stemVertex[id];
+    StemVertex nextVertex=out_stemVertex_buffer.stemVertex[id+1];
                 
     //get lifetime
     int stemNodeID=(id-sVertex.index)/_stemVertexCount;
-    StemManage sManage=out_stemManage_buffer[stemNodeID];
+    StemManage sManage=out_stemManage_buffer.stemManage[stemNodeID];
     float lifeTime=sManage.stemLifeVal;
                 
     //nowStem
     v2g_o.vertex = vec4(sVertex.vertice,1.0);
-    v2g_o.uv = v.uv;
+    v2g_o.uv = texcoord;
     v2g_o.idInMyStem=sVertex.index;
     v2g_o.tangent=sVertex.tangent;
     v2g_o.normal=sVertex.normal;
