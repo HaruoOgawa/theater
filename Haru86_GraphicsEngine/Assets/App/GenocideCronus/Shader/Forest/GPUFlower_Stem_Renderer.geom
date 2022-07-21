@@ -49,7 +49,7 @@ struct StemData{
 
 struct v2g
 {
-    vec4 vertex;
+    //vec4 vertex;
     vec2 uv;
     float idInMyStem;
     vec3 nextStemVertex; 
@@ -65,7 +65,7 @@ struct v2g
 struct g2f
 {
     vec2 uv;
-    vec4 vertex;
+    //vec4 vertex;
     vec3 normal;
     vec3 worldPos;
 };
@@ -93,13 +93,13 @@ void main(){
             vec4 pos0=vec4(
                 lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*float(i))
                 +v2g_o[0].bioNormal*sin(angleVal*float(i)))
-                +v2g_o[0].vertex.xyz
+                +gl_in[0].gl_Position.xyz
                 ,1.0);
 
             vec4 pos1=vec4(
                 lifeTime*_stemRadius*normalize(v2g_o[0].normal*cos(angleVal*float(i+1))
                 +v2g_o[0].bioNormal*sin(angleVal*float(i+1)))
-                +v2g_o[0].vertex.xyz
+                +gl_in[0].gl_Position.xyz
                 ,1.0);
 
             vec4 pos2=vec4(
@@ -115,9 +115,9 @@ void main(){
                 ,1.0);
                         
             //first
-            g2f_o.vertex=MVPMatrix*(pos0);
+            gl_Position=MVPMatrix*(pos0);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos0.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.normal=normalize(pos0.xyz-gl_in[0].gl_Position.xyz);
             g2f_o.worldPos=(MMatrix*pos0).xyz;
             uv =vec2(0,0);
             CameraPos =_CameraPos;
@@ -125,9 +125,9 @@ void main(){
             WorldNormal = (MMatrix * vec4(normalize(g2f_o.normal),0.0)).xyz;
             EmitVertex();
 
-            g2f_o.vertex=MVPMatrix*(pos1);
+            gl_Position=MVPMatrix*(pos1);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos1.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.normal=normalize(pos1.xyz-gl_in[0].gl_Position.xyz);
             g2f_o.worldPos=(MMatrix*pos1).xyz;
             uv =vec2(0,0);
             CameraPos =_CameraPos;
@@ -135,7 +135,7 @@ void main(){
             WorldNormal = (MMatrix * vec4(normalize(g2f_o.normal),0.0)).xyz;
             EmitVertex();  
 
-            g2f_o.vertex=MVPMatrix*(pos3);
+            gl_Position=MVPMatrix*(pos3);
             g2f_o.uv=vec2(0,0);
             g2f_o.normal=normalize(pos3.xyz-v2g_o[0].nextStemVertex.xyz);
             g2f_o.worldPos=(MMatrix*pos3).xyz;
@@ -148,9 +148,9 @@ void main(){
             EndPrimitive();
 
             //second
-            g2f_o.vertex=MVPMatrix*(pos0);
+            gl_Position=MVPMatrix*(pos0);
             g2f_o.uv=vec2(0,0);
-            g2f_o.normal=normalize(pos0.xyz-v2g_o[0].vertex.xyz);
+            g2f_o.normal=normalize(pos0.xyz-gl_in[0].gl_Position.xyz);
             g2f_o.worldPos=(MMatrix*pos0).xyz;
             uv =vec2(0,0);
             CameraPos =_CameraPos;
@@ -158,7 +158,7 @@ void main(){
             WorldNormal = (MMatrix * vec4(normalize(g2f_o.normal),0.0)).xyz;
             EmitVertex();
 
-            g2f_o.vertex=MVPMatrix*(pos3);
+            gl_Position=MVPMatrix*(pos3);
             g2f_o.uv=vec2(0,0);
             g2f_o.normal=normalize(pos3.xyz-v2g_o[0].nextStemVertex.xyz);
             g2f_o.worldPos=(MMatrix*pos3).xyz;
@@ -168,7 +168,7 @@ void main(){
             WorldNormal = (MMatrix * vec4(normalize(g2f_o.normal),0.0)).xyz;
             EmitVertex();  
 
-            g2f_o.vertex=MVPMatrix*(pos2);
+            gl_Position=MVPMatrix*(pos2);
             g2f_o.uv=vec2(0,0);
             g2f_o.normal=normalize(pos2.xyz-v2g_o[0].nextStemVertex.xyz);
             g2f_o.worldPos=(MMatrix*pos2).xyz;
@@ -184,65 +184,65 @@ void main(){
     }else{
         g2f o;
 
-        g2f_o.vertex=v2g_o[0].vertex;
+        gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 
-        g2f_o.vertex=v2g_o[0].vertex;
+        gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 
-        g2f_o.vertex=v2g_o[0].vertex;
+        gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 
         EndPrimitive();
 
-            g2f_o.vertex=v2g_o[0].vertex;
+            gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 
-        g2f_o.vertex=v2g_o[0].vertex;
+        gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 
-        g2f_o.vertex=v2g_o[0].vertex;
+        gl_Position=gl_in[0].gl_Position;
         g2f_o.uv=vec2(0,0);
         g2f_o.normal=normalize(vec3(0,0,1));
-        g2f_o.worldPos=(MMatrix*v2g_o[0].vertex).xyz;
+        g2f_o.worldPos=(MMatrix*gl_in[0].gl_Position).xyz;
                     uv =vec2(0,0);
             CameraPos =_CameraPos;
-            WorldVertexPos = (MMatrix * v2g_o[0].vertex).xyz;
+            WorldVertexPos = (MMatrix * gl_in[0].gl_Position).xyz;
             WorldNormal = (MMatrix * vec4(normalize(vec3(0,0,1)),0.0)).xyz;
         EmitVertex();
 

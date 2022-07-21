@@ -52,7 +52,7 @@ layout(std430,binding = 2) buffer stemManage_buffer
 
 struct v2g
 {
-    vec4 vertex;
+    //vec4 vertex;
     vec2 uv;
     float idInMyStem;
     vec3 nextStemVertex; 
@@ -83,7 +83,7 @@ void main(){
     float lifeTime=sManage.stemLifeVal;
                 
     //nowStem
-    v2g_o.vertex = vec4(sVertex.vertice,1.0);
+    gl_Position = vec4(sVertex.vertice,1.0);
     v2g_o.uv = texcoord;
     v2g_o.idInMyStem=sVertex.index;
     v2g_o.tangent=sVertex.tangent;
