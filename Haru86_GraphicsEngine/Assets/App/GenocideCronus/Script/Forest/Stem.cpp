@@ -5,6 +5,7 @@
 #include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
 namespace myapp {
 	Stem::Stem(FlowerModel* model) :
@@ -38,6 +39,9 @@ namespace myapp {
         // ポイントメッシュ
         stem_point_mesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 
+        // TRS
+        m_StemTRS = std::make_shared<TransformComponent>();
+        
         //
         Start();
 	}
@@ -189,6 +193,17 @@ namespace myapp {
         stem_mat->SetIntUniform("_stemSegments", stemSegments);
         stem_mat->SetFloatUniform("_stemRadius", stemRadius);
         stem_mat->SetFloatUniform("_stemLength", stemLength);
+
+        stem_mat->SetMatrixUniform("MVPMatrix", m_StemTRS->m_pMatrix * m_StemTRS->m_vMatrix * m_StemTRS->m_mMatrix);
+        stem_mat->SetMatrixUniform("MMatrix", m_StemTRS->m_mMatrix);
+        stem_mat->SetMatrixUniform("VMatrix", m_StemTRS->m_vMatrix);
+        stem_mat->SetMatrixUniform("PMatrix", m_StemTRS->m_pMatrix);
+        stem_mat->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
+        stem_mat->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
+        stem_mat->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+        stem_mat->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+        stem_mat->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));
+        stem_mat->SetIntUniform("_UseLighting", 1);
         
         stem_point_mesh->DrawInstancedWithMesh(stemVertexCount * m_FlowerModel->count, GL_POINTS);
     }

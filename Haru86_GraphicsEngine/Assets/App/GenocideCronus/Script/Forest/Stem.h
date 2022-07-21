@@ -6,6 +6,7 @@
 class ComputeBuffer;
 class Material;
 class Mesh;
+class TransformComponent;
 
 namespace myapp {
 	class FlowerModel;
@@ -86,6 +87,7 @@ namespace myapp {
         float stemLength;
         float stemGrowthRange;
         int numthreds_val;
+        std::shared_ptr<TransformComponent> m_StemTRS;
 
         // kernel(ComputeBuffer Uniform)
         int stemResult_kernel;
