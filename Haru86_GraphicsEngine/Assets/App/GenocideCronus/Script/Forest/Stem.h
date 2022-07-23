@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <glm/glm.hpp>
-#include <glm/gtc/random.hpp>
 
 class ComputeBuffer;
 class Material;
@@ -40,39 +39,31 @@ namespace myapp {
         int flowerStartIndex;
         int leafCount;
         int leafStartIndex;
-        StemManage(int fCount) {
-            this->stemLifeVal = glm::gaussRand(0.0f, 1.0f);
-            this->stemWaitTime = 0.0f;
-            this->signNum = glm::gaussRand(-1.0f, 1.0f);
-            this->manageLifeCountFlag = 1;
-            this->flowerCount = fCount;
-            this->flowerStartIndex = 1;
-            this->leafCount = 1;
-            this->leafStartIndex = 1;
-        }
+        StemManage(int fCount, glm::vec2 seed_lifeval, glm::vec2 seed_signNum);
     };
 
     //花や茎を生成するための情報を載せる構造体
     struct StemData {
         int resampleIndex;
         int resampleIndexInStem;
-        glm::vec3 position;
-        glm::vec3 tangent;
-        glm::vec3 normal;
-        glm::vec3 bioNormal;
+        float position[3];
+        float tangent[3];
+        float normal[3];
+        float bioNormal[3];
         int renderFlag;
         float lifeTime;
         float flowerSize;
-        StemData(int i, glm::vec3 p, glm::vec3 t, glm::vec3 n, glm::vec3 b) {
-            this->resampleIndex = i;
-            this->resampleIndexInStem = -1;
-            this->position = p;
-            this->tangent = t;
-            this->normal = n;
-            this->bioNormal = b;
-            this->renderFlag = 0;
-            this->lifeTime = 0.0f;
-            this->flowerSize = glm::gaussRand(2.0f, 4.0f);
+        StemData(int i, glm::vec3 p, glm::vec3 t, glm::vec3 n, glm::vec3 b, glm::vec2 seed);
+    };
+
+    // 各花の生える基本の座標
+    struct StemBasePosition {
+        float position[4];
+        //float position[3];
+
+        StemBasePosition(float x, float y, float z,float w) :
+            position{x,y,z,w}
+        {
         }
     };
 

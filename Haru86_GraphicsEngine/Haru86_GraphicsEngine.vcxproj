@@ -394,6 +394,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
+    <ClInclude Include="GraphicsEngine\Math\mymath_withGLM.h" />
     <ClInclude Include="GraphicsEngine\Message\Console.h" />
     <ClInclude Include="GraphicsEngine\Graphics\CBloom.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ComputeBuffer.h" />

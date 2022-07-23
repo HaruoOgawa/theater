@@ -50,7 +50,10 @@ namespace myapp
         m_FlowerMesh = std::make_shared<Mesh>(vertices, dimentions, indices);
 
         // material
-        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,shaderlib::ShaderLib::Standard_vert,shaderlib::ShaderLib::Standard_frag);
+        std::string GPUFlower_Flowers_Renderer_vert = {
+            #include "../../Shader/Forest/GPUFlower_Flowers_Renderer.vert"
+        };
+        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUFlower_Flowers_Renderer_vert,shaderlib::ShaderLib::Standard_frag);
 	}
 
 	void Flower::Update() {
@@ -67,7 +70,8 @@ namespace myapp
         m_FlowerMaterial->SetIntUniform("_UseLighting", 1);
         m_FlowerMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0) );
 
-        m_FlowerMesh->Draw();
+        //m_FlowerMesh->Draw();
+        m_FlowerMesh->DrawInstancedWithMesh(1024,GL_TRIANGLES);
 	}
 
     // â‘Ç—ÇÁÇ©ÇÁâ‘Çç\íz

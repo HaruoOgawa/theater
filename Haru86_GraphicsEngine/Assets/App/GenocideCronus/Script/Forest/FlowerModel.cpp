@@ -26,7 +26,7 @@ namespace myapp {
 	}
 
 	void FlowerModel::Draw() {
-		m_Flower->Draw();
+		//m_Flower->Draw();
 		m_Stem->Draw();
 		m_Leaf->Draw();
 	}

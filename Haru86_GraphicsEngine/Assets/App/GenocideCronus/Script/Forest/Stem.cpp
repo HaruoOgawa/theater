@@ -6,6 +6,7 @@
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Math/mymath_withGLM.h"
 
 namespace myapp {
 	Stem::Stem(FlowerModel* model) :
@@ -85,7 +86,7 @@ namespace myapp {
         stemResult_buffer = std::make_shared<ComputeBuffer>(stemVertexCount * m_FlowerModel->count * sizeof(StemVertex) );
         stemVertex_buffer = std::make_shared<ComputeBuffer>(stemVertexCount * m_FlowerModel->count * sizeof(StemVertex));
         stemManage_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count * sizeof(StemManage));
-        stemBasePosition_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count *sizeof(float) * 3);
+        stemBasePosition_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count *sizeof(StemBasePosition));
 
         InitBufferData();
 
@@ -104,8 +105,9 @@ namespace myapp {
         std::vector<StemVertex> initStemVertex;
         std::vector<StemManage> initStemManege;
 
-        std::vector<glm::vec3> initStemBasePosition;
-        std::vector<float> initStemBasePosition_Array;
+        std::vector<StemBasePosition> initStemBasePosition;
+        //std::vector<glm::vec3> initStemBasePosition;
+        //std::vector<float> initStemBasePosition_Array;
 
         std::vector<glm::mat4> initStemDebugMatrix;
 
@@ -116,27 +118,28 @@ namespace myapp {
             }
 
             //
-            StemManage stemManage = StemManage(1);
+            StemManage stemManage = StemManage(1,glm::vec2(float(i)*10.0+0.69154f),glm::vec2(777.3591f,float(i)));
             if (stemManage.stemLifeVal == 0.0f || stemManage.stemLifeVal == 1.0f) {
-                stemManage.stemWaitTime = glm::gaussRand(1.0f, 3.0f);
+                stemManage.stemWaitTime = mymath::rand(glm::vec2(float(i) + 9.154f, 0.1459f)) * 2.0f + 1.0f; //glm::gaussRand(1.0f, 3.0f);
                 stemManage.manageLifeCountFlag = 0;
             }
             initStemManege.push_back(stemManage);
             
             //
-            glm::vec2 initBasePos = glm::sphericalRand(stemGrowthRange);
-            initStemBasePosition.push_back(glm::vec3(initBasePos.x, 0.0f, initBasePos.y));
+            glm::vec2 initBasePos = mymath::circleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
+            //initStemBasePosition.push_back(glm::vec3(initBasePos.x, 0.0f, initBasePos.y));
+            initStemBasePosition.push_back(StemBasePosition(initBasePos.x, 0.0f, initBasePos.y,0.0f));
 
             initStemDebugMatrix.push_back(glm::mat4());
 
-            initStemBasePosition_Array.push_back(initBasePos.x);
+            /*initStemBasePosition_Array.push_back(initBasePos.x);
             initStemBasePosition_Array.push_back(0.0f);
-            initStemBasePosition_Array.push_back(initBasePos.y);
+            initStemBasePosition_Array.push_back(initBasePos.y);*/
         }
         stemResult_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
         stemVertex_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
         stemManage_buffer->SetData<std::vector<StemManage>>(initStemManege);
-        stemBasePosition_buffer->SetData<std::vector<glm::vec3>>(initStemBasePosition);
+        stemBasePosition_buffer->SetData<std::vector<StemBasePosition>>(initStemBasePosition);
     }
 
     void Stem::Cal_Stem_Result() {
@@ -145,7 +148,8 @@ namespace myapp {
         cal_stem_cs->SetIntUniform("_contPosArrayLength", bSplineData->controlPoints.size());
         for (int i = 0; i < bSplineData->controlPoints.size(); i++) {
             glm::vec3 controlPoint = bSplineData->controlPoints[i];
-            contPos.push_back(glm::vec4(controlPoint.x, controlPoint.y * stemLength * glm::gaussRand(0.5f, 1.5f), controlPoint.z, 0.0f));
+            contPos.push_back(glm::vec4(controlPoint.x, controlPoint.y * 
+                stemLength * (mymath::rand(glm::vec2(float(i)+1.785f, float(i) + 7.1259f))+0.5f) /*glm::gaussRand(0.5f, 1.5f) */ , controlPoint.z, 0.0f));
         }
         cal_stem_cs->SetVec4ArrayUniform("_controlPoints", contPos);
         cal_stem_cs->SetIntUniform("_stemVertexCount", stemVertexCount);
@@ -189,6 +193,7 @@ namespace myapp {
         __glewMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
         stem_mat->SetActive();
+        m_StemTRS->CalMatrix();
         stem_mat->SetIntUniform("_stemVertexCount", stemVertexCount);
         stem_mat->SetIntUniform("_stemSegments", stemSegments);
         stem_mat->SetFloatUniform("_stemRadius", stemRadius);
@@ -208,4 +213,28 @@ namespace myapp {
         stem_point_mesh->DrawInstancedWithMesh(stemVertexCount * m_FlowerModel->count, GL_POINTS);
     }
 	/////////////
+
+    StemManage::StemManage(int fCount, glm::vec2 seed_lifeval, glm::vec2 seed_signNum) {
+        this->stemLifeVal = mymath::rand(seed_lifeval);
+        this->stemWaitTime = 0.0f;
+        this->signNum = mymath::rand(seed_signNum) * 2.0f - 1.0f;
+        this->manageLifeCountFlag = 1;
+        this->flowerCount = fCount;
+        this->flowerStartIndex = 1;
+        this->leafCount = 1;
+        this->leafStartIndex = 1;
+    }
+
+    StemData::StemData(int i, glm::vec3 p, glm::vec3 t, glm::vec3 n, glm::vec3 b, glm::vec2 seed) :
+        resampleIndex(i),
+        resampleIndexInStem(-1),
+        position{ p.x,p.y,p.z },
+        tangent{ t.x,t.y,t.z },
+        normal{ n.x,n.y,n.z },
+        bioNormal{ b.x,b.y,b.z },
+        renderFlag(0),
+        lifeTime(0.0f),
+        flowerSize(mymath::rand(seed) * 2.0f + 2.0f)
+    {
+    }
 }
