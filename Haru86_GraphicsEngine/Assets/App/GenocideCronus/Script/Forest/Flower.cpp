@@ -3,18 +3,72 @@
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "FlowerModel.h"
+#include "Stem.h"
+#include "GraphicsEngine/Graphics/ComputeBuffer.h"
+#include "GraphicsEngine/Math/mymath_withGLM.h"
 
 namespace myapp
 {
-	Flower::Flower():
+    Flower::Flower(FlowerModel* model) :
+        m_FlowerModel(model),
         m_FlowerMesh(nullptr),
         m_FlowerMaterial(nullptr),
-        m_FlowerTRS(std::make_shared<TransformComponent>())
+        m_FlowerTRS(std::make_shared<TransformComponent>()),
+        stemDataFlower_buffer(nullptr),
+        stemDataFlower_buffer_index(4),
+        cal_flower_cs(nullptr)
     {
+        //
+        std::string GPU_Flower_Cal_Flowers_comp = {
+            #include "../../Shader/Forest/GPU_Flower_Cal_Flowers.comp"
+        };
+        cal_flower_cs = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, "", "", "", "", "", GPU_Flower_Cal_Flowers_comp);
+
+        //
         Start();
 	}
 
 	void Flower::Start() {
+        Init();
+	}
+
+    void Flower::LinkBufferToResources(const std::shared_ptr<Stem>& stem) {
+        // コンピュートシェーダーにバッファをセット
+        cal_flower_cs->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index, m_FlowerMaterial);
+        cal_flower_cs->SetBuffer(stem->stemVertex_buffer, stem->stemVertex_buffer_index);
+        cal_flower_cs->SetBuffer(stem->stemManage_buffer, stem->stemManage_buffer_index);
+
+        // マテリアルにバッファをセット
+        m_FlowerMaterial->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index);
+    }
+
+    void Flower::Init() {
+        kernel_CalFlowerGrowth = 0;
+
+        InitBuffer();
+        SetupFlowerdata();
+    }
+
+    void Flower::InitBuffer() {
+        stemDataFlower_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count * sizeof(StemData));
+
+        std::vector<StemData> initFlowerStemData;
+        std::vector<glm::mat4> initStemDebugMatrix;
+
+        for (int i = 0; i < m_FlowerModel->count; i++) {
+            glm::vec2 initPos = mymath::circleRand(1.0f,glm::vec2(float(i)+673.123f,0.1846f),glm::vec2(float(i)+4.12f));
+            StemData data = StemData(i, glm::vec4(initPos.x, 0.0f, initPos.y,0.0f), glm::vec4(0.0f), glm::vec4(0.0f), glm::vec4(0.0f),glm::vec2(1.11123f,float(i)+5.512f));
+
+            initFlowerStemData.push_back(data);
+            initStemDebugMatrix.push_back(glm::mat4(1.0f));
+        }
+
+        // バッファに初期値をセット
+        stemDataFlower_buffer->SetData<std::vector<StemData>>(initFlowerStemData);
+    }
+
+    void Flower::SetupFlowerdata() {
         // base
         std::vector<std::vector<float>> vertices;
         std::vector<int> dimentions;
@@ -22,7 +76,7 @@ namespace myapp
 
         // SplineData
         std::vector<glm::vec3> controlPoints;
-        controlPoints.push_back(glm::vec3(0.0f,0.0f, -0.1389077f));
+        controlPoints.push_back(glm::vec3(0.0f, 0.0f, -0.1389077f));
         controlPoints.push_back(glm::vec3(1.16f, 0.5f, 0.2524655f));
         controlPoints.push_back(glm::vec3(2.95f, 0.45f, -0.1389077f));
         controlPoints.push_back(glm::vec3(3.26f, 1.39f, 0.2733917f));
@@ -37,7 +91,7 @@ namespace myapp
         const auto& data = Cal_BSpline_Surface(controlPoints, knotMin, knotMax, tWidth);
 
         // 花
-        std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data,glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // test
         vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->vertices));
@@ -53,8 +107,8 @@ namespace myapp
         std::string GPUFlower_Flowers_Renderer_vert = {
             #include "../../Shader/Forest/GPUFlower_Flowers_Renderer.vert"
         };
-        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUFlower_Flowers_Renderer_vert,shaderlib::ShaderLib::Standard_frag);
-	}
+        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUFlower_Flowers_Renderer_vert, shaderlib::ShaderLib::Standard_frag);
+    }
 
 	void Flower::Update() {
 

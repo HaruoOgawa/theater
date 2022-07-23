@@ -46,9 +46,9 @@ struct StemData{
 };
 
 // Še‰Ô‚Ì¶‚¦‚éŠî–{‚ÌÀ•W
-    struct StemBasePosition {
-        vec4 position;
-    };
+struct StemBasePosition {
+    vec4 position;
+};
 
 layout(std430,binding = 0) buffer stemResult_buffer
 {

@@ -106,8 +106,12 @@ namespace myapp {
 		Stem(FlowerModel* model);
 		~Stem() = default;
 		void Start();
+        void LinkBufferToResources();
 		void Update();
 		void Draw();
+
+        friend class Flower;
+        friend class Leaf;
 
     private:
         void Init();

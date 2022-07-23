@@ -55,6 +55,18 @@ namespace myapp {
         //gPUFlower_Base.stemIsDone = true;
 	}
 
+    void Stem::LinkBufferToResources() {
+        // コンピュートシェーダーにバッファをセット
+        cal_stem_cs->SetBuffer(stemResult_buffer, stemResult_buffer_index, stem_mat); // _write_stemResult_buffer
+        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, stem_mat); // _read_stemBasePosition_buffer
+        cal_stem_cs->SetBuffer(stemVertex_buffer, stemVertex_buffer_index, stem_mat); // _write_stemVertex_buffer
+        cal_stem_cs->SetBuffer(stemManage_buffer, stemManage_buffer_index, stem_mat); // _read_stemManage_buffer
+
+        // マテリアルにバッファをセット
+        stem_mat->SetBuffer(stemVertex_buffer, stemVertex_buffer_index); // _stemVertex_buffer
+        stem_mat->SetBuffer(stemManage_buffer, stemManage_buffer_index); // _read_stemManage_buffer
+    }
+
 	void Stem::Update() {
         Cal_Stem_Manage();
         Cal_Stem_Growth();
@@ -89,16 +101,6 @@ namespace myapp {
         stemBasePosition_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count *sizeof(StemBasePosition));
 
         InitBufferData();
-
-        // コンピュートシェーダーにバッファをセット
-        cal_stem_cs->SetBuffer(stemResult_buffer, stemResult_buffer_index, stem_mat); // _write_stemResult_buffer
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, stem_mat); // _read_stemBasePosition_buffer
-        cal_stem_cs->SetBuffer(stemVertex_buffer, stemVertex_buffer_index, stem_mat); // _write_stemVertex_buffer
-        cal_stem_cs->SetBuffer(stemManage_buffer, stemManage_buffer_index, stem_mat); // _read_stemManage_buffer
-
-        // マテリアルにバッファをセット
-        stem_mat->SetBuffer(stemVertex_buffer,stemVertex_buffer_index); // _stemVertex_buffer
-        stem_mat->SetBuffer(stemManage_buffer,stemManage_buffer_index); // _read_stemManage_buffer
     }
 
     void Stem::InitBufferData() {

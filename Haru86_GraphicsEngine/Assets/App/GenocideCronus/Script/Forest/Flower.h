@@ -7,9 +7,13 @@
 class Mesh;
 class Material;
 class TransformComponent;
+class ComputeBuffer;
 
 namespace myapp
 {
+	class FlowerModel;
+	class Stem;
+
 	// 花(花びらの集合)
 	struct Multi_Flower_Data {
 		std::vector<glm::vec3> vertices;
@@ -37,17 +41,33 @@ namespace myapp
 
 	class Flower
 	{
+		// 基礎パラメーター
+		int kernel_CalFlowerGrowth;
+		FlowerModel* m_FlowerModel;
+
+		// バッファ関連
+		std::shared_ptr<ComputeBuffer> stemDataFlower_buffer;
+		int							   stemDataFlower_buffer_index;
+		std::shared_ptr<Material>	   cal_flower_cs;
+
+		// オブジェクト
 		std::shared_ptr<Mesh> m_FlowerMesh;
 		std::shared_ptr<Material> m_FlowerMaterial;
 		std::shared_ptr<TransformComponent> m_FlowerTRS;
 	public:
-		Flower();
+		Flower(FlowerModel* model);
 		~Flower() = default;
 		void Start();
+		void LinkBufferToResources(const std::shared_ptr<Stem>& stem);
 		void Update();
 		void Draw();
 
 	private:
+		// 初期化
+		void Init();
+		void InitBuffer();
+		void SetupFlowerdata();
+
 		// 花の構築
 		static std::shared_ptr<Multi_Flower_Data> RenderMultiFlower(const std::shared_ptr<BaseFlower_Data>& flower_data, glm::vec3 flowerPosition,
 			glm::vec3 flowerTangent, glm::vec3 flowerBioNormal, float flowerTime = 1.0f, int N = 50);

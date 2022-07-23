@@ -39,12 +39,17 @@ struct StemManage{
 struct StemData{
     int resampleIndex;
     int resampleGroupIndex;
-    vec3 position;
-    vec3 tangent;
-    vec3 normal;
-    vec3 bioNormal;
+    vec4 position;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
     int renderFlag;
     float lifeTime;
+};
+
+// äeâ‘ÇÃê∂Ç¶ÇÈäÓñ{ÇÃç¿ïW
+struct StemBasePosition {
+    vec4 position;
 };
 
 struct v2g
