@@ -13,17 +13,17 @@ namespace myapp {
 
     //stem本体の情報
     struct StemVertex {
-        float vertice[3];
-        float tangent[3];
-        float normal[3];
-        float bioNormal[3];
+        float vertice[4];
+        float tangent[4];
+        float normal[4];
+        float bioNormal[4];
         int index;
 
         StemVertex(int i):
-            vertice{ 0.0f, 0.0f, 0.0f },
-            tangent{ 0.0f, 0.0f, 0.0f },
-            normal{ 0.0f, 0.0f, 0.0f },
-            bioNormal{ 0.0f, 0.0f, 0.0f },
+            vertice{ 0.0f, 0.0f, 0.0f, 0.0f },
+            tangent{ 0.0f, 0.0f, 0.0f , 0.0f },
+            normal{ 0.0f, 0.0f, 0.0f , 0.0f },
+            bioNormal{ 0.0f, 0.0f, 0.0f , 0.0f },
             index(i)
         {
         }
@@ -46,21 +46,20 @@ namespace myapp {
     struct StemData {
         int resampleIndex;
         int resampleIndexInStem;
-        float position[3];
-        float tangent[3];
-        float normal[3];
-        float bioNormal[3];
+        float position[4];
+        float tangent[4];
+        float normal[4];
+        float bioNormal[4];
         int renderFlag;
         float lifeTime;
         float flowerSize;
-        StemData(int i, glm::vec3 p, glm::vec3 t, glm::vec3 n, glm::vec3 b, glm::vec2 seed);
+        StemData(int i, glm::vec4 p, glm::vec4 t, glm::vec4 n, glm::vec4 b, glm::vec2 seed);
     };
 
     // 各花の生える基本の座標
     struct StemBasePosition {
         float position[4];
-        //float position[3];
-
+       
         StemBasePosition(float x, float y, float z,float w) :
             position{x,y,z,w}
         {

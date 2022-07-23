@@ -16,10 +16,10 @@ uniform vec3 _CameraPos;
 #define PI 3.14159265
 
 struct StemVertex{
-    vec3 vertice;
-    vec3 tangent;
-    vec3 normal;
-    vec3 bioNormal;
+    vec4 vertice;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
     int index;
 };
 

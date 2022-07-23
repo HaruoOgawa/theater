@@ -225,13 +225,13 @@ namespace myapp {
         this->leafStartIndex = 1;
     }
 
-    StemData::StemData(int i, glm::vec3 p, glm::vec3 t, glm::vec3 n, glm::vec3 b, glm::vec2 seed) :
+    StemData::StemData(int i, glm::vec4 p, glm::vec4 t, glm::vec4 n, glm::vec4 b, glm::vec2 seed) :
         resampleIndex(i),
         resampleIndexInStem(-1),
-        position{ p.x,p.y,p.z },
-        tangent{ t.x,t.y,t.z },
-        normal{ n.x,n.y,n.z },
-        bioNormal{ b.x,b.y,b.z },
+        position{ p.x,p.y,p.z,p.w },
+        tangent{ t.x,t.y,t.z,t.w },
+        normal{ n.x,n.y,n.z ,n.w },
+        bioNormal{ b.x,b.y,b.z ,b.w },
         renderFlag(0),
         lifeTime(0.0f),
         flowerSize(mymath::rand(seed) * 2.0f + 2.0f)

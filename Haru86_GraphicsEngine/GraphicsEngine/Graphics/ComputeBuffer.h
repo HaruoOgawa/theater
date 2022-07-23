@@ -18,6 +18,7 @@ public:
 	// GPUにはそういった型しかないよね？てかカスタム型を伝える手段はないよね？
 	// 例. glm::vec3 val--> float val[3] のように複数型は配列にする
 	// * 初期化時のデータ数と初期値セット時のデータ数をそろえる
+	// OpenGL ComputeBuffer (std430/std140)のvec3は16バイトごとにオフセットする(vec4も16バイト)
 	template<typename T>
 	void SetData(T data) {
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);

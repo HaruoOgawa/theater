@@ -9,10 +9,10 @@ layout(location=3)in vec4 weights;
 layout(location=4)in ivec4 joints;
 
 struct StemVertex{
-    vec3 vertice;
-    vec3 tangent;
-    vec3 normal;
-    vec3 bioNormal;
+    vec4 vertice;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
     int index;
 };
 
@@ -83,18 +83,18 @@ void main(){
     float lifeTime=sManage.stemLifeVal;
                 
     //nowStem
-    gl_Position = vec4(sVertex.vertice,1.0);
+    gl_Position = vec4(sVertex.vertice.xyz,1.0);
     v2g_o.uv = texcoord;
     v2g_o.idInMyStem=sVertex.index;
-    v2g_o.tangent=sVertex.tangent;
-    v2g_o.normal=sVertex.normal;
-    v2g_o.bioNormal=sVertex.bioNormal;
+    v2g_o.tangent=sVertex.tangent.xyz;
+    v2g_o.normal=sVertex.normal.xyz;
+    v2g_o.bioNormal=sVertex.bioNormal.xyz;
                 
     //nextStem
-    v2g_o.nextStemVertex=nextVertex.vertice;
-    v2g_o.nextTangent=nextVertex.tangent;
-    v2g_o.nextNormal=nextVertex.normal;
-    v2g_o.nextBioNormal=nextVertex.bioNormal;
+    v2g_o.nextStemVertex=nextVertex.vertice.xyz;
+    v2g_o.nextTangent=nextVertex.tangent.xyz;
+    v2g_o.nextNormal=nextVertex.normal.xyz;
+    v2g_o.nextBioNormal=nextVertex.bioNormal.xyz;
 
     v2g_o.lifeTime=lifeTime;
 }

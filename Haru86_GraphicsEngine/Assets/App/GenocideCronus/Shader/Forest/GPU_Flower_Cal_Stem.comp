@@ -14,10 +14,10 @@ uniform int _KernelIndex;
 #define NUMTHRED_VAL 256
 
 struct StemVertex{
-    vec3 vertice;
-    vec3 tangent;
-    vec3 normal;
-    vec3 bioNormal;
+    vec4 vertice;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
     int index;
 };
 
@@ -37,37 +37,18 @@ struct StemManage{
 struct StemData{
     int resampleIndex;
     int resampleGroupIndex;
-    vec3 position;
-    vec3 tangent;
-    vec3 normal;
-    vec3 bioNormal;
+    vec4 position;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
     int renderFlag;
     float lifeTime;
 };
 
 // äeâ‘ÇÃê∂Ç¶ÇÈäÓñ{ÇÃç¿ïW
     struct StemBasePosition {
-        //vec3 position;
         vec4 position;
     };
-
-/*
-RWStructuredBuffer<vec3> out_stemBasePosition_buffer;
-
-RWStructuredBuffer<StemVertex> out_stemResult_buffer;
-RWStructuredBuffer<StemVertex> out_stemResult_buffer;
-
-RWStructuredBuffer<StemVertex> out_stemVertex_buffer;
-RWStructuredBuffer<StemVertex> out_stemVertex_buffer;
-
-RWStructuredBuffer<StemManage> out_stemManage_buffer;
-RWStructuredBuffer<StemManage> out_stemManage_buffer;
-////////////////////////////////
-RWStructuredBuffer<StemData> _read_stemDataFlower_buffer;
-RWStructuredBuffer<StemData> _write_stemDataFlower_buffer;
-RWStructuredBuffer<StemData> _read_stemDataLeaf_buffer;
-RWStructuredBuffer<StemData> _write_stemDataLeaf_buffer;
-*/
 
 layout(std430,binding = 0) buffer stemResult_buffer
 {
@@ -255,19 +236,19 @@ void CalStemBSplineCurveResult(uvec3  DID){
     Cal_BSplineCurve(stemBasePosition,cp,_knotMin,_knotMax,_tWidth,DID);
     
     StemVertex stemO;
-    stemO.vertice=stemBasePosition[idInMyStem];
-    stemO.tangent=vec3(0,0,0);
-    stemO.normal=vec3(0,0,0);
-    stemO.bioNormal=vec3(0,0,0);
+    stemO.vertice=vec4(stemBasePosition[idInMyStem],1.0);
+    stemO.tangent=vec4(0.0,0.0,0.0,0.0);
+    stemO.normal=vec4(0.0,0.0,0.0,0.0);
+    stemO.bioNormal=vec4(0.0,0.0,0.0,0.0);
 
     if(idInMyStem>0&&idInMyStem<64-1){
         vec3 stemTangent=normalize(stemBasePosition[idInMyStem+1]-stemBasePosition[idInMyStem-1]);
         vec3 stemNormal=normalize(cross(stemTangent,vec3(1,0,0)));
         vec3 stemBioNormal=normalize(cross(stemTangent,stemNormal));
 
-        stemO.tangent=stemTangent;
-        stemO.normal=stemNormal;
-        stemO.bioNormal=stemBioNormal;
+        stemO.tangent=vec4(stemTangent,0.0);
+        stemO.normal=vec4(stemNormal,0.0);
+        stemO.bioNormal=vec4(stemBioNormal,0.0);
 
     }
 
@@ -291,7 +272,7 @@ void InitStemGrowth(uvec3  DID){
 
     StemVertex stemO;
     vec3 BasePosition = out_stemBasePosition_buffer.stemBasePosition[stemGroupID].position.xyz;
-    stemO.vertice=result.vertice+BasePosition;
+    stemO.vertice=result.vertice+vec4(BasePosition,0.0);
     stemO.tangent=result.tangent;
     stemO.normal=result.normal;
     stemO.bioNormal=result.bioNormal;
@@ -349,7 +330,7 @@ void CalStemGrowth(uvec3  DID)
     StemVertex result=out_stemResult_buffer.stemResult[resampleStemNodeID];
 
     StemVertex stemO;
-    stemO.vertice=result.vertice+out_stemBasePosition_buffer.stemBasePosition[stemGroupID].position.xyz;
+    stemO.vertice=result.vertice+vec4(out_stemBasePosition_buffer.stemBasePosition[stemGroupID].position.xyz,0.0);
     stemO.tangent=result.tangent;
     stemO.normal=result.normal;
     stemO.bioNormal=result.bioNormal;
