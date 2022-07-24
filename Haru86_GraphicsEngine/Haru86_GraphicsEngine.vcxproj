@@ -466,6 +466,8 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Stem_Renderer.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Leaf.comp" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Stem.comp" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\GlowCave.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\MandelboxSample.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />

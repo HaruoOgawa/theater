@@ -3,6 +3,10 @@
 #include <memory>
 #include <string>
 
+class Mesh;
+class Material;
+class TransformComponent;
+
 namespace myapp {
 
 	// Ç‚Ç¡ÇœÇËééÇµÇ…ÅwcharÅxÇ≈Ç‚Ç¡ÇƒÇ›ÇΩÇ¢
@@ -29,6 +33,12 @@ namespace myapp {
 
 	class LTree
 	{
+		// Base Info
+		std::shared_ptr<Mesh> m_TreeMesh;
+		std::shared_ptr<Material> m_TreeMaterial;
+		std::shared_ptr<TransformComponent> m_TreeTRS;
+
+		// L-System Info
 		int m_LStep;
 		std::string m_StartStructure;
 		std::vector<LRule> m_LRule;
@@ -38,14 +48,19 @@ namespace myapp {
 		virtual ~LTree()=default;
 
 		void Start();
-		void PrepareLSystem();
-		void GenerateLStructure();
-		void RunLSystem();
-
 		void Update();
 		void Draw();
 	
 	private:
+		// Base MeThod
+		void PrepareLSystem();
+		void GenerateLStructure();
+		void RunLSystem();
+		void BuildLTreeMesh();
 
+		// L-System Action Method
+
+		// 
+		void CreateBaseData();
 	};
 }

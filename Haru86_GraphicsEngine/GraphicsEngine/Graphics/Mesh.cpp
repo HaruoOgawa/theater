@@ -6,35 +6,35 @@ Mesh::Mesh(PrimitiveType primType) {
 	CreateMesh(primType);
 }
 
-Mesh::Mesh(std::vector<std::vector<float>> vertices, std::vector<int> dimention, std::vector<unsigned short> indices) 
+Mesh::Mesh(std::vector<std::vector<float>> VertexData, std::vector<int> Dimention, std::vector<unsigned short> Indices)
 {
-	std::shared_ptr<Primitive> prim = std::make_shared<Primitive>(vertices, dimention, indices);
+	std::shared_ptr<Primitive> prim = std::make_shared<Primitive>(VertexData, Dimention, Indices);
 	m_primitives.push_back(prim);
 }
 
 void Mesh::CreateMesh(PrimitiveType primType) {
 	
-	std::vector<std::vector<float>> vertices;
-	std::vector<int> dimention;
-	std::vector<unsigned short> indices;
+	std::vector<std::vector<float>> VertexData;
+	std::vector<int> Dimention;
+	std::vector<unsigned short> Indices;
 
 	switch (primType)
 	{
 	case PrimitiveType::BOARD:
-		Primitive::CreateBoard(&vertices, &dimention,&indices);
+		Primitive::CreateBoard(&VertexData, &Dimention,&Indices);
 		break;
 	case PrimitiveType::POINT:
-		Primitive::CreatePoint(&vertices, &dimention, &indices);
+		Primitive::CreatePoint(&VertexData, &Dimention, &Indices);
 		break;
 	case PrimitiveType::SPHERE:
-		Primitive::CreateSphere(&vertices, &dimention, &indices);
+		Primitive::CreateSphere(&VertexData, &Dimention, &Indices);
 		break;
 	default:
-		Primitive::CreateBoard(&vertices, &dimention, &indices);
+		Primitive::CreateBoard(&VertexData, &Dimention, &Indices);
 		break;
 	}
 	
-	std::shared_ptr<Primitive> prim = std::make_shared<Primitive>(vertices, dimention, indices);
+	std::shared_ptr<Primitive> prim = std::make_shared<Primitive>(VertexData, Dimention, Indices);
 	m_primitives.push_back(prim);
 
 }

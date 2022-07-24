@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace mymath {
 	static float rand(glm::vec2 st) 
@@ -13,5 +14,16 @@ namespace mymath {
 		float a = rand(angSeed) * 3.14159265f * 2.0f;
 		
 		return glm::vec2(r * glm::cos(a), r * glm::sin(a));
+	}
+
+	static std::vector<float> CastVec3ToLine_float(const std::vector<glm::vec3>& BlockVector) {
+		std::vector<float> result;
+		for (const auto& block : BlockVector) {
+			result.push_back(block.x);
+			result.push_back(block.y);
+			result.push_back(block.z);
+		}
+
+		return result;
 	}
 }

@@ -1,8 +1,16 @@
 #include "LTree.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/Graphics/Mesh.h"
+#include "GraphicsEngine/Graphics/Material.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
+#include "GraphicsEngine/Math/mymath_withGLM.h"
 
 namespace myapp {
 	LTree::LTree():
+		m_TreeMesh(nullptr),
+		m_TreeMaterial(nullptr),
+		m_TreeTRS(std::make_shared<TransformComponent>()),
 		m_LStep(-1),
 		m_StartStructure(""),
 		m_LStructure("")
@@ -16,9 +24,10 @@ namespace myapp {
 		PrepareLSystem();
 		GenerateLStructure();
 		RunLSystem();
+		BuildLTreeMesh();
 
 		// オブジェクト(Mesh(RunLSystemで作る)/Mat/TRS/CS)など
-
+		CreateBaseData();
 	}
 
 	void LTree::PrepareLSystem() 
@@ -107,6 +116,45 @@ namespace myapp {
 		}
 	}
 
+	void LTree::BuildLTreeMesh()
+	{
+		// LStructureから頂点データを作成
+		std::vector<glm::vec3> LTree_Vertices;
+		std::vector<unsigned short> LTree_Indices;
+
+		// test data
+		LTree_Vertices.push_back(glm::vec3(0.0f, 0.5f, 0.0f));
+		LTree_Vertices.push_back(glm::vec3(0.0f, 5.0f, 0.0f));
+
+		LTree_Indices.push_back(0);
+		LTree_Indices.push_back(1);
+
+		// メッシュオブジェクトの構築
+		std::vector<std::vector<float>> VertexData;
+		std::vector<int> Dimentions;
+		std::vector<unsigned short> Indices;
+
+		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Vertices));
+		Dimentions.push_back(3);
+		Indices = LTree_Indices;
+
+		m_TreeMesh = std::make_shared<Mesh>(VertexData,Dimentions,Indices);
+	}
+
+	void LTree::CreateBaseData()
+	{
+		// マテリアル
+		std::string LTree_vert = {
+			#include "../../Shader/Forest/LTree.vert"
+		};
+		
+		std::string LTree_geom = {
+			#include "../../Shader/Forest/LTree.geom"
+		};
+
+		m_TreeMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,LTree_vert,shaderlib::ShaderLib::Standard_frag/*,LTree_geom */ );
+	}
+
 	void LTree::Update()
 	{
 
@@ -114,6 +162,15 @@ namespace myapp {
 
 	void LTree::Draw() 
 	{
+		m_TreeMaterial->SetActive();
+		m_TreeTRS->CalMatrix();
+		m_TreeMaterial->SetMatrixUniform("MVPMatrix", m_TreeTRS->m_pMatrix * m_TreeTRS->m_vMatrix * m_TreeTRS->m_mMatrix);
+		m_TreeMaterial->SetMatrixUniform("MMatrix", m_TreeTRS->m_mMatrix);
+		m_TreeMaterial->SetMatrixUniform("VMatrix", m_TreeTRS->m_vMatrix);
+		m_TreeMaterial->SetMatrixUniform("PMatrix", m_TreeTRS->m_pMatrix);
+		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
+		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
 
+		m_TreeMesh->Draw(GL_LINES);
 	}
 }

@@ -82,8 +82,6 @@ namespace myapp
 		static std::vector<float> GetKnotVector(int m, int n, float knotMin, float knotMax);
 		static float GetBasisFunction(std::vector<float> u, int j, int k, float t);
 		
-		std::vector<float> CastVec3ToLine_float(std::vector<glm::vec3> BlockVector);
-
 		// XVˆ—
 		void Cal_flower_growth();
 	};

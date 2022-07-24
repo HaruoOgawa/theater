@@ -100,8 +100,8 @@ namespace myapp
         std::shared_ptr<Multi_Flower_Data> multi_Flower_Data = RenderMultiFlower(data, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // test
-        vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->vertices));
-        vertices.push_back(CastVec3ToLine_float(multi_Flower_Data->normals));
+        vertices.push_back(mymath::CastVec3ToLine_float(multi_Flower_Data->vertices));
+        vertices.push_back(mymath::CastVec3ToLine_float(multi_Flower_Data->normals));
         dimentions.push_back(3);
         dimentions.push_back(3);
         indices = multi_Flower_Data->triangles;
@@ -383,17 +383,6 @@ namespace myapp
             return w1 + w2;
         }
 
-    }
-
-    std::vector<float> Flower::CastVec3ToLine_float(std::vector<glm::vec3> BlockVector) {
-        std::vector<float> result;
-        for (const auto& block : BlockVector) {
-            result.push_back(block.x);
-            result.push_back(block.y);
-            result.push_back(block.z);
-        }
-
-        return result;
     }
 
     // XVˆ—
