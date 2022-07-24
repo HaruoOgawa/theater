@@ -13,6 +13,10 @@ namespace myapp {
 
 	}
 
+	void Leaf::InitializeDispatch() {
+
+	}
+
 	void Leaf::LinkBufferToResources(const std::shared_ptr<Stem>& stem) {
 
 	}

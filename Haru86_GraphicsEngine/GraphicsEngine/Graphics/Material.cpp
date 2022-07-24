@@ -210,7 +210,9 @@ void Material::SetFloatVectorUniform(std::string uniformName, std::vector<float>
 // 普通のShaderにバッファーをアタッチ
 void Material::SetBuffer(std::shared_ptr<ComputeBuffer> buffer,int bufferIndex) {
 	SetActive();
+	buffer->SetActive();
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bufferIndex, buffer->ssbo);
+	buffer->SetEactive();
 }
 
 void Material::LoadTextureList(std::vector<std::string> texPathList, std::vector<std::string> texUniformNameList) {
@@ -324,5 +326,7 @@ void Material::DisBindComputeBuffer(CorrectionType correctionType) {
 void Material::SetBuffer(std::shared_ptr<ComputeBuffer> buffer, int bufferindex, std::shared_ptr<Material> material) {
 	m_buffers.push_back(buffer);
 	SetActive();
+	buffer->SetActive();
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bufferindex, buffer->ssbo);
+	buffer->SetEactive();
 }

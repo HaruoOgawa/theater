@@ -31,13 +31,14 @@ struct StemManage{
 //花や茎を生成するための情報を載せる構造体
 struct StemData{
     int resampleIndex;
-    int resampleGroupIndex;
+    int resampleIndexInStem;
     vec4 position;
     vec4 tangent;
     vec4 normal;
     vec4 bioNormal;
     int renderFlag;
     float lifeTime;
+    float flowerSize;
 };
 
 // 各花の生える基本の座標

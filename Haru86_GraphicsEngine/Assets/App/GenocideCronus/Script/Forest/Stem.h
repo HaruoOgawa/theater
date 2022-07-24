@@ -106,6 +106,7 @@ namespace myapp {
 		Stem(FlowerModel* model);
 		~Stem() = default;
 		void Start();
+        void InitializeDispatch();
         void LinkBufferToResources();
 		void Update();
 		void Draw();

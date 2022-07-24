@@ -7,6 +7,7 @@
 #include "Stem.h"
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
+#include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 
 namespace myapp
 {
@@ -17,7 +18,8 @@ namespace myapp
         m_FlowerTRS(std::make_shared<TransformComponent>()),
         stemDataFlower_buffer(nullptr),
         stemDataFlower_buffer_index(4),
-        cal_flower_cs(nullptr)
+        cal_flower_cs(nullptr),
+        isFloweringTime(0.5f)
     {
         //
         std::string GPU_Flower_Cal_Flowers_comp = {
@@ -32,6 +34,10 @@ namespace myapp
 	void Flower::Start() {
         Init();
 	}
+
+    void Flower::InitializeDispatch() {
+
+    }
 
     void Flower::LinkBufferToResources(const std::shared_ptr<Stem>& stem) {
         // コンピュートシェーダーにバッファをセット
@@ -111,7 +117,9 @@ namespace myapp
     }
 
 	void Flower::Update() {
-
+        if (m_FlowerModel->flowersIsDone&&m_FlowerModel->stemIsDone&&m_FlowerModel->leafIsDone) {
+            Cal_flower_growth();
+        }
 	}
 
 	void Flower::Draw() {
@@ -125,7 +133,7 @@ namespace myapp
         m_FlowerMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0) );
 
         //m_FlowerMesh->Draw();
-        m_FlowerMesh->DrawInstancedWithMesh(1024,GL_TRIANGLES);
+        m_FlowerMesh->DrawInstancedWithMesh(m_FlowerModel->count,GL_TRIANGLES);
 	}
 
     // 花びらから花を構築
@@ -375,5 +383,25 @@ namespace myapp
             return w1 + w2;
         }
 
+    }
+
+    std::vector<float> Flower::CastVec3ToLine_float(std::vector<glm::vec3> BlockVector) {
+        std::vector<float> result;
+        for (const auto& block : BlockVector) {
+            result.push_back(block.x);
+            result.push_back(block.y);
+            result.push_back(block.z);
+        }
+
+        return result;
+    }
+
+    // 更新処理
+    void Flower::Cal_flower_growth() {
+        cal_flower_cs->SetIntUniform("_stemVertexCount", m_FlowerModel->m_Stem->stemVertexCount);
+        cal_flower_cs->SetFloatUniform("_isFloweringTime", isFloweringTime);
+        cal_flower_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->deltaTime);
+
+        cal_flower_cs->Dispatch(m_FlowerModel->count / m_FlowerModel->m_Stem->numthreds_val, 1, 1);
     }
 }

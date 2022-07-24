@@ -31,13 +31,14 @@ struct StemManage{
 //花や茎を生成するための情報を載せる構造体
 struct StemData{
     int resampleIndex;
-    int resampleGroupIndex;
+    int resampleIndexInStem;
     vec4 position;
     vec4 tangent;
     vec4 normal;
     vec4 bioNormal;
     int renderFlag;
     float lifeTime;
+    float flowerSize;
 };
 
 // 各花の生える基本の座標
@@ -68,6 +69,13 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _CameraPos;
 
+//StructuredBuffer<StemData> _read_stemDataFlower_buffer;
+
+layout(std430,binding = 4) buffer stemDataFlower_buffer
+{
+    StemData stemData[];
+} out_stemDataFlower_buffer;
+
 out vec2 uv;
 out vec3 CameraPos;
 out vec3 WorldVertexPos;
@@ -84,20 +92,27 @@ float rand(vec2 st){
 void main()
 {
     int id = gl_InstanceID;
-    vec3 randPos = vec3(
-        75.0*(rand(vec2(float(id)*100.0,0.951))*2.0-1.0),
-        0.0,
-        75.0*(rand(vec2(float(id)*100.0,1.294))*2.0-1.0)
-    );
+    
+    StemData data=out_stemDataFlower_buffer.stemData[id];
 
     vec4 pos=vec4(vertex,1.0);
-    pos.xyz+=randPos;
+    float l=length(pos.xyz);
+    pos.xz*=data.lifeTime*0.8+0.2;
+    pos.y*=data.lifeTime*0.3+0.7;
+    pos.xyz*=data.flowerSize;
+                
+    pos.xyz=
+        mat3(
+            data.normal,
+            data.tangent,
+            data.bioNormal
+        ) * pos.xyz + data.position.xyz;
 
-	gl_Position=MVPMatrix*pos;
-	uv=texcoord;
-	CameraPos=_CameraPos;
-	WorldVertexPos=(MMatrix*pos).xyz;
-	WorldNormal=normalize((MMatrix*vec4(normal,0.0)).xyz);
+    gl_Position = MVPMatrix*pos;
+    uv=texcoord;
+    WorldVertexPos=(MMatrix*pos).xyz;
+    CameraPos=_CameraPos;
+    WorldNormal=normalize((MMatrix*vec4(normal,0.0)).xyz);
 }
 
 )"

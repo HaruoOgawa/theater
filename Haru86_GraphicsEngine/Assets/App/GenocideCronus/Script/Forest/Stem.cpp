@@ -49,11 +49,12 @@ namespace myapp {
 
 	void Stem::Start() {
         Init();
+    }
+
+    void Stem::InitializeDispatch() {
         Cal_Stem_Result();
         Init_Stem_Growth();
-
-        //gPUFlower_Base.stemIsDone = true;
-	}
+    }
 
     void Stem::LinkBufferToResources() {
         // コンピュートシェーダーにバッファをセット

@@ -44,6 +44,7 @@ namespace myapp
 		// 基礎パラメーター
 		int kernel_CalFlowerGrowth;
 		FlowerModel* m_FlowerModel;
+		float isFloweringTime;
 
 		// バッファ関連
 		std::shared_ptr<ComputeBuffer> stemDataFlower_buffer;
@@ -58,6 +59,7 @@ namespace myapp
 		Flower(FlowerModel* model);
 		~Flower() = default;
 		void Start();
+		void InitializeDispatch();
 		void LinkBufferToResources(const std::shared_ptr<Stem>& stem);
 		void Update();
 		void Draw();
@@ -79,16 +81,11 @@ namespace myapp
 		static std::vector<std::shared_ptr<B_Spline_Data>> Cal_BSplineCurve(std::vector<glm::vec3> controlPoints, float knotMin, float knotMax, float tWidth = 0.01f);
 		static std::vector<float> GetKnotVector(int m, int n, float knotMin, float knotMax);
 		static float GetBasisFunction(std::vector<float> u, int j, int k, float t);
-		std::vector<float> CastVec3ToLine_float(std::vector<glm::vec3> BlockVector) {
-			std::vector<float> result;
-			for (const auto& block : BlockVector) {
-				result.push_back(block.x);
-				result.push_back(block.y);
-				result.push_back(block.z);
-			}
+		
+		std::vector<float> CastVec3ToLine_float(std::vector<glm::vec3> BlockVector);
 
-			return result;
-		}
+		// 更新処理
+		void Cal_flower_growth();
 	};
 
 }

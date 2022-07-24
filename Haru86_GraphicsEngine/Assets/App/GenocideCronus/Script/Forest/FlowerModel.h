@@ -27,6 +27,9 @@ namespace myapp {
 	{
 		//
 		int count;
+		bool flowersIsDone;
+		bool stemIsDone;
+		bool leafIsDone;
 
 		//
 		std::shared_ptr<Flower> m_Flower;

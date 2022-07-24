@@ -8,6 +8,10 @@ class ComputeBuffer
 public:
 	ComputeBuffer(GLsizeiptr size);
 	~ComputeBuffer();
+
+	void SetActive();
+	void SetEactive();
+
 	// 以下のルールを守らないと (nvoglv64.dll) で例外がスローされました とエラーがでる
 	// * SetData<型>(data) で<型>を指定しないと
 	// ↓も要因となる
