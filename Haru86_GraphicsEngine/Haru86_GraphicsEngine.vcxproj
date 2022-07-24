@@ -422,6 +422,9 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="GraphicsEngine\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Leaf.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Stem.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTree.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Forest.cpp" />
@@ -451,6 +454,9 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="GraphicsEngine\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Leaf.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Stem.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTree.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
