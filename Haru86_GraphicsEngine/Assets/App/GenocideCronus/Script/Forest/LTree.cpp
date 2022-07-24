@@ -120,11 +120,15 @@ namespace myapp {
 	{
 		// LStructureから頂点データを作成
 		std::vector<glm::vec3> LTree_Vertices;
+		std::vector<glm::vec3> LTree_Normals;
 		std::vector<unsigned short> LTree_Indices;
 
 		// test data
-		LTree_Vertices.push_back(glm::vec3(0.0f, 0.5f, 0.0f));
-		LTree_Vertices.push_back(glm::vec3(0.0f, 5.0f, 0.0f));
+		LTree_Vertices.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		LTree_Vertices.push_back(glm::vec3(0.0f, 4.0f, 0.0f));
+		
+		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
 		LTree_Indices.push_back(0);
 		LTree_Indices.push_back(1);
@@ -135,6 +139,8 @@ namespace myapp {
 		std::vector<unsigned short> Indices;
 
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Vertices));
+		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Normals));
+		Dimentions.push_back(3);
 		Dimentions.push_back(3);
 		Indices = LTree_Indices;
 
@@ -152,7 +158,7 @@ namespace myapp {
 			#include "../../Shader/Forest/LTree.geom"
 		};
 
-		m_TreeMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,LTree_vert,shaderlib::ShaderLib::Standard_frag/*,LTree_geom */ );
+		m_TreeMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,LTree_vert,shaderlib::ShaderLib::Standard_frag,LTree_geom);
 	}
 
 	void LTree::Update()
@@ -169,6 +175,10 @@ namespace myapp {
 		m_TreeMaterial->SetMatrixUniform("VMatrix", m_TreeTRS->m_vMatrix);
 		m_TreeMaterial->SetMatrixUniform("PMatrix", m_TreeTRS->m_pMatrix);
 		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
+
+		m_TreeMaterial->SetFloatUniform("_TreeMaxRadius", 0.05f);
+		m_TreeMaterial->SetIntUniform("_TreeSegment", 12);
+
 		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
 
 		m_TreeMesh->Draw(GL_LINES);

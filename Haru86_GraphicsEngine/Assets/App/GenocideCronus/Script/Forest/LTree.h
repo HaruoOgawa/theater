@@ -19,7 +19,7 @@ namespace myapp {
 		LDE, // L-Syetem Devide End --> 分岐のゴール(スタートに戻って別の規則へ)	--> ]
 	};*/
 
-	struct LRule
+	struct LRule // 文字列の書き換え規則
 	{
 		char rTarget_LWord; // 書き換え対象文字列
 		std::string rResult_LWord; // 書き換える内容
@@ -29,6 +29,11 @@ namespace myapp {
 			rResult_LWord(rule)
 		{
 		}
+	};
+
+	struct LTreeNode // Treeの枝分かれをNodeで表現するもの
+	{
+
 	};
 
 	class LTree
