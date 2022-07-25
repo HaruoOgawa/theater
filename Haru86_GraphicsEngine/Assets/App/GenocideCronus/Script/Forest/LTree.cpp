@@ -5,6 +5,7 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
+#include <glm/gtc/random.hpp>
 
 namespace myapp {
 	LTreeNode::LTreeNode(int inum) :
@@ -43,13 +44,15 @@ namespace myapp {
 	void LTree::PrepareLSystem() 
 	{
 		// 基礎情報
-		//m_LStep = 5;
-		m_LStep = 3;
-		m_StartStructure = "A[B]";
+		m_LStep = 5;
+		m_StartStructure = "X";
 		
 		// 書き換えルール
-		m_LRule.push_back(LRule('A', "F+B"));
-		m_LRule.push_back(LRule('B', "[+F][-F]A"));
+		m_LRule.push_back(LRule('X', "F-[[X]+X]+F[[X]+X]-X",true));
+		m_LRule.push_back(LRule('X', "F-[[X]+X]+F[-FX]+X", true));
+		m_LRule.push_back(LRule('X', "F[+X][-X]FX", true));
+		m_LRule.push_back(LRule('X', "F[+X]F[-X]+X", true));
+		m_LRule.push_back(LRule('F', "FF", false));
 	}
 
 	void LTree::GenerateLStructure()
@@ -60,7 +63,56 @@ namespace myapp {
 		// 書き換えルールに従い書き換える
 		for (int nLStep=0; nLStep<m_LStep; nLStep++)
 		{
-			// ルールをチェックする
+			// Rule1
+			int proIndex = static_cast<int>(glm::floor(glm::linearRand(0.0f, 3.9f)));
+			
+			{
+				// 今のステップでの更新内容
+				std::string nowStep_LStructure = "";
+
+				//
+				for (char& now_word : m_LStructure)
+				{
+					const auto& Rule = m_LRule[proIndex];
+					// ターゲットであれば書き換える(nowStep_LStructureにはrResult_LWordを足す)
+					if (now_word == Rule.rTarget_LWord)
+					{
+						nowStep_LStructure += Rule.rResult_LWord;
+					}
+					else // 合致しなければそのまま(rTarget_LWordを足す-->もとの文字)
+					{
+						nowStep_LStructure += now_word;
+					}
+
+				}
+
+				// 更新された内容を反映する
+				m_LStructure = nowStep_LStructure;
+			}
+
+			// Rule2
+			{
+				// 今のステップでの更新内容
+				std::string nowStep_LStructure = "";
+
+				//
+				for (char& now_word : m_LStructure)
+				{
+					const auto& Rule = m_LRule[4];
+					// ターゲットであれば書き換える(nowStep_LStructureにはrResult_LWordを足す)
+					if (now_word == Rule.rTarget_LWord)
+					{
+						nowStep_LStructure += Rule.rResult_LWord;
+					}
+					else // 合致しなければそのまま(rTarget_LWordを足す-->もとの文字)
+					{
+						nowStep_LStructure += now_word;
+					}
+
+				}
+			}
+
+			/*// ルールをチェックする
 			for (const auto& Rule : m_LRule) {
 				// 今のステップでの更新内容
 				std::string nowStep_LStructure = "";
@@ -82,7 +134,7 @@ namespace myapp {
 
 				// 更新された内容を反映する
 				m_LStructure = nowStep_LStructure;
-			}
+			}*/
 		}
 	}
 
@@ -168,7 +220,7 @@ namespace myapp {
 			DebugStr = ">" + DebugStr;
 		}
 
-		Console::Log("%d %s\n", m_LNodeList.size(), DebugStr.c_str());
+		//Console::Log("%d %s\n", m_LNodeList.size(), DebugStr.c_str());
 		/////////////////////////////////////
 
 		// スタート地点を定義親要素との繋ぎ目(Nodeの中でこれを使いまわす)
@@ -189,9 +241,7 @@ namespace myapp {
 			// LWordをもとにL-Systemアクションを決定する
 			if (LWord == 'F') // 先に進んで線を引く
 			{
-				//Console::Log("%c Go Forward and Draw Line\n", LWord);
 				// 頂点
-				Console::Log("StartGrowDir-> x:%f, y:%f, z:%f\n", StartGrowDir.x, StartGrowDir.y, StartGrowDir.z);
 				StartPosInCNode += StartGrowDir * LTreeLength;
 				LTree_Vertices.push_back(StartPosInCNode);
 
@@ -212,7 +262,6 @@ namespace myapp {
 			}
 			else if (LWord == '+') // 時計回りに回転
 			{
-				//Console::Log("%c Rotate Positive\n", LWord);
 				float angleA = (3.14f/4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.z));
 				float angleB = (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
 				float angleC = (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.x));
@@ -229,7 +278,6 @@ namespace myapp {
 			}
 			else if (LWord == '-') // 半時計周りに回転
 			{
-				//Console::Log("%c Rotate Negative\n", LWord);
 				float angleA = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.z));
 				float angleB = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
 				float angleC = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
@@ -271,24 +319,10 @@ namespace myapp {
 		std::vector<float> LTreeRadiusList; // 段々縮小していく半径
 		std::vector<unsigned short> LTree_Indices;
 
-		/*// test data
-		LTree_Vertices.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-		LTree_Vertices.push_back(glm::vec3(0.0f, 4.0f, 0.0f));
-		LTree_Vertices.push_back(glm::vec3(4.0f, 4.0f, 0.0f));
-
-		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-
-		LTree_Indices.push_back(0);
-		LTree_Indices.push_back(1);
-
-		LTree_Indices.push_back(1);
-		LTree_Indices.push_back(2);*/
-
 		// 基本パラメーター(初期値)
 		float LTreeRadius = 1.0f;
-		float LTreeLength = 1.0f;
+		//float LTreeLength = 1.0f;
+		float LTreeLength = 1.0f*0.5f;
 
 		// 初期値を設定(原点)
 		LTree_Vertices.push_back(glm::vec3(0.0f));

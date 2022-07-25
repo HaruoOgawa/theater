@@ -23,10 +23,12 @@ namespace myapp {
 	{
 		char rTarget_LWord; // 書き換え対象文字列
 		std::string rResult_LWord; // 書き換える内容
+		bool m_UseProbability; // 確率計算を使うかどうか
 
-		LRule(char rtw, const std::string& rule) :
+		LRule(char rtw, const std::string& rule,bool UseProbability) :
 			rTarget_LWord(rtw),
-			rResult_LWord(rule)
+			rResult_LWord(rule),
+			m_UseProbability(UseProbability)
 		{
 		}
 	};
