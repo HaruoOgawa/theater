@@ -44,7 +44,7 @@ namespace myapp {
 	{
 		// Šî‘bî•ñ
 		//m_LStep = 5;
-		m_LStep = 1;
+		m_LStep = 3;
 		m_StartStructure = "A[B]";
 		
 		// ‘‚«Š·‚¦ƒ‹[ƒ‹
@@ -191,6 +191,7 @@ namespace myapp {
 			{
 				//Console::Log("%c Go Forward and Draw Line\n", LWord);
 				// ’¸“_
+				Console::Log("StartGrowDir-> x:%f, y:%f, z:%f\n", StartGrowDir.x, StartGrowDir.y, StartGrowDir.z);
 				StartPosInCNode += StartGrowDir * LTreeLength;
 				LTree_Vertices.push_back(StartPosInCNode);
 
@@ -212,12 +213,36 @@ namespace myapp {
 			else if (LWord == '+') // ŽžŒv‰ñ‚è‚É‰ñ“]
 			{
 				//Console::Log("%c Rotate Positive\n", LWord);
-				// StartGrowDir
+				float angleA = (3.14f/4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.z));
+				float angleB = (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
+				float angleC = (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.x));
+				/*glm::vec3 normal = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), StartGrowDir));
+				glm::vec3 bionormal = glm::normalize(glm::cross(normal, StartGrowDir));
+				
+				glm::quat rot_normal = glm::quat(normal.x * glm::sin(angleA / 2.0), normal.y * glm::sin(angleA / 2.0), normal.z * glm::sin(angleA / 2.0), glm::cos(angleA / 2.0));
+				glm::quat rot_bionormal = glm::quat(bionormal.x * glm::sin(angleB / 2.0), bionormal.y * glm::sin(angleB / 2.0), bionormal.z * glm::sin(angleB / 2.0), glm::cos(angleB / 2.0));
+				glm::vec4 rotV = glm::mat4_cast(rot_normal * rot_bionormal) * glm::vec4(StartGrowDir, 0.0);
+				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));*/
+
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(angleA,angleB,angleC))) * glm::vec4(StartGrowDir, 0.0);
+				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else if (LWord == '-') // ”¼ŽžŒvŽü‚è‚É‰ñ“]
 			{
 				//Console::Log("%c Rotate Negative\n", LWord);
-				// StartGrowDir
+				float angleA = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.x, StartPosInCNode.y + StartPosInCNode.z));
+				float angleB = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
+				float angleC = - (3.14f / 4.0f) * mymath::rand(glm::vec2(StartPosInCNode.y + StartPosInCNode.z, StartPosInCNode.y + StartPosInCNode.x));
+				/*glm::vec3 normal = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), StartGrowDir));
+				glm::vec3 bionormal = glm::normalize(glm::cross(normal, StartGrowDir));
+
+				glm::quat rot_normal = glm::quat(normal.x * glm::sin(angleA / 2.0), normal.y * glm::sin(angleA / 2.0), normal.z * glm::sin(angleA / 2.0), glm::cos(angleA / 2.0));
+				glm::quat rot_bionormal = glm::quat(bionormal.x * glm::sin(angleB / 2.0), bionormal.y * glm::sin(angleB / 2.0), bionormal.z * glm::sin(angleB / 2.0), glm::cos(angleB / 2.0));
+				glm::vec4 rotV = glm::mat4_cast(rot_normal * rot_bionormal) * glm::vec4(StartGrowDir, 0.0);
+				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));*/
+
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(angleA, angleB, angleC))) * glm::vec4(StartGrowDir, 0.0);
+				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else // –³Œø‚È•¶Žš—ñ 
 			{
