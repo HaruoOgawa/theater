@@ -31,9 +31,15 @@ namespace myapp {
 		}
 	};
 
-	struct LTreeNode // Tree‚ÌŽ}•ª‚©‚ê‚ðNode‚Å•\Œ»‚·‚é‚à‚Ì
+	class LTreeNode // Tree‚ÌŽ}•ª‚©‚ê‚ðNode‚Å•\Œ»‚·‚é‚à‚Ì
 	{
+	public:
+		std::string m_LAction;
+		std::vector<std::shared_ptr<LTreeNode>> m_LNodeList;
+		int m_DebugIndentNum;
 
+		LTreeNode(int inum);
+		void BuildLNode();
 	};
 
 	class LTree
@@ -48,6 +54,7 @@ namespace myapp {
 		std::string m_StartStructure;
 		std::vector<LRule> m_LRule;
 		std::string m_LStructure;
+		std::shared_ptr<LTreeNode> m_LRootNode;
 	public:
 		LTree();
 		virtual ~LTree()=default;
@@ -60,6 +67,8 @@ namespace myapp {
 		// Base MeThod
 		void PrepareLSystem();
 		void GenerateLStructure();
+
+		void AnalyseLStructure();
 		void RunLSystem();
 		void BuildLTreeMesh();
 
