@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-
+#include <glm/glm.hpp>
 class Mesh;
 class Material;
 class TransformComponent;
@@ -34,12 +34,16 @@ namespace myapp {
 	class LTreeNode // Treeの枝分かれをNodeで表現するもの
 	{
 	public:
-		std::string m_LAction;
+		std::string m_LAction; // L-Systemの記号
 		std::vector<std::shared_ptr<LTreeNode>> m_LNodeList;
-		int m_DebugIndentNum;
+		int m_DebugIndentNum; // インデント
+		glm::vec3 m_LastVerticesData; // 子要素(m_LNodeList)との繋ぎ目の座標
+		glm::vec3 m_LastGrowDir; // 子要素に渡す成長ベクトル
+		std::shared_ptr<LTreeNode> m_NodeParent;
 
 		LTreeNode(int inum);
-		void BuildLNode();
+		void BuildLNode(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
+			std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices,float& LTreeRadius, float& LTreeLength);
 	};
 
 	class LTree
@@ -70,7 +74,8 @@ namespace myapp {
 
 		void AnalyseLStructure();
 		void RunLSystem();
-		void BuildLTreeMesh();
+		void BuildLTreeMesh(std::vector<glm::vec3>& LTree_Vertices,std::vector<glm::vec3>& LTree_Normals,
+			const std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices);
 
 		// L-System Action Method
 

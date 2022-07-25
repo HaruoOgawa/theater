@@ -9,7 +9,10 @@
 namespace myapp {
 	LTreeNode::LTreeNode(int inum) :
 		m_LAction(""),
-		m_DebugIndentNum(inum)
+		m_DebugIndentNum(inum),
+		m_LastVerticesData(glm::vec3(0.0f)),
+		m_NodeParent(nullptr),
+		m_LastGrowDir(glm::vec3(0.0f, 1.0f, 0.0f))
 	{
 	}
 
@@ -32,8 +35,7 @@ namespace myapp {
 		GenerateLStructure();
 		AnalyseLStructure();
 		RunLSystem();
-		BuildLTreeMesh();
-
+		
 		// オブジェクト(Mesh(RunLSystemで作る)/Mat/TRS/CS)など
 		CreateBaseData();
 	}
@@ -119,6 +121,7 @@ namespace myapp {
 				CurrentIndent++;
 				CurrentParentLNode = CurrentLNode;
 				CurrentLNode = std::make_shared<LTreeNode>(CurrentIndent);
+				CurrentLNode->m_NodeParent = CurrentParentLNode;
 				if (CurrentParentLNode) CurrentParentLNode->m_LNodeList.push_back(CurrentLNode);
 			}
 			else if (LWord == ']')
@@ -155,9 +158,10 @@ namespace myapp {
 		}
 	}
 
-	void LTreeNode::BuildLNode()
+	void LTreeNode::BuildLNode(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
+		std::vector<float>& LTreeRadiusList, std::vector<unsigned short>& LTree_Indices, float& LTreeRadius, float& LTreeLength)
 	{
-		// Debug
+		// Debug /////////////////////////////
 		std::string DebugStr = m_LAction;
 		for (int n = -1; n < m_DebugIndentNum; n++)
 		{
@@ -165,6 +169,19 @@ namespace myapp {
 		}
 
 		Console::Log("%d %s\n", m_LNodeList.size(), DebugStr.c_str());
+		/////////////////////////////////////
+
+		// スタート地点を定義親要素との繋ぎ目(Nodeの中でこれを使いまわす)
+		glm::vec3 StartPosInCNode = glm::vec3(0.0f);
+		if (m_NodeParent) StartPosInCNode = m_NodeParent->m_LastVerticesData;
+
+		// 成長ベクトル(どの方向に伸びるか)。回転では、このベクトルを加工する
+		glm::vec3 StartGrowDir = glm::vec3(0.0f, 1.0f, 0.0f);
+		if (m_NodeParent) StartGrowDir = m_NodeParent->m_LastGrowDir;
+
+		// インデックスデータ
+		unsigned short FirstIndices = LTree_Vertices.size()-1;
+		unsigned short SecondIndices = FirstIndices + 1;
 
 		// LTreeNodeをもとに木のメッシュを作成
 		for (const auto& LWord : m_LAction)
@@ -173,14 +190,34 @@ namespace myapp {
 			if (LWord == 'F') // 先に進んで線を引く
 			{
 				//Console::Log("%c Go Forward and Draw Line\n", LWord);
+				// 頂点
+				StartPosInCNode += StartGrowDir * LTreeLength;
+				LTree_Vertices.push_back(StartPosInCNode);
+
+				// 法線(成長ベクトルとvec3(1.0,0.0,0.0)との外積)
+				LTree_Normals.push_back(glm::normalize(glm::cross(StartGrowDir, glm::vec3(1.0f, 0.0f, 0.0f))));
+
+				// 半径
+				//LTreeLength *= 0.8f;
+				//LTreeRadius *= 0.8f;
+				//LTreeRadiusList.push_back(LTreeRadius);
+
+				// インデックスデータ
+				LTree_Indices.push_back(FirstIndices);
+				LTree_Indices.push_back(SecondIndices);
+				FirstIndices++;
+				SecondIndices++;
+
 			}
 			else if (LWord == '+') // 時計回りに回転
 			{
 				//Console::Log("%c Rotate Positive\n", LWord);
+				// StartGrowDir
 			}
 			else if (LWord == '-') // 半時計周りに回転
 			{
 				//Console::Log("%c Rotate Negative\n", LWord);
+				// StartGrowDir
 			}
 			else // 無効な文字列 
 			{
@@ -188,36 +225,61 @@ namespace myapp {
 			}
 		}
 
+		// 最後の頂点データを現在のノードの子要素との繋ぎ目にする
+		m_LastVerticesData = LTree_Vertices[LTree_Vertices.size() - 1];
+
+		// 上記と同様に現在のノードプロセスの中でいろいろと加工した成長ベクトルを子要素に引き継ぐ
+		m_LastGrowDir = StartGrowDir;
+
 		// 子要素のBuild
 		for (auto& Node : m_LNodeList)
 		{
-			Node->BuildLNode();
+			Node->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
 		}
 	}
 
 	void LTree::RunLSystem()
 	{
-		// LTreeNodeをもとに木のメッシュを作成
-		m_LRootNode->BuildLNode();
-	}
-
-	void LTree::BuildLTreeMesh()
-	{
 		// LStructureから頂点データを作成
 		std::vector<glm::vec3> LTree_Vertices;
 		std::vector<glm::vec3> LTree_Normals;
+		std::vector<float> LTreeRadiusList; // 段々縮小していく半径
 		std::vector<unsigned short> LTree_Indices;
 
-		// test data
+		/*// test data
 		LTree_Vertices.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
 		LTree_Vertices.push_back(glm::vec3(0.0f, 4.0f, 0.0f));
-		
+		LTree_Vertices.push_back(glm::vec3(4.0f, 4.0f, 0.0f));
+
+		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 		LTree_Normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
 		LTree_Indices.push_back(0);
 		LTree_Indices.push_back(1);
 
+		LTree_Indices.push_back(1);
+		LTree_Indices.push_back(2);*/
+
+		// 基本パラメーター(初期値)
+		float LTreeRadius = 1.0f;
+		float LTreeLength = 1.0f;
+
+		// 初期値を設定(原点)
+		LTree_Vertices.push_back(glm::vec3(0.0f));
+		LTree_Normals.push_back(glm::vec3(0.0f));
+		LTreeRadiusList.push_back(LTreeRadius);
+
+		// LTreeNodeをもとに木のメッシュを作成
+		m_LRootNode->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
+
+		// メッシュオブジェクトを構築
+		BuildLTreeMesh(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices);
+	}
+
+	void LTree::BuildLTreeMesh(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
+		const std::vector<float>& LTree_Radius, std::vector<unsigned short>& LTree_Indices)
+	{
 		// メッシュオブジェクトの構築
 		std::vector<std::vector<float>> VertexData;
 		std::vector<int> Dimentions;
@@ -225,8 +287,10 @@ namespace myapp {
 
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Vertices));
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Normals));
+		//VertexData.push_back(LTree_Radius);
 		Dimentions.push_back(3);
 		Dimentions.push_back(3);
+		//Dimentions.push_back(1);
 		Indices = LTree_Indices;
 
 		m_TreeMesh = std::make_shared<Mesh>(VertexData,Dimentions,Indices);
