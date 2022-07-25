@@ -41,6 +41,7 @@ namespace myapp {
 		int m_DebugIndentNum; // インデント
 		glm::vec3 m_LastVerticesData; // 子要素(m_LNodeList)との繋ぎ目の座標
 		glm::vec3 m_LastGrowDir; // 子要素に渡す成長ベクトル
+		unsigned short m_LastParentIndices; // 子要素に渡すIndeceis
 		std::shared_ptr<LTreeNode> m_NodeParent;
 
 		LTreeNode(int inum);

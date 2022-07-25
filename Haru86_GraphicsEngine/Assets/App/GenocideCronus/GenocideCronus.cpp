@@ -36,7 +36,7 @@ void GenocideCronus::Start() {
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 	
 //#ifdef _DEBUG
-	// デバッグ用グリッド
+	/*// デバッグ用グリッド
 	m_GridPlane = std::make_shared<GameObject>(
 		PrimitiveType::BOARD,
 		RenderType::DefaultBuffer,
@@ -46,7 +46,7 @@ void GenocideCronus::Start() {
 		shaderlib::ShaderLib::GridPlane_frag
 		);
 	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);
+	m_GridPlane->m_transform->m_scale = glm::vec3(25.0f);*/
 //#endif // _DEBUG
 
 	// シーンオブジェクトの初期化
