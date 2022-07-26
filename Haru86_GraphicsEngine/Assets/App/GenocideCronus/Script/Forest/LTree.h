@@ -45,7 +45,7 @@ namespace myapp {
 
 		LTreeNode(int inum);
 		void BuildLNode(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
-			std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices,float& LTreeRadius, float& LTreeLength);
+			std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices,const float LTreeRadius, float& LTreeLength);
 	};
 
 	class LTree

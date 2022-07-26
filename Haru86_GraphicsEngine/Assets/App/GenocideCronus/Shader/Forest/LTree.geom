@@ -9,6 +9,7 @@ layout(triangle_strip,max_vertices =144) out;
 //layout(line_strip,256) out;
 
 in vec3 LocalNormal[];
+in float v2g_treeRadius[];
 
 uniform mat4 MVPMatrix;
 uniform mat4 MMatrix;
@@ -39,10 +40,10 @@ void main()
 	for(int n=0; n<(_TreeSegment+1); n++)
 	{
 		float theta0 =  angle * (float(n));
-		vec3 offVec0 = _TreeMaxRadius * normalize(cos(theta0)*bionormal + sin(theta0)*normal);
+		vec3 offVec0 = v2g_treeRadius[0] * normalize(cos(theta0)*bionormal + sin(theta0)*normal);
 
 		float theta1 =  angle * (1.0 + float(n));
-		vec3 offVec1 = _TreeMaxRadius * normalize(cos(theta1)*bionormal + sin(theta1)*normal);
+		vec3 offVec1 = v2g_treeRadius[0] * normalize(cos(theta1)*bionormal + sin(theta1)*normal);
 
 		// triangle0
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec0,1.0);

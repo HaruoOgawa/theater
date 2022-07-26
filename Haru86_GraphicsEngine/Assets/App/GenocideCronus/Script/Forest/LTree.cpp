@@ -27,6 +27,10 @@ namespace myapp {
 		m_LStructure(""),
 		m_LRootNode(nullptr)
 	{
+		//
+		m_TreeTRS->m_scale = glm::vec3(0.2f);
+
+		//
 		Start();
 	}
 
@@ -45,7 +49,7 @@ namespace myapp {
 	void LTree::PrepareLSystem() 
 	{
 		// 基礎情報
-		m_LStep = 5;
+		m_LStep = 6;
 		m_StartStructure = "X";
 		
 		// 書き換えルール
@@ -162,7 +166,7 @@ namespace myapp {
 	}
 
 	void LTreeNode::BuildLNode(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
-		std::vector<float>& LTreeRadiusList, std::vector<unsigned short>& LTree_Indices, float& LTreeRadius, float& LTreeLength)
+		std::vector<float>& LTreeRadiusList, std::vector<unsigned short>& LTree_Indices,const float LTreeRadius, float& LTreeLength)
 	{
 		// Debug /////////////////////////////
 		std::string DebugStr = m_LAction;
@@ -229,10 +233,17 @@ namespace myapp {
 				// 法線(成長ベクトルとvec3(1.0,0.0,0.0)との外積)
 				LTree_Normals.push_back(glm::normalize(glm::cross(StartGrowDir, glm::vec3(1.0f, 0.0f, 0.0f))));
 
-				// 半径
-				//LTreeLength *= 0.8f;
-				//LTreeRadius *= 0.8f;
-				//LTreeRadiusList.push_back(LTreeRadius);
+				// 半径の計算
+				float NodeRadius = LTreeRadius;
+
+				// インデントが深いほど細くなる
+				NodeRadius *= glm::pow(0.5f, float(m_Indent));
+
+				// 半径(現在のノードの中でm_Actionの最後の方ほど細くなる)
+				NodeRadius *= glm::exp(-2.0f * ( float((n)) / float(m_LAction.size())) );
+				
+				// 半径代入
+				LTreeRadiusList.push_back(NodeRadius);
 
 				// Debug
 				//Console::Log("%d FirstIndices: %d / SecondIndices: %d\n", (LTree_Vertices.size() - 1), FirstIndices, SecondIndices);
@@ -300,12 +311,6 @@ namespace myapp {
 
 		// Indicesも最後のものをParentのものとして登録しておく
 		m_LastParentIndices = LTree_Indices[LTree_Indices.size() - 1];
-
-		/*// 子要素のBuild(これいらん)
-		for (auto& Node : m_LNodeList)
-		{
-			Node->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
-		}*/
 	}
 
 	void LTree::RunLSystem()
@@ -317,9 +322,10 @@ namespace myapp {
 		std::vector<unsigned short> LTree_Indices;
 
 		// 基本パラメーター(初期値)
+		//float LTreeRadius = 1.0f;
 		float LTreeRadius = 1.0f;
-		//float LTreeLength = 1.0f;
-		float LTreeLength = 1.0f*0.1f;
+		float LTreeLength = 1.0f;
+		//float LTreeLength = 1.0f*0.1f;
 
 		// 初期値を設定(原点)
 		LTree_Vertices.push_back(glm::vec3(0.0f));
@@ -343,10 +349,10 @@ namespace myapp {
 
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Vertices));
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Normals));
-		//VertexData.push_back(LTree_Radius);
+		VertexData.push_back(LTree_Radius);
 		Dimentions.push_back(3);
 		Dimentions.push_back(3);
-		//Dimentions.push_back(1);
+		Dimentions.push_back(1);
 		Indices = LTree_Indices;
 
 		m_TreeMesh = std::make_shared<Mesh>(VertexData,Dimentions,Indices);
