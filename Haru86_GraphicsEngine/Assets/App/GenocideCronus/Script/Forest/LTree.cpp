@@ -45,7 +45,7 @@ namespace myapp {
 	void LTree::PrepareLSystem() 
 	{
 		// 基礎情報
-		m_LStep = 2;
+		m_LStep = 5;
 		m_StartStructure = "X";
 		
 		// 書き換えルール
@@ -219,9 +219,6 @@ namespace myapp {
 		{
 			const auto& LWord = m_LAction[n];
 
-			//Console::Log("%d (p)%p (my)%p LWord:%c\n", m_LNodeList.size(), m_NodeParent.get(), this, LWord);
-			//Console::Log("(my)%p LWord: %c\n",this, LWord);
-
 			// LWordをもとにL-Systemアクションを決定する
 			if (LWord == 'F') // 先に進んで線を引く
 			{
@@ -238,44 +235,40 @@ namespace myapp {
 				//LTreeRadiusList.push_back(LTreeRadius);
 
 				// Debug
-				Console::Log("%d FirstIndices: %d / SecondIndices: %d\n", (LTree_Vertices.size() - 1), FirstIndices, SecondIndices);
+				//Console::Log("%d FirstIndices: %d / SecondIndices: %d\n", (LTree_Vertices.size() - 1), FirstIndices, SecondIndices);
 
 				// インデックスデータ
 				LTree_Indices.push_back(FirstIndices);
 				LTree_Indices.push_back(SecondIndices);
 				FirstIndices= SecondIndices;
 				SecondIndices++;
-
-				//
-				//FNum++;
-				
 			}
 			else if (LWord == '+') // 時計回りに回転
 			{
 				// もし『+』『-』が末尾なのであればなにもしない
-				//Console::Log("m_LAction[n+1]: %c\n", m_LAction[n + 1]);
 				if (((n + 1) < m_LAction.size()) && (m_LAction[n + 1] == 'X'))
 				{
 					continue;
 				}
 
 				//
-				float angle =  20.0f * (3.14f/180.0f);
-				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f,1.0f,0.0f), 0.0);
+				float angle =  30.0f * (3.14f/180.0f);
+				//glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f,1.0f,0.0f), 0.0);
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(StartGrowDir, 0.0);
 				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else if (LWord == '-') // 半時計周りに回転
 			{
 				// もし『+』『-』が末尾なのであればなにもしない
-				//Console::Log("m_LAction[n+1]: %c\n", m_LAction[n + 1]);
 				if (((n + 1) < m_LAction.size()) && (m_LAction[n + 1] == 'X'))
 				{
 					continue;
 				}
 
 				//
-				float angle = - 20.0f * (3.14f / 180.0f);
-				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0);
+				float angle = - 30.0f * (3.14f / 180.0f);
+				//glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0);
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(StartGrowDir, 0.0);
 				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else if (LWord=='*') // 子要素へ移動
@@ -295,27 +288,9 @@ namespace myapp {
 				Child->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
 
 				// 子要素でIndicesが更新されるのでそれを考慮して再配置
-				//FirstIndices = FirstIndices-1; // ひとつ前に戻す
 				SecondIndices = LTree_Indices[LTree_Indices.size() - 1] + 1; // 現時点のIndicesの最大値+1
-				//Console::Log("SecondIndices: %d\n", SecondIndices);
-				for (const auto& Index : LTree_Indices)
-				{
-					//Console::Log("Index: %d\n", Index);
-				}
 			}
 		}
-
-		// Fがひとつもない条件ならそのノードは子要素だけ調べてあとは無視する
-		/*if (FNum <= 0)
-		{
-			// 子要素のBuild
-			for (auto& Node : m_LNodeList)
-			{
-				Node->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
-			}
-
-			return;
-		}*/
 
 		// 最後の頂点データを現在のノードの子要素との繋ぎ目にする
 		m_LastVerticesData = LTree_Vertices[LTree_Vertices.size() - 1];
@@ -343,8 +318,8 @@ namespace myapp {
 
 		// 基本パラメーター(初期値)
 		float LTreeRadius = 1.0f;
-		float LTreeLength = 1.0f;
-		//float LTreeLength = 1.0f*0.1f;
+		//float LTreeLength = 1.0f;
+		float LTreeLength = 1.0f*0.1f;
 
 		// 初期値を設定(原点)
 		LTree_Vertices.push_back(glm::vec3(0.0f));
