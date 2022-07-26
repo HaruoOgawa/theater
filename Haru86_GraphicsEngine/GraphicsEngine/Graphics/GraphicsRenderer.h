@@ -52,7 +52,7 @@ public:
 	}
 	static void Create();
 	static void Destroy();
-	static void CheckError();
+	static int CheckError();
 
 	GraphicsRenderer(class GraphicsMain* game);
 	~GraphicsRenderer();

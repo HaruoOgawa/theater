@@ -126,14 +126,14 @@ namespace myapp
         if (m_FlowerModel->flowersIsDone&&m_FlowerModel->stemIsDone&&m_FlowerModel->leafIsDone) {
             Cal_flower_growth();
 
-            // DEBUG
+            /*// DEBUG
             float initStemDebugMatrix[16];
             DEBUG_buffer->GetBufferData<float>(&initStemDebugMatrix[0], 0, 16);
             for (int n=0;n<16;n++)
             {
                 const auto& DEBUG_Val = initStemDebugMatrix[n];
                 Console::Log("%d DEBUG_Val: %f\n",n, DEBUG_Val);
-            }
+            }*/
         }
 	}
 
@@ -402,6 +402,7 @@ namespace myapp
 
     // XVˆ—
     void Flower::Cal_flower_growth() {
+        cal_flower_cs->SetActive();
         cal_flower_cs->SetIntUniform("_stemVertexCount", m_FlowerModel->m_Stem->stemVertexCount);
         cal_flower_cs->SetFloatUniform("_isFloweringTime", isFloweringTime);
         cal_flower_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->deltaTime);

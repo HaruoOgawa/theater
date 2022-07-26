@@ -128,12 +128,12 @@ void CalFlowerGrowth(uvec3 DID)
         float4(0,0,0,0)
     );*/
 
-     out_DEBUG_buffer.DebugData[DID.x]=mat4(
+     /*out_DEBUG_buffer.DebugData[DID.x]=mat4(
         vec4(0.777),
         vec4(0.777),
         vec4(0.777),
         vec4(0.777)
-     );
+     );*/
 
 }
 
