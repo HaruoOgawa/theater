@@ -237,7 +237,7 @@ namespace myapp {
 				float NodeRadius = LTreeRadius;
 
 				// インデントが深いほど細くなる
-				NodeRadius *= glm::pow(0.5f, float(m_Indent));
+				NodeRadius *= glm::pow(0.65f, float(m_Indent));
 
 				// 半径(現在のノードの中でm_Actionの最後の方ほど細くなる)
 				NodeRadius *= glm::exp(-2.0f * ( float((n)) / float(m_LAction.size())) );
@@ -263,9 +263,10 @@ namespace myapp {
 				}
 
 				//
-				float angle =  30.0f * (3.14f/180.0f);
+				float angle =  20.0f * (3.14f/180.0f);
+				float rotAxisZ = glm::linearRand(0.0f, 1.0f);
 				//glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f,1.0f,0.0f), 0.0);
-				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(StartGrowDir, 0.0);
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3( (rotAxisZ<0.5f)? angle :0.0f, 0.0f, (rotAxisZ >= 0.5f) ? angle : 0.0f))) * glm::vec4(StartGrowDir, 0.0);
 				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else if (LWord == '-') // 半時計周りに回転
@@ -277,9 +278,10 @@ namespace myapp {
 				}
 
 				//
-				float angle = - 30.0f * (3.14f / 180.0f);
+				float angle = - 20.0f * (3.14f / 180.0f);
+				float rotAxisZ = glm::linearRand(0.0f, 1.0f);
 				//glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0);
-				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3(0.0f, 0.0f, angle))) * glm::vec4(StartGrowDir, 0.0);
+				glm::vec4 rotV = glm::mat4_cast(glm::quat(glm::vec3((rotAxisZ < 0.5f) ? angle : 0.0f, 0.0f, (rotAxisZ >= 0.5f) ? angle : 0.0f))) * glm::vec4(StartGrowDir, 0.0);
 				StartGrowDir = glm::normalize(glm::vec3(rotV.x, rotV.y, rotV.z));
 			}
 			else if (LWord=='*') // 子要素へ移動
