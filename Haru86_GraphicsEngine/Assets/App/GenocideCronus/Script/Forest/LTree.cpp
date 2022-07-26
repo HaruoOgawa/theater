@@ -394,6 +394,7 @@ namespace myapp {
 
 		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
 
-		m_TreeMesh->Draw(GL_LINES);
+		//m_TreeMesh->Draw(GL_LINES);
+		m_TreeMesh->DrawInstancedWithMesh(128, GL_LINES);
 	}
 }

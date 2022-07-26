@@ -9,9 +9,23 @@ layout(location=2)in float treeRadius; // 半径をだんだん細くするための頂点データ
 out vec3 LocalNormal;
 out float v2g_treeRadius;
 
+float rand(vec2 st){
+    return fract(
+        sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123
+    );
+}
+
 void main()
 {
-	gl_Position = vec4(vertex,1.0);
+	float id = float(gl_InstanceID);
+
+	vec3 randPos = 100.0 * vec3(
+		rand(vec2(id,0.697))*2.0-1.0,
+		0.0,
+		rand(vec2(1.294+id,0.412+id))*2.0-1.0
+	);
+
+	gl_Position = vec4(vertex+randPos,1.0);
 	LocalNormal = normal;
 	v2g_treeRadius = treeRadius;
 }
