@@ -8,6 +8,7 @@
 #include "GraphicsEngine/Graphics/ComputeBuffer.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+#include "GraphicsEngine/Message/Console.h"
 
 namespace myapp
 {
@@ -18,6 +19,8 @@ namespace myapp
         m_FlowerTRS(std::make_shared<TransformComponent>()),
         stemDataFlower_buffer(nullptr),
         stemDataFlower_buffer_index(4),
+        DEBUG_buffer(nullptr),
+        DEBUG_buffer_index(5),
         cal_flower_cs(nullptr),
         isFloweringTime(0.5f)
     {
@@ -42,8 +45,10 @@ namespace myapp
     void Flower::LinkBufferToResources(const std::shared_ptr<Stem>& stem) {
         // コンピュートシェーダーにバッファをセット
         cal_flower_cs->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index, m_FlowerMaterial);
-        cal_flower_cs->SetBuffer(stem->stemVertex_buffer, stem->stemVertex_buffer_index);
-        cal_flower_cs->SetBuffer(stem->stemManage_buffer, stem->stemManage_buffer_index);
+        cal_flower_cs->SetBuffer(stem->stemVertex_buffer, stem->stemVertex_buffer_index, m_FlowerMaterial);
+        cal_flower_cs->SetBuffer(stem->stemManage_buffer, stem->stemManage_buffer_index, m_FlowerMaterial);
+        
+        cal_flower_cs->SetBuffer(DEBUG_buffer, DEBUG_buffer_index);
 
         // マテリアルにバッファをセット
         m_FlowerMaterial->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index);
@@ -58,20 +63,21 @@ namespace myapp
 
     void Flower::InitBuffer() {
         stemDataFlower_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count * sizeof(StemData));
+        DEBUG_buffer = std::make_shared<ComputeBuffer>(m_FlowerModel->count * sizeof(float) * 4 * 4);
 
         std::vector<StemData> initFlowerStemData;
-        std::vector<glm::mat4> initStemDebugMatrix;
+        std::vector<float> initStemDebugMatrix(16* m_FlowerModel->count,0.0f);
 
         for (int i = 0; i < m_FlowerModel->count; i++) {
             glm::vec2 initPos = mymath::circleRand(1.0f,glm::vec2(float(i)+673.123f,0.1846f),glm::vec2(float(i)+4.12f));
             StemData data = StemData(i, glm::vec4(initPos.x, 0.0f, initPos.y,0.0f), glm::vec4(0.0f), glm::vec4(0.0f), glm::vec4(0.0f),glm::vec2(1.11123f,float(i)+5.512f));
 
             initFlowerStemData.push_back(data);
-            initStemDebugMatrix.push_back(glm::mat4(1.0f));
         }
 
         // バッファに初期値をセット
         stemDataFlower_buffer->SetData<std::vector<StemData>>(initFlowerStemData);
+        DEBUG_buffer->SetData<std::vector<float>>(initStemDebugMatrix);
     }
 
     void Flower::SetupFlowerdata() {
@@ -119,6 +125,15 @@ namespace myapp
 	void Flower::Update() {
         if (m_FlowerModel->flowersIsDone&&m_FlowerModel->stemIsDone&&m_FlowerModel->leafIsDone) {
             Cal_flower_growth();
+
+            // DEBUG
+            float initStemDebugMatrix[16];
+            DEBUG_buffer->GetBufferData<float>(&initStemDebugMatrix[0], 0, 16);
+            for (int n=0;n<16;n++)
+            {
+                const auto& DEBUG_Val = initStemDebugMatrix[n];
+                Console::Log("%d DEBUG_Val: %f\n",n, DEBUG_Val);
+            }
         }
 	}
 

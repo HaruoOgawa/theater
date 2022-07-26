@@ -49,6 +49,9 @@ namespace myapp
 		// バッファ関連
 		std::shared_ptr<ComputeBuffer> stemDataFlower_buffer;
 		int							   stemDataFlower_buffer_index;
+		std::shared_ptr<ComputeBuffer> DEBUG_buffer;
+		int							   DEBUG_buffer_index;
+
 		std::shared_ptr<Material>	   cal_flower_cs;
 
 		// オブジェクト

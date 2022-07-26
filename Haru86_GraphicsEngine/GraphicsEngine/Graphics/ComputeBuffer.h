@@ -30,6 +30,7 @@ public:
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	}
 
+	// Bufferの中から『一つ分だけ』データを取得する
 	template<typename T>
 	void GetBufferData(T *data,int offset,int num) {
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
