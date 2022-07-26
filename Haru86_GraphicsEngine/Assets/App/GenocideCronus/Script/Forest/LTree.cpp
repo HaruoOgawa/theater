@@ -10,7 +10,7 @@
 namespace myapp {
 	LTreeNode::LTreeNode(int inum) :
 		m_LAction(""),
-		m_DebugIndentNum(inum),
+		m_Indent(inum),
 		m_LastVerticesData(glm::vec3(0.0f)),
 		m_LastParentIndices(0),
 		m_NodeParent(nullptr),
@@ -149,7 +149,7 @@ namespace myapp {
 					CurrentParentLNode = nullptr;
 				}
 			}
-			else if (LWord == 'A' || LWord == 'B')
+			else if (LWord == 'X')
 			{
 				// A,B‚Í–³Œø‚È•¶Žš—ñ‚È‚Ì‚Å–³Ž‹‚·‚é
 			}
@@ -166,7 +166,7 @@ namespace myapp {
 	{
 		// Debug /////////////////////////////
 		std::string DebugStr = m_LAction;
-		for (int n = -1; n < m_DebugIndentNum; n++)
+		for (int n = -1; n < m_Indent; n++)
 		{
 			DebugStr = ">" + DebugStr;
 		}
@@ -301,11 +301,11 @@ namespace myapp {
 		// Indices‚àÅŒã‚Ì‚à‚Ì‚ðParent‚Ì‚à‚Ì‚Æ‚µ‚Ä“o˜^‚µ‚Ä‚¨‚­
 		m_LastParentIndices = LTree_Indices[LTree_Indices.size() - 1];
 
-		// Žq—v‘f‚ÌBuild
+		/*// Žq—v‘f‚ÌBuild(‚±‚ê‚¢‚ç‚ñ)
 		for (auto& Node : m_LNodeList)
 		{
 			Node->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
-		}
+		}*/
 	}
 
 	void LTree::RunLSystem()
