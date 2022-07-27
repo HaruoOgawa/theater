@@ -25,6 +25,10 @@ void main()
 		rand(vec2(1.294+id,0.412+id))*2.0-1.0
 	);
 
+	float offradius=100.0;
+	vec2 offdir= offradius * normalize(vec2(randPos.x,randPos.z));
+	randPos.xz+=offdir;
+
 	gl_Position = vec4(vertex+randPos,1.0);
 	LocalNormal = normal;
 	v2g_treeRadius = treeRadius;

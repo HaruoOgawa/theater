@@ -23,7 +23,7 @@ void GenocideCronus::Start() {
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 2.0f, 2.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(5.0f, 0.5f, 5.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // Forest
 	m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(5.0f, 0.5f, 5.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // Forest
-	m_CameraTransform->m_center = glm::vec3(0.0f,50.0f,0.0f);
+	m_CameraTransform->m_center = glm::vec3(0.0f,30.0f,0.0f);
 	//m_CameraTransform->m_center = glm::vec3(0.0f,5.0f,0.0f);
 	//m_CameraTransform->m_center = glm::vec3(0.0f,10.0f,0.0f);
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
@@ -99,7 +99,7 @@ void GenocideCronus::Update() {
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 5.0f
 	);*/
 	
-	float r = 50.0f;
+	float r = 30.0f;
 	m_CameraTransform->m_position = glm::vec3( // Forest
 		glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
 		//1.0f,

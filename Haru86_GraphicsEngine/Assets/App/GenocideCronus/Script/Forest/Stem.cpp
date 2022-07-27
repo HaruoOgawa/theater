@@ -14,7 +14,7 @@ namespace myapp {
         stemRadius(0.2f),
         stemSegments(12),
         stemLength(2.5),
-        stemGrowthRange(500),
+        stemGrowthRange(150),
         numthreds_val(256),
         stemResult_buffer_index(0),
         stemVertex_buffer_index(1),
@@ -130,14 +130,14 @@ namespace myapp {
             
             //
             glm::vec2 initBasePos = mymath::circleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
-            //initStemBasePosition.push_back(glm::vec3(initBasePos.x, 0.0f, initBasePos.y));
+            
+            // offset
+            glm::vec2 offvec = 10.0f * glm::normalize(initBasePos);
+            initBasePos += offvec;
+
+            //
             initStemBasePosition.push_back(StemBasePosition(initBasePos.x, 0.0f, initBasePos.y,0.0f));
-
             initStemDebugMatrix.push_back(glm::mat4());
-
-            /*initStemBasePosition_Array.push_back(initBasePos.x);
-            initStemBasePosition_Array.push_back(0.0f);
-            initStemBasePosition_Array.push_back(initBasePos.y);*/
         }
         stemResult_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
         stemVertex_buffer->SetData<std::vector<StemVertex>>(initStemVertex);
