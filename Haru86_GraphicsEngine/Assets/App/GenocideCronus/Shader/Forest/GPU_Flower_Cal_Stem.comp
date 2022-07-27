@@ -75,7 +75,12 @@ layout(std430,binding = 3) buffer stemBasePosition_buffer
 layout(local_size_x=256,local_size_y=1,local_size_z=1) in;
 
 uniform int _contPosArrayLength;
-uniform vec4 _controlPoints[6];
+uniform vec4 _controlPoints0;
+uniform vec4 _controlPoints1;
+uniform vec4 _controlPoints2;
+uniform vec4 _controlPoints3;
+uniform vec4 _controlPoints4;
+uniform vec4 _controlPoints5;
 uniform float _knotMin;
 uniform float _knotMax;
 uniform float _tWidth;
@@ -225,7 +230,15 @@ void CalStemBSplineCurveResult(uvec3  DID){
     int stemGroupID=int(floor(int(DID.x)/_stemVertexCount));
     int idInMyStem=int(DID.x)-stemGroupID*_stemVertexCount;
     
-    vec4 cp[6]=_controlPoints;
+    vec4 cp[6];
+    //vec4 cp[6]=_controlPoints;
+    cp[0]=_controlPoints0;
+    cp[1]=_controlPoints1;
+    cp[2]=_controlPoints2;
+    cp[3]=_controlPoints3;
+    cp[4]=_controlPoints4;
+    cp[5]=_controlPoints5;
+
     float cpPower=1.0;
     for(int i=0;i<6;i++){
         cp[i].xyz+=((i==5)? 0 : 1)*cpPower*vec3(rand(vec2(float(stemGroupID),0.123+float(i)))*2.0-1.0,

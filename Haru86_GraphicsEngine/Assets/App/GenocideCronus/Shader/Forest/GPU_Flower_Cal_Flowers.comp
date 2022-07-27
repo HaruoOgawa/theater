@@ -100,7 +100,7 @@ void CalFlowerGrowth(uvec3 DID)
     sData.normal=sVertex.normal;
     sData.bioNormal=sVertex.bioNormal;
     sData.renderFlag=int(0);
-    sData.flowerSize=(rand(vec2(DID.x,0.123))+1.0)*2.0;
+    sData.flowerSize=(rand(vec2(DID.x,0.123))+1.0)*0.5;
 
     if(sManage.stemLifeVal>=_isFloweringTime){
         float lifeSign=sManage.signNum;

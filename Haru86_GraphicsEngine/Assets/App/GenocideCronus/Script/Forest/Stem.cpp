@@ -147,14 +147,29 @@ namespace myapp {
 
     void Stem::Cal_Stem_Result() {
         cal_stem_cs->SetActive();
-        std::vector<glm::vec4> contPos;
         cal_stem_cs->SetIntUniform("_contPosArrayLength", bSplineData->controlPoints.size());
+        
+        std::vector<glm::vec4> contPos;
         for (int i = 0; i < bSplineData->controlPoints.size(); i++) {
             glm::vec3 controlPoint = bSplineData->controlPoints[i];
+            
+            //contPos.push_back(controlPoint.x);
+            //contPos.push_back(stemLength * (mymath::rand(glm::vec2(float(i) + 1.785f, float(i) + 7.1259f)) + 0.5f));
+            //contPos.push_back(1.0f);
+            //contPos.push_back(controlPoint.z);
+            //contPos.push_back(1.0f);
             contPos.push_back(glm::vec4(controlPoint.x, controlPoint.y * 
                 stemLength * (mymath::rand(glm::vec2(float(i)+1.785f, float(i) + 7.1259f))+0.5f) /*glm::gaussRand(0.5f, 1.5f) */ , controlPoint.z, 0.0f));
         }
-        cal_stem_cs->SetVec4ArrayUniform("_controlPoints", contPos);
+        //cal_stem_cs->SetVec4ArrayUniform("_controlPoints", contPos);
+
+        cal_stem_cs->SetVec4Uniform("_controlPoints0", contPos[0]);
+        cal_stem_cs->SetVec4Uniform("_controlPoints1", contPos[1]);
+        cal_stem_cs->SetVec4Uniform("_controlPoints2", contPos[2]);
+        cal_stem_cs->SetVec4Uniform("_controlPoints3", contPos[3]);
+        cal_stem_cs->SetVec4Uniform("_controlPoints4", contPos[4]);
+        cal_stem_cs->SetVec4Uniform("_controlPoints5", contPos[5]);
+
         cal_stem_cs->SetIntUniform("_stemVertexCount", stemVertexCount);
         cal_stem_cs->SetFloatUniform("_knotMin", bSplineData->knotMin);
         cal_stem_cs->SetFloatUniform("_knotMax", bSplineData->knotMax);
