@@ -1,0 +1,146 @@
+R"(
+
+#version 430
+
+// CalFlowerGrowth --> 0
+
+#define NUMTHRED_VAL 256
+
+// thread
+layout(local_size_x=256,local_size_y=1,local_size_z=1) in;
+
+struct StemVertex{
+    vec4 vertice;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
+    int index;
+};
+
+//花の数など
+struct StemManage{
+    float stemLifeVal;
+    float stemWaitTime;
+    float signNum;
+    int manageLifeCountFlag;
+    int flowerCount;
+    int flowerStartIndex;
+    int leafCount;
+    int leafStartIndex;
+};
+
+//花や茎を生成するための情報を載せる構造体
+struct StemData{
+    int resampleIndex;
+    int resampleIndexInStem;
+    vec4 position;
+    vec4 tangent;
+    vec4 normal;
+    vec4 bioNormal;
+    int renderFlag;
+    float lifeTime;
+    float flowerSize;
+};
+
+// 各花の生える基本の座標
+struct StemBasePosition {
+    vec4 position;
+};
+
+layout(std430,binding = 1) buffer stemVertex_buffer
+{
+    StemVertex stemVertex[];
+} out_stemVertex_buffer;
+
+layout(std430,binding = 2) buffer stemManage_buffer
+{
+    StemManage stemManage[];
+} out_stemManage_buffer;
+
+layout(std430,binding = 4) buffer stemDataFlower_buffer
+{
+    StemData stemData[];
+} out_stemDataFlower_buffer;
+
+layout(std430,binding = 5) buffer DEBUG_buffer
+{
+    mat4 DebugData[];
+} out_DEBUG_buffer;
+
+
+
+/*RWStructuredBuffer<StemData> _write_stemDataFlower_buffer;
+RWStructuredBuffer<StemVertex> _read_stemVertex_buffer;
+RWStructuredBuffer<StemManage> _read_stemManage_buffer;
+RWStructuredBuffer<float4x4> _debug_buffer;*/
+
+uniform int _stemVertexCount;
+uniform float _isFloweringTime;
+uniform float _DTime;
+
+float rand(vec2 st){
+    return fract(
+        sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123
+    );
+}
+
+void CalFlowerGrowth(uvec3 DID)
+{
+    StemData sData=out_stemDataFlower_buffer.stemData[DID.x];
+    StemManage sManage=out_stemManage_buffer.stemManage[DID.x];
+    int resampleIndexInStem=_stemVertexCount-1-1;
+    int stemIndex=int(DID.x);
+    int resampleIndex=stemIndex*_stemVertexCount+resampleIndexInStem;
+    StemVertex sVertex=out_stemVertex_buffer.stemVertex[resampleIndex];
+
+    sData.resampleIndex=resampleIndex;
+    sData.resampleIndexInStem=resampleIndexInStem;
+    sData.position=sVertex.vertice;
+    sData.tangent=sVertex.tangent;
+    sData.normal=sVertex.normal;
+    sData.bioNormal=sVertex.bioNormal;
+    sData.renderFlag=int(0);
+    sData.flowerSize=(rand(vec2(DID.x,0.123))+1.0)*1.0;
+
+    if(sManage.stemLifeVal>=_isFloweringTime){
+        float lifeSign=sManage.signNum;
+        float lifeTime=sData.lifeTime;
+       
+        if(sManage.manageLifeCountFlag==1){
+             sData.lifeTime=max(min(sData.lifeTime+lifeSign*(1.0/(1.0-_isFloweringTime))*_DTime*0.5,1.0),0.0);
+        }else{
+            sData.lifeTime=1.0;
+        }
+        
+       
+        
+        
+    }else{
+        sData.lifeTime=0.0;
+    }    
+
+    out_stemDataFlower_buffer.stemData[DID.x]=sData;
+
+      /*_debug_buffer[DID.x]=float4x4(
+        float4(sData.lifeTime,sManage.stemLifeVal,_isFloweringTime,sManage.signNum),
+        float4(0,0,0,0),
+        float4(0,0,0,0),
+        float4(0,0,0,0)
+    );*/
+
+     /*out_DEBUG_buffer.DebugData[DID.x]=mat4(
+        vec4(0.777),
+        vec4(0.777),
+        vec4(0.777),
+        vec4(0.777)
+     );*/
+
+}
+
+void main()
+{
+    uvec3  DID=gl_GlobalInvocationID;
+    CalFlowerGrowth(DID);
+}
+
+)"

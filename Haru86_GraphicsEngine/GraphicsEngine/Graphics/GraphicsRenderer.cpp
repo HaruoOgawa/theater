@@ -26,13 +26,61 @@ void GraphicsRenderer::Destroy() {
 	renderer_instance = nullptr;
 }
 
-void GraphicsRenderer::CheckError() {
+int GraphicsRenderer::CheckError() {
+	int Error = 0;
 #ifdef _DEBUG
+	// https://qiita.com/_ydah/items/da56763e94ba58af3d91
 	GLenum err;
 	err = glGetError();
-	Console::Log("CheckError GLErr: %d\n", err);
+
+	switch (err)
+	{
+	case 0: // 0x0000
+		Console::Log("ErrorCode %d / GL_NO_ERROR\n", err);
+		break;
+
+	case 1280: // 0x0500
+		Console::Log("ErrorCode %d / GL_INVALID_ENUM\n", err);
+		break;
+
+	case 1281: // 0x0501
+		Console::Log("ErrorCode %d / GL_INVALID_VALUE\n", err);
+		break;
+
+	case 1282: // 0x0502
+		Console::Log("ErrorCode %d / GL_INVALID_OPERATION\n", err);
+		break;
+
+	case 1283: // 0x0503
+		Console::Log("ErrorCode %d / GL_STACK_OVERFLOW\n", err);
+		break;
+
+	case 1284: // 0x0504
+		Console::Log("ErrorCode %d / GL_STACK_UNDERFLOW\n", err);
+		break;
+
+	case 1285: // 0x0505
+		Console::Log("ErrorCode %d / GL_OUT_OF_MEMORY\n", err);
+		break;
+
+	case 1286: // 0x0506
+		Console::Log("ErrorCode %d / GL_INVALID_FRAMEBUFFER_OPERATION\n", err);
+		break;
+
+	case 1287: // 0x0507
+		Console::Log("ErrorCode %d / GL_CONTEXT_LOST\n", err);
+		break;
+
+	default: // 0x????
+		Console::Log("ErrorCode %d / Unknown Error\n", err);
+		break;
+	}
+
+	Error = static_cast<int>(err);
+	//Console::Log("CheckError GLErr: %d\n", err);
 #endif // _DEBUG
 
+	return Error;
 }
 
 GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
