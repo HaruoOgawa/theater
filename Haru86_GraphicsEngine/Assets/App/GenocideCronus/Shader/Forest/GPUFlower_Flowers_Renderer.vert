@@ -103,9 +103,9 @@ void main()
                 
     pos.xyz=
         mat3(
-            data.normal,
-            data.tangent,
-            data.bioNormal
+            data.normal.x,data.tangent.x,data.bioNormal.x,
+            data.normal.y,data.tangent.y,data.bioNormal.y,
+            data.normal.z,data.tangent.z,data.bioNormal.z
         ) * pos.xyz + data.position.xyz;
 
     gl_Position = MVPMatrix*pos;

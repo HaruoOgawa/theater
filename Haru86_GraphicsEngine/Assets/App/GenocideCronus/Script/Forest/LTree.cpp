@@ -28,7 +28,7 @@ namespace myapp {
 		m_LRootNode(nullptr)
 	{
 		//
-		m_TreeTRS->m_scale = glm::vec3(0.2f);
+		m_TreeTRS->m_scale = glm::vec3(1.0f);
 
 		//
 		Start();
