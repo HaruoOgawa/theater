@@ -173,7 +173,9 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 
 	//CreateFrameBuffer
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
-	//CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA,GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_TEXTURE_BUFFER);
+	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),nullptr, polygon_frameBuffer_MSAA,
+		GL_RGBA16F, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
+	
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA);
@@ -203,7 +205,7 @@ void GraphicsRenderer::SetBackgroudColor(glm::vec4 BackgroudColor) {
 }
 
 bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<Texture> fTex, unsigned int& fBuffer,
-	GLint internalformat, GLint format, GLenum type, ERenderTargetType RenderTargetType, EDepthTargetType DepthTargetType) {
+	GLint internalformat, GLint format, GLenum type, ERenderTargetType RenderTargetType, EDepthTargetType DepthTargetType, bool UseMSAA) {
 	
 	// フレームバッファ生成
 	glGenFramebuffers(1, &fBuffer);
@@ -212,6 +214,11 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 	// デプスバッファ生成
 	if (DepthTargetType == EDepthTargetType::DEPTH_TEXTURE_BUFFER && RenderTargetType==ERenderTargetType::COLOR_RENDER_BUFFER)
 	{
+		if (UseMSAA)
+		{
+
+		}
+
 		fTex->CreateForRendering(width, height, GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_FLOAT);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
 	}
@@ -220,7 +227,7 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 		GLuint depthBuffer;
 		glGenRenderbuffers(1, &depthBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32F, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	}
@@ -228,6 +235,10 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 	// カラーバッファ生成
 	if (RenderTargetType==ERenderTargetType::COLOR_TEXTURE_BUFFER) // カラーテクスチャバッファ
 	{ 
+		if (UseMSAA)
+		{
+
+		}
 		fTex->CreateForRendering(width, height, internalformat, format, type);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
 	}
@@ -278,6 +289,9 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	if (mgame->m_App) {
 		mgame->m_App->Draw();
 	}
+
+	// MSAAカラーマップを通常のカラーマップにコピー
+
 
 	//ポリゴンオブジェクトをデプスマップをレンダリング
 	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;

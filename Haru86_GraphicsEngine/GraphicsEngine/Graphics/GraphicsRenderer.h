@@ -31,6 +31,7 @@ class GraphicsRenderer
 
 	//FrameBuffer
 	unsigned int polygon_frameBuffer;
+	unsigned int polygon_frameBuffer_MSAA;
 	unsigned int polygon_depthBuffer;
 	unsigned int polygon_normalBuffer;
 	unsigned int raymarching_frameBuffer;
@@ -60,7 +61,8 @@ public:
 	void Draw(const std::shared_ptr<TransformComponent>& UsingCamera,bool IsDrawRay,int ResultFrameBufferIndex,std::function<void(void)> callback,int width,int height);
 	bool CreateFrameBuffer(int width, int height,std::shared_ptr<Texture> fTex,unsigned int& fBuffer, GLint internalformat, GLint format, 
 		GLenum type = GL_UNSIGNED_BYTE, 
-		ERenderTargetType RenderTargetType = ERenderTargetType::COLOR_TEXTURE_BUFFER, EDepthTargetType DepthTargetType = EDepthTargetType::DEPTH_RENDER_BUFFER);
+		ERenderTargetType RenderTargetType = ERenderTargetType::COLOR_TEXTURE_BUFFER, 
+		EDepthTargetType DepthTargetType = EDepthTargetType::DEPTH_RENDER_BUFFER,bool UseMSAA=false);
 	glm::vec2 GetScreenSize();
 	GLFWwindow* GetWindow();
 	
