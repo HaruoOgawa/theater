@@ -14,7 +14,7 @@ namespace myapp {
         stemRadius(0.2f),
         stemSegments(12),
         stemLength(2.5),
-        stemGrowthRange(150),
+        stemGrowthRange(200),
         numthreds_val(256),
         stemResult_buffer_index(0),
         stemVertex_buffer_index(1),
@@ -42,7 +42,8 @@ namespace myapp {
 
         // TRS
         m_StemTRS = std::make_shared<TransformComponent>();
-        
+        m_StemTRS->m_scale = glm::vec3(0.333f);
+
         //
         Start();
 	}

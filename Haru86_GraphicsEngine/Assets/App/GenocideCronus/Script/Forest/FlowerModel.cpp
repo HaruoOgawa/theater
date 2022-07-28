@@ -5,7 +5,7 @@
 
 namespace myapp {
 	FlowerModel::FlowerModel() :
-		count(512),
+		count(1024),
 		m_Flower(nullptr),
 		m_Stem(nullptr),
 		m_Leaf(nullptr),

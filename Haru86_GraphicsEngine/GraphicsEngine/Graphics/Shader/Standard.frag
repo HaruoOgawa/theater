@@ -11,6 +11,8 @@ uniform int _UseColor;
 uniform vec4 _Color;
 uniform int _UseLighting;
 uniform vec3 _LightDir;
+uniform int _UseEnvColor;
+uniform vec4 _EnvColor;
 
 void main(){
 	vec4 col=vec4(vec3(0.0),1.0);
@@ -26,12 +28,21 @@ void main(){
 		//col=vec4(uv.x,uv.y,0.0,1.0);
 	}
 
+	// 環境光
+	vec4 envColor = vec4(0.0,0.0,0.0,1.0);
+	if(_UseEnvColor == 1)
+	{
+		envColor = _EnvColor;
+	}
+
 	// ライティング
 	if(_UseLighting == 1)
 	{
 		vec3 lightDir=normalize(_LightDir);
 		float diff=max(0.0,dot(WorldNormal,lightDir));
 		col.rgb*=diff;
+
+		col.rgb+=envColor.rgb;
 
 		vec3 viewDir= -1.0*normalize(WorldVertexPos-CameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);

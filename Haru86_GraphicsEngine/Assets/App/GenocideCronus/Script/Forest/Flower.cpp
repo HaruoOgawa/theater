@@ -30,6 +30,8 @@ namespace myapp
         };
         cal_flower_cs = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, "", "", "", "", "", GPU_Flower_Cal_Flowers_comp);
 
+        m_FlowerTRS->m_scale = glm::vec3(0.333f);
+
         //
         Start();
 	}

@@ -17,9 +17,13 @@ namespace myapp
 	}
 
 	void Forest::Start() {
+		// 花
 		m_FlowerModel = std::make_shared<FlowerModel>();
+		
+		// 木
 		m_LTreeModel = std::make_shared<LTreeModel>();
 
+		// エナジーボール
 		std::string EnergyBall_frag = {
 			#include "../../Shader/Forest/EnergyBall.frag"
 		};
@@ -28,6 +32,11 @@ namespace myapp
 		);
 		m_EnergyBall->meshComp->useZTest = false;
 		m_EnergyBall->meshComp->useAlphaTest = true;
+
+		// 地面
+
+
+		// Mountain(Scene4のものを背景として流用)
 
 		// Not Use SSR
 		PostProcess::GetInstance()->m_UseSSR = false;
