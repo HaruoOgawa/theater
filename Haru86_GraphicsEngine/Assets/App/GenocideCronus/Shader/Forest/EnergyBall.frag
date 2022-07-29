@@ -92,6 +92,7 @@ void main(){
     pi=float(i);
     if(abs(d)<dmin||t>100.0)break;
     t+=d;
+    acc+=exp(-3.0*d);
   }
  
   if(abs(d)<dmin)
@@ -103,7 +104,8 @@ void main(){
     }
     else
     {
-        vec3 col=vec3(1.0)*10./pi;
+        //vec3 col=vec3(1.0)*10./pi;
+        vec3 col=acc*0.05*vec3(1.0);
         //vec3 col=vec3(1.0);
         gl_FragColor=vec4(col,1.0);
     }

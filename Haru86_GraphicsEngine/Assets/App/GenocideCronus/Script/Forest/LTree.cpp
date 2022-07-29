@@ -110,7 +110,7 @@ namespace myapp {
 		// ***[***[***]***[***]***]***
 		// ***[***[***[***]***]***[***[***]***[***]***]***]***
 		
-		Console::Log("m_LStructure: %s\n", m_LStructure.c_str());
+		//Console::Log("m_LStructure: %s\n", m_LStructure.c_str());
 
 		//
 		for (const auto& LWord : m_LStructure)
