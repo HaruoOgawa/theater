@@ -110,7 +110,7 @@ namespace myapp {
 		// ***[***[***]***[***]***]***
 		// ***[***[***[***]***]***[***[***]***[***]***]***]***
 		
-		Console::Log("m_LStructure: %s\n", m_LStructure.c_str());
+		//Console::Log("m_LStructure: %s\n", m_LStructure.c_str());
 
 		//
 		for (const auto& LWord : m_LStructure)
@@ -387,12 +387,16 @@ namespace myapp {
 		m_TreeMaterial->SetMatrixUniform("MMatrix", m_TreeTRS->m_mMatrix);
 		m_TreeMaterial->SetMatrixUniform("VMatrix", m_TreeTRS->m_vMatrix);
 		m_TreeMaterial->SetMatrixUniform("PMatrix", m_TreeTRS->m_pMatrix);
-		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
-
+		
 		m_TreeMaterial->SetFloatUniform("_TreeMaxRadius", 0.05f);
 		m_TreeMaterial->SetIntUniform("_TreeSegment", 12);
 
+		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
 		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
+		m_TreeMaterial->SetIntUniform("_UseColor", 1);
+		m_TreeMaterial->SetVec4Uniform("_Color", glm::vec4(164.0f/255.0f, 124.0f / 255.0f, 92.0f / 255.0f, 1.0f));
+		m_TreeMaterial->SetIntUniform("_UseEnvColor", 1);
+		m_TreeMaterial->SetVec4Uniform("_EnvColor", glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 
 		//m_TreeMesh->Draw(GL_LINES);
 		m_TreeMesh->DrawInstancedWithMesh(128, GL_LINES);
