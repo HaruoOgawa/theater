@@ -210,7 +210,8 @@ vec4 RenderingCloud(vec3 ro,vec3 rd,float dmax,vec4 incol)
         if(d>dmax)
         {
             vec4 lcol = vec4( vec3(mix(0.0,1.0,f)) ,f*1.2);
-            lcol.a*=0.4;
+            //lcol.a*=0.4;
+            lcol.a*=0.05;
             lcol.rgb*=lcol.a;
             
             col+=lcol*(1.0-col.a);
