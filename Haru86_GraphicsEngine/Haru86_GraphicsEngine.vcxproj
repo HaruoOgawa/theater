@@ -425,6 +425,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTree.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\Mountain\Mountain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Forest.cpp" />
@@ -457,6 +458,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTree.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\Mountain\Mountain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\BillWindow.frag" />
@@ -471,6 +473,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\GlowCave.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\MandelboxSample.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\Mountain\Mountain.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity.vert" />

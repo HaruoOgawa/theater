@@ -11,6 +11,7 @@
 #include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
 #include "Assets/App/GenocideCronus/Script/SacredLake.h"
 #include "Assets/App/GenocideCronus/Script/Forest/Forest.h"
+#include "Assets/App/GenocideCronus/Script/Mountain/Mountain.h"
 
 #include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 
@@ -54,7 +55,9 @@ void GenocideCronus::Start() {
 	// シーンオブジェクトの初期化
 	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 	//m_SacredLake = std::make_shared<myapp::SacredLake>();
-	m_Forest = std::make_shared<myapp::Forest>();
+	//m_Forest = std::make_shared<myapp::Forest>();
+	m_Mountain = std::make_shared<myapp::Mountain>();
+
 	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
 	// ポストプロセスの設定
@@ -107,14 +110,14 @@ void GenocideCronus::Update() {
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
 	);
 
-	m_Forest->Update();
+	//m_Forest->Update();
 }
 
 void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
 	//m_SacredLake->Draw();
-	m_Forest->Draw();
+	//m_Forest->Draw();
 	//m_SSR_Test->Draw();
 }
 
