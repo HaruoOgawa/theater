@@ -55,8 +55,8 @@ void GenocideCronus::Start() {
 	// シーンオブジェクトの初期化
 	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
 	//m_SacredLake = std::make_shared<myapp::SacredLake>();
-	//m_Forest = std::make_shared<myapp::Forest>();
-	m_Mountain = std::make_shared<myapp::Mountain>();
+	m_Forest = std::make_shared<myapp::Forest>();
+	//m_Mountain = std::make_shared<myapp::Mountain>();
 
 	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
 
@@ -104,20 +104,21 @@ void GenocideCronus::Update() {
 	
 	float r = 10.0f;
 	m_CameraTransform->m_position = glm::vec3( // Forest
-		glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
-		//1.0f,
+		//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
+		glm::cos(0.1f) * r,
 		r,
-		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+		//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+		glm::sin(0.1f) * r
 	);
 
-	//m_Forest->Update();
+	m_Forest->Update();
 }
 
 void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
 	//m_SacredLake->Draw();
-	//m_Forest->Draw();
+	m_Forest->Draw();
 	//m_SSR_Test->Draw();
 }
 

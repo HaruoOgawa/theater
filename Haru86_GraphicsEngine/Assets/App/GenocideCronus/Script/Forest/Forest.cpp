@@ -13,7 +13,8 @@ namespace myapp
 		m_FlowerModel(nullptr),
 		m_LTreeModel(nullptr),
 		m_EnergyBall(nullptr),
-		m_Ground(nullptr)
+		m_Ground(nullptr),
+		m_AroundMountain(nullptr)
 	{
 		Start();
 	}
@@ -35,7 +36,7 @@ namespace myapp
 		m_EnergyBall->meshComp->useZTest = false;
 		m_EnergyBall->meshComp->useAlphaTest = true;
 
-		/*// ’n–Ê
+		// ’n–Ê
 		m_Ground = std::make_shared<GameObject>(PrimitiveType::BOARD, RenderType::DefaultBuffer, RenderQueue::Background,
 			RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, shaderlib::ShaderLib::Standard_frag);
 		m_Ground->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
@@ -44,9 +45,17 @@ namespace myapp
 		{
 			m_Ground->meshComp->m_material->SetIntUniform("_UseColor", 1);
 			m_Ground->meshComp->m_material->SetVec4Uniform("_Color", glm::vec4(0.5f*glm::vec3(227.0 / 255.0, 206.0 / 255.0, 164.0 / 255.0), 1.0f));
-		};*/
+		};
 
 		// Mountain(Scene4‚Ì‚à‚Ì‚ð”wŒi‚Æ‚µ‚Ä—¬—p)
+		std::string MountainAround_frag = {
+			#include "../../Shader/Forest/MountainAround.frag"
+		};
+		m_AroundMountain = std::make_shared<GameObject>(PrimitiveType::BOARD, RenderType::DefaultBuffer, RenderQueue::Background,
+			RenderingSurfaceType::RAYMARCHING, shaderlib::ShaderLib::StandardRenderBoard_vert, MountainAround_frag);
+
+		m_AroundMountain->meshComp->useAlphaTest = false;
+		m_AroundMountain->meshComp->useZTest = false;
 
 		// Not Use SSR
 		PostProcess::GetInstance()->m_UseSSR = false;
