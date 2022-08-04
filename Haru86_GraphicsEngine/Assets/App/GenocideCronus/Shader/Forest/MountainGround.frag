@@ -102,7 +102,7 @@ float MountainMap(vec3 p)
    // p.z-=iTime*1000.0;
     float d = plane(p,vec4(0.0,1.0,0.0,2.0));
     float h = fbm(p/2000.0+vec3(vec2(1.0,-2.0),0.0),9).x;
-    h=100.0*h+60.0;
+    h=200.0*h+100.0;
     //h=2000.0*h+600.0;
     return d-h;
 }
@@ -110,7 +110,7 @@ float MountainMap(vec3 p)
 vec3 renderMountain(vec3 ro,vec3 rd,float dmax)
 {
     float d=1.0,t=0.0,i=0.0;
-    for(;++i<156.0 && (d>dmax );)
+    for(;++i<64.0 && (d>dmax );)
     {
         d=MountainMap(ro+rd*t);
         t+=d*0.175;

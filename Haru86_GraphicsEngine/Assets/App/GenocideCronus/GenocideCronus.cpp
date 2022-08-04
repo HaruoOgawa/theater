@@ -105,10 +105,10 @@ void GenocideCronus::Update() {
 	float r = 10.0f;
 	m_CameraTransform->m_position = glm::vec3( // Forest
 		//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
-		glm::cos(0.1f) * r,
+		glm::cos(0.0f) * r,
 		r,
 		//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
-		glm::sin(0.1f) * r
+		glm::sin(0.0f) * r
 	);
 
 	m_Forest->Update();
