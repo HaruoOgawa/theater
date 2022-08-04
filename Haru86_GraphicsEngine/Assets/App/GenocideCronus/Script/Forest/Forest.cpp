@@ -37,8 +37,12 @@ namespace myapp
 		m_EnergyBall->meshComp->useAlphaTest = true;
 
 		// ’n–Ê
+		std::string MountainGround_frag = {
+			#include "../../Shader/Forest/MountainGround.frag"
+		};
+
 		m_Ground = std::make_shared<GameObject>(PrimitiveType::BOARD, RenderType::DefaultBuffer, RenderQueue::Background,
-			RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, shaderlib::ShaderLib::Standard_frag);
+			RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, MountainGround_frag);
 		m_Ground->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_Ground->m_transform->m_scale = glm::vec3(500.0f);
 		m_Ground->meshComp->m_calllback = [this]() 
