@@ -16,7 +16,8 @@
 #include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 
 void GenocideCronus::Start() {
-	
+	m_DebugSceneID = 0;
+
 	// ƒJƒƒ‰
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(-4.0f, 1.1f, -4.0f), glm::vec3(0.0f), glm::vec3(1.0f));
 	//m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.5f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // SacredLake
@@ -65,6 +66,73 @@ void GenocideCronus::Update() {
 	float localTime = GraphicsMain::GetInstance()->time;
 	//Console::Log("localTime: %f\n", localTime);
 
+	m_DebugSceneID = 2;
+
+	if (m_DebugSceneID == 0) // City
+	{
+		//
+		//m_CameraTransform->m_center = glm::vec3(0.0f,5.0f,0.0f);
+		m_CameraTransform->m_center = glm::vec3(0.0f,10.0f,0.0f);
+
+		m_CameraTransform->m_position = glm::vec3(
+			glm::cos(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f,
+			10.0f,
+			glm::sin(GraphicsMain::GetInstance()->time * 0.001f) * 30.0f
+		);
+
+		//
+		m_ProceduralCity->Update();
+	}
+	else if (m_DebugSceneID == 1) // Forest
+	{
+		//
+		PostProcess::GetInstance()->m_UseSSR = true;
+
+		//
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+
+		float r = 10.0f;
+		m_CameraTransform->m_position = glm::vec3( // Forest
+			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
+			glm::cos(0.0f) * r,
+			r,
+			//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+			glm::sin(0.0f) * r
+		);
+
+		//
+		m_Forest->Update();
+	}
+	else if (m_DebugSceneID == 2) // Lake
+	{
+		//
+		m_CameraTransform->m_center = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		m_CameraTransform->m_position = glm::vec3( // SacredLake
+			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
+			0.5f,
+			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+		);
+
+		//
+		m_SacredLake->Update();
+	}
+	else if (m_DebugSceneID == 3) // Mountain
+	{
+		//
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+
+		float r = 10.0f;
+		m_CameraTransform->m_position = glm::vec3( // Forest
+			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
+			glm::cos(0.0f) * r,
+			r,
+			//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+			glm::sin(0.0f) * r
+		);
+	}
+
+
 	// ƒJƒƒ‰
 	/*GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*2.0f,
@@ -97,25 +165,25 @@ void GenocideCronus::Update() {
 		0.5f,
 		glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 5.0f
 	);*/
-	
-	float r = 10.0f;
-	m_CameraTransform->m_position = glm::vec3( // Forest
-		//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
-		glm::cos(0.0f) * r,
-		r,
-		//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
-		glm::sin(0.0f) * r
-	);
-
-	//m_Forest->Update();
 }
 
 void GenocideCronus::Draw() {
-	//
-	//m_ProceduralCity->Draw();
-	//m_SacredLake->Draw();
-	//m_Forest->Draw();
-	//m_Mountain->Draw();
+	if (m_DebugSceneID == 0)
+	{
+		m_ProceduralCity->Draw();
+	}
+	else if (m_DebugSceneID == 1)
+	{
+		m_Forest->Draw();
+	}
+	else if (m_DebugSceneID == 2)
+	{
+		m_SacredLake->Draw();
+	}
+	else if (m_DebugSceneID == 3)
+	{
+		m_Mountain->Draw();
+	}
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) {

@@ -120,7 +120,9 @@ namespace myapp {
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
 
 		//
+		m_Mandelbox->m_TRS->CalMatrix();
 		m_Mandelbox->Draw();
+		m_VolumetricCloud->m_TRS->CalMatrix();
 		m_VolumetricCloud->Draw();
 
 		//
