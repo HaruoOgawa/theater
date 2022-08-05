@@ -21,6 +21,7 @@ class GenocideCronus
 
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
+    unsigned int m_DebugSceneIndex;
     
     // シーンオブジェクト
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
