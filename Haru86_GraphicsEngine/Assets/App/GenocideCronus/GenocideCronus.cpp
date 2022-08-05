@@ -29,11 +29,6 @@ void GenocideCronus::Start() {
 	//m_CameraTransform->m_center = glm::vec3(0.0f,10.0f,0.0f);
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
-	// サウンド
-	std::string soundCode = {
-		#include "Shader/Sound.frag"
-	};
-
 	// 背景色
 	//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 	GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
@@ -53,22 +48,23 @@ void GenocideCronus::Start() {
 //#endif // _DEBUG
 
 	// シーンオブジェクトの初期化
-	//m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
-	//m_SacredLake = std::make_shared<myapp::SacredLake>();
+	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	m_SacredLake = std::make_shared<myapp::SacredLake>();
 	m_Forest = std::make_shared<myapp::Forest>();
-	//m_Mountain = std::make_shared<myapp::Mountain>();
-
-	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
+	m_Mountain = std::make_shared<myapp::Mountain>();
 
 	// ポストプロセスの設定
-	//PostProcess::GetInstance()->m_UsePostProcess = true;
-	//PostProcess::GetInstance()->m_UseBloom = true;
+	PostProcess::GetInstance()->m_UsePostProcess = true;
+	PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
 	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
 
 }
 
 void GenocideCronus::Update() {
+	float localTime = GraphicsMain::GetInstance()->time;
+	//Console::Log("localTime: %f\n", localTime);
+
 	// カメラ
 	/*GraphicsMain::GetInstance()->m_CameraTransform->m_position = glm::vec3(
 		glm::cos(GraphicsMain::GetInstance()->time*0.001f)*2.0f,
@@ -111,15 +107,15 @@ void GenocideCronus::Update() {
 		glm::sin(0.0f) * r
 	);
 
-	m_Forest->Update();
+	//m_Forest->Update();
 }
 
 void GenocideCronus::Draw() {
 	//
 	//m_ProceduralCity->Draw();
 	//m_SacredLake->Draw();
-	m_Forest->Draw();
-	//m_SSR_Test->Draw();
+	//m_Forest->Draw();
+	//m_Mountain->Draw();
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) {

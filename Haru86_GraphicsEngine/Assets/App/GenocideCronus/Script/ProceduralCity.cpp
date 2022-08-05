@@ -6,6 +6,7 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/GameObject.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
@@ -36,10 +37,9 @@ namespace myapp {
 			#include "../Shader/MandelboxSample.frag"
 		};
 
-		m_Mandelbox = std::make_shared<GameObject>(
+		m_Mandelbox = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
@@ -53,6 +53,10 @@ namespace myapp {
 	void ProceduralCity::Draw() {
 		//Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 
+		//
+		m_Mandelbox->Draw();
+
+		//
 		m_BillMaterial4Instanced->SetActive();
 		m_transform->CalMatrix();
 		m_BillMaterial4Instanced->SetMatrixUniform("MVPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix * m_transform->m_mMatrix);

@@ -9,31 +9,26 @@ class GameObject;
 class Mesh;
 class Material;
 class TimelineAnimationClip;
+class TransformComponent;
 
 class MeshRendererComponent
 {
 public:
-    MeshRendererComponent(class GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
-        const std::string& vert, const std::string& frag, const std::string& geom,
-        const std::string& tc, const std::string& tv, const std::string& cs, std::function<void(void)> calllback = []() {});
+    MeshRendererComponent(const std::shared_ptr<TransformComponent>& TRS,PrimitiveType primType, RenderingSurfaceType SurfaceType,
+        std::string vert, std::string frag, std::string geom="",
+        std::string tc = "", std::string tv = "", std::string cs = "", std::function<void(void)> calllback = []() {});
     ~MeshRendererComponent()=default;
 
     void Draw();
     
-    std::vector<TimelineAnimationClip*> animationClips;
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
-    class GameObject* myowner;
-    
+    std::shared_ptr<TransformComponent> m_TRS;
+
+    std::vector<TimelineAnimationClip*> animationClips;
     bool useZTest;
     bool useAlphaTest;
     RenderingSurfaceType m_SurfaceType;
     std::function<void(void)> m_calllback;
-
-    friend class GraphicsRenderer;
-    friend GameObject;
-
-private:
-    class GameObject* owner;
-    class GraphicsMain* game;
+    
 };

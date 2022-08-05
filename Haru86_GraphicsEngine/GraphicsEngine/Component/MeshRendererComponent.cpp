@@ -3,16 +3,15 @@
 #include "GraphicsEngine/GraphicsMain/CTimeline.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
-MeshRendererComponent::MeshRendererComponent(GameObject* o, PrimitiveType primType, RenderingSurfaceType SurfaceType,
-	const std::string& vert, const std::string& frag, const std::string& geom,
-	const std::string& tc, const std::string& tv, const std::string& cs, std::function<void(void)> calllback) : 
+MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComponent>& TRS, PrimitiveType primType, RenderingSurfaceType SurfaceType,
+	std::string vert, std::string frag, std::string geom,
+	std::string tc, std::string tv, std::string cs, std::function<void(void)> calllback) : 
 	m_mesh(nullptr), 
 	m_material(nullptr), 
-	myowner(o), 
+	m_TRS(TRS),
 	useZTest(true), 
-	owner(o), 
-	game(GraphicsMain::GetInstance()), 
 	m_calllback(calllback)
 {
 	m_SurfaceType = SurfaceType;
@@ -47,14 +46,14 @@ void MeshRendererComponent::Draw() {
 	}
 
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix * owner->m_transform->m_mMatrix);
-	m_material->SetMatrixUniform("MMatrix", owner->m_transform->m_mMatrix);
-	m_material->SetMatrixUniform("VMatrix", owner->m_transform->m_vMatrix);
-	m_material->SetMatrixUniform("PMatrix", owner->m_transform->m_pMatrix);
-	m_material->SetMatrixUniform("VPMatrix", owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix);
-	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(owner->m_transform->m_pMatrix * owner->m_transform->m_vMatrix));
-	m_material->SetFloatUniform("_time", game->time*0.001f);
-	m_material->SetFloatUniform("_deltaTime", game->deltaTime);
+	m_material->SetMatrixUniform("MVPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix * m_TRS->m_mMatrix);
+	m_material->SetMatrixUniform("MMatrix", m_TRS->m_mMatrix);
+	m_material->SetMatrixUniform("VMatrix", m_TRS->m_vMatrix);
+	m_material->SetMatrixUniform("PMatrix", m_TRS->m_pMatrix);
+	m_material->SetMatrixUniform("VPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix);
+	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(m_TRS->m_pMatrix * m_TRS->m_vMatrix));
+	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
+	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_material->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));

@@ -3,7 +3,7 @@
 #include "../Component/TransformComponent.h"
 #include "../Component/MeshRendererComponent.h"
 
-GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueue renderOrder,RenderingSurfaceType SurfaceType,
+GameObject::GameObject(const std::shared_ptr<TransformComponent>& TRS,PrimitiveType primType, RenderType renderType, RenderQueue renderOrder,RenderingSurfaceType SurfaceType,
 	std::string vert, std::string frag, std::string geom, std::string tc, std::string tv, std::string cs)
 	:  m_renderType(renderType),m_renderOrder(static_cast<int>(renderOrder)), animTime(0.0f), m_PrimitiveType(primType), m_SurfaceType(SurfaceType)
 {
@@ -25,5 +25,5 @@ GameObject::GameObject(PrimitiveType primType, RenderType renderType, RenderQueu
 
 	//
 	m_transform = std::make_shared<TransformComponent>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
-	meshComp =  std::make_shared<MeshRendererComponent>(this, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
+	meshComp =  std::make_shared<MeshRendererComponent>(TRS, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
 }

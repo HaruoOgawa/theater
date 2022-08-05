@@ -59,31 +59,29 @@ namespace myapp {
 		std::string VolumetricCloud_frag = {
 			#include "../Shader/VolumetricCloud.frag"
 		};
-		m_VolumetricCloud= std::make_shared<GameObject>(
+		m_VolumetricCloud= std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			VolumetricCloud_frag
 			);
-		m_VolumetricCloud->meshComp->useZTest = false;
+		m_VolumetricCloud->useZTest = false;
 
 		// Mandelbox
 		std::string MandelboxShader = {
 			#include "../Shader/SacredLake_Mandelbox.frag"
 		};
 
-		m_Mandelbox = std::make_shared<GameObject>(
+		m_Mandelbox = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
 			);
-		m_Mandelbox->meshComp->useAlphaTest = true;
-		m_Mandelbox->meshComp->useZTest = false;
+		m_Mandelbox->useAlphaTest = true;
+		m_Mandelbox->useZTest = false;
 
 		// GPU particle
 		std::string GPUVert = {
@@ -121,6 +119,11 @@ namespace myapp {
 		m_GPUMaterial->SetIntUniform("_NotUseNormal", 1);
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
 
+		//
+		m_Mandelbox->Draw();
+		m_VolumetricCloud->Draw();
+
+		//
 		if (GraphicsMain::GetInstance()->m_UsingCamera== GraphicsMain::GetInstance()->m_MainCamera) {
 			// Plane
 			m_ReflectPlaneMaterial->SetActive();

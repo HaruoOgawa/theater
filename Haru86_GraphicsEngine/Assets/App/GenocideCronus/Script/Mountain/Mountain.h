@@ -2,14 +2,18 @@
 #include <memory>
 #include <string>
 
-class GameObject;
+class MeshRendererComponent;
 
 namespace myapp {
 	class Mountain
 	{
-		std::shared_ptr<GameObject> m_MoutainObj;
+		std::shared_ptr<MeshRendererComponent> m_MoutainObj;
+
 	public:
 		Mountain();
 		virtual ~Mountain() = default;
+
+		void Update();
+		void Draw();
 	};
 }
