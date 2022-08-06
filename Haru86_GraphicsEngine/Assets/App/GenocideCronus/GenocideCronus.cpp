@@ -16,43 +16,18 @@
 #include "Assets/App/GenocideCronus/Script/SSR_Test.h"
 
 void GenocideCronus::Start() {
-	
+	//
 	m_DebugSceneIndex = 0;
 
 	// カメラ
-	if(m_DebugSceneIndex==2)m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.5f, 30.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // SacredLake
-	if (m_DebugSceneIndex == 1)m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(5.0f, 0.5f, 5.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // Forest
-	if (m_DebugSceneIndex == 0 || m_DebugSceneIndex == 3)m_CameraTransform = std::make_shared<TransformComponent>(glm::vec3(5.0f, 0.5f, 5.0f), glm::vec3(0.0f), glm::vec3(1.0f)); // City/Forest/Mountain
-	
-	if (m_DebugSceneIndex == 2)m_CameraTransform->m_center = glm::vec3(0.0f,0.0f,0.0f); // SacredLake
-	if (m_DebugSceneIndex == 0)m_CameraTransform->m_center = glm::vec3(0.0f,5.0f,0.0f); // City
-	if (m_DebugSceneIndex == 1 || m_DebugSceneIndex == 3) m_CameraTransform->m_center = glm::vec3(0.0f,10.0f,0.0f); // Forest/Mountain
-
+	m_CameraTransform = std::make_shared<TransformComponent>();
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
-	// 背景色
-	if (m_DebugSceneIndex == 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
-	if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
-	
-//#ifdef _DEBUG
-	/*// デバッグ用グリッド
-	m_GridPlane = std::make_shared<GameObject>(
-		PrimitiveType::BOARD,
-		RenderType::DefaultBuffer,
-		RenderQueue::Geometry,
-		RenderingSurfaceType::RASTERIZER,
-		shaderlib::ShaderLib::Standard_vert,
-		shaderlib::ShaderLib::GridPlane_frag
-		);
-	m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-	m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);*/
-//#endif // _DEBUG
-
 	// シーンオブジェクトの初期化
-	/*if (m_DebugSceneIndex == 0)*/m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
-	/*if (m_DebugSceneIndex == 2)*/m_SacredLake = std::make_shared<myapp::SacredLake>();
-	/*if (m_DebugSceneIndex == 1)*/m_Forest = std::make_shared<myapp::Forest>();
-	/*if (m_DebugSceneIndex == 3)*/m_Mountain = std::make_shared<myapp::Mountain>();
+	m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	m_SacredLake = std::make_shared<myapp::SacredLake>();
+	m_Forest = std::make_shared<myapp::Forest>();
+	m_Mountain = std::make_shared<myapp::Mountain>();
 
 	// ポストプロセスの設定
 	PostProcess::GetInstance()->m_UsePostProcess = true;
@@ -63,20 +38,30 @@ void GenocideCronus::Start() {
 }
 
 void GenocideCronus::Update() {
-	if(m_DebugSceneIndex!=2)PostProcess::GetInstance()->m_UseSSR = false;
+	//
+	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
+	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
-	// カメラ
-	if (m_DebugSceneIndex == 2)
+	//
+	if (m_DebugSceneIndex == 0) // City
 	{
-		m_CameraTransform->m_position = glm::vec3( // SacredLake
-			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
-			0.5f,
-			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
-		);
+		// 描画設定
+		PostProcess::GetInstance()->m_UseSSR = false;
+		// 背景色
+		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+
+		// カメラ
+		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
+		m_CameraTransform->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
 	}
-	
-	if (m_DebugSceneIndex == 1)
+	else if (m_DebugSceneIndex == 1)
 	{
+		// 描画設定
+		PostProcess::GetInstance()->m_UseSSR = false;
+		// 背景色
+		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+
+		// カメラ
 		float r = 10.0f;
 		m_CameraTransform->m_position = glm::vec3( // Forest
 			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
@@ -86,12 +71,39 @@ void GenocideCronus::Update() {
 			glm::sin(0.0f) * r
 		);
 
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+
+		// 処理更新
 		m_Forest->Update();
+	}
+	else if (m_DebugSceneIndex == 2) // Lake
+	{
+		// 描画設定
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
+
+		// カメラ
+		m_CameraTransform->m_center = glm::vec3(0.0f, 0.0f, 0.0f); // SacredLake
+
+		m_CameraTransform->m_position = glm::vec3( // SacredLake
+			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
+			0.5f,
+			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+		);
+	}
+	else if (m_DebugSceneIndex == 3) // Mountain
+	{
+		// 描画設定
+		PostProcess::GetInstance()->m_UseSSR = false;
+		// 背景色
+		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+
+		// カメラ
+		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
 	}
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
-
 	if (m_DebugSceneIndex == 0)m_ProceduralCity->Draw(IsRaymarching);
 	if (m_DebugSceneIndex == 2)m_SacredLake->Draw(IsRaymarching);
 	if (m_DebugSceneIndex == 1)m_Forest->Draw(IsRaymarching);
