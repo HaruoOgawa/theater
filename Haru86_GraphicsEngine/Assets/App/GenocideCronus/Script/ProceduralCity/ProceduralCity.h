@@ -16,9 +16,7 @@ namespace myapp {
 
 		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
 		std::shared_ptr<MeshRendererComponent> m_BillMeshRenderer4Instanced;
-		
-		// 
-		//std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
+		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

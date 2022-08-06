@@ -50,7 +50,7 @@ void GenocideCronus::Update() {
 		// •`‰æÝ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// ƒJƒƒ‰
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
@@ -61,7 +61,7 @@ void GenocideCronus::Update() {
 		// •`‰æÝ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// ƒJƒƒ‰
 		float r = 10.0f;
@@ -97,7 +97,7 @@ void GenocideCronus::Update() {
 		// •`‰æÝ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// ƒJƒƒ‰
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);

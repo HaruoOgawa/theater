@@ -33,7 +33,30 @@ namespace myapp {
 		//#endif // _DEBUG
 
 		//
-		m_BillMeshRenderer4Instanced = std::make_shared<MeshRendererComponent>(
+		{
+			// VertexDataを構築
+			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
+			BillMeshGenerator::Generate(VertexData, Dimention, Indices);
+			
+			for (const auto& Val : VertexData[0]){ Console::Log("Vertices Val: %f\n", Val); }
+			for (const auto& Val : VertexData[1]) { Console::Log("Normal Val: %f\n", Val); }
+			for (const auto& Val : Dimention) { Console::Log("Dimention Val: %d\n", Val); }
+			for (const auto& Val : Indices) { Console::Log("Indices Val: %d\n", Val); }
+
+			// ビルのレンダラーを構築
+			m_ProceduralBillRenderer = std::make_shared<MeshRendererComponent>(
+				std::make_shared<TransformComponent>(),
+				//PrimitiveType::SPHERE,
+				RenderingSurfaceType::RASTERIZER,
+				VertexData,Dimention,Indices,
+				shaderlib::ShaderLib::Standard_vert,
+				shaderlib::ShaderLib::Standard_frag
+			);
+		}
+		
+
+		//
+		/*m_BillMeshRenderer4Instanced = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::POINT,
 			RenderingSurfaceType::RASTERIZER, 
@@ -46,7 +69,7 @@ namespace myapp {
 			std::string(
 				#include "../../Shader/ProceduralCity/ProceduralCity.geom"
 			)
-		);
+		);*/
 
 		//// raymarching
 		//std::string MandelboxShader = {
@@ -73,7 +96,8 @@ namespace myapp {
 		}
 		else
 		{
-			m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
+			m_ProceduralBillRenderer->Draw();
+			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 		}
 	}
 }

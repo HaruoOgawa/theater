@@ -53,7 +53,7 @@ MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComp
 	}
 }
 
-void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int InstanceNum) {
+void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int InstanceNum, std::function<void(void)> TemporaryCallBack) {
 
 	if (useZTest) 
 	{
@@ -115,6 +115,9 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 
 	// Custom Uniform
 	m_calllback();
+
+	// Temporary Uniform
+	TemporaryCallBack();
 
 	//
 	if (IsInstancing)
