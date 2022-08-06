@@ -14,6 +14,6 @@ namespace myapp {
 		virtual ~Mountain() = default;
 
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }

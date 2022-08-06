@@ -77,11 +77,17 @@ namespace myapp
 		m_LTreeModel->Update();
 	}
 
-	void Forest::Draw() {
-		m_FlowerModel->Draw();
-		m_LTreeModel->Draw();
-		m_EnergyBall-> Draw();
-		m_Ground->Draw();
-		m_AroundMountain->Draw();
+	void Forest::Draw(bool IsRaymarching) {
+		if (IsRaymarching)
+		{
+			m_EnergyBall->Draw();
+			m_AroundMountain->Draw();
+		}
+		else
+		{
+			m_Ground->Draw();
+			m_FlowerModel->Draw();
+			m_LTreeModel->Draw();
+		}
 	}
 }

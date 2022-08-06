@@ -24,8 +24,11 @@ namespace myapp {
 
 	}
 
-	void Mountain::Draw()
+	void Mountain::Draw(bool IsRaymarching)
 	{
-		m_MoutainObj->Draw();
+		if (IsRaymarching)
+		{
+			m_MoutainObj->Draw();
+		}
 	}
 }

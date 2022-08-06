@@ -30,11 +30,6 @@ void GenocideCronus::Start() {
 
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
 
-	// サウンド
-	std::string soundCode = {
-		#include "Shader/Sound.frag"
-	};
-
 	// 背景色
 	if (m_DebugSceneIndex == 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 	if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
@@ -54,22 +49,22 @@ void GenocideCronus::Start() {
 //#endif // _DEBUG
 
 	// シーンオブジェクトの初期化
-	if (m_DebugSceneIndex == 0)m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
-	if (m_DebugSceneIndex == 2)m_SacredLake = std::make_shared<myapp::SacredLake>();
-	if (m_DebugSceneIndex == 1)m_Forest = std::make_shared<myapp::Forest>();
-	if (m_DebugSceneIndex == 3)m_Mountain = std::make_shared<myapp::Mountain>();
-
-	//m_SSR_Test = std::make_shared<myapp::SSR_Test>();
+	/*if (m_DebugSceneIndex == 0)*/m_ProceduralCity = std::make_shared<myapp::ProceduralCity>();
+	/*if (m_DebugSceneIndex == 2)*/m_SacredLake = std::make_shared<myapp::SacredLake>();
+	/*if (m_DebugSceneIndex == 1)*/m_Forest = std::make_shared<myapp::Forest>();
+	/*if (m_DebugSceneIndex == 3)*/m_Mountain = std::make_shared<myapp::Mountain>();
 
 	// ポストプロセスの設定
-	//PostProcess::GetInstance()->m_UsePostProcess = true;
-	//PostProcess::GetInstance()->m_UseBloom = true;
+	PostProcess::GetInstance()->m_UsePostProcess = true;
+	PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
 	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
 
 }
 
 void GenocideCronus::Update() {
+	if(m_DebugSceneIndex!=2)PostProcess::GetInstance()->m_UseSSR = false;
+
 	// カメラ
 	if (m_DebugSceneIndex == 2)
 	{
@@ -96,13 +91,13 @@ void GenocideCronus::Update() {
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
-	//
-	if (m_DebugSceneIndex == 0)m_ProceduralCity->Draw();
-	if (m_DebugSceneIndex == 2)m_SacredLake->Draw();
-	if (m_DebugSceneIndex == 1)m_Forest->Draw();
-	//m_SSR_Test->Draw();
+
+	if (m_DebugSceneIndex == 0)m_ProceduralCity->Draw(IsRaymarching);
+	if (m_DebugSceneIndex == 2)m_SacredLake->Draw(IsRaymarching);
+	if (m_DebugSceneIndex == 1)m_Forest->Draw(IsRaymarching);
+	if (m_DebugSceneIndex == 3)m_Mountain->Draw(IsRaymarching);
 }
 
-void GenocideCronus::Timeline(CTimeline* timeline) {
-
+void GenocideCronus::Timeline(CTimeline* timeline) 
+{
 }

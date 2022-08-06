@@ -50,23 +50,28 @@ namespace myapp {
 	{
 	}
 
-	void ProceduralCity::Draw() {
+	void ProceduralCity::Draw(bool IsRaymarching) {
 		//Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
 
-		//
-		m_Mandelbox->Draw();
+		if (IsRaymarching)
+		{
+			//
+			m_Mandelbox->Draw();
+		}
+		else
+		{
+			//
+			m_BillMaterial4Instanced->SetActive();
+			m_transform->CalMatrix();
+			m_BillMaterial4Instanced->SetMatrixUniform("MVPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix * m_transform->m_mMatrix);
+			m_BillMaterial4Instanced->SetMatrixUniform("MMatrix", m_transform->m_mMatrix);
+			m_BillMaterial4Instanced->SetMatrixUniform("VMatrix", m_transform->m_vMatrix);
+			m_BillMaterial4Instanced->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
+			m_BillMaterial4Instanced->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+			m_BillMaterial4Instanced->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
-		//
-		m_BillMaterial4Instanced->SetActive();
-		m_transform->CalMatrix();
-		m_BillMaterial4Instanced->SetMatrixUniform("MVPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix * m_transform->m_mMatrix);
-		m_BillMaterial4Instanced->SetMatrixUniform("MMatrix", m_transform->m_mMatrix);
-		m_BillMaterial4Instanced->SetMatrixUniform("VMatrix", m_transform->m_vMatrix);
-		m_BillMaterial4Instanced->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
-		m_BillMaterial4Instanced->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-		m_BillMaterial4Instanced->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		
-		m_BillMesh4Instanced->DrawInstancedWithMesh(1024, GL_POINTS);
-		//m_BillMesh4Instanced->Draw(GL_POINTS);
+			m_BillMesh4Instanced->DrawInstancedWithMesh(1024, GL_POINTS);
+			//m_BillMesh4Instanced->Draw(GL_POINTS);
+		}
 	}
 }

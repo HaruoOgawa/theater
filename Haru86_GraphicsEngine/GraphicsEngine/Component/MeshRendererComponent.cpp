@@ -19,24 +19,29 @@ MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComp
 	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv,cs);
 
 	// アルファブレンドの初期値
-	if (m_SurfaceType==RenderingSurfaceType::RASTERIZER) {
+	if (m_SurfaceType==RenderingSurfaceType::RASTERIZER)
+	{
 		useAlphaTest = true;
 	}
-	else {
+	else
+	{
 		useAlphaTest = false;
 	}
 }
 
 void MeshRendererComponent::Draw() {
 
-	if (useZTest == true) {
+	if (useZTest) 
+	{
 		glEnable(GL_DEPTH_TEST);
 	}
-	else if (useZTest == false) {
+	else
+	{
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	if (useAlphaTest) {
+	if (useAlphaTest)
+	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -44,6 +49,8 @@ void MeshRendererComponent::Draw() {
 	{
 		glDisable(GL_BLEND);
 	}
+
+	m_TRS->CalMatrix();
 
 	m_material->SetActive();
 	m_material->SetMatrixUniform("MVPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix * m_TRS->m_mMatrix);

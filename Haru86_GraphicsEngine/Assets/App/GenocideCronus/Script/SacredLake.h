@@ -41,6 +41,6 @@ namespace myapp {
 
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }

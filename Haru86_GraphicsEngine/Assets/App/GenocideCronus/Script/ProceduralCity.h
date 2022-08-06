@@ -23,7 +23,7 @@ namespace myapp {
 		virtual ~ProceduralCity()=default;
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }
 

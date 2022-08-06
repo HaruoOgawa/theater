@@ -365,7 +365,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 
 	// レイマーチングをレンダリングするのはデフォルトバッファのみ(リフレクションプローブでは無視)
 	//レイマーチングオブジェクトのカラーマップをレンダリング///////////////
-	if (mgame->raymarchingObjectList.size() > 0) {
+	if (IsDrawRay) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -374,16 +374,18 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		if (IsDrawRay) {
-			for (auto obj : mgame->raymarchingObjectList) {
-				obj->m_transform->CalMatrix();
-				obj->meshComp->Draw();
-			}
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
+
+		if (mgame->m_App) {
+			mgame->m_App->Draw(true);
 		}
 	}
 
 	//レイマーチングオブジェクトのデプスマップをレンダリング
-	if (mgame->raymarchingObjectList.size() > 0) {
+	if (IsDrawRay) {
 		GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
@@ -392,11 +394,13 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		if (IsDrawRay) {
-			for (auto obj : mgame->raymarchingObjectList) {
-				obj->m_transform->CalMatrix();
-				obj->meshComp->Draw();
-			}
+		for (auto obj : mgame->raymarchingObjectList) {
+			obj->m_transform->CalMatrix();
+			obj->meshComp->Draw();
+		}
+
+		if (mgame->m_App) {
+			mgame->m_App->Draw(true);
 		}
 	}
 	

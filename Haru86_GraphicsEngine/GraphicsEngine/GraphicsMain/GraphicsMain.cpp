@@ -99,7 +99,7 @@ void GraphicsMain::LoadData() {
 
 	//
 	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
-	//m_SoundPlayer->Play();
+	m_SoundPlayer->Play();
 }
 
 bool GraphicsMain::RunLoop() {

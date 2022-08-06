@@ -25,6 +25,6 @@ namespace myapp
 		~Forest() = default;
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }

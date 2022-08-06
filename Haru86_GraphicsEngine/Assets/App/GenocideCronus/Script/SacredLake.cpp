@@ -97,15 +97,15 @@ namespace myapp {
 
 		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 		m_GPUTRS = std::make_shared<TransformComponent>();
-
-		PostProcess::GetInstance()->m_UseSSR = true;
 	}
 
 	void SacredLake::Update() 
 	{
 	}
 
-	void SacredLake::Draw() {
+	void SacredLake::Draw(bool IsRaymarching) {
+		PostProcess::GetInstance()->m_UseSSR = true;
+
 		// GPU particle
 		/*m_GPUMaterial->SetActive();
 		m_GPUTRS->CalMatrix();
@@ -119,31 +119,34 @@ namespace myapp {
 		m_GPUMaterial->SetIntUniform("_NotUseNormal", 1);
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
 
-		//
-		m_Mandelbox->m_TRS->CalMatrix();
-		m_Mandelbox->Draw();
-		m_VolumetricCloud->m_TRS->CalMatrix();
-		m_VolumetricCloud->Draw();
+		if (IsRaymarching)
+		{
+			//
+			m_VolumetricCloud->Draw();
+			m_Mandelbox->Draw();
+		}
+		else
+		{
+			//
+			if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera) {
+				// Plane
+				m_ReflectPlaneMaterial->SetActive();
+				m_ReflectPlaneTRS->CalMatrix();
+				m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
+				m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+				m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+				m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
+				m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
 
-		//
-		if (GraphicsMain::GetInstance()->m_UsingCamera== GraphicsMain::GetInstance()->m_MainCamera) {
-			// Plane
-			m_ReflectPlaneMaterial->SetActive();
-			m_ReflectPlaneTRS->CalMatrix();
-			m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
-			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-			m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
+				m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
+				m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-			m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
-			m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-			
-			//m_ReflectPlaneMesh->Draw(GL_PATCHES);
-			m_ReflectPlaneMesh->Draw();
+				//m_ReflectPlaneMesh->Draw(GL_PATCHES);
+				m_ReflectPlaneMesh->Draw();
+			}
 		}
 	}
 }
