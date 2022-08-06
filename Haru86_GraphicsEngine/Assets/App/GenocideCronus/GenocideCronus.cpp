@@ -8,12 +8,12 @@
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
 
-#include "Assets/App/GenocideCronus/Script/ProceduralCity.h"
-#include "Assets/App/GenocideCronus/Script/SacredLake.h"
+#include "Assets/App/GenocideCronus/Script/ProceduralCity/ProceduralCity.h"
+#include "Assets/App/GenocideCronus/Script/SacredLake/SacredLake.h"
 #include "Assets/App/GenocideCronus/Script/Forest/Forest.h"
 #include "Assets/App/GenocideCronus/Script/Mountain/Mountain.h"
 
-#include "Assets/App/GenocideCronus/Script/SSR_Test.h"
+#include "Assets/App/GenocideCronus/Script/SSR_Test/SSR_Test.h"
 
 void GenocideCronus::Start() {
 	//
@@ -41,6 +41,8 @@ void GenocideCronus::Update() {
 	//
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
+
+	//m_DebugSceneIndex = 0;
 
 	//
 	if (m_DebugSceneIndex == 0) // City

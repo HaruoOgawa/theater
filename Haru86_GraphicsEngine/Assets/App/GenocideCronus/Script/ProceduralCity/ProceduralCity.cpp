@@ -20,21 +20,21 @@ namespace myapp {
 		//
 		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::POINT);
 		std::string ProceduralCity_vert = {
-			#include "../Shader/ProceduralCity.vert"
+			#include "../../Shader/ProceduralCity/ProceduralCity.vert"
 		};
 
 		std::string ProceduralCity_frag = {
-			#include "../Shader/ProceduralCity.frag"
+			#include "../../Shader/ProceduralCity/ProceduralCity.frag"
 		};
 
 		std::string ProceduralCity_geom = {
-			#include "../Shader/ProceduralCity.geom"
+			#include "../../Shader/ProceduralCity/ProceduralCity.geom"
 		};
 		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag, ProceduralCity_geom);
 
 		// raymarching
 		std::string MandelboxShader = {
-			#include "../Shader/MandelboxSample.frag"
+			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
 		};
 
 		m_Mandelbox = std::make_shared<MeshRendererComponent>(

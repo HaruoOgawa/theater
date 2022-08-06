@@ -24,23 +24,23 @@ namespace myapp {
 	void SacredLake::Start() {
 		// Object
 		std::string SacredLake_WaterReflection_vert = {
-			#include "../Shader/SacredLake_WaterReflection.vert"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.vert"
 		};
 
 		std::string SacredLake_WaterReflection_frag = {
-			#include "../Shader/SacredLake_WaterReflection.frag"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.frag"
 		};
 
 		std::string SacredLake_WaterReflection_tesc = {
-			#include "../Shader/SacredLake_WaterReflection.tesc"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tesc"
 		};
 
 		std::string SacredLake_WaterReflection_tese = {
-			#include "../Shader/SacredLake_WaterReflection.tese"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tese"
 		};
 
 		std::string SacredLake_WaterReflection_geom = {
-			#include "../Shader/SacredLake_WaterReflection.geom"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.geom"
 		};
 		
 		//m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
@@ -57,7 +57,7 @@ namespace myapp {
 
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
-			#include "../Shader/VolumetricCloud.frag"
+			#include "../../Shader/SacredLake/VolumetricCloud.frag"
 		};
 		m_VolumetricCloud= std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
@@ -70,7 +70,7 @@ namespace myapp {
 
 		// Mandelbox
 		std::string MandelboxShader = {
-			#include "../Shader/SacredLake_Mandelbox.frag"
+			#include "../../Shader/SacredLake/SacredLake_Mandelbox.frag"
 		};
 
 		m_Mandelbox = std::make_shared<MeshRendererComponent>(
@@ -85,13 +85,13 @@ namespace myapp {
 
 		// GPU particle
 		std::string GPUVert = {
-			#include "../Shader/SacredGPUParticle.vert"
+			#include "../../Shader/SacredLake/SacredGPUParticle.vert"
 		};
 		std::string GPUFrag = {
-			#include "../Shader/SacredGPUParticle.frag"
+			#include "../../Shader/SacredLake/SacredGPUParticle.frag"
 		};
 		std::string GPUGeom = {
-			#include "../Shader/SacredGPUParticle.geom"
+			#include "../../Shader/SacredLake/SacredGPUParticle.geom"
 		};
 		m_GPUMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUVert, GPUFrag, GPUGeom);
 
