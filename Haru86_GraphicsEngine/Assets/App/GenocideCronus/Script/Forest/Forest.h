@@ -2,6 +2,7 @@
 #include <memory>
 
 class GameObject;
+class MeshRendererComponent;
 
 namespace myapp 
 {
@@ -12,14 +13,18 @@ namespace myapp
 	{
 		std::shared_ptr<FlowerModel> m_FlowerModel;
 		std::shared_ptr<LTreeModel> m_LTreeModel;
-		std::shared_ptr<GameObject> m_EnergyBall;
-		std::shared_ptr<GameObject> m_Ground;
-		std::shared_ptr<GameObject> m_AroundMountain;
+
+		//std::shared_ptr<GameObject> m_EnergyBall;
+		std::shared_ptr<MeshRendererComponent> m_EnergyBall;
+		//std::shared_ptr<GameObject> m_Ground;
+		std::shared_ptr<MeshRendererComponent> m_Ground;
+		//std::shared_ptr<GameObject> m_AroundMountain;
+		std::shared_ptr<MeshRendererComponent> m_AroundMountain;
 	public:
 		Forest();
 		~Forest() = default;
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }

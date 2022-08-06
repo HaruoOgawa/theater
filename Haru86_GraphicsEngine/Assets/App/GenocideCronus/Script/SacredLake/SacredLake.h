@@ -5,6 +5,7 @@
 class Mesh;
 class Material;
 class TransformComponent;
+class MeshRendererComponent;
 class GameObject;
 class ReflectionProbe;
 
@@ -16,8 +17,10 @@ namespace myapp {
 		std::shared_ptr<ReflectionProbe> m_MonoDirRP;
 
 		// 
-		std::shared_ptr<GameObject> m_Mandelbox;
-		std::shared_ptr<GameObject> m_VolumetricCloud;
+		//std::shared_ptr<GameObject> m_Mandelbox;
+		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
+		//std::shared_ptr<GameObject> m_VolumetricCloud;
+		std::shared_ptr<MeshRendererComponent> m_VolumetricCloud;
 
 		//
 		std::shared_ptr<Material> m_ReflectPlaneMaterial;
@@ -38,6 +41,6 @@ namespace myapp {
 
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(bool IsRaymarching);
 	};
 }

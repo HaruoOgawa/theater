@@ -23,6 +23,7 @@ namespace myapp {
 	void SSR_Test::Start() {
 		//
 		m_Plane = std::make_shared<GameObject>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderType::DefaultBuffer,
 			RenderQueue::Geometry,
@@ -39,6 +40,7 @@ namespace myapp {
 
 		//
 		m_Obj0= std::make_shared<GameObject>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::SPHERE,
 			RenderType::DefaultBuffer,
 			RenderQueue::Geometry,
@@ -55,6 +57,7 @@ namespace myapp {
 
 		//
 		m_Obj1 = std::make_shared<GameObject>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::SPHERE,
 			RenderType::DefaultBuffer,
 			RenderQueue::Geometry,
@@ -71,6 +74,7 @@ namespace myapp {
 
 		//
 		m_Obj2 = std::make_shared<GameObject>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::SPHERE,
 			RenderType::DefaultBuffer,
 			RenderQueue::Geometry,

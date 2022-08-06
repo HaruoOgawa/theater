@@ -1,6 +1,6 @@
 R"(
 
-#version 430
+#version 410
 
 uniform sampler2D _BillWindowTex;
 uniform float _frameResolusion;

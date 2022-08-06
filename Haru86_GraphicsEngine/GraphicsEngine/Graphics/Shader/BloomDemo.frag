@@ -1,6 +1,6 @@
 R"(
 
-#version 430
+#version 410
 
 in vec2 uv;
 

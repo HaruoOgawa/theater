@@ -24,23 +24,23 @@ namespace myapp {
 	void SacredLake::Start() {
 		// Object
 		std::string SacredLake_WaterReflection_vert = {
-			#include "../Shader/SacredLake_WaterReflection.vert"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.vert"
 		};
 
 		std::string SacredLake_WaterReflection_frag = {
-			#include "../Shader/SacredLake_WaterReflection.frag"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.frag"
 		};
 
 		std::string SacredLake_WaterReflection_tesc = {
-			#include "../Shader/SacredLake_WaterReflection.tesc"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tesc"
 		};
 
 		std::string SacredLake_WaterReflection_tese = {
-			#include "../Shader/SacredLake_WaterReflection.tese"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tese"
 		};
 
 		std::string SacredLake_WaterReflection_geom = {
-			#include "../Shader/SacredLake_WaterReflection.geom"
+			#include "../../Shader/SacredLake/SacredLake_WaterReflection.geom"
 		};
 		
 		//m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
@@ -57,57 +57,55 @@ namespace myapp {
 
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
-			#include "../Shader/VolumetricCloud.frag"
+			#include "../../Shader/SacredLake/VolumetricCloud.frag"
 		};
-		m_VolumetricCloud= std::make_shared<GameObject>(
+		m_VolumetricCloud= std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			VolumetricCloud_frag
 			);
-		m_VolumetricCloud->meshComp->useZTest = false;
+		m_VolumetricCloud->useZTest = false;
 
 		// Mandelbox
 		std::string MandelboxShader = {
-			#include "../Shader/SacredLake_Mandelbox.frag"
+			#include "../../Shader/SacredLake/SacredLake_Mandelbox.frag"
 		};
 
-		m_Mandelbox = std::make_shared<GameObject>(
+		m_Mandelbox = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
 			);
-		m_Mandelbox->meshComp->useAlphaTest = true;
-		m_Mandelbox->meshComp->useZTest = false;
+		m_Mandelbox->useAlphaTest = true;
+		m_Mandelbox->useZTest = false;
 
 		// GPU particle
 		std::string GPUVert = {
-			#include "../Shader/SacredGPUParticle.vert"
+			#include "../../Shader/SacredLake/SacredGPUParticle.vert"
 		};
 		std::string GPUFrag = {
-			#include "../Shader/SacredGPUParticle.frag"
+			#include "../../Shader/SacredLake/SacredGPUParticle.frag"
 		};
 		std::string GPUGeom = {
-			#include "../Shader/SacredGPUParticle.geom"
+			#include "../../Shader/SacredLake/SacredGPUParticle.geom"
 		};
 		m_GPUMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUVert, GPUFrag, GPUGeom);
 
 		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
 		m_GPUTRS = std::make_shared<TransformComponent>();
-
-		PostProcess::GetInstance()->m_UseSSR = true;
 	}
 
 	void SacredLake::Update() 
 	{
 	}
 
-	void SacredLake::Draw() {
+	void SacredLake::Draw(bool IsRaymarching) {
+		PostProcess::GetInstance()->m_UseSSR = true;
+
 		// GPU particle
 		/*m_GPUMaterial->SetActive();
 		m_GPUTRS->CalMatrix();
@@ -121,24 +119,34 @@ namespace myapp {
 		m_GPUMaterial->SetIntUniform("_NotUseNormal", 1);
 		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
 
-		if (GraphicsMain::GetInstance()->m_UsingCamera== GraphicsMain::GetInstance()->m_MainCamera) {
-			// Plane
-			m_ReflectPlaneMaterial->SetActive();
-			m_ReflectPlaneTRS->CalMatrix();
-			m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
-			m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
-			m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-			m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-			m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-			m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
+		if (IsRaymarching)
+		{
+			//
+			m_VolumetricCloud->Draw();
+			m_Mandelbox->Draw();
+		}
+		else
+		{
+			//
+			if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera) {
+				// Plane
+				m_ReflectPlaneMaterial->SetActive();
+				m_ReflectPlaneTRS->CalMatrix();
+				m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
+				m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
+				m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
+				m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+				m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
+				m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
 
-			m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
-			m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-			
-			//m_ReflectPlaneMesh->Draw(GL_PATCHES);
-			m_ReflectPlaneMesh->Draw();
+				m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
+				m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+				//m_ReflectPlaneMesh->Draw(GL_PATCHES);
+				m_ReflectPlaneMesh->Draw();
+			}
 		}
 	}
 }

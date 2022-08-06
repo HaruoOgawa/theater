@@ -44,7 +44,8 @@ void PolygonRaymarchingMixer::Draw(bool IsDepthMix) {
 		
 	}
 	
-	if (GraphicsMain::GetInstance()->raymarchingObjectList.size() > 0) {
+	//if (GraphicsMain::GetInstance()->raymarchingObjectList.size() > 0) 
+	{
 		//raymarching_frameTexture
 		if (GraphicsRenderer::GetInstance()->raymarching_frameTexture != nullptr) {
 			GraphicsRenderer::GetInstance()->raymarching_frameTexture->SetActive(GL_TEXTURE2);
@@ -58,9 +59,9 @@ void PolygonRaymarchingMixer::Draw(bool IsDepthMix) {
 			
 		}
 	}
-	else {
+	/*else {
 		m_material->SetFloatUniform("_existRaymarching", 1.0);
-	}
+	}*/
 	
 	//polygon_normalTexture
 	if (GraphicsRenderer::GetInstance()->polygon_normalTexture != nullptr) {

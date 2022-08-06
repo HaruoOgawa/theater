@@ -12,7 +12,7 @@ class GameObject
 {
 	PrimitiveType m_PrimitiveType;
 public:
-	GameObject(PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, 
+	GameObject(const std::shared_ptr<TransformComponent>& TRS,PrimitiveType primType, RenderType renderType=RenderType::DefaultBuffer, 
 		RenderQueue renderOrder=RenderQueue::Geometry, RenderingSurfaceType SurfaceType = RenderingSurfaceType::RASTERIZER,
 		std::string vert = shaderlib::ShaderLib::Standard_vert,std::string frag = shaderlib::ShaderLib::Standard_frag,std::string geom = "",std::string tc = "",std::string tv="",std::string cs="");
 
@@ -26,4 +26,3 @@ public:
 private:
 	RenderType m_renderType;
 };
-

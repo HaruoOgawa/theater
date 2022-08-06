@@ -8,6 +8,7 @@
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Sound/SoundPlayer.h"
+#include "GraphicsEngine/Component/TransformComponent.h"
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -78,7 +79,12 @@ void GraphicsMain::LoadData() {
 
 	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
 	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(PrimitiveType::BOARD, RenderType::FrameBuffer,RenderQueue::UI,RenderingSurfaceType::RASTERIZER,
+		renderBoard = std::make_unique<GameObject>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD, 
+			RenderType::FrameBuffer,
+			RenderQueue::UI,
+			RenderingSurfaceType::RASTERIZER,
 			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
 	}
 
@@ -93,7 +99,7 @@ void GraphicsMain::LoadData() {
 
 	//
 	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
-	//m_SoundPlayer->Play();
+	m_SoundPlayer->Play();
 }
 
 bool GraphicsMain::RunLoop() {
