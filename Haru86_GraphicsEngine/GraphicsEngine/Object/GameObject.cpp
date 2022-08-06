@@ -24,6 +24,6 @@ GameObject::GameObject(const std::shared_ptr<TransformComponent>& TRS,PrimitiveT
 	}
 
 	//
-	m_transform = std::make_shared<TransformComponent>(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1.0f, 1.0f, 1.0f));
+	m_transform = TRS;
 	meshComp =  std::make_shared<MeshRendererComponent>(TRS, primType, SurfaceType, vert, frag, geom, tc, tv,cs);
 }

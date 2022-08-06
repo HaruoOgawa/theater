@@ -7,43 +7,59 @@
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
+#include "BillMeshGenerator.h"
 
 namespace myapp {
-	ProceduralCity::ProceduralCity():
-		m_transform(std::make_shared<TransformComponent>())
+	ProceduralCity::ProceduralCity()
 	{
 		Start();
 	}
 
 	void ProceduralCity::Start() 
 	{	
+		//#ifdef _DEBUG
+		// デバッグ用グリッド
+		m_GridPlane = std::make_shared<GameObject>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderType::DefaultBuffer,
+			RenderQueue::Geometry,
+			RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert,
+			shaderlib::ShaderLib::GridPlane_frag
+			);
+		m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
+		m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);
+		//#endif // _DEBUG
+
 		//
-		m_BillMesh4Instanced = std::make_shared<Mesh>(PrimitiveType::POINT);
-		std::string ProceduralCity_vert = {
-			#include "../../Shader/ProceduralCity/ProceduralCity.vert"
-		};
+		m_BillMeshRenderer4Instanced = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::POINT,
+			RenderingSurfaceType::RASTERIZER, 
+			std::string(
+				#include "../../Shader/ProceduralCity/ProceduralCity.vert"
+			),
+			std::string(
+				#include "../../Shader/ProceduralCity/ProceduralCity.frag"
+			),
+			std::string(
+				#include "../../Shader/ProceduralCity/ProceduralCity.geom"
+			)
+		);
 
-		std::string ProceduralCity_frag = {
-			#include "../../Shader/ProceduralCity/ProceduralCity.frag"
-		};
+		//// raymarching
+		//std::string MandelboxShader = {
+		//	#include "../../Shader/ProceduralCity/MandelboxSample.frag"
+		//};
 
-		std::string ProceduralCity_geom = {
-			#include "../../Shader/ProceduralCity/ProceduralCity.geom"
-		};
-		m_BillMaterial4Instanced = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, ProceduralCity_vert, ProceduralCity_frag, ProceduralCity_geom);
-
-		// raymarching
-		std::string MandelboxShader = {
-			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		};
-
-		m_Mandelbox = std::make_shared<MeshRendererComponent>(
+		/*m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
-			);
+			);*/
 	}
 
 	void ProceduralCity::Update() 
@@ -51,27 +67,13 @@ namespace myapp {
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {
-		//Console::Log("m_BillWindowGenerator->m_BillWindowTex->GetTextureID(): %d\n", m_BillWindowGenerator->m_BillWindowTex->GetTextureID());
-
 		if (IsRaymarching)
 		{
-			//
-			m_Mandelbox->Draw();
+			//m_Mandelbox->Draw();
 		}
 		else
 		{
-			//
-			m_BillMaterial4Instanced->SetActive();
-			m_transform->CalMatrix();
-			m_BillMaterial4Instanced->SetMatrixUniform("MVPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix * m_transform->m_mMatrix);
-			m_BillMaterial4Instanced->SetMatrixUniform("MMatrix", m_transform->m_mMatrix);
-			m_BillMaterial4Instanced->SetMatrixUniform("VMatrix", m_transform->m_vMatrix);
-			m_BillMaterial4Instanced->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
-			m_BillMaterial4Instanced->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-			m_BillMaterial4Instanced->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-
-			m_BillMesh4Instanced->DrawInstancedWithMesh(1024, GL_POINTS);
-			//m_BillMesh4Instanced->Draw(GL_POINTS);
+			m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 		}
 	}
 }

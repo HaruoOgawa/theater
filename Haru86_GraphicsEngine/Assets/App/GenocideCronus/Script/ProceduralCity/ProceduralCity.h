@@ -11,13 +11,14 @@ namespace myapp {
 
 	class ProceduralCity
 	{
-		//
-		//std::shared_ptr<GameObject> m_Mandelbox;
-		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
-		std::shared_ptr<Mesh>        m_BillMesh4Instanced;
-		std::shared_ptr<Material>    m_BillMaterial4Instanced;
-		std::shared_ptr<TransformComponent> m_transform;
+		// デバッグ用
+		std::shared_ptr<GameObject> m_GridPlane;
 
+		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
+		std::shared_ptr<MeshRendererComponent> m_BillMeshRenderer4Instanced;
+		
+		// 
+		//std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

@@ -391,6 +391,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Forest.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Flower.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.h" />
+    <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity\BillMeshGenerator.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
@@ -431,6 +432,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Forest.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Flower.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.cpp" />
+    <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity\BillMeshGenerator.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />

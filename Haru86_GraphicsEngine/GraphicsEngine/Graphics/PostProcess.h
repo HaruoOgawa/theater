@@ -20,7 +20,7 @@ class PostProcess
 	unsigned int m_BloomFrameBuffer;
 
 	// VPMatrixŽæ“¾—pTRS
-	std::shared_ptr<TransformComponent> m_TRS;
+	std::shared_ptr<TransformComponent> m_transform;
 
 public:
 	static void CreateInstance();

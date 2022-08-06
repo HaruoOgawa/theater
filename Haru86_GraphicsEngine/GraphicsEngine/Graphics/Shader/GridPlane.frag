@@ -1,6 +1,6 @@
 R"(
 
-#version 440
+#version 410
 
 in vec2 uv;
 in vec3 CameraPos;
