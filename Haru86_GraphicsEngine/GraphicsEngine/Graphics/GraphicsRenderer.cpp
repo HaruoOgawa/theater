@@ -313,7 +313,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	}
 
 	if (mgame->m_App) {
-		mgame->m_App->Draw();
+		mgame->m_App->Draw(false);
 	}
 
 	// MSAAカラーマップを通常のカラーマップにコピー
@@ -337,7 +337,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	}
 
 	if (mgame->m_App) {
-		mgame->m_App->Draw();
+		mgame->m_App->Draw(false);
 	}
 
 	// ポリゴンオブジェクトのノーマルマップをレンダリング
@@ -356,7 +356,7 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	}
 
 	if (mgame->m_App) {
-		mgame->m_App->Draw();
+		mgame->m_App->Draw(false);
 	}
 
 

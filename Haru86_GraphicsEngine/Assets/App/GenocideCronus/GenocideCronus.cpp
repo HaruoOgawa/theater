@@ -95,7 +95,7 @@ void GenocideCronus::Update() {
 	}
 }
 
-void GenocideCronus::Draw() {
+void GenocideCronus::Draw(bool IsRaymarching) {
 	//
 	if (m_DebugSceneIndex == 0)m_ProceduralCity->Draw();
 	if (m_DebugSceneIndex == 2)m_SacredLake->Draw();

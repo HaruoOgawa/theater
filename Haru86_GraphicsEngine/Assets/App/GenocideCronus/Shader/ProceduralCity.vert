@@ -1,6 +1,6 @@
 R"(
 
-#version 430
+#version 410
 
 uniform float _time;
 uniform float _deltaTime;

@@ -1,6 +1,6 @@
 R"(
 
-#version 430
+#version 410
 
 out vec4 FragColor;
 
