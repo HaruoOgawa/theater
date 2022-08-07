@@ -16,6 +16,7 @@ layout(location=2)in vec4 billinfo;
 
 out vec3 v2tesc_normal;
 out vec4 v2tesc_billinfo;
+out float v2tesc_id;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 
@@ -113,6 +114,7 @@ void main(){
 	gl_Position=pos;
 	v2tesc_normal=normalize((vec4(normal,0.0)).xyz);
 	v2tesc_billinfo=billinfo;
+	v2tesc_id=id;
 }
 
 )"

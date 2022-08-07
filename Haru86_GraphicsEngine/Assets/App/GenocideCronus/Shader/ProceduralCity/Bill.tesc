@@ -6,18 +6,21 @@ layout(vertices=3)out;
 
 in vec3 v2tesc_normal[];
 in vec4 v2tesc_billinfo[];
+in float v2tesc_id[];
 
 out vec3 tesc2tese_normal[];
 out vec4 tesc2tese_billinfo[];
+out float tesc2tese_id[];
 
-float outLevel=4.0;
-float inLevel=2.0;
+float outLevel=32.0;
+float inLevel=16.0;
 
 void main(){
 	gl_out[gl_InvocationID].gl_Position=gl_in[gl_InvocationID].gl_Position;	
 	
 	tesc2tese_normal[gl_InvocationID]=v2tesc_normal[gl_InvocationID];
 	tesc2tese_billinfo[gl_InvocationID]=v2tesc_billinfo[gl_InvocationID];
+	tesc2tese_id[gl_InvocationID]=v2tesc_id[gl_InvocationID];
 
 	gl_TessLevelOuter[0]=outLevel;
 	gl_TessLevelOuter[1]=outLevel;

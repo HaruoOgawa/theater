@@ -2,7 +2,7 @@ R"(
 
 #version 410
 
-in float g2f_pid;
+in float g2f_id;
 in vec3 g2f_normal;
 in vec4 g2f_billinfo;
 in vec3 g2f_WorldVertexPos;
