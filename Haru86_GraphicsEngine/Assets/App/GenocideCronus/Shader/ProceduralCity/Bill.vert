@@ -41,7 +41,8 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 
 void main(){
 	// 基本パラメーター
-	float id = floor(_time);
+	//float id = floor(_time);
+	float id = float(gl_InstanceID);
 	vec4 pos=vec4(vertex,1.0);
 
 	// ビルデータを整理

@@ -102,12 +102,19 @@ namespace myapp {
 	{
 		// デバッグ用カメラ
 		//GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(10.0f, 1.0f, 10.0f);
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			3.0f,
 			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
+
+		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+			0.5f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			0.5f,
+			0.5f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+		);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {
@@ -117,7 +124,9 @@ namespace myapp {
 		}
 		else
 		{
-			m_ProceduralBillRenderer->Draw(GL_PATCHES);
+			//m_ProceduralBillRenderer->Draw(GL_PATCHES);
+			m_ProceduralBillRenderer->Draw(GL_PATCHES,true,256);
+
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 		}
 	}
