@@ -5,7 +5,7 @@ R"(
 in vec3 CameraPos;
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
-in vec4 v2f_billinfo;
+in vec4 g2f_billinfo;
 
 uniform int _UseColor;
 uniform vec4 _Color;
@@ -53,14 +53,14 @@ void main(){
 	}
 
 	// ‘‹
-	/*bool IsWindow = (v2f_billinfo.x == 1.0);
+	/*bool IsWindow = (g2f_billinfo.x == 1.0);
 	if(IsWindow)
 	{
 		col.rgb=vec3(0.0,0.0,1.0);
 		col.a=0.25;
 	}*/
 
-	col.rgb=WorldNormal;
+	//col.rgb=WorldNormal;
 
 	gl_FragColor=col;
 }

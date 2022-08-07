@@ -54,6 +54,9 @@ namespace myapp {
 				),
 				std::string(
 					#include "../../Shader/ProceduralCity/Bill.frag"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Bill.geom"
 				)
 			);
 		}

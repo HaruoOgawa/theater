@@ -14,15 +14,16 @@ layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
 layout(location=2)in vec4 billinfo;
 
-out vec2 uv;
-out vec3 CameraPos;
-out vec3 WorldVertexPos;
-out vec3 WorldNormal;
-out vec4 v2f_billinfo;
+out vec3 v2g_CameraPos;
+out vec3 v2g_WorldVertexPos;
+out vec3 v2g_WorldNormal;
+out vec4 v2g_billinfo;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 
 const float VerDelimiterNum = 10.0;
+const float BillRadius = 5.0;
+const float AdjustVal = 0.1;
 
 // hash --> https://www.shadertoy.com/view/4dffRH
 vec3 hash( vec3 p ) // replace this by something better. really. do
@@ -32,6 +33,11 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 			  dot(p,vec3(113.5,271.9,124.6)));
 
 	return -1.0 + 2.0*fract(sin(p)*43758.5453123);
+}
+
+ float rand(vec2 st)
+{
+    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void main(){
@@ -90,25 +96,27 @@ void main(){
 	}
 
 	// 乱数で全体の高さ・幅を決める
-	vec3 noise2 = hash(vec3(0.11195,id+id+9.4,id-63.14));
-	noise2=noise2*0.5+0.5;
-	noise2+=1.0;
+	{
+		vec3 noise2 = hash(vec3(0.11195,id+id+9.4,id-63.14));
+		noise2=noise2*0.5+0.5;
+		noise2+=1.0;
 
-	mat4 ScaleMatrix = mat4(
-		vec4(noise2.x,0.0,0.0,0.0),
-		vec4(0.0,noise2.y,0.0,0.0),
-		vec4(0.0,0.0,noise2.x,0.0),
-		vec4(0.0,0.0,0.0,1.0)
-	);
+		mat4 ScaleMatrix = mat4(
+			vec4(noise2.x,0.0,0.0,0.0),
+			vec4(0.0,noise2.y,0.0,0.0),
+			vec4(0.0,0.0,noise2.x,0.0),
+			vec4(0.0,0.0,0.0,1.0)
+		);
 
-	pos = ScaleMatrix * pos;
+		pos = ScaleMatrix * pos;
+	}
 
 	// アウトプット
-	gl_Position=MVPMatrix*pos;
-	CameraPos=_CameraPos;
-	WorldVertexPos=(MMatrix*pos).xyz;
-	WorldNormal=normalize((MMatrix*vec4(normal,0.0)).xyz);
-	v2f_billinfo=billinfo;
+	gl_Position=pos;
+	v2g_CameraPos=_CameraPos;
+	v2g_WorldVertexPos=(pos).xyz;
+	v2g_WorldNormal=normalize((vec4(normal,0.0)).xyz);
+	v2g_billinfo=billinfo;
 }
 
 )"
