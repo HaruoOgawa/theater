@@ -23,7 +23,7 @@ class Mesh
 {
 public:
 	explicit Mesh(PrimitiveType primType);
-	Mesh(std::vector<std::vector<float>> VertexData,std::vector<int> Dimention,std::vector<unsigned short> Indices);
+	Mesh(const std::vector<std::vector<float>>& VertexData, const std::vector<int>& Dimention, const std::vector<unsigned short>& Indices);
 	~Mesh() = default;
 
 	void Draw(GLenum DrawVertexWay= GL_TRIANGLES);

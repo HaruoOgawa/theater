@@ -8,9 +8,13 @@ class Mesh;
 namespace myapp {
 	class BillMeshGenerator
 	{
+		unsigned int m_LastIndex;
 	private:
-		static void PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix);
+		void PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
+			bool IsWindow);
 	public:
-		static void Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
+		BillMeshGenerator() = default;
+		virtual ~BillMeshGenerator() = default;
+		void Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 	};
 }

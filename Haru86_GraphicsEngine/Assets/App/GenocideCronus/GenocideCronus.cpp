@@ -16,9 +16,6 @@
 #include "Assets/App/GenocideCronus/Script/SSR_Test/SSR_Test.h"
 
 void GenocideCronus::Start() {
-	//
-	m_DebugSceneIndex = 0;
-
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
@@ -38,23 +35,27 @@ void GenocideCronus::Start() {
 }
 
 void GenocideCronus::Update() {
-	//
+	// 時間
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
 	m_DebugSceneIndex = 0;
 
-	//
+	// シーン制御
 	if (m_DebugSceneIndex == 0) // City
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// 背景色
-		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 
 		// カメラ
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
 		m_CameraTransform->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+
+		// 更新処理
+		m_ProceduralCity->Update();
 	}
 	else if (m_DebugSceneIndex == 1)
 	{
@@ -75,7 +76,7 @@ void GenocideCronus::Update() {
 
 		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
 
-		// 処理更新
+		// 更新処理
 		m_Forest->Update();
 	}
 	else if (m_DebugSceneIndex == 2) // Lake

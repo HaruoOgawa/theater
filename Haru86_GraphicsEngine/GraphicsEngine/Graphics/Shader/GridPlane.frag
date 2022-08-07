@@ -24,6 +24,14 @@ void main(){
 	// Œ´“_‚ð•`‚¢‚Ä‚¨‚­
 	if(length(uv*2.0-1.0)<0.01)col=vec3(1.0,0.0,0.0);
 
+	// XZŽ²‚ð‘‚¢‚Ä‚¨‚­
+	vec2 rootst=uv*2.0-1.0;
+	col-=vec3(
+		(abs(rootst.y)<0.01)? 1.0 : 0.0,
+		0.0,
+		(abs(rootst.x)<0.01)? 1.0 : 0.0
+	);
+
 	//col*=(1.0-t);
 
 	//gl_FragColor=vec4(col,1.0-t);

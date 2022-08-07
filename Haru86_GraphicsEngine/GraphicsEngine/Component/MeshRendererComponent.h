@@ -19,7 +19,7 @@ public:
         std::string tc = "", std::string tv = "", std::string cs = "", std::function<void(void)> calllback = []() {});
     
     MeshRendererComponent(const std::shared_ptr<TransformComponent>& TRS, RenderingSurfaceType SurfaceType,
-        std::vector<std::vector<float>> VertexData, std::vector<int> Dimention, std::vector<unsigned short> Indices,
+        const std::vector<std::vector<float>>& VertexData, const std::vector<int>& Dimention, const std::vector<unsigned short>& Indices,
         std::string vert, std::string frag, std::string geom="",
         std::string tc = "", std::string tv = "", std::string cs = "", std::function<void(void)> calllback = []() {});
 

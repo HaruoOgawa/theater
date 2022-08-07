@@ -36,21 +36,25 @@ namespace myapp {
 		{
 			// VertexDataを構築
 			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
-			BillMeshGenerator::Generate(VertexData, Dimention, Indices);
+			BillMeshGenerator Generator;
+			Generator.Generate(VertexData, Dimention, Indices);
 			
-			for (const auto& Val : VertexData[0]){ Console::Log("Vertices Val: %f\n", Val); }
+			/*for (const auto& Val : VertexData[0]){ Console::Log("Vertices Val: %f\n", Val); }
 			for (const auto& Val : VertexData[1]) { Console::Log("Normal Val: %f\n", Val); }
 			for (const auto& Val : Dimention) { Console::Log("Dimention Val: %d\n", Val); }
-			for (const auto& Val : Indices) { Console::Log("Indices Val: %d\n", Val); }
+			for (const auto& Val : Indices) { Console::Log("Indices Val: %d\n", Val); }*/
 
 			// ビルのレンダラーを構築
 			m_ProceduralBillRenderer = std::make_shared<MeshRendererComponent>(
 				std::make_shared<TransformComponent>(),
-				//PrimitiveType::SPHERE,
 				RenderingSurfaceType::RASTERIZER,
 				VertexData,Dimention,Indices,
-				shaderlib::ShaderLib::Standard_vert,
-				shaderlib::ShaderLib::Standard_frag
+				std::string(
+					#include "../../Shader/ProceduralCity/Bill.vert"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Bill.frag"
+				)
 			);
 		}
 		
@@ -87,6 +91,14 @@ namespace myapp {
 
 	void ProceduralCity::Update() 
 	{
+		// デバッグ用カメラ
+		//GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(10.0f, 1.0f, 10.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			3.0f,
+			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
+		);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {
