@@ -57,6 +57,12 @@ namespace myapp {
 				),
 				std::string(
 					#include "../../Shader/ProceduralCity/Bill.geom"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Bill.tesc"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Bill.tese"
 				)
 			);
 		}
@@ -111,7 +117,7 @@ namespace myapp {
 		}
 		else
 		{
-			m_ProceduralBillRenderer->Draw();
+			m_ProceduralBillRenderer->Draw(GL_PATCHES);
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 		}
 	}

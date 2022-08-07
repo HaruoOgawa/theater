@@ -1,12 +1,13 @@
 R"(
 
-#version 330
+#version 410
 
-in vec3 CameraPos;
-in vec3 WorldVertexPos;
-in vec3 WorldNormal;
+in float g2f_pid;
+in vec3 g2f_normal;
 in vec4 g2f_billinfo;
+in vec3 g2f_WorldVertexPos;
 
+uniform vec3 _CameraPos;
 uniform int _UseColor;
 uniform vec4 _Color;
 uniform int _UseLighting;
@@ -38,17 +39,17 @@ void main(){
 	if(_UseLighting == 1)
 	{
 		vec3 lightDir=normalize(_LightDir);
-		//float diff=max(0.0,dot(WorldNormal,lightDir));
-		float diff=dot(WorldNormal,lightDir);
+		//float diff=max(0.0,dot(g2f_normal,lightDir));
+		float diff=dot(g2f_normal,lightDir);
 		diff+=0.2;
 
 		col.rgb*=diff;
 
 		col.rgb+=envColor.rgb;
 
-		vec3 viewDir= -1.0*normalize(WorldVertexPos-CameraPos);
+		vec3 viewDir= -1.0*normalize(g2f_WorldVertexPos-_CameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);
-		float spec=pow( max(0.0,dot(WorldNormal,halfDir)) , 60.0);
+		float spec=pow( max(0.0,dot(g2f_normal,halfDir)) , 60.0);
 		col.rgb+=vec3(1.0)*spec;
 	}
 
@@ -60,7 +61,7 @@ void main(){
 		col.a=0.25;
 	}*/
 
-	//col.rgb=WorldNormal;
+	//col.rgb=g2f_normal;
 
 	gl_FragColor=col;
 }

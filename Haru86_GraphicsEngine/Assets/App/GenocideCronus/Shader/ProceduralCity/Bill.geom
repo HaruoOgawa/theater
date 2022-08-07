@@ -1,6 +1,6 @@
 R"(
 
-#version 330
+#version 410
 
 layout(triangles) in;
 layout(triangle_strip,max_vertices=10) out;
@@ -13,39 +13,39 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _CameraPos;
 
-in vec3 v2g_CameraPos[];
-in vec3 v2g_WorldVertexPos[];
-in vec3 v2g_WorldNormal[];
-in vec4 v2g_billinfo[];
+in float t2g_pid[];
+in vec3 t2g_normal[];
+in vec4 t2g_billinfo[];
+in vec3 t2g_WorldVertexPos[];
 
-out vec3 CameraPos;
-out vec3 WorldVertexPos;
-out vec3 WorldNormal;
+out float g2f_pid;
+out vec3 g2f_normal;
 out vec4 g2f_billinfo;
+out vec3 g2f_WorldVertexPos;
 
 void Createvertex(vec3 offset)
 {
 	gl_Position = MVPMatrix * (gl_in[0].gl_Position + vec4(offset,0.0));
-	CameraPos = v2g_CameraPos[0];
-	WorldVertexPos = (MMatrix* gl_in[0].gl_Position).xyz;
-	WorldNormal = v2g_WorldNormal[0];
-	g2f_billinfo = v2g_billinfo[0];
+	g2f_pid=t2g_pid[0];
+	g2f_WorldVertexPos = (MMatrix* gl_in[0].gl_Position).xyz;
+	g2f_normal = t2g_normal[0];
+	g2f_billinfo = t2g_billinfo[0];
 
 	EmitVertex();
 
 	gl_Position = MVPMatrix * (gl_in[1].gl_Position + vec4(offset,0.0));
-	CameraPos = v2g_CameraPos[1];
-	WorldVertexPos = (MMatrix* gl_in[1].gl_Position).xyz;
-	WorldNormal = v2g_WorldNormal[1];
-	g2f_billinfo = v2g_billinfo[1];
+	g2f_pid=t2g_pid[1];
+	g2f_WorldVertexPos = (MMatrix* gl_in[1].gl_Position).xyz;
+	g2f_normal = t2g_normal[1];
+	g2f_billinfo = t2g_billinfo[1];
 
 	EmitVertex();
 
 	gl_Position = MVPMatrix * (gl_in[2].gl_Position + vec4(offset,0.0));
-	CameraPos = v2g_CameraPos[2];
-	WorldVertexPos = (MMatrix* gl_in[2].gl_Position).xyz;
-	WorldNormal = v2g_WorldNormal[2];
-	g2f_billinfo = v2g_billinfo[2];
+	g2f_pid=t2g_pid[2];
+	g2f_WorldVertexPos = (MMatrix* gl_in[2].gl_Position).xyz;
+	g2f_normal = t2g_normal[2];
+	g2f_billinfo = t2g_billinfo[2];
 
 	EmitVertex();
 
@@ -54,12 +54,6 @@ void Createvertex(vec3 offset)
 
 void main()
 {
-	// ビルデータを整理
-	bool IsWindow = (v2g_billinfo[0].x == 1.0);
-	bool IsVertical = (v2g_billinfo[0].y == 1.0);
-	float DilimiterOrder = v2g_billinfo[0].z;
-	bool IsXAxis = (v2g_billinfo[0].w == 1.0);
-
 	// 基礎
 	Createvertex(vec3(0.0));
 

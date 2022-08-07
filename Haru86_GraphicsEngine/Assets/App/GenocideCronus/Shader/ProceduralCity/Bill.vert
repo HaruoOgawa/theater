@@ -1,6 +1,6 @@
 R"(
 
-#version 330
+#version 410
 
 uniform mat4 MVPMatrix;
 uniform mat4 MMatrix;
@@ -14,10 +14,8 @@ layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
 layout(location=2)in vec4 billinfo;
 
-out vec3 v2g_CameraPos;
-out vec3 v2g_WorldVertexPos;
-out vec3 v2g_WorldNormal;
-out vec4 v2g_billinfo;
+out vec3 v2tesc_normal;
+out vec4 v2tesc_billinfo;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 
@@ -113,10 +111,8 @@ void main(){
 
 	// アウトプット
 	gl_Position=pos;
-	v2g_CameraPos=_CameraPos;
-	v2g_WorldVertexPos=(pos).xyz;
-	v2g_WorldNormal=normalize((vec4(normal,0.0)).xyz);
-	v2g_billinfo=billinfo;
+	v2tesc_normal=normalize((vec4(normal,0.0)).xyz);
+	v2tesc_billinfo=billinfo;
 }
 
 )"
