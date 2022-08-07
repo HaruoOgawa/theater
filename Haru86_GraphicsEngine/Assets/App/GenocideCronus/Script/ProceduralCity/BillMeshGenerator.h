@@ -11,7 +11,7 @@ namespace myapp {
 		unsigned int m_LastIndex;
 	private:
 		void PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
-			bool IsWindow);
+			bool IsWindow,bool IsVertical,float order,bool IsXAxis);
 	public:
 		BillMeshGenerator() = default;
 		virtual ~BillMeshGenerator() = default;

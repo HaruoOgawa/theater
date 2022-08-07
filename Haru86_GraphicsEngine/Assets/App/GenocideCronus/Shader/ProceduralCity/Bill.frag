@@ -5,7 +5,7 @@ R"(
 in vec3 CameraPos;
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
-in vec3 v2f_billinfo;
+in vec4 v2f_billinfo;
 
 uniform int _UseColor;
 uniform vec4 _Color;
@@ -38,7 +38,10 @@ void main(){
 	if(_UseLighting == 1)
 	{
 		vec3 lightDir=normalize(_LightDir);
-		float diff=max(0.0,dot(WorldNormal,lightDir));
+		//float diff=max(0.0,dot(WorldNormal,lightDir));
+		float diff=dot(WorldNormal,lightDir);
+		diff+=0.2;
+
 		col.rgb*=diff;
 
 		col.rgb+=envColor.rgb;
@@ -57,6 +60,7 @@ void main(){
 		col.a=0.25;
 	}*/
 
+	col.rgb=WorldNormal;
 
 	gl_FragColor=col;
 }

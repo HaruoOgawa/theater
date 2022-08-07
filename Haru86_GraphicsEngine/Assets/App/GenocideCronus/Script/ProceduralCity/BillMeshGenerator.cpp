@@ -27,7 +27,7 @@ namespace myapp {
 			TRS->m_scale = glm::vec3(BillRadius, BillHeight*1.1f, BillRadius);
 
 			TRS->CalMatrix();
-			PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix,false);
+			PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix,false,false,0,false);
 		}
 
 		// Y方向の区切り
@@ -41,7 +41,7 @@ namespace myapp {
 				TRS->m_position = glm::vec3(0.0f, YOffset, 0.0f);
 
 				TRS->CalMatrix();
-				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix,false);
+				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix,false,false, static_cast<float>(n),false);
 			}
 		}
 		
@@ -62,7 +62,7 @@ namespace myapp {
 				bool IsWindow = (n == -HalfNum || n == HalfNum);
 
 				//
-				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, IsWindow);
+				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, IsWindow,true,static_cast<float>(n),true);
 			}
 		}
 
@@ -83,18 +83,18 @@ namespace myapp {
 				bool IsWindow = (n == -HalfNum || n == HalfNum);
 
 				//
-				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, IsWindow);
+				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, IsWindow,true, static_cast<float>(n),false);
 			}
 		}
 
 		// データをまとめる
 		Dimention.push_back(3);
 		Dimention.push_back(3);
-		Dimention.push_back(3);
+		Dimention.push_back(4);
 	}
 
 	void BillMeshGenerator::PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
-		bool IsWindow) 
+		bool IsWindow, bool IsVertical, float order, bool IsXAxis)
 	{
 		// 頂点データは初期化されている前提である
 		if (VertexData.size() <= 0)return;
@@ -218,8 +218,9 @@ namespace myapp {
 			// BillInfo
 			// IsWindow
 			VertexData[2].push_back( (IsWindow) ? 1.0f : 0.0f );
-			VertexData[2].push_back(0.0f);
-			VertexData[2].push_back(0.0f);
+			VertexData[2].push_back( (IsVertical) ? 1.0f : 0.0f );
+			VertexData[2].push_back(order);
+			VertexData[2].push_back( (IsXAxis) ? 1.0f : 0.0f );
 		}
 		
 		// インデックスデータ
