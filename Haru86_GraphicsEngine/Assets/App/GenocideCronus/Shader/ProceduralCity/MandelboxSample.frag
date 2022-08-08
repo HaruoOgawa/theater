@@ -4,6 +4,8 @@ R"(
 uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
+uniform vec3 _WorldCameraPos;
+uniform vec3 _WorldCameraCenter;
 
 in vec2 uv;
 
@@ -125,7 +127,8 @@ void main(){
 
   }else if(_RenderingTarget==2.0){
     if(d>1.0)t=10.1;
-    vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
+    //vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
+    vec3 col=vec3(0.995);
     gl_FragColor=vec4(col,1);
   }
 

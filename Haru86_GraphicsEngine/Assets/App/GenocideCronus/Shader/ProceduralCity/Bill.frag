@@ -38,19 +38,24 @@ void main(){
 	// ライティング
 	if(_UseLighting == 1)
 	{
-		vec3 lightDir=normalize(_LightDir);
-		//float diff=max(0.0,dot(g2f_normal,lightDir));
-		float diff=dot(g2f_normal,lightDir);
-		diff+=0.2;
-
+		// diffuse
+		vec3 lightDir=-normalize(_LightDir-g2f_WorldVertexPos);
+		float diff=max(0.0,dot(g2f_normal,lightDir));
+		//float diff=dot(g2f_normal,lightDir);
 		col.rgb*=diff;
 
-		col.rgb+=envColor.rgb;
-
+		// Specular
 		vec3 viewDir= -1.0*normalize(g2f_WorldVertexPos-_CameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);
-		float spec=pow( max(0.0,dot(g2f_normal,halfDir)) , 60.0);
+		float spec=pow( max(0.0,dot(g2f_normal,halfDir)) , 64.0);
 		col.rgb+=vec3(1.0)*spec;
+
+		// Shadow
+
+		// Ambient
+		vec3 lightColor = vec3(1.0);
+		vec3 ambient = 0.15 * lightColor;
+		col.rgb += ambient;
 	}
 
 	// 窓
@@ -61,7 +66,7 @@ void main(){
 		col.a=0.25;
 	}*/
 
-	//col.rgb=g2f_normal;
+	//col.rgb=g2f_normal*0.5+0.5;
 
 	gl_FragColor=col;
 }

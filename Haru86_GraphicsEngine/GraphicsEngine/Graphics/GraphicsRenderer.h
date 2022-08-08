@@ -12,6 +12,7 @@ enum class ERenderTargetType {
 	COLOR_TEXTURE_BUFFER,
 	COLOR_RENDER_BUFFER,
 	REALTIME_CUBEMAP,
+	NONECOLORBUFFER,
 };
 
 enum class EDepthTargetType {

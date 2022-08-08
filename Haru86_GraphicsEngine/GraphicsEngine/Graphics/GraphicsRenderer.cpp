@@ -115,10 +115,15 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 GraphicsRenderer::~GraphicsRenderer() {
 	PostProcess::DestroyInstance();
 	if (polygon_frameBuffer != 0)glDeleteFramebuffers(1, &polygon_frameBuffer);
+	if (polygon_frameBuffer_MSAA != 0)glDeleteFramebuffers(1, &polygon_frameBuffer_MSAA);
 	if (polygon_depthBuffer != 0)glDeleteFramebuffers(1, &polygon_depthBuffer);
 	if (polygon_normalBuffer != 0)glDeleteFramebuffers(1, &polygon_normalBuffer);
 	if (raymarching_frameBuffer != 0)glDeleteFramebuffers(1, &raymarching_frameBuffer);
 	if (raymarching_depthBuffer != 0)glDeleteFramebuffers(1, &raymarching_depthBuffer);
+	if (p_r_BlendingBuffer != 0)glDeleteFramebuffers(1, &p_r_BlendingBuffer);
+	if (p_r_DepthBlendingBuffer != 0)glDeleteFramebuffers(1, &p_r_DepthBlendingBuffer);
+	if (m_PolygonPostProcess_FrameBuffer != 0)glDeleteFramebuffers(1, &m_PolygonPostProcess_FrameBuffer);
+	if (m_LatePostProcess_FrameBuffer != 0)glDeleteFramebuffers(1, &m_LatePostProcess_FrameBuffer);
 }
 
 bool GraphicsRenderer::Initialize(float width,float height) {
@@ -176,7 +181,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),nullptr, polygon_frameBuffer_MSAA,
 		GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
 	
-	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA);
+	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA,
+		GL_FLOAT,ERenderTargetType::NONECOLORBUFFER,EDepthTargetType::DEPTH_TEXTURE_BUFFER);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_normalTexture, polygon_normalBuffer, GL_RGBA, GL_RGBA);
@@ -212,7 +218,7 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 	glBindFramebuffer(GL_FRAMEBUFFER, fBuffer);
 
 	// デプスバッファ生成
-	if (DepthTargetType == EDepthTargetType::DEPTH_TEXTURE_BUFFER && RenderTargetType==ERenderTargetType::COLOR_RENDER_BUFFER)
+	if (DepthTargetType == EDepthTargetType::DEPTH_TEXTURE_BUFFER)
 	{
 		fTex->CreateForRendering(width, height, GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_FLOAT);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fTex->GetTextureID(), 0);
@@ -265,6 +271,11 @@ bool GraphicsRenderer::CreateFrameBuffer(int width, int height, std::shared_ptr<
 	else if (RenderTargetType == ERenderTargetType::REALTIME_CUBEMAP) // 動的キューブマップ
 	{
 		fTex->CreateForCubemap(width, height, internalformat, format, type);
+	}
+	else if (RenderTargetType == ERenderTargetType::NONECOLORBUFFER)
+	{
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
 	}
 	else {
 		return false;
@@ -320,14 +331,15 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	CopyFrameBuffer(polygon_frameBuffer_MSAA, polygon_frameBuffer, polygon_frameTexture->GetWidth(), polygon_frameTexture->GetHeight());
 
 	//ポリゴンオブジェクトをデプスマップをレンダリング
-	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
+	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
+	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_depthBuffer);
 	glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -370,7 +382,8 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_frameBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
@@ -390,7 +403,8 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glBindFramebuffer(GL_FRAMEBUFFER, raymarching_depthBuffer);
 		glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 

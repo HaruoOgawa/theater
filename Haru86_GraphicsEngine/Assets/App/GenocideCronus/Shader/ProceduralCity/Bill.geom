@@ -35,11 +35,12 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 
 void Createvertex(vec3 offset)
 {
-	
+	mat4 nMat = transpose(inverse(MMatrix));
+
 	gl_Position = MVPMatrix * (gl_in[0].gl_Position + vec4(offset,0.0));
 	g2f_id=t2g_id[0];
 	g2f_WorldVertexPos = (MMatrix* gl_in[0].gl_Position).xyz;
-	g2f_normal = t2g_normal[0];
+	g2f_normal = normalize( nMat*vec4(t2g_normal[0],0.0) ).xyz;
 	g2f_billinfo = t2g_billinfo[0];
 
 	EmitVertex();
@@ -47,7 +48,7 @@ void Createvertex(vec3 offset)
 	gl_Position = MVPMatrix * (gl_in[1].gl_Position + vec4(offset,0.0));
 	g2f_id=t2g_id[1];
 	g2f_WorldVertexPos = (MMatrix* gl_in[1].gl_Position).xyz;
-	g2f_normal = t2g_normal[1];
+	g2f_normal = normalize( nMat*vec4(t2g_normal[1],0.0) ).xyz;
 	g2f_billinfo = t2g_billinfo[1];
 
 	EmitVertex();
@@ -55,7 +56,7 @@ void Createvertex(vec3 offset)
 	gl_Position = MVPMatrix * (gl_in[2].gl_Position + vec4(offset,0.0));
 	g2f_id=t2g_id[2];
 	g2f_WorldVertexPos = (MMatrix* gl_in[2].gl_Position).xyz;
-	g2f_normal = t2g_normal[2];
+	g2f_normal = normalize( nMat*vec4(t2g_normal[2],0.0) ).xyz;
 	g2f_billinfo = t2g_billinfo[2];
 
 	EmitVertex();
