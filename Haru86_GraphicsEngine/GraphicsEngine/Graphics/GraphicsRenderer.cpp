@@ -95,6 +95,7 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	raymarching_frameTexture(std::make_shared<Texture>()),
 	raymarching_depthTexture(std::make_shared<Texture>()),
 	polygon_normalTexture(std::make_shared<Texture>()),
+	polygon_ShadowTexture(std::make_shared<Texture>()),
 	p_r_BlendingTexture(std::make_shared<Texture>()),
 	p_r_DepthBlendingTexture(std::make_shared<Texture>()),
 	m_PolygonPostProcess_FrameTexture(std::make_shared<Texture>()),
@@ -103,6 +104,7 @@ GraphicsRenderer::GraphicsRenderer(GraphicsMain* game)
 	polygon_frameBuffer(0),
 	polygon_depthBuffer(0),
 	polygon_normalBuffer(0),
+	polygon_ShadowMapBuffer(0),
 	raymarching_frameBuffer(0),
 	raymarching_depthBuffer(0),
 	p_r_BlendingBuffer(0),
@@ -118,6 +120,7 @@ GraphicsRenderer::~GraphicsRenderer() {
 	if (polygon_frameBuffer_MSAA != 0)glDeleteFramebuffers(1, &polygon_frameBuffer_MSAA);
 	if (polygon_depthBuffer != 0)glDeleteFramebuffers(1, &polygon_depthBuffer);
 	if (polygon_normalBuffer != 0)glDeleteFramebuffers(1, &polygon_normalBuffer);
+	if (polygon_ShadowMapBuffer != 0)glDeleteFramebuffers(1, &polygon_ShadowMapBuffer);
 	if (raymarching_frameBuffer != 0)glDeleteFramebuffers(1, &raymarching_frameBuffer);
 	if (raymarching_depthBuffer != 0)glDeleteFramebuffers(1, &raymarching_depthBuffer);
 	if (p_r_BlendingBuffer != 0)glDeleteFramebuffers(1, &p_r_BlendingBuffer);
@@ -186,6 +189,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_normalTexture, polygon_normalBuffer, GL_RGBA, GL_RGBA);
+	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_ShadowTexture, polygon_ShadowMapBuffer, GL_RGBA, GL_RGBA,
+		GL_FLOAT, ERenderTargetType::NONECOLORBUFFER, EDepthTargetType::DEPTH_TEXTURE_BUFFER);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), p_r_BlendingTexture, p_r_BlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), p_r_DepthBlendingTexture, p_r_DepthBlendingBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), m_PolygonPostProcess_FrameTexture, m_PolygonPostProcess_FrameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
@@ -371,6 +376,32 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		mgame->m_App->Draw(false);
 	}
 
+	// ポリゴンオブジェクトのシャドーマップをレンダリング(これはライトポジションからのデプスマップである)
+	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
+	glBindFramebuffer(GL_FRAMEBUFFER, polygon_ShadowMapBuffer);
+	glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	
+	glEnable(GL_DEPTH_TEST);
+
+	// 描画前にカメラ座標をバックアップしてライト座標に入れ替える
+	const auto& BackUpCamera = GraphicsMain::GetInstance()->m_UsingCamera;
+	GraphicsMain::GetInstance()->m_UsingCamera = GraphicsMain::GetInstance()->m_GroabalLightPosition;
+
+	// 描画
+	for (auto obj : mgame->gameObjectList) {
+		obj->m_transform->CalMatrix();
+		obj->meshComp->Draw();
+	}
+
+	if (mgame->m_App) {
+		mgame->m_App->Draw(false);
+	}
+
+	// カメラをもとに戻す
+	GraphicsMain::GetInstance()->m_UsingCamera = BackUpCamera;
 
 	// ポリゴンオブジェクトのポストプロセス
 	PostProcess::GetInstance()->DrawPolygonPostProcess(polygon_frameTexture, m_PolygonPostProcess_FrameBuffer);

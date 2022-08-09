@@ -12,6 +12,7 @@ uniform int _UseColor;
 uniform vec4 _Color;
 uniform int _UseLighting;
 uniform vec3 _LightDir;
+uniform vec3 _LightPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
 
@@ -39,7 +40,7 @@ void main(){
 	if(_UseLighting == 1)
 	{
 		// diffuse
-		vec3 lightDir=-normalize(_LightDir-g2f_WorldVertexPos);
+		vec3 lightDir=normalize(_LightPos-g2f_WorldVertexPos);
 		float diff=max(0.0,dot(g2f_normal,lightDir));
 		//float diff=dot(g2f_normal,lightDir);
 		col.rgb*=diff;

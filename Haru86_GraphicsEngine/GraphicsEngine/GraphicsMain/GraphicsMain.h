@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <glm/glm.hpp>
 
 #include <glew.h>
 #include <glfw3.h>
@@ -62,6 +63,9 @@ public:
 	std::vector<class UIObject*> uiObjectList;
 
 	bool mouseStateBool;
+
+	// ライト
+	std::shared_ptr<TransformComponent> m_GroabalLightPosition;
 
 	// カメラパラメーター
 	//std::vector<std::shared_ptr<TransformComponent>> m_CameraTransformList;

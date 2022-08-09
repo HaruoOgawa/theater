@@ -70,10 +70,24 @@ void PolygonRaymarchingMixer::Draw(bool IsDepthMix) {
 
 	}
 
+	// Debug
+	if (GraphicsRenderer::GetInstance()->polygon_ShadowMapBuffer)
+	{
+		GraphicsRenderer::GetInstance()->polygon_ShadowTexture->SetActive(GL_TEXTURE5);
+		m_material->SetTexUniform("polygon_ShadowMapBuffer", 5);
+	}
+
+	//
 	m_mesh->Draw();
 	GraphicsRenderer::GetInstance()->m_PolygonPostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 	GraphicsRenderer::GetInstance()->polygon_depthTexture->SetEnactive(GL_TEXTURE1);
 	GraphicsRenderer::GetInstance()->raymarching_frameTexture->SetEnactive(GL_TEXTURE2);
 	GraphicsRenderer::GetInstance()->raymarching_depthTexture->SetEnactive(GL_TEXTURE3);
 	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetEnactive(GL_TEXTURE4);
+
+	// Debug
+	if (GraphicsRenderer::GetInstance()->polygon_ShadowMapBuffer)
+	{
+		GraphicsRenderer::GetInstance()->polygon_ShadowTexture->SetEnactive(GL_TEXTURE5);
+	}
 }

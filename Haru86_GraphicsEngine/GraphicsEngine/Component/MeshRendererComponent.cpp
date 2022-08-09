@@ -88,6 +88,7 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_material->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));
+	m_material->SetVec3Uniform("_LightPos", GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position);
 	m_material->SetIntUniform("_UseLighting", 1);
 
 	// レイマーチングのデプスマップ用

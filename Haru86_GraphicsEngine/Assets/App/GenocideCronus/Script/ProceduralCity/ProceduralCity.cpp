@@ -115,6 +115,12 @@ namespace myapp {
 			0.5f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+
+		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
+			10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			10.0f,
+			10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+		);
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {

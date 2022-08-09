@@ -42,7 +42,8 @@ GraphicsMain::GraphicsMain()
 	//m_UseCameraIndex(0)
 	m_MainCamera(nullptr),
 	m_UsingCamera(nullptr),
-	m_SoundPlayer(nullptr)
+	m_SoundPlayer(nullptr),
+	m_GroabalLightPosition(nullptr)
 {
 }
 
@@ -95,6 +96,11 @@ void GraphicsMain::LoadData() {
 	//
 	if (m_MainCamera == nullptr) {
 		m_MainCamera = std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	}
+
+	if (!m_GroabalLightPosition)
+	{
+		m_GroabalLightPosition = std::make_shared<TransformComponent>(glm::vec3(10.0f));
 	}
 
 	//
