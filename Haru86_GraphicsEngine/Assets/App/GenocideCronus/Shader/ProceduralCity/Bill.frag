@@ -7,7 +7,7 @@ in vec3 g2f_normal;
 flat in vec4 g2f_billinfo;
 in vec3 g2f_WorldVertexPos;
 
-uniform vec3 _CameraPos;
+uniform vec3 _WorldCameraPos;
 uniform int _UseColor;
 uniform vec4 _Color;
 uniform int _UseLighting;
@@ -19,17 +19,13 @@ uniform vec4 _EnvColor;
 uniform samplerCube _BillRP;
 
 void main(){
+	// ベースパラメーター
 	vec4 col=vec4(vec3(0.0),1.0);
-
+	vec3 viewdir = normalize(_WorldCameraPos-g2f_WorldVertexPos);
+	float dist = length(_WorldCameraPos-g2f_WorldVertexPos);
+		
 	// ベースカラー
-	if(_UseColor == 1)
-	{
-		col=_Color;
-	}
-	else
-	{
-		col=vec4(1.0);
-	}
+	col=vec4(vec3(1.0),1.0);
 
 	// 環境光
 	vec4 envColor = vec4(vec3(0.1),1.0);
@@ -44,16 +40,16 @@ void main(){
 		// diffuse
 		vec3 lightDir=normalize(_LightPos-g2f_WorldVertexPos);
 		float diff=max(0.0,dot(g2f_normal,lightDir));
-		//float diff=dot(g2f_normal,lightDir);
 		col.rgb*=diff;
 
 		// Specular
-		vec3 viewDir= -1.0*normalize(g2f_WorldVertexPos-_CameraPos);
+		vec3 viewDir= -1.0*normalize(g2f_WorldVertexPos-_WorldCameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);
 		float spec=pow( max(0.0,dot(g2f_normal,halfDir)) , 64.0);
 		col.rgb+=vec3(1.0)*spec;
 
 		// Shadow
+
 
 		// Ambient
 		vec3 lightColor = vec3(1.0);
@@ -65,15 +61,19 @@ void main(){
 	bool IsWindow = (g2f_billinfo.x == 1.0);
 	if(IsWindow)
 	{
+
+
 		// 反射の方を優先して作る --> ライト方向を変えると意外とライティングいい感じになったから
-		//vec3 CubeCol = texture(_BillRP,g2f_normal).rgb;
-		col.rgb=g2f_normal*0.5+0.5;
-		//col.rgb+=CubeCol;
-		//col.rgb=vec3(0.0,0.0,1.0);
-		//col.a=0.25;
+		vec3 rpdir = normalize(reflect(viewdir,g2f_normal));
+		vec3 CubeCol = texture(_BillRP,viewdir).rgb;
+		
+		col.rgb=mix(CubeCol,col.rgb,clamp(exp(dist*0.2)-1.0,0.0,1.0));
+		col.a=1.0;
 	}
 
-	//col.rgb=g2f_normal*0.5+0.5;
+	// fog
+    //vec3 ramda = exp2(-0.05*dist*vec3(1.0));
+    //col.rgb=mix(vec3(0.5),col.rgb,ramda);
 
 	gl_FragColor=col;
 }

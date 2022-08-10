@@ -138,29 +138,40 @@ namespace myapp {
 		}
 		else
 		{
-#ifdef _DEBUG
+//#ifdef _DEBUG
+//			if (m_BillRP)
+//			{
+//				m_DebugSphere->Draw(GL_TRIANGLES, false, 0, [this]() {
+//					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1,GL_TEXTURE_CUBE_MAP);
+//					m_DebugSphere->m_material->SetIntUniform("_UseMainTex", 1);
+//					m_DebugSphere->m_material->SetTexUniform("_MainTex", 1);
+//					});
+//				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+//			}
+//#endif
+
 			if (m_BillRP)
 			{
-				m_DebugSphere->Draw(GL_TRIANGLES, false, 0, [this]() {
-					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1,GL_TEXTURE_CUBE_MAP);
-					m_DebugSphere->m_material->SetIntUniform("_UseMainTex", 1);
-					m_DebugSphere->m_material->SetTexUniform("_MainTex", 1);
+				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
+					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
-#endif
-
-			//m_ProceduralBillRenderer->Draw(GL_PATCHES);
-			m_ProceduralBillRenderer->Draw(GL_PATCHES,true,256);
+			
 
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 
 			// RPの処理
+			// RPを3つぐらい作って縦方向にOffsetする
+			// Shaderでは座標のZ値をmodしてどのRPを使うか決める
+			// こうすればある程度まばらに見えるはず
 			switch (m_BillRPProgress)
 			{
 			case myapp::BillRPProgress::Initialize:
 				//m_BillRP = std::make_shared<ReflectionProbe>(GraphicsMain::GetInstance()->m_MainCamera);
-				m_BillRP = std::make_shared<ReflectionProbe>(glm::vec3(0.0f,10.0f ,0.0f),0.01f);
+				m_BillRP = std::make_shared<ReflectionProbe>(glm::vec3(0.0f,2.5f ,0.0f),0.001f);
 				GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_BillRP);
 
 				m_BillRPProgress = BillRPProgress::Draw;
