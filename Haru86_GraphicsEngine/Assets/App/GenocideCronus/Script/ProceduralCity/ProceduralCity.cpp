@@ -111,16 +111,20 @@ namespace myapp {
 
 	void ProceduralCity::Update() 
 	{
+		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			3.0f,
+			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
+		);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
+
 		// デバッグ用カメラ
-		//float radius = 0.5f;
 		float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			0.5f,
 			radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
-
-		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
 
 		// デバッグ用ライト移動

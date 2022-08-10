@@ -87,6 +87,27 @@ namespace myapp {
 			}
 		}
 
+		// ビルの4隅に柱的なのを立てる(窓が切れてて違和感があるから)
+		{
+			for (float x = -1.0f; x<=1.0f; x++)
+			{
+				for (float z = -1.0f; z <= 1.0f; z++)
+				{
+					//
+					if (x == 0.0f || z == 0.0f)continue;
+
+					//
+					std::shared_ptr<TransformComponent> TRS = std::make_shared<TransformComponent>();
+					TRS->m_scale = glm::vec3(BillRadius * 0.1f,BillHeight * 1.1f, BillRadius * 0.1f);
+					float AdjustPos = 1.05f;
+					TRS->m_position = glm::vec3(BillRadius  * x * AdjustPos, 0.0f, BillRadius  * z * AdjustPos);
+
+					TRS->CalMatrix();
+					PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix,false,false,0,false);
+				}
+			}
+		}
+
 		// データをまとめる
 		Dimention.push_back(3);
 		Dimention.push_back(3);

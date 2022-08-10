@@ -44,6 +44,7 @@ void main(){
 	//float id = floor(_time);
 	float id = float(gl_InstanceID);
 	vec4 pos=vec4(vertex,1.0);
+	vec4 localNormal = vec4(normal,0.0);
 
 	// ビルデータを整理
 	bool IsWindow = (billinfo.x == 1.0);
@@ -92,6 +93,7 @@ void main(){
 
 			// 行列をかける
 			pos = StretchMatrix * pos;
+			localNormal = StretchMatrix * localNormal;
 		}
 	}
 
@@ -113,7 +115,7 @@ void main(){
 
 	// アウトプット
 	gl_Position=pos;
-	v2tesc_normal=normalize((vec4(normal,0.0)).xyz);
+	v2tesc_normal=normalize(localNormal.xyz);
 	v2tesc_billinfo=billinfo;
 	v2tesc_id=id;
 }
