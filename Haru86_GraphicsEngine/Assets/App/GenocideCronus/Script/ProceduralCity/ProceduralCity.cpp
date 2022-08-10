@@ -142,13 +142,11 @@ namespace myapp {
 			if (m_BillRP)
 			{
 				m_DebugSphere->Draw(GL_TRIANGLES, false, 0, [this]() {
-					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1);
-					//GraphicsRenderer::GetInstance()->polygon_frameTexture->SetActive(GL_TEXTURE1);
+					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1,GL_TEXTURE_CUBE_MAP);
 					m_DebugSphere->m_material->SetIntUniform("_UseMainTex", 1);
 					m_DebugSphere->m_material->SetTexUniform("_MainTex", 1);
 					});
-				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1);
-				//GraphicsRenderer::GetInstance()->polygon_frameTexture->SetEnactive(GL_TEXTURE1);
+				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
 #endif
 
@@ -161,8 +159,8 @@ namespace myapp {
 			switch (m_BillRPProgress)
 			{
 			case myapp::BillRPProgress::Initialize:
-				m_BillRP = std::make_shared<ReflectionProbe>(GraphicsMain::GetInstance()->m_MainCamera);
-				//m_BillRP = std::make_shared<ReflectionProbe>();
+				//m_BillRP = std::make_shared<ReflectionProbe>(GraphicsMain::GetInstance()->m_MainCamera);
+				m_BillRP = std::make_shared<ReflectionProbe>(glm::vec3(0.0f,10.0f ,0.0f),0.01f);
 				GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_BillRP);
 
 				m_BillRPProgress = BillRPProgress::Draw;

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <glm/glm.hpp>
 
 class Texture;
 class TransformComponent;
@@ -12,8 +13,10 @@ enum class EReflectionType {
 
 class ReflectionProbe
 {
+	glm::vec3 m_Offset;
+	float m_Size;
 public:
-	ReflectionProbe();
+	ReflectionProbe(glm::vec3 Offset, float Size);
 	ReflectionProbe(std::shared_ptr<TransformComponent> TRS);
 	virtual ~ReflectionProbe()=default;
 

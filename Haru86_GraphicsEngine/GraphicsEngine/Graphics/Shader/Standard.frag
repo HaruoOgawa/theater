@@ -16,8 +16,8 @@ uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
 
 uniform int _UseMainTex;
-uniform sampler2D _MainTex;
-//uniform samplerCube _MainTex;
+//uniform sampler2D _MainTex;
+uniform samplerCube _MainTex;
 
 void main(){
 	vec4 col=vec4(vec3(0.0),1.0);
@@ -29,10 +29,10 @@ void main(){
 	}
 	else if(_UseMainTex == 1) // テクスチャサンプリング
 	{
-		col=texture(_MainTex,uv);
-		/*vec3 viewdir = normalize(CameraPos-WorldVertexPos);
+		//col=texture(_MainTex,uv);
+		vec3 viewdir = normalize(CameraPos-WorldVertexPos);
 		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
-		col=texture(_MainTex,rpdir);*/
+		col=texture(_MainTex,rpdir);
 
 		//col=vec4(rpdir*0.5+0.5,1.0);
 	}
