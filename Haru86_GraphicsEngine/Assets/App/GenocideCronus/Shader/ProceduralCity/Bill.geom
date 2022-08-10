@@ -20,7 +20,7 @@ in vec3 t2g_WorldVertexPos[];
 
 out float g2f_id;
 out vec3 g2f_normal;
-out vec4 g2f_billinfo;
+flat out vec4 g2f_billinfo;
 out vec3 g2f_WorldVertexPos;
 
 // hash --> https://www.shadertoy.com/view/4dffRH

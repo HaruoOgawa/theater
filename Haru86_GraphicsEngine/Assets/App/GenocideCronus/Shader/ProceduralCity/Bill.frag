@@ -4,7 +4,7 @@ R"(
 
 in float g2f_id;
 in vec3 g2f_normal;
-in vec4 g2f_billinfo;
+flat in vec4 g2f_billinfo;
 in vec3 g2f_WorldVertexPos;
 
 uniform vec3 _CameraPos;
@@ -15,6 +15,8 @@ uniform vec3 _LightDir;
 uniform vec3 _LightPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
+
+uniform samplerCube _BillRP;
 
 void main(){
 	vec4 col=vec4(vec3(0.0),1.0);
@@ -60,12 +62,16 @@ void main(){
 	}
 
 	// 窓
-	/*bool IsWindow = (g2f_billinfo.x == 1.0);
+	bool IsWindow = (g2f_billinfo.x == 1.0);
 	if(IsWindow)
 	{
-		col.rgb=vec3(0.0,0.0,1.0);
-		col.a=0.25;
-	}*/
+		// 反射の方を優先して作る --> ライト方向を変えると意外とライティングいい感じになったから
+		//vec3 CubeCol = texture(_BillRP,g2f_normal).rgb;
+		col.rgb=g2f_normal*0.5+0.5;
+		//col.rgb+=CubeCol;
+		//col.rgb=vec3(0.0,0.0,1.0);
+		//col.a=0.25;
+	}
 
 	//col.rgb=g2f_normal*0.5+0.5;
 

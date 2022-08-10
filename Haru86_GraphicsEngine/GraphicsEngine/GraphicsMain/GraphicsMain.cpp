@@ -163,11 +163,11 @@ void GraphicsMain::Draw() {
 	GraphicsRenderer::GetInstance()->Draw(m_MainCamera, true,0, []() {},GraphicsRenderer::GetInstance()->GetScreenSize().x, GraphicsRenderer::GetInstance()->GetScreenSize().y);
 
 	// リアルタイムリフレクションプローブ (重いので使用しない or シーンによって使い分ける)
-	/*for (const auto& ReflectionProbe : m_ReflectionProbeList) {
+	for (const auto& ReflectionProbe : m_ReflectionProbeList) {
 		if (ReflectionProbe) {
 			ReflectionProbe->Draw();
 		}
-	}*/
+	}
 	
 	//カラーバッファを入れ替える
 	glfwSwapBuffers(GraphicsRenderer::GetInstance()->GetWindow());

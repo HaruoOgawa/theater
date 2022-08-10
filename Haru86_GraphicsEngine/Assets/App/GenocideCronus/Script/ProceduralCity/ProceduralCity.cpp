@@ -8,16 +8,20 @@
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "BillMeshGenerator.h"
+#include "GraphicsEngine/Graphics/ReflectionProbe.h"
 
 namespace myapp {
-	ProceduralCity::ProceduralCity()
+	ProceduralCity::ProceduralCity():
+		m_BillRPProgress(BillRPProgress::Initialize),
+		m_BillRP(nullptr),
+		m_RPDrawCount(0)
 	{
 		Start();
 	}
 
 	void ProceduralCity::Start() 
 	{	
-		//#ifdef _DEBUG
+		#ifdef _DEBUG
 		// デバッグ用グリッド
 		m_GridPlane = std::make_shared<GameObject>(
 			std::make_shared<TransformComponent>(),
@@ -30,7 +34,19 @@ namespace myapp {
 			);
 		m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
 		m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);
-		//#endif // _DEBUG
+
+		// デバッグ用スフィア
+		m_DebugSphere = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::SPHERE,
+			RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert,
+			shaderlib::ShaderLib::Standard_frag
+		);
+		m_DebugSphere->m_transform->m_position = glm::vec3(0.0, 1.0f, 0.0f);
+		m_DebugSphere->m_transform->m_scale = glm::vec3(0.5f);
+
+		#endif // _DEBUG
 
 		//
 		{
@@ -39,11 +55,6 @@ namespace myapp {
 			BillMeshGenerator Generator;
 			Generator.Generate(VertexData, Dimention, Indices);
 			
-			/*for (const auto& Val : VertexData[0]){ Console::Log("Vertices Val: %f\n", Val); }
-			for (const auto& Val : VertexData[1]) { Console::Log("Normal Val: %f\n", Val); }
-			for (const auto& Val : Dimention) { Console::Log("Dimention Val: %d\n", Val); }
-			for (const auto& Val : Indices) { Console::Log("Indices Val: %d\n", Val); }*/
-
 			// ビルのレンダラーを構築
 			m_ProceduralBillRenderer = std::make_shared<MeshRendererComponent>(
 				std::make_shared<TransformComponent>(),
@@ -101,21 +112,18 @@ namespace myapp {
 	void ProceduralCity::Update() 
 	{
 		// デバッグ用カメラ
-		//GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(10.0f, 1.0f, 10.0f);
-		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			3.0f,
-			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
-		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
-
+		//float radius = 0.5f;
+		float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			0.5f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			0.5f,
-			0.5f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 
+		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
+
+		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
 			10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			10.0f,
@@ -130,10 +138,57 @@ namespace myapp {
 		}
 		else
 		{
+#ifdef _DEBUG
+			if (m_BillRP)
+			{
+				m_DebugSphere->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1);
+					//GraphicsRenderer::GetInstance()->polygon_frameTexture->SetActive(GL_TEXTURE1);
+					m_DebugSphere->m_material->SetIntUniform("_UseMainTex", 1);
+					m_DebugSphere->m_material->SetTexUniform("_MainTex", 1);
+					});
+				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1);
+				//GraphicsRenderer::GetInstance()->polygon_frameTexture->SetEnactive(GL_TEXTURE1);
+			}
+#endif
+
 			//m_ProceduralBillRenderer->Draw(GL_PATCHES);
 			m_ProceduralBillRenderer->Draw(GL_PATCHES,true,256);
 
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
+
+			// RPの処理
+			switch (m_BillRPProgress)
+			{
+			case myapp::BillRPProgress::Initialize:
+				m_BillRP = std::make_shared<ReflectionProbe>(GraphicsMain::GetInstance()->m_MainCamera);
+				//m_BillRP = std::make_shared<ReflectionProbe>();
+				GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_BillRP);
+
+				m_BillRPProgress = BillRPProgress::Draw;
+				break;
+			case myapp::BillRPProgress::Draw:
+				m_RPDrawCount++;
+
+				if(m_RPDrawCount>2)m_BillRPProgress = BillRPProgress::Separation;
+				break;
+			case myapp::BillRPProgress::Separation:
+			{
+				auto& RPList = GraphicsMain::GetInstance()->m_ReflectionProbeList;
+				auto Item = std::find(RPList.begin(), RPList.end(), m_BillRP);
+				if (Item != RPList.end())
+				{
+					RPList.erase(RPList.begin() + std::distance(RPList.begin(), Item));
+				}
+
+				m_BillRPProgress = BillRPProgress::None;
+				break;
+			}
+			case myapp::BillRPProgress::None:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
