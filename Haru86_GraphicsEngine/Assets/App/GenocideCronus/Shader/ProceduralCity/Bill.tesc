@@ -12,10 +12,20 @@ out vec3 tesc2tese_normal[];
 out vec4 tesc2tese_billinfo[];
 out float tesc2tese_id[];
 
-float outLevel=32.0;
-float inLevel=16.0;
+uniform vec3 _WorldCameraPos;
 
 void main(){
+	//
+	float outLevel=1.0; //32.0;
+	float inLevel=1.0; //16.0;
+
+	if( length(gl_in[gl_InvocationID].gl_Position.xyz-_WorldCameraPos) < 2.5 )
+	{
+		outLevel=16.0;
+		inLevel=8.0;
+	}
+
+	//
 	gl_out[gl_InvocationID].gl_Position=gl_in[gl_InvocationID].gl_Position;	
 	
 	tesc2tese_normal[gl_InvocationID]=v2tesc_normal[gl_InvocationID];

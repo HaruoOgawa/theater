@@ -2,7 +2,7 @@ R"(
 
 #version 410
 
-in float g2f_id;
+flat in float g2f_id;
 in vec3 g2f_normal;
 flat in vec4 g2f_billinfo;
 in vec3 g2f_WorldVertexPos;
@@ -18,6 +18,11 @@ uniform vec4 _EnvColor;
 
 uniform samplerCube _BillRP;
 
+ float rand(vec2 st)
+{
+    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 void main(){
 	// ベースパラメーター
 	vec4 col=vec4(vec3(0.0),1.0);
@@ -25,7 +30,7 @@ void main(){
 	float dist = length(_WorldCameraPos-g2f_WorldVertexPos);
 		
 	// ベースカラー
-	col=vec4(vec3(1.0),1.0);
+	col=vec4(vec3( rand(vec2(g2f_id+1.1111,g2f_id+6.6666)) +0.5),1.0);
 
 	// 環境光
 	vec4 envColor = vec4(vec3(0.1),1.0);

@@ -18,7 +18,7 @@ in vec3 t2g_normal[];
 in vec4 t2g_billinfo[];
 in vec3 t2g_WorldVertexPos[];
 
-out float g2f_id;
+flat out float g2f_id;
 out vec3 g2f_normal;
 flat out vec4 g2f_billinfo;
 out vec3 g2f_WorldVertexPos;

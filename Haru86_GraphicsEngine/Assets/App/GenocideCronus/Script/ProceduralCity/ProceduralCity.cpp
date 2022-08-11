@@ -96,17 +96,17 @@ namespace myapp {
 		);*/
 
 		//// raymarching
-		std::string MandelboxShader = {
+		/*std::string MandelboxShader = {
 			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		};
+		};*/
 
-		m_Mandelbox = std::make_shared<MeshRendererComponent>(
+		/*m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
-			);
+			);*/
 	}
 
 	void ProceduralCity::Update() 
@@ -142,7 +142,7 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			m_Mandelbox->Draw();
+			//m_Mandelbox->Draw();
 		}
 		else
 		{
@@ -161,7 +161,7 @@ namespace myapp {
 			if (m_BillRP)
 			{
 				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
-				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
