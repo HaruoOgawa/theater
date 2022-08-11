@@ -19,6 +19,7 @@ out vec4 v2tesc_billinfo;
 out float v2tesc_id;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
+#define PI 3.14159265
 
 const float VerDelimiterNum = 10.0;
 const float BillRadius = 5.0;
@@ -41,11 +42,11 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 
 void main(){
 	// 基本パラメーター
-	float id = floor(_time*0.15);
-	//float id = float(gl_InstanceID);
+	//float id = floor(_time*0.15);
+	float id = float(gl_InstanceID);
 	vec4 pos=vec4(vertex,1.0);
 	vec4 localNormal = vec4(normal,0.0);
-
+	
 	// ビルデータを整理
 	bool IsWindow = (billinfo.x == 1.0);
 	bool IsVertical = (billinfo.y == 1.0);
@@ -95,6 +96,13 @@ void main(){
 			pos = StretchMatrix * pos;
 			localNormal = StretchMatrix * localNormal;
 		}
+	}
+
+	// ランダムな回転。ただし回転値は PI/2.0の倍数のみ
+	{
+		float randRotation = floor( (rand(vec2(id+0.556,id+id))*2.0-1.0) *10.0) * (PI/2.0);
+		pos.xz*=rot(randRotation);
+		localNormal.xz*=rot(randRotation);
 	}
 
 	// 乱数で全体の高さ・幅を決める

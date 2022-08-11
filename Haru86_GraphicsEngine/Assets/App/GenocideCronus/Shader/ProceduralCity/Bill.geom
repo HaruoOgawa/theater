@@ -11,7 +11,7 @@ uniform mat4 VMatrix;
 uniform mat4 PMatrix;
 uniform float _time;
 uniform float _deltaTime;
-uniform vec3 _CameraPos;
+uniform vec3 _WorldCameraPos;
 
 in float t2g_id[];
 in vec3 t2g_normal[];
@@ -77,8 +77,18 @@ void main()
 	//randPos.xz=domainID-domainSize*0.5;
 	//randPos.xz*=1.5;
 	
-	//randPos=hash(vec3(id+7.22,id+id,id-88.21))*50.0;
-	//randPos.y=0.0;
+	//float randPosRadius=50.0;
+	float randPosRadius=40.0;
+	randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
+	randPos.y=0.0;
+
+	randPos.x+=_time*10.0;
+	randPos.x=mod(randPos.x,randPosRadius+1.0)-randPosRadius;
+
+	// 大通りのぶんだけ道を開ける(これはテストである)
+	float StreetRadius = 2.5;
+	vec3 StreetOffVec = StreetRadius * normalize(vec3(0.0,0.0, (randPos.z-_WorldCameraPos.z) ));
+	randPos+=StreetOffVec;
 
 	Createvertex(randPos);
 }

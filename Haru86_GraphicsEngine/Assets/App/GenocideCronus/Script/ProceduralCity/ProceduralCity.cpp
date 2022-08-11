@@ -96,49 +96,53 @@ namespace myapp {
 		);*/
 
 		//// raymarching
-		//std::string MandelboxShader = {
-		//	#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		//};
+		std::string MandelboxShader = {
+			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
+		};
 
-		/*m_Mandelbox = std::make_shared<MeshRendererComponent>(
+		m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
-			);*/
+			);
 	}
 
 	void ProceduralCity::Update() 
 	{
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			3.0f,
 			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
 
 		// デバッグ用カメラ
-		/*float radius = 2.0f;
+		float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			radius * glm::cos(0.0f),
+			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			0.5f,
-			radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			radius * glm::sin(0.0f)
+			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);*/
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			10.0f * glm::cos(0.5f),
+			//10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			10.0f,
-			10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			10.0f * glm::sin(0.5f)
+			//10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			//m_Mandelbox->Draw();
+			m_Mandelbox->Draw();
 		}
 		else
 		{
@@ -156,12 +160,12 @@ namespace myapp {
 
 			if (m_BillRP)
 			{
-				m_ProceduralBillRenderer->Draw(GL_PATCHES);
-				/*m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
+				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
-				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);*/
+				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
 			
 
