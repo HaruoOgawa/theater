@@ -61,7 +61,7 @@ void main(){
 		float localRadius = BillRadius * AdjustVal;
 		int numOfExtrude = int(floor( rand(vec2(tesc2tese_id[0]+6.411))*2.99 ));
 
-		for(int n = 0; n<numOfExtrude; n++)
+		for(int num = 0; num<numOfExtrude; num++)
 		{
 			// どの軸に押しだすのかを決める
 			// 符号で以下のように定義する。ただし横軸がX、縦軸がZとする
@@ -70,19 +70,25 @@ void main(){
 			// ↑ => (x,z)=(-,+)
 			// ↓ => (x,z)=(-,-)
 			
-			vec3 noise0 = hash(vec3(tesc2tese_id[0]+tesc2tese_id[0]+11.291,tesc2tese_id[0]-9.0,tesc2tese_id[0]+17.0));
+			vec3 noise0 = hash(vec3(tesc2tese_id[0]+tesc2tese_id[0]+11.291+float(num),tesc2tese_id[0]+float(num)-9.0,tesc2tese_id[0]+float(num)+17.0));
 			vec2 ev = vec2( sign(noise0.x)*1.0, sign(noise0.y)*1.0 ) ; // => ExtrudeVector
+			float ExtrudeSign = sign(noise0.z); // 押し出す面の符号
 
 			// 押し出す範囲内に収まっているかを確認する
 			// noise0は符号しか使っていなくてもったいないので符号だけ乱数で計算して使い回す
-			float randSign = sign( rand( vec2(noise0.x+noise0.y+noise0.z) )*2.0-1.0 );
+			/*float randSign = sign( rand( vec2(noise0.x+noise0.y+noise0.z) )*2.0-1.0 );
 
 			float ExtrudeStart = localRadius * min(randSign*noise0.z,randSign*noise0.y);
-			float ExtrudeEnd = localRadius * max(randSign*noise0.z,randSign*noise0.y);
+			float ExtrudeEnd = localRadius * max(randSign*noise0.z,randSign*noise0.y);*/
+			
+			// そんなケチなこと言わずにちゃんと計算する
+			vec3 noise1 = hash( vec3(4.1,tesc2tese_id[0]+float(num)+4.62,tesc2tese_id[0]+float(num)+tesc2tese_id[0]+float(num)+0.00954) ) * 1.5;
+			float ExtrudeStart = 2.0*localRadius * min(noise1.z,noise1.y);
+			float ExtrudeEnd = 2.0*localRadius * max(noise1.z,noise1.y);
 			
 			// 押し出す
-			float ExtrudeVolume = (noise0.x*0.5+0.5) * ev.y * 0.2;
-			//float ExtrudeVolume = noise0.x*0.5;
+			float ExtrudeVolume = (noise1.x*0.5+0.5) * ev.y * 0.2;
+			//float ExtrudeVolume = noise1.x*0.5;
 			mat4 ExtrudeMatrix = mat4(
 				vec4(0.0,0.0,0.0,0.0),
 				vec4(0.0,0.0,0.0,0.0),
@@ -92,6 +98,9 @@ void main(){
 
 			if(ev.x == 1.0) // X軸方向に押しだす
 			{
+				// 押し出す符号と面の符号が一致していないのなら無視する
+				if(sign(localPos.x) != ExtrudeSign) continue;
+
 				// チェック
 				if( localPos.z>=ExtrudeStart && localPos.z<=ExtrudeEnd)
 				{
@@ -103,6 +112,9 @@ void main(){
 			}
 			else // Z軸方向に押しだす
 			{
+				// 押し出す符号と面の符号が一致していないのなら無視する
+				if(sign(localPos.z) != ExtrudeSign) continue;
+
 				// チェック
 				if( localPos.x>=ExtrudeStart && localPos.x<=ExtrudeEnd)
 				{

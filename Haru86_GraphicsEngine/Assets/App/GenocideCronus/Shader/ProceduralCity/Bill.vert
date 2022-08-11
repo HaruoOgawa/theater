@@ -41,8 +41,8 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 
 void main(){
 	// 基本パラメーター
-	//float id = floor(_time);
-	float id = float(gl_InstanceID);
+	float id = floor(_time*0.15);
+	//float id = float(gl_InstanceID);
 	vec4 pos=vec4(vertex,1.0);
 	vec4 localNormal = vec4(normal,0.0);
 
@@ -61,15 +61,15 @@ void main(){
 		noise0=noise0*0.5+0.5;
 		
 		//
-		float StretchWidth = noise0.x + 1.0;
+		float StretchWidth = noise0.x*2.0 + 1.0;
 		bool StretchIsXAxis = (noise0.y <= 0.5);
 
 		//
 		float halfVerDelimiterNum=(VerDelimiterNum/2.0);
 		float firstOrder = floor( noise1.x*halfVerDelimiterNum );
 		float SecondOrder = floor( noise1.y*halfVerDelimiterNum );
-		float beginOrder = min(firstOrder,SecondOrder);
-		float endOrder = max(firstOrder,SecondOrder);
+		float beginOrder = 2.0 * min(firstOrder,SecondOrder);
+		float endOrder = 2.0 * max(firstOrder,SecondOrder);
 
 		// 軸が揃っている方向のみ引き延ばす
 		if(IsXAxis == StretchIsXAxis && (DilimiterOrder>=beginOrder && DilimiterOrder<endOrder))

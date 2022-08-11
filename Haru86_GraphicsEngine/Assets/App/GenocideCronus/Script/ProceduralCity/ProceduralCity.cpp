@@ -111,21 +111,21 @@ namespace myapp {
 
 	void ProceduralCity::Update() 
 	{
-		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			3.0f,
 			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
 
 		// デバッグ用カメラ
-		float radius = 2.0f;
+		/*float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			0.5f,
 			radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);*/
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
@@ -156,12 +156,12 @@ namespace myapp {
 
 			if (m_BillRP)
 			{
-				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
-				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
+				m_ProceduralBillRenderer->Draw(GL_PATCHES);
+				/*m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 256, [this]() {
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
-				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);*/
 			}
 			
 

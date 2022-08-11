@@ -77,8 +77,8 @@ void main()
 	//randPos.xz=domainID-domainSize*0.5;
 	//randPos.xz*=1.5;
 	
-	randPos=hash(vec3(id+7.22,id+id,id-88.21))*50.0;
-	randPos.y=0.0;
+	//randPos=hash(vec3(id+7.22,id+id,id-88.21))*50.0;
+	//randPos.y=0.0;
 
 	Createvertex(randPos);
 }
