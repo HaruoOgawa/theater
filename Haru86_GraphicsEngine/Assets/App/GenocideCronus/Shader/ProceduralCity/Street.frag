@@ -2,8 +2,6 @@ R"(
 
 #version 410
 
-//in vec2 uv;
-//in vec3 CameraPos;
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
 flat in int PrimID;
@@ -82,7 +80,7 @@ void main(){
 	}
 
 	//col.rgb=WorldNormal*0.5+0.5;
-	if(_IsSidewark==1)col.rgb=hash(vec3( float(PrimID)+0.0012,float(PrimID)+float(PrimID)+6.7777,float(PrimID)+1.2396 ))*0.5+0.5;
+	//if(_IsSidewark==1) col.rgb=hash(vec3( float(PrimID)+0.0012,float(PrimID)+float(PrimID)+6.7777,float(PrimID)+1.2396 ))*0.5+0.5;
 
 	//col=vec4(1.0);
 

@@ -81,7 +81,7 @@ namespace myapp {
 		
 		// ストリート
 		{
-			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
+			/*std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
 			BillMeshGenerator Generator;
 			Generator.GenerateStreet(VertexData, Dimention, Indices);
 
@@ -108,7 +108,22 @@ namespace myapp {
 			);
 
 			m_Street->m_transform->m_scale = glm::vec3(100.0f);
-			//m_Street->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
+			//m_Street->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);*/
+
+			m_Street = std::make_shared<MeshRendererComponent>(
+				std::make_shared<TransformComponent>(),
+				PrimitiveType::POINT,
+				RenderingSurfaceType::RASTERIZER,
+				std::string(
+					#include "../../Shader/ProceduralCity/Street.vert"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Street.frag"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Street.geom"
+				)
+			);
 		}
 
 		//
@@ -204,7 +219,8 @@ namespace myapp {
 			if (m_Street)
 			{
 				//m_Street->Draw();
-				m_Street->Draw(GL_PATCHES);
+				//m_Street->Draw(GL_PATCHES);
+				m_Street->Draw(GL_POINTS,true,1024);
 			}
 
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
