@@ -21,6 +21,9 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _WorldCameraPos;
 
+uniform vec3 XSideWarkVec;
+uniform float StreetRadius;
+
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
 
@@ -92,14 +95,14 @@ void main()
 	int IsSidewark = 0;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
-	float ToSideWarkDist = 2.5;
+	//float ToSideWarkDist = 2.5;
 	bool ZStreet=false,XStreet=false;
 	vec3 OffsetVectorZStreet,OffsetVectorXStreet;
 
 	// 距離チェック(Z軸原点ベース--> 進行方向はX方向で原点から生える)
 	{
 		OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
-		if( abs(OffsetVectorZStreet.x) < ToSideWarkDist)
+		if( abs(OffsetVectorZStreet.x) < StreetRadius)
 		{
 			offset.y += -0.1;
 			IsSidewark = 1;
@@ -109,9 +112,9 @@ void main()
 	
 	// 距離チェック(X軸ベース--> 進行方向はZ方向)
 	{
-		vec3 ZSideWarkVec = vec3(0.0,0.0,mod(-_time*10.0,PlaneSize)-PlaneSize*0.5);
-		OffsetVectorXStreet = gl_in[0].gl_Position.xyz-ZSideWarkVec;
-		if( abs(OffsetVectorXStreet.z) < ToSideWarkDist)
+		//vec3 XSideWarkVec = vec3(0.0,0.0,mod(-_time*10.0,PlaneSize)-PlaneSize*0.5);
+		OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
+		if( abs(OffsetVectorXStreet.z) < StreetRadius)
 		{
 			if(!ZStreet)offset.y += -0.1;
 			IsSidewark = 1;

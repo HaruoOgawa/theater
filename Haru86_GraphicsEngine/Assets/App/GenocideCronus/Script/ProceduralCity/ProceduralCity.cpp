@@ -15,40 +15,14 @@ namespace myapp {
 		m_BillRPProgress(BillRPProgress::Initialize),
 		m_BillRP(nullptr),
 		m_RPDrawCount(0),
-		m_Street(nullptr)
+		m_Street(nullptr),
+		m_XSideWarkVec(glm::vec3(0.0f))
 	{
 		Start();
 	}
 
 	void ProceduralCity::Start() 
 	{	
-		#ifdef _DEBUG
-		// デバッグ用グリッド
-		/*m_GridPlane = std::make_shared<GameObject>(
-			std::make_shared<TransformComponent>(),
-			PrimitiveType::BOARD,
-			RenderType::DefaultBuffer,
-			RenderQueue::Geometry,
-			RenderingSurfaceType::RASTERIZER,
-			shaderlib::ShaderLib::Standard_vert,
-			shaderlib::ShaderLib::GridPlane_frag
-			);
-		m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-		m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);*/
-
-		// デバッグ用スフィア
-		/*m_DebugSphere = std::make_shared<MeshRendererComponent>(
-			std::make_shared<TransformComponent>(),
-			PrimitiveType::SPHERE,
-			RenderingSurfaceType::RASTERIZER,
-			shaderlib::ShaderLib::Standard_vert,
-			shaderlib::ShaderLib::Standard_frag
-		);
-		m_DebugSphere->m_transform->m_position = glm::vec3(0.0, 1.0f, 0.0f);
-		m_DebugSphere->m_transform->m_scale = glm::vec3(0.5f);*/
-
-		#endif // _DEBUG
-
 		//
 		{
 			// VertexDataを構築
@@ -81,35 +55,6 @@ namespace myapp {
 		
 		// ストリート
 		{
-			/*std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
-			BillMeshGenerator Generator;
-			Generator.GenerateStreet(VertexData, Dimention, Indices);
-
-			m_Street = std::make_shared<MeshRendererComponent>(
-					std::make_shared<TransformComponent>(),
-				//PrimitiveType::BOARD,
-				RenderingSurfaceType::RASTERIZER,
-				VertexData, Dimention, Indices,
-				std::string(
-					#include "../../Shader/ProceduralCity/Street.vert"
-				),
-				std::string(
-					#include "../../Shader/ProceduralCity/Street.frag"
-				),
-				std::string(
-					#include "../../Shader/ProceduralCity/Street.geom"
-				),
-				std::string(
-					#include "../../Shader/ProceduralCity/Street.tesc"
-				),
-				std::string(
-					#include "../../Shader/ProceduralCity/Street.tese"
-				)
-			);
-
-			m_Street->m_transform->m_scale = glm::vec3(100.0f);
-			//m_Street->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);*/
-
 			m_Street = std::make_shared<MeshRendererComponent>(
 				std::make_shared<TransformComponent>(),
 				PrimitiveType::POINT,
@@ -158,6 +103,13 @@ namespace myapp {
 
 	void ProceduralCity::Update() 
 	{
+		// X軸歩道のオフセット
+		{
+			float PlaneSize = 100.0f;
+			float time = GraphicsMain::GetInstance()->time * 0.001f;
+			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
+		}
+
 		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			3.0f,
@@ -178,11 +130,11 @@ namespace myapp {
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			//10.0f * glm::cos(-3.14f / 2.0),
-			10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			10.0f * glm::cos(-3.14f / 2.0),
+			//10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			10.0f,
-			//10.0f * glm::sin(-3.14f / 2.0)
-			10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			10.0f * glm::sin(-3.14f / 2.0)
+			//10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 	}
 
@@ -193,22 +145,14 @@ namespace myapp {
 		}
 		else
 		{
-//#ifdef _DEBUG
-//			if (m_BillRP)
-//			{
-//				m_DebugSphere->Draw(GL_TRIANGLES, false, 0, [this]() {
-//					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1,GL_TEXTURE_CUBE_MAP);
-//					m_DebugSphere->m_material->SetIntUniform("_UseMainTex", 1);
-//					m_DebugSphere->m_material->SetTexUniform("_MainTex", 1);
-//					});
-//				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
-//			}
-//#endif
 			// ビル
 			if (m_BillRP)
 			{
 				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
+					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
+					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
+
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
@@ -218,9 +162,10 @@ namespace myapp {
 			// ストリート
 			if (m_Street)
 			{
-				//m_Street->Draw();
-				//m_Street->Draw(GL_PATCHES);
-				m_Street->Draw(GL_POINTS,true,1024);
+				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
+					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
+					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
+				});
 			}
 
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
@@ -232,7 +177,6 @@ namespace myapp {
 			switch (m_BillRPProgress)
 			{
 			case myapp::BillRPProgress::Initialize:
-				//m_BillRP = std::make_shared<ReflectionProbe>(GraphicsMain::GetInstance()->m_MainCamera);
 				m_BillRP = std::make_shared<ReflectionProbe>(glm::vec3(0.0f,2.5f ,0.0f),0.001f);
 				GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_BillRP);
 

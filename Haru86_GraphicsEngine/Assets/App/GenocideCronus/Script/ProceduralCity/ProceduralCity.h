@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <glm/glm.hpp>
 
 class Mesh;
 class Material;
@@ -33,6 +34,7 @@ namespace myapp {
 		std::shared_ptr<MeshRendererComponent> m_BillMeshRenderer4Instanced;
 		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
 		std::shared_ptr<MeshRendererComponent> m_Street;
+		glm::vec3							   m_XSideWarkVec;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

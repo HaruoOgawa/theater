@@ -13,6 +13,9 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _WorldCameraPos;
 
+uniform vec3 XSideWarkVec;
+uniform float StreetRadius;
+
 in float t2g_id[];
 in vec3 t2g_normal[];
 in vec4 t2g_billinfo[];
@@ -88,11 +91,22 @@ void main()
 	randPos.z-=_time*10.0;
 	randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
 
-	// 大通りのぶんだけ道を開ける(これはテストである)
-	float StreetRadius = 2.5;
-	//vec3 StreetOffVec = StreetRadius * normalize(vec3(0.0,0.0, (randPos.z-_WorldCameraPos.z) ));
-	vec3 StreetOffVec = StreetRadius * normalize(vec3( (randPos.x-_WorldCameraPos.x) ,0.0,0.0));
-	randPos+=StreetOffVec;
+	// 大通りのぶんだけ道を開ける
+	{
+		//float StreetRadius = 2.5;
+		vec3 StreetOffVec = StreetRadius * normalize(vec3( (randPos.x-_WorldCameraPos.x) ,0.0,0.0));
+		randPos+=StreetOffVec;
+	}
+
+	// X軸の大通りの分だけ、道をあける
+	{
+		vec3 OffsetVectorXStreet = randPos-XSideWarkVec;
+		if( abs(OffsetVectorXStreet.z) < StreetRadius)
+		{
+			vec3 StreetOffVec = StreetRadius * normalize( vec3(0.0,0.0,1.5*(OffsetVectorXStreet.z)) );
+			randPos+=StreetOffVec;
+		}
+	}
 
 	Createvertex(randPos);
 }
