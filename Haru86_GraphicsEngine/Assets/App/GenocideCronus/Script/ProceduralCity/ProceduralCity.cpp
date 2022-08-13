@@ -178,11 +178,11 @@ namespace myapp {
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			10.0f * glm::cos(-3.14f / 2.0),
-			//10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			//10.0f * glm::cos(-3.14f / 2.0),
+			10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			10.0f,
-			10.0f * glm::sin(-3.14f / 2.0)
-			//10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			//10.0f * glm::sin(-3.14f / 2.0)
+			10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 	}
 
