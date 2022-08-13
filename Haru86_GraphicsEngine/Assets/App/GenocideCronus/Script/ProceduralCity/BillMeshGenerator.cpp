@@ -259,7 +259,7 @@ namespace myapp {
 	{
 		// 初期化
 		m_LastIndex = 0;
-		unsigned int ATTRIBUTENUM = 2;
+		unsigned int ATTRIBUTENUM = 3;
 		VertexData.resize(ATTRIBUTENUM);
 
 		// メッシュ構築
@@ -276,6 +276,7 @@ namespace myapp {
 		// 頂点データの構造を伝達
 		Dimention.push_back(3); // Vertices
 		Dimention.push_back(3); // Normal
+		Dimention.push_back(2); // UV
 	}
 
 	void BillMeshGenerator::PreparePlaneVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices,
@@ -300,6 +301,12 @@ namespace myapp {
 				// Normal
 				glm::vec3 Normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
+				// UV
+				glm::vec2 UV0 = glm::vec2(static_cast<float>(x+0) / static_cast<float>(segmentNum - 1),static_cast<float>(y+1) / static_cast<float>(segmentNum - 1));
+				glm::vec2 UV1= glm::vec2(static_cast<float>(x+0) / static_cast<float>(segmentNum - 1),static_cast<float>(y+0) / static_cast<float>(segmentNum - 1));
+				glm::vec2 UV2 = glm::vec2(static_cast<float>(x+1) / static_cast<float>(segmentNum - 1),static_cast<float>(y+0) / static_cast<float>(segmentNum - 1));
+				glm::vec2 UV3 = glm::vec2(static_cast<float>(x+1) / static_cast<float>(segmentNum - 1),static_cast<float>(y+1) / static_cast<float>(segmentNum - 1));
+
 				// 頂点データを構築
 				VertexData[0].push_back(Vert0.x); VertexData[0].push_back(Vert0.y); VertexData[0].push_back(Vert0.z);
 				VertexData[0].push_back(Vert1.x); VertexData[0].push_back(Vert1.y); VertexData[0].push_back(Vert1.z);
@@ -310,6 +317,11 @@ namespace myapp {
 				VertexData[1].push_back(Normal.x); VertexData[1].push_back(Normal.y); VertexData[1].push_back(Normal.z);
 				VertexData[1].push_back(Normal.x); VertexData[1].push_back(Normal.y); VertexData[1].push_back(Normal.z);
 				VertexData[1].push_back(Normal.x); VertexData[1].push_back(Normal.y); VertexData[1].push_back(Normal.z);
+
+				VertexData[2].push_back(UV0.x); VertexData[2].push_back(UV0.y);
+				VertexData[2].push_back(UV1.x); VertexData[2].push_back(UV1.y);
+				VertexData[2].push_back(UV2.x); VertexData[2].push_back(UV2.y);
+				VertexData[2].push_back(UV3.x); VertexData[2].push_back(UV3.y);
 
 				// インデックスデータを構築
 				Indices.push_back(0 + m_LastIndex);
