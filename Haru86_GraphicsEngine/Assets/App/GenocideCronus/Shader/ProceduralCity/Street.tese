@@ -28,17 +28,17 @@ void main(){
          tesc2tese_normal[1]*gl_TessCoord.y + 
          tesc2tese_normal[2]*gl_TessCoord.z 
     );
-    //tese2g_WorldNormal=normal.xyz;
+    tese2g_WorldNormal=normal.xyz;
     // なぜかテッセレーションシェーダーを通すと法線が裏返るのでここで反転させる
-    tese2g_WorldNormal=-normal.xyz;
+    //tese2g_WorldNormal=-normal.xyz;
 
     //
 	vec4 pos=vec4(v0.xyz*gl_TessCoord.x+v1.xyz*gl_TessCoord.y+v2.xyz*gl_TessCoord.z,1.0); 
-    //pos.z+=sin(pos.y*100.0+_time)*0.01;
+    //pos.y+=sin(pos.x*100.0+_time)*0.01;
 
     // Output
     gl_Position=pos;
-    tese2g_id=int(1000.0*rand(vec2(pos.x,pos.z)));
+    tese2g_id=int(1000.0*rand(vec2(gl_TessCoord.x+gl_TessCoord.z)));
 }
 
 )"

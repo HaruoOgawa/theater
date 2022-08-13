@@ -81,15 +81,15 @@ namespace myapp {
 		
 		// ストリート
 		{
-			/*std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
+			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
 			BillMeshGenerator Generator;
-			Generator.GenerateStreet(VertexData, Dimention, Indices);*/
+			Generator.GenerateStreet(VertexData, Dimention, Indices);
 
 			m_Street = std::make_shared<MeshRendererComponent>(
 					std::make_shared<TransformComponent>(),
-				PrimitiveType::BOARD,
+				//PrimitiveType::BOARD,
 				RenderingSurfaceType::RASTERIZER,
-				//VertexData, Dimention, Indices,
+				VertexData, Dimention, Indices,
 				std::string(
 					#include "../../Shader/ProceduralCity/Street.vert"
 				),
@@ -108,7 +108,7 @@ namespace myapp {
 			);
 
 			m_Street->m_transform->m_scale = glm::vec3(100.0f);
-			m_Street->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
+			//m_Street->m_transform->m_rotation = glm::vec3(3.14f / 2.0f, 0.0f, 0.0f);
 		}
 
 		//

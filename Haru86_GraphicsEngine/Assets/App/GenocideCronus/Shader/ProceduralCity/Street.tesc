@@ -12,8 +12,8 @@ uniform vec3 _WorldCameraPos;
 
 void main(){
 	//
-	float outLevel=32.0; //32.0;
-	float inLevel=32.0; //16.0;
+	float outLevel=16.0; //32.0;
+	float inLevel=16.0; //16.0;
 
 	/*if( length(gl_in[gl_InvocationID].gl_Position.xyz-_WorldCameraPos) < 2.5 )
 	{
