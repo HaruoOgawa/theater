@@ -77,17 +77,21 @@ void main()
 	//randPos.xz=domainID-domainSize*0.5;
 	//randPos.xz*=1.5;
 	
-	//float randPosRadius=50.0;
-	float randPosRadius=40.0;
+	float randPosRadius=100.0;
+	//float randPosRadius=40.0;
 	randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
-	randPos.y=0.0;
+	randPos.y=1.5;
 
-	randPos.x+=_time*10.0;
-	randPos.x=mod(randPos.x,randPosRadius+1.0)-randPosRadius;
+	//randPos.x+=_time*10.0;
+	//randPos.x=mod(randPos.x,randPosRadius+1.0)-randPosRadius;
+	
+	randPos.z-=_time*10.0;
+	randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
 
 	// 大通りのぶんだけ道を開ける(これはテストである)
 	float StreetRadius = 2.5;
-	vec3 StreetOffVec = StreetRadius * normalize(vec3(0.0,0.0, (randPos.z-_WorldCameraPos.z) ));
+	//vec3 StreetOffVec = StreetRadius * normalize(vec3(0.0,0.0, (randPos.z-_WorldCameraPos.z) ));
+	vec3 StreetOffVec = StreetRadius * normalize(vec3( (randPos.x-_WorldCameraPos.x) ,0.0,0.0));
 	randPos+=StreetOffVec;
 
 	Createvertex(randPos);

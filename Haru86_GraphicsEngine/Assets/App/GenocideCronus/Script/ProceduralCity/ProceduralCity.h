@@ -28,10 +28,11 @@ namespace myapp {
 		BillRPProgress m_BillRPProgress;
 		int m_RPDrawCount;
 
-		//
+		// 3Dオブジェクト
 		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
 		std::shared_ptr<MeshRendererComponent> m_BillMeshRenderer4Instanced;
 		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
+		std::shared_ptr<MeshRendererComponent> m_Street;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

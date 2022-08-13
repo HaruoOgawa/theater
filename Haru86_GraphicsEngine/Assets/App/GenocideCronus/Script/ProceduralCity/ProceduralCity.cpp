@@ -14,7 +14,8 @@ namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_BillRPProgress(BillRPProgress::Initialize),
 		m_BillRP(nullptr),
-		m_RPDrawCount(0)
+		m_RPDrawCount(0),
+		m_Street(nullptr)
 	{
 		Start();
 	}
@@ -23,7 +24,7 @@ namespace myapp {
 	{	
 		#ifdef _DEBUG
 		// デバッグ用グリッド
-		m_GridPlane = std::make_shared<GameObject>(
+		/*m_GridPlane = std::make_shared<GameObject>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderType::DefaultBuffer,
@@ -33,10 +34,10 @@ namespace myapp {
 			shaderlib::ShaderLib::GridPlane_frag
 			);
 		m_GridPlane->m_transform->m_rotation = glm::vec3(3.14159265f / 2.0f, 0.0, 0.0);
-		m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);
+		m_GridPlane->m_transform->m_scale = glm::vec3(100.0f);*/
 
 		// デバッグ用スフィア
-		m_DebugSphere = std::make_shared<MeshRendererComponent>(
+		/*m_DebugSphere = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::SPHERE,
 			RenderingSurfaceType::RASTERIZER,
@@ -44,7 +45,7 @@ namespace myapp {
 			shaderlib::ShaderLib::Standard_frag
 		);
 		m_DebugSphere->m_transform->m_position = glm::vec3(0.0, 1.0f, 0.0f);
-		m_DebugSphere->m_transform->m_scale = glm::vec3(0.5f);
+		m_DebugSphere->m_transform->m_scale = glm::vec3(0.5f);*/
 
 		#endif // _DEBUG
 
@@ -78,6 +79,28 @@ namespace myapp {
 			);
 		}
 		
+		// ストリート
+		{
+			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
+			BillMeshGenerator Generator;
+			Generator.GenerateStreet(VertexData, Dimention, Indices);
+
+			m_Street = std::make_shared<MeshRendererComponent>(
+					std::make_shared<TransformComponent>(),
+				//PrimitiveType::BOARD,
+				RenderingSurfaceType::RASTERIZER,
+				VertexData, Dimention, Indices,
+				std::string(
+					#include "../../Shader/ProceduralCity/Street.vert"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/Street.frag"
+				)
+
+			);
+
+			m_Street->m_transform->m_scale = glm::vec3(100.0f);
+		}
 
 		//
 		/*m_BillMeshRenderer4Instanced = std::make_shared<MeshRendererComponent>(
@@ -121,20 +144,20 @@ namespace myapp {
 		// デバッグ用カメラ
 		float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			radius * glm::cos(0.0f),
+			radius * glm::cos(-3.14f/2.0),
 			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			0.5f,
-			radius * glm::sin(0.0f)
+			radius * glm::sin(-3.14f / 2.0)
 			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			10.0f * glm::cos(0.5f),
+			10.0f * glm::cos(-3.14f / 2.0),
 			//10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			10.0f,
-			10.0f * glm::sin(0.5f)
+			10.0f * glm::sin(-3.14f / 2.0)
 			//10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
 	}
@@ -157,7 +180,7 @@ namespace myapp {
 //				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 //			}
 //#endif
-
+			// ビル
 			if (m_BillRP)
 			{
 				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
@@ -168,6 +191,11 @@ namespace myapp {
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
 			
+			// ストリート
+			if (m_Street)
+			{
+				m_Street->Draw();
+			}
 
 			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 

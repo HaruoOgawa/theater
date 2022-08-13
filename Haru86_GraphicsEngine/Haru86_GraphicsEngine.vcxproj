@@ -486,6 +486,9 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.vert" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.geom" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake\SacredGPUParticle.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake\SacredGPUParticle.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\SacredLake\SacredGPUParticle.frag" />
