@@ -66,9 +66,9 @@ namespace myapp {
 			RenderingSurfaceType::RASTERIZER,
 			std::string(
 				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
-			),std::string(
-				#include "../../Shader/SacredLake/SacredGPUParticle.frag"
-			),std::string(
+			),
+			shaderlib::ShaderLib::Standard_frag,
+			std::string(
 				#include "../../Shader/SacredLake/SacredGPUParticle.geom"
 			)
 		);

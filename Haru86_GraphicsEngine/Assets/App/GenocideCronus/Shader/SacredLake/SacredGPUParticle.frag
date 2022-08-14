@@ -25,7 +25,7 @@ void main(){
 	float diff=max( 0.0,dot(lightDir,WorldNormal) );
 	col*=diff;
 	
-	col=WorldNormal*0.5+0.5;
+	//col=WorldNormal*0.5+0.5;
 	//col=vec3(g2f_o.uv,0.0);
 
 	gl_FragColor=vec4(col,1.0);
