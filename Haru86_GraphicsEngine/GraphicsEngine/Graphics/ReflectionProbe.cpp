@@ -4,10 +4,12 @@
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Message/Console.h"
 
-ReflectionProbe::ReflectionProbe():
+ReflectionProbe::ReflectionProbe(glm::vec3 Offset, float Size):
 	m_CubeTex(std::make_shared<Texture>()),
 	m_FramebufferIndex(0),
-	m_ReflectionType(EReflectionType::CUBEMAP)
+	m_ReflectionType(EReflectionType::CUBEMAP),
+	m_Offset(Offset),
+	m_Size(Size)
 {
 	for (int i = 0; i < 6; i++)
 	{
@@ -20,7 +22,9 @@ ReflectionProbe::ReflectionProbe():
 ReflectionProbe::ReflectionProbe(std::shared_ptr<TransformComponent> TRS) :
 	m_CubeTex(std::make_shared<Texture>()),
 	m_FramebufferIndex(0),
-	m_ReflectionType(EReflectionType::MONODIRECTIONAL)
+	m_ReflectionType(EReflectionType::MONODIRECTIONAL),
+	m_Offset(glm::vec3(0.0f)),
+	m_Size(50.0f)
 {
 	m_CubeCameraTRS.push_back(TRS);
 	Start();
@@ -32,8 +36,8 @@ void ReflectionProbe::Start() {
 		GraphicsRenderer::GetInstance()->CreateFrameBuffer(1024, 1024,
 			m_CubeTex, m_FramebufferIndex, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, ERenderTargetType::REALTIME_CUBEMAP);
 
-		glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
-		float RP_Size = 50.0f;
+		glm::vec3 offset = m_Offset;
+		float RP_Size = m_Size;
 		m_CubeCameraTRS[0]->m_position = glm::vec3(1.0 * RP_Size * 0.5, 0.0, 0.0) + offset;
 		m_CubeCameraTRS[1]->m_position = glm::vec3(-1.0 * RP_Size * 0.5, 0.0, 0.0) + offset;
 		m_CubeCameraTRS[2]->m_position = glm::vec3(0.0, -1.0 * RP_Size * 0.5, 0.0) + offset;

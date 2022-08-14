@@ -33,7 +33,7 @@ PostProcess::PostProcess():
 	m_BloomIntensity(0.0),
 	m_Bloom(std::make_unique<CBloom>()),
 	m_BloomTexture(std::make_shared<Texture>()),
-	m_TRS(std::make_shared<TransformComponent>()),
+	m_transform(std::make_shared<TransformComponent>()),
 	m_UseSSR(false)
 {
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
@@ -92,13 +92,13 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 
 	glEnable(GL_DEPTH_TEST);
 
-	m_TRS->CalMatrix();
+	m_transform->CalMatrix();
 	m_LateMaterial->SetActive();
 	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
 	m_LateMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_LateMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-	m_LateMaterial->SetMatrixUniform("VPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix);
-	m_LateMaterial->SetMatrixUniform("InvVPMatrix", glm::inverse(m_TRS->m_pMatrix * m_TRS->m_vMatrix));
+	m_LateMaterial->SetMatrixUniform("VPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix);
+	m_LateMaterial->SetMatrixUniform("InvVPMatrix", glm::inverse(m_transform->m_pMatrix * m_transform->m_vMatrix));
 
 	// ƒJƒƒ‰‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚È‚çî•ñ‚ð“n‚·
 	if (GraphicsMain::GetInstance()->m_UsingCamera)

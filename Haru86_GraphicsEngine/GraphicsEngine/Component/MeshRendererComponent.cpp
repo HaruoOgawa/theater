@@ -10,7 +10,7 @@ MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComp
 	std::string tc, std::string tv, std::string cs, std::function<void(void)> calllback) : 
 	m_mesh(nullptr), 
 	m_material(nullptr), 
-	m_TRS(TRS),
+	m_transform(TRS),
 	useZTest(true), 
 	m_calllback(calllback)
 {
@@ -29,7 +29,31 @@ MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComp
 	}
 }
 
-void MeshRendererComponent::Draw() {
+MeshRendererComponent::MeshRendererComponent(const std::shared_ptr<TransformComponent>& TRS, RenderingSurfaceType SurfaceType,
+	const std::vector<std::vector<float>>& VertexData, const std::vector<int>& Dimention, const std::vector<unsigned short>& Indices,
+	std::string vert, std::string frag, std::string geom ,std::string tc, std::string tv, std::string cs, std::function<void(void)> calllback) :
+	m_mesh(nullptr),
+	m_material(nullptr),
+	m_transform(TRS),
+	useZTest(true),
+	m_calllback(calllback)
+{
+	m_SurfaceType = SurfaceType;
+	m_mesh = std::make_shared<Mesh>(VertexData,Dimention,Indices);
+	m_material = std::make_shared<Material>(SurfaceType, vert, frag, geom, tc, tv, cs);
+
+	// アルファブレンドの初期値
+	if (m_SurfaceType == RenderingSurfaceType::RASTERIZER)
+	{
+		useAlphaTest = true;
+	}
+	else
+	{
+		useAlphaTest = false;
+	}
+}
+
+void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int InstanceNum, std::function<void(void)> TemporaryCallBack) {
 
 	if (useZTest) 
 	{
@@ -50,20 +74,21 @@ void MeshRendererComponent::Draw() {
 		glDisable(GL_BLEND);
 	}
 
-	m_TRS->CalMatrix();
+	m_transform->CalMatrix();
 
 	m_material->SetActive();
-	m_material->SetMatrixUniform("MVPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix * m_TRS->m_mMatrix);
-	m_material->SetMatrixUniform("MMatrix", m_TRS->m_mMatrix);
-	m_material->SetMatrixUniform("VMatrix", m_TRS->m_vMatrix);
-	m_material->SetMatrixUniform("PMatrix", m_TRS->m_pMatrix);
-	m_material->SetMatrixUniform("VPMatrix", m_TRS->m_pMatrix * m_TRS->m_vMatrix);
-	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(m_TRS->m_pMatrix * m_TRS->m_vMatrix));
+	m_material->SetMatrixUniform("MVPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix * m_transform->m_mMatrix);
+	m_material->SetMatrixUniform("MMatrix", m_transform->m_mMatrix);
+	m_material->SetMatrixUniform("VMatrix", m_transform->m_vMatrix);
+	m_material->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
+	m_material->SetMatrixUniform("VPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix);
+	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(m_transform->m_pMatrix * m_transform->m_vMatrix));
 	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
 	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_material->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));
+	m_material->SetVec3Uniform("_LightPos", GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position);
 	m_material->SetIntUniform("_UseLighting", 1);
 
 	// レイマーチングのデプスマップ用
@@ -89,10 +114,21 @@ void MeshRendererComponent::Draw() {
 		clip->callback(clip->lifeTimeRate);
 	}
 
-	//
+	// Custom Uniform
 	m_calllback();
 
-    m_mesh->Draw();
+	// Temporary Uniform
+	TemporaryCallBack();
+
+	//
+	if (IsInstancing)
+	{
+		m_mesh->DrawInstancedWithMesh(InstanceNum, DrawVertexWay);
+	}
+	else
+	{
+		m_mesh->Draw(DrawVertexWay);
+	}
 
 	//
 	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);

@@ -48,8 +48,8 @@ namespace myapp
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert, MountainGround_frag);
 
-		m_Ground->m_TRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
-		m_Ground->m_TRS->m_scale = glm::vec3(500.0f);
+		m_Ground->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
+		m_Ground->m_transform->m_scale = glm::vec3(500.0f);
 		m_Ground->m_calllback = [this]() 
 		{
 			m_Ground->m_material->SetIntUniform("_UseColor", 1);

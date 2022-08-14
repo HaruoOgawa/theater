@@ -16,9 +16,6 @@
 #include "Assets/App/GenocideCronus/Script/SSR_Test/SSR_Test.h"
 
 void GenocideCronus::Start() {
-	//
-	m_DebugSceneIndex = 0;
-
 	// ƒJƒƒ‰
 	m_CameraTransform = std::make_shared<TransformComponent>();
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
@@ -38,30 +35,34 @@ void GenocideCronus::Start() {
 }
 
 void GenocideCronus::Update() {
-	//
+	// ŠÔ
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
-	//m_DebugSceneIndex = 0;
+	m_DebugSceneIndex = 0;
 
-	//
+	// ƒV[ƒ“§Œä
 	if (m_DebugSceneIndex == 0) // City
 	{
 		// •`‰æİ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 
 		// ƒJƒƒ‰
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
 		m_CameraTransform->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+
+		// XVˆ—
+		m_ProceduralCity->Update();
 	}
 	else if (m_DebugSceneIndex == 1)
 	{
 		// •`‰æİ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// ƒJƒƒ‰
 		float r = 10.0f;
@@ -75,7 +76,7 @@ void GenocideCronus::Update() {
 
 		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
 
-		// ˆ—XV
+		// XVˆ—
 		m_Forest->Update();
 	}
 	else if (m_DebugSceneIndex == 2) // Lake
@@ -87,9 +88,11 @@ void GenocideCronus::Update() {
 		m_CameraTransform->m_center = glm::vec3(0.0f, 0.0f, 0.0f); // SacredLake
 
 		m_CameraTransform->m_position = glm::vec3( // SacredLake
-			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
+			glm::cos(0.0f) * 30.0f,
+			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
 			0.5f,
-			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+			glm::sin(0.0f) * 30.0f
+			//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
 		);
 	}
 	else if (m_DebugSceneIndex == 3) // Mountain
@@ -97,7 +100,7 @@ void GenocideCronus::Update() {
 		// •`‰æİ’è
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// ”wŒiF
-		if (m_DebugSceneIndex != 2)GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// ƒJƒƒ‰
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);

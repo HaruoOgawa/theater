@@ -1,23 +1,33 @@
 #pragma once
 #include <memory>
+#include <glm/glm.hpp>
 
-class Mesh;
-class Material;
-class TransformComponent;
-class GameObject;
 class MeshRendererComponent;
+class ReflectionProbe;
 
 namespace myapp {
+	enum class BillRPProgress
+	{
+		Initialize,
+		Draw,
+		Separation,
+		None,
+	};
 
 	class ProceduralCity
 	{
-		//
-		//std::shared_ptr<GameObject> m_Mandelbox;
-		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
-		std::shared_ptr<Mesh>        m_BillMesh4Instanced;
-		std::shared_ptr<Material>    m_BillMaterial4Instanced;
-		std::shared_ptr<TransformComponent> m_transform;
+		// リフレクションプローブ関連
+		std::shared_ptr<ReflectionProbe> m_BillRP;
+		BillRPProgress m_BillRPProgress;
+		int m_RPDrawCount;
 
+		// 3Dオブジェクト
+		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
+		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
+		std::shared_ptr<MeshRendererComponent> m_Street;
+		glm::vec3							   m_XSideWarkVec;
+		std::shared_ptr<MeshRendererComponent> m_StreeLamp;
+		std::shared_ptr<MeshRendererComponent> m_CylinderBill;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;
