@@ -100,12 +100,15 @@ void main(){
 	);
 
 	// ランダムローテーション(回転行列の定義がめんどくさいのでここで先に計算する)
-	vec3 randAngle = hash(vec3(id_f*2.1+6.14,id_f*id_f+1.111,45.69))*PI*2.0;
-	mat4 RandRotateMat = CalRotMatrix(randAngle+randAngle*vec3(_time*0.01));
+	vec3 randAngle = hash(vec3(id_f+6.14,id_f+1.111,id_f+45.69))*PI*2.0;
+
+	mat4 RandRotateMat = CalRotMatrix(randAngle+randAngle*vec3(_time*0.5));
 
 	// ransPosのオフセット方向を決定する(基本上に直進させたい --> やっぱランダムで)
-	vec4 OffDir =vec4( normalize(hash(vec3(id_f*0.01+id_f,0.621,id_f+9.99+id_f*4.0))) ,0.0);
-	OffDir=RandRotateMat*OffDir;
+	vec4 OffDir =vec4( vec3(0.0,1.0,0.0) ,0.0);
+	//vec4 OffDir =vec4( normalize(hash(vec3(id_f*0.01+id_f,0.621,id_f+9.99+id_f*4.0))) ,0.0);
+	//OffDir=RandRotateMat*OffDir;
+	
 	randPos+=normalize(OffDir.xyz)*_time;
 	randPos=mod(randPos,height)-height*0.5;
 	mat4 RandPosMat = mat4(
