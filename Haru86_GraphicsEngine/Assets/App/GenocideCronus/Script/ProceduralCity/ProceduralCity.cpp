@@ -69,8 +69,12 @@ namespace myapp {
 				std::make_shared<TransformComponent>(),
 				RenderingSurfaceType::RASTERIZER,
 				VertexData, Dimention, Indices,
-				shaderlib::ShaderLib::Standard_vert,
-				shaderlib::ShaderLib::Standard_frag
+				std::string(
+					#include "../../Shader/ProceduralCity/CylinderBill.vert"
+				),
+				std::string(
+					#include "../../Shader/ProceduralCity/CylinderBill.frag"
+				)
 			);
 		}
 
@@ -115,24 +119,24 @@ namespace myapp {
 			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
 		}
 
-		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			3.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			3.0f,
-			3.0f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
+		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+			2.5f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			2.5f,
+			2.5f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
 
 		// デバッグ用カメラ
-		float radius = 2.0f;
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			radius * glm::cos(-3.14f/2.0),
-			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			2.0f,
-			//0.5f,
-			radius * glm::sin(-3.14f / 2.0)
-			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
-		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
+		//float radius = 2.0f;
+		//GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+		//	//radius * glm::cos(-3.14f/2.0),
+		//	radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+		//	2.0f,
+		//	//0.5f,
+		//	//radius * glm::sin(-3.14f / 2.0)
+		//	radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+		//);
+		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
@@ -167,9 +171,13 @@ namespace myapp {
 			}
 			
 			// 円柱ビル
-			if (m_CylinderBill)
+			if (m_CylinderBill && m_BillRP)
 			{
-				m_CylinderBill->Draw();
+				m_CylinderBill->Draw(GL_TRIANGLES, false, 256, [this]() {
+					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
+					});
+				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
 
 			// ストリート

@@ -480,6 +480,8 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\MountainAround.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\MountainGround.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\CylinderBill.frag" />
+    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\CylinderBill.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\GlowCave.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\MandelboxSample.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Mountain\Mountain.frag" />

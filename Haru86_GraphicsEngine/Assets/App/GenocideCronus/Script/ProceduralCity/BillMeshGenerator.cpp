@@ -140,7 +140,7 @@ namespace myapp {
 			TRS->m_scale = glm::vec3(BillRadius, BillHeight, BillRadius);
 			TRS->CalMatrix();
 
-			PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, 0, false);
+			PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, true, false, 0, false);
 		}
 
 		// …•½•ûŒü‚Ì‹æØ‚è
@@ -154,7 +154,7 @@ namespace myapp {
 
 				TRS->CalMatrix();
 
-				PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, 0, false);
+				PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, static_cast<int>(n), false);
 			}
 		}
 
@@ -171,7 +171,7 @@ namespace myapp {
 
 				TRS->CalMatrix();
 
-				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, false, false, 0, false);
+				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, false, true, static_cast<int>(n), false);
 			}
 		}
 
