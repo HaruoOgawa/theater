@@ -44,7 +44,8 @@ void main(){
 	{
 		// diffuse
 		vec3 lightDir=normalize(_LightPos-g2f_WorldVertexPos);
-		float diff=max(0.0,dot(g2f_normal,lightDir));
+		//float diff=max(0.0,dot(g2f_normal,lightDir));
+		float diff=max(0.0,abs(dot(g2f_normal,lightDir)));
 		col.rgb*=diff;
 
 		// Specular

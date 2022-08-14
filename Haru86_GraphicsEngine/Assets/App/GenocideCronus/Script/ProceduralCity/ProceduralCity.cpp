@@ -119,24 +119,25 @@ namespace myapp {
 			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
 		}
 
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			2.5f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			2.5f,
 			2.5f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
 		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
 
 		// デバッグ用カメラ
-		//float radius = 2.0f;
-		//GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-		//	//radius * glm::cos(-3.14f/2.0),
-		//	radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-		//	2.0f,
-		//	//0.5f,
-		//	//radius * glm::sin(-3.14f / 2.0)
-		//	radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
-		//);
+		float radius = 2.0f;
+		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+			radius * glm::cos(-3.14f/2.0),
+			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			2.0f,
+			//0.5f,
+			radius * glm::sin(-3.14f / 2.0)
+			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+		);
 		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
+		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
@@ -173,7 +174,12 @@ namespace myapp {
 			// 円柱ビル
 			if (m_CylinderBill && m_BillRP)
 			{
-				m_CylinderBill->Draw(GL_TRIANGLES, false, 256, [this]() {
+				m_CylinderBill->Draw(GL_TRIANGLES, true, 256, [this]() {
+					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f, 0.0f, 1.0f));
+					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
+					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
+					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
 					});

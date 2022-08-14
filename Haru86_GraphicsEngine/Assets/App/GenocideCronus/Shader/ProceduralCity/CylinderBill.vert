@@ -8,7 +8,12 @@ uniform mat4 VMatrix;
 uniform mat4 PMatrix;
 uniform float _time;
 uniform float _deltaTime;
-uniform vec3 _CameraPos;
+uniform vec3 _WorldCameraPos;
+
+uniform vec3 XSideWarkVec;
+uniform float StreetRadius;
+uniform float ToSideWarkDist;
+uniform vec3 _ZCenterVec; // Zは無限大である
 
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
@@ -43,8 +48,8 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 
 void main(){
 	// 基本パラメーター
-	float id = floor(_time*0.15);
-	//float id = float(gl_InstanceID+1024+1);
+	//float id = floor(_time*0.15);
+	float id = float(gl_InstanceID+1024+1);
 	vec4 pos=vec4(vertex,1.0);
 	vec4 localNormal = vec4(normal,0.0);
 	
@@ -101,7 +106,7 @@ void main(){
 
 		mat4 ScaleMatrix = mat4(
 			vec4(noise2.x,0.0,0.0,0.0),
-			vec4(0.0,noise2.y,0.0,0.0),
+			vec4(0.0,noise2.y*2.0,0.0,0.0),
 			vec4(0.0,0.0,noise2.x,0.0),
 			vec4(0.0,0.0,0.0,1.0)
 		);
@@ -111,7 +116,23 @@ void main(){
 
 	// ランダムポジション
 	{
-	
+		// ランダムポジション
+		vec3 randPos=vec3(0.0);
+		float randPosRadius=75.0;
+		randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
+		randPos.y=0.0;
+
+		randPos.z-=_time*10.0;
+		randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
+
+		// 大通りのぶんだけ道を開ける
+		{
+			vec3 StreetOffVec = ToSideWarkDist * StreetRadius * normalize(vec3( (randPos.x-_ZCenterVec.x) ,0.0,0.0));
+			randPos+=StreetOffVec;
+		}
+
+		//
+		pos.xyz+=randPos;
 	}
 
 	// アウトプット
