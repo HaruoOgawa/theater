@@ -23,10 +23,11 @@ namespace myapp {
 
 		// 3Dオブジェクト
 		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
-		std::shared_ptr<MeshRendererComponent> m_BillMeshRenderer4Instanced;
 		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;
 		std::shared_ptr<MeshRendererComponent> m_Street;
 		glm::vec3							   m_XSideWarkVec;
+		std::shared_ptr<MeshRendererComponent> m_StreeLamp;
+		std::shared_ptr<MeshRendererComponent> m_CylinderBill;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

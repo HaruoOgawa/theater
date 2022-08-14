@@ -13,9 +13,14 @@
 namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_BillRPProgress(BillRPProgress::Initialize),
-		m_BillRP(nullptr),
 		m_RPDrawCount(0),
+		m_BillRP(nullptr),
+		
+		m_Mandelbox(nullptr),
+		m_ProceduralBillRenderer(nullptr),
 		m_Street(nullptr),
+		m_StreeLamp(nullptr),
+		m_CylinderBill(nullptr),
 		m_XSideWarkVec(glm::vec3(0.0f))
 	{
 		Start();
@@ -23,7 +28,7 @@ namespace myapp {
 
 	void ProceduralCity::Start() 
 	{	
-		//
+		// ƒrƒ‹
 		{
 			// VertexData‚ğ\’z
 			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
@@ -71,23 +76,7 @@ namespace myapp {
 			);
 		}
 
-		//
-		/*m_BillMeshRenderer4Instanced = std::make_shared<MeshRendererComponent>(
-			std::make_shared<TransformComponent>(),
-			PrimitiveType::POINT,
-			RenderingSurfaceType::RASTERIZER, 
-			std::string(
-				#include "../../Shader/ProceduralCity/ProceduralCity.vert"
-			),
-			std::string(
-				#include "../../Shader/ProceduralCity/ProceduralCity.frag"
-			),
-			std::string(
-				#include "../../Shader/ProceduralCity/ProceduralCity.geom"
-			)
-		);*/
-
-		//// raymarching
+		// Mandelbox
 		std::string MandelboxShader = {
 			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
 		};
@@ -149,7 +138,6 @@ namespace myapp {
 			// ƒrƒ‹
 			if (m_BillRP)
 			{
-				//m_ProceduralBillRenderer->Draw(GL_PATCHES);
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
@@ -170,8 +158,6 @@ namespace myapp {
 					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
 				});
 			}
-
-			//m_BillMeshRenderer4Instanced->Draw(GL_POINTS, true, 1024);
 
 			// RP‚Ìˆ—
 			// RP‚ğ3‚Â‚®‚ç‚¢ì‚Á‚Äc•ûŒü‚ÉOffset‚·‚é
