@@ -14,46 +14,23 @@
 namespace myapp {
 	SacredLake::SacredLake():
 		m_Mandelbox(nullptr),
-		m_GPUMaterial(nullptr),
-		m_GPUTRS(nullptr),
-		m_GPUParticleMesh(nullptr)
+		m_ReflectPlane(nullptr)
 	{
 		Start();
 	}
 
 	void SacredLake::Start() {
-		// Object
-		std::string SacredLake_WaterReflection_vert = {
-			#include "../../Shader/SacredLake/SacredLake_WaterReflection.vert"
-		};
-
-		std::string SacredLake_WaterReflection_frag = {
-			#include "../../Shader/SacredLake/SacredLake_WaterReflection.frag"
-		};
-
-		std::string SacredLake_WaterReflection_tesc = {
-			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tesc"
-		};
-
-		std::string SacredLake_WaterReflection_tese = {
-			#include "../../Shader/SacredLake/SacredLake_WaterReflection.tese"
-		};
-
-		std::string SacredLake_WaterReflection_geom = {
-			#include "../../Shader/SacredLake/SacredLake_WaterReflection.geom"
-		};
-		
-		//m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, SacredLake_WaterReflection_vert, SacredLake_WaterReflection_frag,
-		//	SacredLake_WaterReflection_geom, SacredLake_WaterReflection_tesc, SacredLake_WaterReflection_tese);
-		
-		m_ReflectPlaneMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::Standard_vert,shaderlib::ShaderLib::Standard_frag);
-		
-		m_ReflectPlaneTRS = std::make_shared<TransformComponent>();
-		m_ReflectPlaneTRS->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
-		m_ReflectPlaneTRS->m_scale = glm::vec3(500.0f);
-		//m_ReflectPlaneTRS->m_scale = glm::vec3(15.0f);
-		m_ReflectPlaneTRS->m_position = glm::vec3(0.0f, -10.0f, 0.0f);
-		m_ReflectPlaneMesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
+		// Reflection Plane
+		m_ReflectPlane = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert,
+			shaderlib::ShaderLib::Standard_frag
+		);
+		m_ReflectPlane->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
+		m_ReflectPlane->m_transform->m_scale = glm::vec3(500.0f);
+		m_ReflectPlane->m_transform->m_position = glm::vec3(0.0f, -10.0f, 0.0f);
 
 		// VolumetricCloud
 		std::string VolumetricCloud_frag = {
@@ -70,34 +47,31 @@ namespace myapp {
 		m_VolumetricCloud->useAlphaTest = false;
 
 		// Mandelbox
-		std::string MandelboxShader = {
-			#include "../../Shader/SacredLake/SacredLake_Mandelbox.frag"
-		};
-
 		m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
-			MandelboxShader
-			);
+			std::string(
+				#include "../../Shader/SacredLake/SacredLake_Mandelbox.frag"
+			)
+		);
 		m_Mandelbox->useAlphaTest = true;
 		m_Mandelbox->useZTest = false;
 
 		// GPU particle
-		std::string GPUVert = {
-			#include "../../Shader/SacredLake/SacredGPUParticle.vert"
-		};
-		std::string GPUFrag = {
-			#include "../../Shader/SacredLake/SacredGPUParticle.frag"
-		};
-		std::string GPUGeom = {
-			#include "../../Shader/SacredLake/SacredGPUParticle.geom"
-		};
-		m_GPUMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUVert, GPUFrag, GPUGeom);
-
-		m_GPUParticleMesh = std::make_shared<Mesh>(PrimitiveType::POINT);
-		m_GPUTRS = std::make_shared<TransformComponent>();
+		m_GPUParticle = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::POINT,
+			RenderingSurfaceType::RASTERIZER,
+			std::string(
+				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
+			),std::string(
+				#include "../../Shader/SacredLake/SacredGPUParticle.frag"
+			),std::string(
+				#include "../../Shader/SacredLake/SacredGPUParticle.geom"
+			)
+		);
 	}
 
 	void SacredLake::Update() 
@@ -107,19 +81,6 @@ namespace myapp {
 	void SacredLake::Draw(bool IsRaymarching) {
 		PostProcess::GetInstance()->m_UseSSR = true;
 
-		// GPU particle
-		/*m_GPUMaterial->SetActive();
-		m_GPUTRS->CalMatrix();
-		m_GPUMaterial->SetMatrixUniform("MVPMatrix", m_GPUTRS->m_pMatrix * m_GPUTRS->m_vMatrix * m_GPUTRS->m_mMatrix);
-		m_GPUMaterial->SetMatrixUniform("MMatrix", m_GPUTRS->m_mMatrix);
-		m_GPUMaterial->SetMatrixUniform("VMatrix", m_GPUTRS->m_vMatrix);
-		m_GPUMaterial->SetMatrixUniform("PMatrix", m_GPUTRS->m_pMatrix);
-		m_GPUMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-		m_GPUMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-		m_GPUMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
-		m_GPUMaterial->SetIntUniform("_NotUseNormal", 1);
-		m_GPUParticleMesh->DrawInstancedWithMesh(1024, GL_POINTS);*/
-
 		if (IsRaymarching)
 		{
 			//
@@ -128,25 +89,15 @@ namespace myapp {
 		}
 		else
 		{
+			// GPU particle
+			m_GPUParticle->Draw(GL_POINTS, true, 1024);
+
 			//
 			if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera) {
-				// Plane
-				m_ReflectPlaneMaterial->SetActive();
-				m_ReflectPlaneTRS->CalMatrix();
-				m_ReflectPlaneMaterial->SetMatrixUniform("MVPMatrix", m_ReflectPlaneTRS->m_pMatrix * m_ReflectPlaneTRS->m_vMatrix * m_ReflectPlaneTRS->m_mMatrix);
-				m_ReflectPlaneMaterial->SetMatrixUniform("MMatrix", m_ReflectPlaneTRS->m_mMatrix);
-				m_ReflectPlaneMaterial->SetMatrixUniform("VMatrix", m_ReflectPlaneTRS->m_vMatrix);
-				m_ReflectPlaneMaterial->SetMatrixUniform("PMatrix", m_ReflectPlaneTRS->m_pMatrix);
-				m_ReflectPlaneMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-				m_ReflectPlaneMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-				m_ReflectPlaneMaterial->SetVec3Uniform("_CameraPos", GraphicsMain::GetInstance()->m_MainCamera->m_position);
-				m_ReflectPlaneMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
-
-				m_ReflectPlaneMaterial->SetIntUniform("_UseColor", 1);
-				m_ReflectPlaneMaterial->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-
-				//m_ReflectPlaneMesh->Draw(GL_PATCHES);
-				m_ReflectPlaneMesh->Draw();
+				m_ReflectPlane->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_ReflectPlane->m_material->SetIntUniform("_UseColor", 1);
+					m_ReflectPlane->m_material->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+				});
 			}
 		}
 	}

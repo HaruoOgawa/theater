@@ -6,22 +6,21 @@
 namespace myapp {
 	Mountain::Mountain()
 	{
-		std::string Mountain_frag = {
-			#include "../../Shader/Mountain/Mountain.frag"
-		};
-
 		m_MoutainObj = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
-			shaderlib::ShaderLib::StandardRenderBoard_vert, Mountain_frag);
+			shaderlib::ShaderLib::StandardRenderBoard_vert, 
+			std::string(
+				#include "../../Shader/Mountain/Mountain.frag"
+			)
+		);
 
 		m_MoutainObj->useZTest = false;
 	}
 
 	void Mountain::Update()
 	{
-
 	}
 
 	void Mountain::Draw(bool IsRaymarching)
