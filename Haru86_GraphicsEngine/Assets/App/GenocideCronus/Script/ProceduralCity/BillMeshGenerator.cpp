@@ -119,7 +119,7 @@ namespace myapp {
 	{
 		// 初期化
 		m_LastIndex = 0;
-		unsigned int ATTRIBUTENUM = 2;
+		unsigned int ATTRIBUTENUM = 3;
 		VertexData.resize(ATTRIBUTENUM);
 
 		// 基本パラメーター
@@ -127,14 +127,13 @@ namespace myapp {
 		float BillRadius = 5.0f * AdjustVal;
 		float BillHeight = 20.0f * AdjustVal;
 		float DivisionNum = 12.0f;
-		
-		int HolDelimiterNum = 10;
-		int VerDelimiterNum = 10;
-		float HolResizeRate = 1.05f;
-		float VerResizeRate = 1.1f;
 		float HolDelimiterThickness = 0.25f * AdjustVal;
 		float VerDelimiterThickness = 0.1f * AdjustVal;
-
+		float HolDelimiterNum = 10.0f;
+		float VerDelimiterNum = 10.0f;
+		float HolResizeRate = 1.1f;
+		float VerResizeRate = 1.1f;
+		
 		// 基礎
 		{
 			std::shared_ptr<TransformComponent> TRS = std::make_shared<TransformComponent>();
@@ -144,9 +143,42 @@ namespace myapp {
 			PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, 0, false);
 		}
 
+		// 水平方向の区切り
+		{
+			for (float n = 0.0f; n < HolDelimiterNum; n++)
+			{
+				std::shared_ptr<TransformComponent> TRS = std::make_shared<TransformComponent>();
+				TRS->m_scale = glm::vec3(BillRadius * HolResizeRate, HolDelimiterThickness, BillRadius * HolResizeRate);
+				float YOffset = (BillHeight / static_cast<float>(HolDelimiterNum)) * static_cast<float>(n + 1);
+				TRS->m_position = glm::vec3(0.0f, YOffset, 0.0f);
+
+				TRS->CalMatrix();
+
+				PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, 0, false);
+			}
+		}
+
+		// 垂直方向の区切り
+		{
+			for (float n = 0.0f; n <= VerDelimiterNum; n++)
+			{
+				std::shared_ptr<TransformComponent> TRS = std::make_shared<TransformComponent>();
+				TRS->m_scale = glm::vec3(BillRadius * VerResizeRate, BillHeight*0.325f, VerDelimiterThickness);
+				TRS->m_position = glm::vec3(0.0f, 0.7f, 0.0f);
+
+				float YRotation = (2.0*3.14f) * (n/VerDelimiterNum);
+				TRS->m_rotation = glm::vec3(0.0f, YRotation,0.0f);
+
+				TRS->CalMatrix();
+
+				PrepareBoxVertexData(VertexData, Indices, TRS->m_mMatrix, false, false, 0, false);
+			}
+		}
+
 		// ディメンションを定義
 		Dimention.push_back(3);
 		Dimention.push_back(3);
+		Dimention.push_back(4);
 	}
 
 	void BillMeshGenerator::PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
@@ -332,6 +364,13 @@ namespace myapp {
 			VertexData[1].push_back(n1.x); VertexData[1].push_back(n1.y); VertexData[1].push_back(n1.z);
 			VertexData[1].push_back(n1.x); VertexData[1].push_back(n1.y); VertexData[1].push_back(n1.z);
 
+			// BillInfo
+			// IsWindow
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f);VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f);VertexData[2].push_back(order);VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f);VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f);VertexData[2].push_back(order);VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f);VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f);VertexData[2].push_back(order);VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f);VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f);VertexData[2].push_back(order);VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+
 			// インデックスデータを構築
 			Indices.push_back(0 + m_LastIndex);
 			Indices.push_back(1 + m_LastIndex);
@@ -386,6 +425,13 @@ namespace myapp {
 			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
 			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
 			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
+
+			// BillInfo
+			// IsWindow
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f); VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f); VertexData[2].push_back(order); VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f); VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f); VertexData[2].push_back(order); VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f); VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f); VertexData[2].push_back(order); VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
+			VertexData[2].push_back((IsWindow) ? 1.0f : 0.0f); VertexData[2].push_back((IsVertical) ? 1.0f : 0.0f); VertexData[2].push_back(order); VertexData[2].push_back((IsXAxis) ? 1.0f : 0.0f);
 
 			// インデックスデータを構築
 			Indices.push_back(0 + m_LastIndex);
