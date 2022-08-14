@@ -5,7 +5,8 @@ R"(
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
 flat in int PrimID;
-flat in int _IsStreet; // •à“¹‚©‚Ç‚¤‚©
+flat in int _IsStreet; // “¹˜H‚©‚Ç‚¤‚©
+flat in int _IsSidewalk; // •à“¹‚©‚Ç‚¤‚©
 flat in int g2f_IsZAxis;
 
 uniform int _UseColor;
@@ -95,7 +96,7 @@ void main(){
 	
 		if(g2f_IsZAxis == 1)
 		{
-			StreetUV.x = clamp(abs(WorldVertexPos.x-_WorldCameraPos.x),0.0,1.0);
+			StreetUV.x = clamp(abs(WorldVertexPos.x-_WorldCameraPos.x)/1.5,0.0,1.0);
 
 			col.rgb += vec3( (StreetUV.x<StreetLineWidth)? 1.0 : 0.0);
 			col.rgb += vec3( (StreetUV.x>1.0-StreetLineWidth && StreetUV.x<1.0)? 1.0 : 0.0);
@@ -105,7 +106,7 @@ void main(){
 		}
 		else if(g2f_IsZAxis == 0)
 		{
-			StreetUV.y = clamp(abs(WorldVertexPos.z-XSideWarkVec.z),0.0,1.0);
+			StreetUV.y = clamp(abs(WorldVertexPos.z-XSideWarkVec.z)/1.5,0.0,1.0);
 
 			col.rgb += vec3( (StreetUV.y<StreetLineWidth)? 1.0 : 0.0);
 			col.rgb += vec3( (StreetUV.y>1.0-StreetLineWidth && StreetUV.y<1.0)? 1.0 : 0.0);
@@ -114,6 +115,16 @@ void main(){
 		}
 
 		//col.rgb=vec3(StreetUV,0.0); 
+	}
+	else if(_IsSidewalk == 1)
+	{
+		if(g2f_IsZAxis == 1)
+		{
+			col.rgb = vec3(0.611,0.283,0.211);
+		}
+		else if(g2f_IsZAxis == 0)
+		{
+		}
 	}
 
 	gl_FragColor=col;

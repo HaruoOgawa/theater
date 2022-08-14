@@ -122,7 +122,8 @@ namespace myapp {
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(-3.14f/2.0),
 			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			0.5f,
+			2.0f,
+			//0.5f,
 			radius * glm::sin(-3.14f / 2.0)
 			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
@@ -152,6 +153,7 @@ namespace myapp {
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
+					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -165,6 +167,7 @@ namespace myapp {
 				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
+					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
 				});
 			}
 

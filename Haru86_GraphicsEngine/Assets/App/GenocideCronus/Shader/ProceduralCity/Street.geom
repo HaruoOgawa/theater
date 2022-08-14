@@ -11,7 +11,8 @@ in int v2g_id[];
 out vec3 WorldVertexPos;
 out vec3 WorldNormal;
 flat out int PrimID;
-flat out int _IsStreet; // 歩道かどうか
+flat out int _IsStreet; // 道路かどうか
+flat out int _IsSidewalk; // 歩道かどうか
 flat out int g2f_IsZAxis;
 
 uniform mat4 MVPMatrix;
@@ -24,17 +25,19 @@ uniform vec3 _WorldCameraPos;
 
 uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
+uniform float ToSideWarkDist;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
 
-void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis)
+void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis,int IsSidewalk)
 {
 	gl_Position = PMatrix * VMatrix * pos0;
 	WorldVertexPos = (pos0).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
 	_IsStreet=IsStreet;
+	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
@@ -43,6 +46,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
 	_IsStreet=IsStreet;
+	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
@@ -51,6 +55,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
 	_IsStreet=IsStreet;
+	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
@@ -58,18 +63,18 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 
 }
 
-void CreateSurfaceMesh(vec4 pos,float size,int IsStreet, bool IsSide,bool IsZAxis)
+void CreateSurfaceMesh(vec4 pos,float size,int IsStreet, bool IsSide,bool IsZAxis,int IsSidewalk)
 {
 	vec4 pos0 =vec4(pos.xyz + vec3(-1.0 * size, 0.0, -1.0 * size),1.0);
 	vec4 pos1 =vec4(pos.xyz + vec3(-1.0 * size, 0.0, 1.0 * size),1.0);
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size, 0.0, 1.0 * size),1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size, 0.0, -1.0 * size),1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,vec3(0.0,1.0,0.0),IsZAxis);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,vec3(0.0,1.0,0.0),IsZAxis);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk);
 }
 
-void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVector,float heightRate,bool IsZAxis)
+void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVector,float heightRate,bool IsZAxis,int IsSidewalk)
 {
 	vec2 IsZ=(IsZAxis)? vec2(0.0,1.0) : vec2(1.0,0.0);
 	vec4 pos0 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, -1.0 * size*heightRate,-1.0 * size*IsZ.y) + OffsetVector*size,1.0);
@@ -77,16 +82,16 @@ void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVec
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,OffsetVector,IsZAxis);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,OffsetVector,IsZAxis);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,OffsetVector,IsZAxis,IsSidewalk);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,OffsetVector,IsZAxis,IsSidewalk);
 
 	pos0 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, -1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos1 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, 1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,-OffsetVector,IsZAxis);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,-OffsetVector,IsZAxis);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,-OffsetVector,IsZAxis,IsSidewalk);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,-OffsetVector,IsZAxis,IsSidewalk);
 }
 
 void main()
@@ -97,15 +102,18 @@ void main()
 	float PlaneSize = 50.0;
 	float SizeRate = PlaneSize/Segment;
 	int IsStreet = 0;
+	int IsSidewalk = 0;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
-	//float ToSideWarkDist = 2.5;
+	//float ToSideWarkDist = 2.0;
 	bool ZStreet=false,XStreet=false;
 	vec3 OffsetVectorZStreet,OffsetVectorXStreet;
+	OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
+	OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
 
 	// 距離チェック(Z軸原点ベース--> 進行方向はX方向で原点から生える)
 	{
-		OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
+		//OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
 		if( abs(OffsetVectorZStreet.x) < StreetRadius)
 		{
 			offset.y += -0.1;
@@ -114,27 +122,38 @@ void main()
 		}
 	}
 	
-	// 距離チェック(X軸ベース--> 進行方向はZ方向)
+	/*// 距離チェック(X軸ベース--> 進行方向はZ方向)
 	{
-		//vec3 XSideWarkVec = vec3(0.0,0.0,mod(-_time*10.0,PlaneSize)-PlaneSize*0.5);
-		OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
+		//OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
 		if( abs(OffsetVectorXStreet.z) < StreetRadius)
 		{
 			if(!ZStreet)offset.y += -0.1;
 			IsStreet = 1;
 			XStreet=true;
 		}
-	}
+	}*/
 
 	// 側面のメッシュを作成
 	{
 		// 側面を作成
-		if(ZStreet&&!XStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, normalize(vec3(OffsetVectorZStreet.x,0.0,0.0)), 0.1,true);
-		if(XStreet&&!ZStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, normalize(vec3(0.0,0.0,OffsetVectorXStreet.z)), 0.1,false);
+		if(ZStreet&&!XStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, 
+			normalize(vec3(OffsetVectorZStreet.x,0.0,0.0)), 0.1,true,IsSidewalk);
+		if(XStreet&&!ZStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, 
+			normalize(vec3(0.0,0.0,OffsetVectorXStreet.z)), 0.1,false,IsSidewalk);
+	}
+
+	// 歩道かどうかのチェック(メッシュを新たに作るのではなく、ライティングのフラグを持たせる(ひとまずZ軸ベースのみ)
+	if(IsStreet!=1)
+	{
+		if( (abs(OffsetVectorZStreet.x)-ToSideWarkDist) < ToSideWarkDist)
+		{
+			IsSidewalk=1;
+			ZStreet=true;
+		}
 	}
 
 	// 表面を作成
-	CreateSurfaceMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,false,ZStreet);
+	CreateSurfaceMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,false,ZStreet,IsSidewalk);
 }
 
 )"

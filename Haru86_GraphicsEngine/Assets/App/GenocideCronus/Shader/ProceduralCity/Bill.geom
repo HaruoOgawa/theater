@@ -15,6 +15,7 @@ uniform vec3 _WorldCameraPos;
 
 uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
+uniform float ToSideWarkDist;
 
 in float t2g_id[];
 in vec3 t2g_normal[];
@@ -93,12 +94,11 @@ void main()
 
 	// ‘å’Ê‚è‚Ì‚Ô‚ñ‚¾‚¯“¹‚ğŠJ‚¯‚é
 	{
-		//float StreetRadius = 2.5;
-		vec3 StreetOffVec = StreetRadius * normalize(vec3( (randPos.x-_WorldCameraPos.x) ,0.0,0.0));
+		vec3 StreetOffVec = ToSideWarkDist * StreetRadius * normalize(vec3( (randPos.x-_WorldCameraPos.x) ,0.0,0.0));
 		randPos+=StreetOffVec;
 	}
 
-	// X²‚Ì‘å’Ê‚è‚Ì•ª‚¾‚¯A“¹‚ğ‚ ‚¯‚é
+	/*// X²‚Ì‘å’Ê‚è‚Ì•ª‚¾‚¯A“¹‚ğ‚ ‚¯‚é
 	{
 		vec3 OffsetVectorXStreet = randPos-XSideWarkVec;
 		if( abs(OffsetVectorXStreet.z) < StreetRadius)
@@ -106,7 +106,7 @@ void main()
 			vec3 StreetOffVec = StreetRadius * normalize( vec3(0.0,0.0,1.5*(OffsetVectorXStreet.z)) );
 			randPos+=StreetOffVec;
 		}
-	}
+	}*/
 
 	Createvertex(randPos);
 }
