@@ -26,6 +26,7 @@ uniform vec3 _WorldCameraPos;
 uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
 uniform float ToSideWarkDist;
+uniform vec3 _ZCenterVec; // Zは無限大である
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
@@ -106,7 +107,8 @@ void main()
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
 	bool ZStreet=false,XStreet=false;
-	vec3 OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
+	//vec3 OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
+	vec3 OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_ZCenterVec;
 	vec3 OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
 
 	// 距離チェック(Z軸原点ベース--> 進行方向はX方向で原点から生える)

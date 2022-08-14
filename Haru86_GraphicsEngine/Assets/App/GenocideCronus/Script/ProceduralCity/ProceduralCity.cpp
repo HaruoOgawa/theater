@@ -139,6 +139,7 @@ namespace myapp {
 			if (m_BillRP)
 			{
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
+					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f,0.0f,1.0f));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
@@ -153,6 +154,7 @@ namespace myapp {
 			if (m_Street)
 			{
 				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
+					m_Street->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f, 0.0f, 1.0f));
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);

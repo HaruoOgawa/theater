@@ -13,12 +13,9 @@ namespace myapp {
 		void PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
 			bool IsWindow,bool IsVertical,float order,bool IsXAxis);
 
-		void PreparePlaneVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices,
-			glm::mat4 LocalTransMatrix, glm::vec2 size, int segmentNum);
 	public:
 		BillMeshGenerator() = default;
 		virtual ~BillMeshGenerator() = default;
 		void Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
-		void GenerateStreet(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 	};
 }

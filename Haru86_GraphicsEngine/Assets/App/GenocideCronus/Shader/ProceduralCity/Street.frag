@@ -22,6 +22,7 @@ uniform float _time;
 uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
 uniform float ToSideWarkDist;
+uniform vec3 _ZCenterVec; // Zは無限大である
 
 uniform int _UseMainTex;
 uniform sampler2D _MainTex;
@@ -97,7 +98,8 @@ void main(){
 	// 道路と歩道のライティング
 	{
 	
-		vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_WorldCameraPos.xyz;
+		//vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_WorldCameraPos.xyz;
+		vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_ZCenterVec.xyz;
 		vec3 OffsetVectorXStreet = WorldVertexPos.xyz-XSideWarkVec.xyz;
 		if(_IsStreet==1) // 道路
 		{
@@ -136,20 +138,27 @@ void main(){
 				//
 				float LocalOffsetVal = (abs(OffsetVectorZStreet.x)-ToSideWarkDist) / ToSideWarkDist;
 				float ModIntervalVer = 0.05;
-				float ModIntervalHol = 0.25;
+				float ModIntervalHol = 0.125;
 
 				// 縦線
 				col.rgb = (mod(LocalOffsetVal,ModIntervalVer)*(1.0/ModIntervalVer) >0.9)? vec3(0.0) : col.rgb;
 
 				// 横線
 				float LineVerOffset = floor(LocalOffsetVal*(1.0/ModIntervalVer));
-				col.rgb = (mod(OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + _time,ModIntervalHol) // 止まって見えるのでスクロールする
-				*(1.0/ModIntervalHol) >0.95)? vec3(0.0) : col.rgb;
+				// 止まって見えるのでスクロールする
+				float HolSeed = OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + _time;
+				float LineHolOffset = mod(HolSeed,ModIntervalHol)*(1.0/ModIntervalHol);
+				vec2 domainID = vec2(LineVerOffset, floor(HolSeed*(1.0/ModIntervalHol)) );
 
+				col.rgb = ( LineHolOffset >0.95)? vec3(0.0) : col.rgb;
+				
 				// ライティング
 				vec3 lightDir=normalize(_LightPos-WorldVertexPos);
 				float diff=max(0.0,dot(WorldNormal,lightDir));
 				col.rgb*=diff;
+
+				// レンガタイルの色合いをランダムにする
+				col.rgb*=( rand(vec2(domainID.x+0.222,domainID.y+9.224)) +0.5);
 			}
 			else if(g2f_IsZAxis == 0)
 			{
