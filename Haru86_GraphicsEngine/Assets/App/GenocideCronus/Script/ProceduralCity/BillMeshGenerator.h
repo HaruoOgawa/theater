@@ -12,10 +12,14 @@ namespace myapp {
 	private:
 		void PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
 			bool IsWindow,bool IsVertical,float order,bool IsXAxis);
+		
+		void PrepareCylinderVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, float DivisionNum,
+			glm::mat4 LocalTransMatrix,bool IsWindow,bool IsVertical,float order,bool IsXAxis);
 
 	public:
 		BillMeshGenerator() = default;
 		virtual ~BillMeshGenerator() = default;
 		void Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
+		void GenerateCylinder(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 	};
 }

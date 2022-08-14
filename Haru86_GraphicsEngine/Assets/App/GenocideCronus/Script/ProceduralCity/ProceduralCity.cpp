@@ -58,6 +58,22 @@ namespace myapp {
 			);
 		}
 		
+		// 円柱ビル
+		{
+			// VertexDataを構築
+			std::vector<std::vector<float>> VertexData; std::vector<int> Dimention; std::vector<unsigned short> Indices;
+			BillMeshGenerator Generator;
+			Generator.GenerateCylinder(VertexData, Dimention, Indices);
+
+			m_CylinderBill = std::make_shared<MeshRendererComponent>(
+				std::make_shared<TransformComponent>(),
+				RenderingSurfaceType::RASTERIZER,
+				VertexData, Dimention, Indices,
+				shaderlib::ShaderLib::Standard_vert,
+				shaderlib::ShaderLib::Standard_frag
+			);
+		}
+
 		// ストリート
 		{
 			m_Street = std::make_shared<MeshRendererComponent>(
@@ -150,6 +166,12 @@ namespace myapp {
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 			}
 			
+			// 円柱ビル
+			if (m_CylinderBill)
+			{
+				m_CylinderBill->Draw();
+			}
+
 			// ストリート
 			if (m_Street)
 			{

@@ -114,6 +114,41 @@ namespace myapp {
 		Dimention.push_back(4);
 	}
 
+	void BillMeshGenerator::GenerateCylinder(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention,
+		std::vector<unsigned short>& Indices)
+	{
+		// 初期化
+		m_LastIndex = 0;
+		unsigned int ATTRIBUTENUM = 2;
+		VertexData.resize(ATTRIBUTENUM);
+
+		// 基本パラメーター
+		float AdjustVal = 0.1f;
+		float BillRadius = 5.0f * AdjustVal;
+		float BillHeight = 20.0f * AdjustVal;
+		float DivisionNum = 12.0f;
+		
+		int HolDelimiterNum = 10;
+		int VerDelimiterNum = 10;
+		float HolResizeRate = 1.05f;
+		float VerResizeRate = 1.1f;
+		float HolDelimiterThickness = 0.25f * AdjustVal;
+		float VerDelimiterThickness = 0.1f * AdjustVal;
+
+		// 基礎
+		{
+			std::shared_ptr<TransformComponent> TRS = std::make_shared<TransformComponent>();
+			TRS->m_scale = glm::vec3(BillRadius, BillHeight, BillRadius);
+			TRS->CalMatrix();
+
+			PrepareCylinderVertexData(VertexData, Indices, DivisionNum, TRS->m_mMatrix, false, false, 0, false);
+		}
+
+		// ディメンションを定義
+		Dimention.push_back(3);
+		Dimention.push_back(3);
+	}
+
 	void BillMeshGenerator::PrepareBoxVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, glm::mat4 LocalTransMatrix,
 		bool IsWindow, bool IsVertical, float order, bool IsXAxis)
 	{
@@ -255,4 +290,113 @@ namespace myapp {
 		}
 	}
 
+	void BillMeshGenerator::PrepareCylinderVertexData(std::vector<std::vector<float>>& VertexData, std::vector<unsigned short>& Indices, float DivisionNum,
+		glm::mat4 LocalTransMatrix,bool IsWindow, bool IsVertical, float order, bool IsXAxis)
+	{
+		float PI = 3.14f;
+
+		// 側面
+		for (float n = 0.0f; n <= DivisionNum; n++)
+		{
+			// 基本パラメーター
+			float a0 = (2.0f * PI) * (n + 0.0f)/ DivisionNum;
+			float a1 = (2.0f * PI) * (n + 1.0f) / DivisionNum;
+			float r = 1.0f;
+			float h = 1.0;
+
+			// 頂点データの初期値
+			glm::vec4 vup0 = glm::vec4(r*glm::cos(a0), h, r*glm::sin(a0), 1.0f);
+			glm::vec4 vdown0 = glm::vec4(r * glm::cos(a0), 0.0f, r * glm::sin(a0), 1.0f);
+			glm::vec4 n0 = glm::vec4(glm::vec3(vup0.x,0.0f, vup0.z), 0.0f);
+			
+			glm::vec4 vup1 = glm::vec4(r * glm::cos(a1), h, r * glm::sin(a1), 1.0f);
+			glm::vec4 vdown1 = glm::vec4(r * glm::cos(a1), 0.0f, r * glm::sin(a1), 1.0f);
+			glm::vec4 n1 = glm::vec4(glm::vec3(vup1.x, 0.0f, vup1.z), 0.0f);
+
+			// ローカル行列を反映
+			vup0 = LocalTransMatrix * vup0;
+			vdown0 = LocalTransMatrix * vdown0;
+			vup1 = LocalTransMatrix * vup1;
+			vdown1 = LocalTransMatrix * vdown1;
+
+			// 頂点データを構築
+			// Vetices
+			VertexData[0].push_back(vdown0.x); VertexData[0].push_back(vdown0.y); VertexData[0].push_back(vdown0.z);
+			VertexData[0].push_back(vup0.x); VertexData[0].push_back(vup0.y); VertexData[0].push_back(vup0.z);
+			VertexData[0].push_back(vup1.x); VertexData[0].push_back(vup1.y); VertexData[0].push_back(vup1.z);
+			VertexData[0].push_back(vdown1.x); VertexData[0].push_back(vdown1.y); VertexData[0].push_back(vdown1.z);
+
+			// Normal
+			VertexData[1].push_back(n0.x); VertexData[1].push_back(n0.y); VertexData[1].push_back(n0.z);
+			VertexData[1].push_back(n0.x); VertexData[1].push_back(n0.y); VertexData[1].push_back(n0.z);
+			VertexData[1].push_back(n1.x); VertexData[1].push_back(n1.y); VertexData[1].push_back(n1.z);
+			VertexData[1].push_back(n1.x); VertexData[1].push_back(n1.y); VertexData[1].push_back(n1.z);
+
+			// インデックスデータを構築
+			Indices.push_back(0 + m_LastIndex);
+			Indices.push_back(1 + m_LastIndex);
+			Indices.push_back(2 + m_LastIndex);
+
+			Indices.push_back(2 + m_LastIndex);
+			Indices.push_back(3 + m_LastIndex);
+			Indices.push_back(0 + m_LastIndex);
+
+			m_LastIndex = glm::max(m_LastIndex, 3 + m_LastIndex + 1);
+		}
+
+		// 上下の蓋
+		for (float n = 0.0f; n <= DivisionNum; n++)
+		{
+			// 基本パラメーター
+			float a0 = (2.0f * PI) * (n + 0.0f)/ DivisionNum;
+			float a1 = (2.0f * PI) * (n + 1.0f) / DivisionNum;
+			float r = 1.0f;
+			float h = 1.0;
+
+			// 頂点データの初期値
+			glm::vec4 vup0 = glm::vec4(r*glm::cos(a0), h, r*glm::sin(a0), 1.0f);
+			glm::vec4 vdown0 = glm::vec4(r * glm::cos(a0), 0.0f, r * glm::sin(a0), 1.0f);
+			glm::vec4 n0 = glm::vec4(glm::vec3(vup0.x,0.0f, vup0.z), 0.0f);
+			
+			glm::vec4 vup1 = glm::vec4(r * glm::cos(a1), h, r * glm::sin(a1), 1.0f);
+			glm::vec4 vdown1 = glm::vec4(r * glm::cos(a1), 0.0f, r * glm::sin(a1), 1.0f);
+			glm::vec4 n1 = glm::vec4(glm::vec3(vup1.x, 0.0f, vup1.z), 0.0f);
+
+			// ローカル行列を反映
+			vup0 = LocalTransMatrix * vup0;
+			vdown0 = LocalTransMatrix * vdown0;
+			vup1 = LocalTransMatrix * vup1;
+			vdown1 = LocalTransMatrix * vdown1;
+
+			// 頂点データを構築
+			// Vetices
+			VertexData[0].push_back(vdown0.x); VertexData[0].push_back(vdown0.y); VertexData[0].push_back(vdown0.z);
+			VertexData[0].push_back(vdown1.x); VertexData[0].push_back(vdown1.y); VertexData[0].push_back(vdown1.z);
+			VertexData[0].push_back(0.0f); VertexData[0].push_back(vdown1.y); VertexData[0].push_back(0.0f);
+
+			VertexData[0].push_back(vup0.x); VertexData[0].push_back(vup0.y); VertexData[0].push_back(vup0.z);
+			VertexData[0].push_back(vup1.x); VertexData[0].push_back(vup1.y); VertexData[0].push_back(vup1.z);
+			VertexData[0].push_back(0.0f); VertexData[0].push_back(vup1.y); VertexData[0].push_back(0.0f);
+			
+			// Normal
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(-1.0f); VertexData[1].push_back(0.0f);
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(-1.0f); VertexData[1].push_back(0.0f);
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(-1.0f); VertexData[1].push_back(0.0f);
+
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
+			VertexData[1].push_back(0.0f); VertexData[1].push_back(1.0f); VertexData[1].push_back(0.0f);
+
+			// インデックスデータを構築
+			Indices.push_back(0 + m_LastIndex);
+			Indices.push_back(1 + m_LastIndex);
+			Indices.push_back(2 + m_LastIndex);
+
+			Indices.push_back(3 + m_LastIndex);
+			Indices.push_back(4 + m_LastIndex);
+			Indices.push_back(5 + m_LastIndex);
+
+			m_LastIndex = glm::max(m_LastIndex, 5 + m_LastIndex + 1);
+		}
+	}
 }
