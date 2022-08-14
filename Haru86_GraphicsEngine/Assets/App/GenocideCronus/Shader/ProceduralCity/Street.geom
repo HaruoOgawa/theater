@@ -11,7 +11,8 @@ in int v2g_id[];
 out vec3 WorldVertexPos;
 out vec3 WorldNormal;
 flat out int PrimID;
-flat out int _IsSidewark; // •à“¹‚©‚Ç‚¤‚©
+flat out int _IsStreet; // •à“¹‚©‚Ç‚¤‚©
+flat out int g2f_IsZAxis;
 
 uniform mat4 MVPMatrix;
 uniform mat4 MMatrix;
@@ -27,45 +28,48 @@ uniform float StreetRadius;
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
 
-void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsSidewark,vec3 normal)
+void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis)
 {
 	gl_Position = PMatrix * VMatrix * pos0;
 	WorldVertexPos = (pos0).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
-	_IsSidewark=IsSidewark;
+	_IsStreet=IsStreet;
+	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
 	gl_Position = PMatrix * VMatrix * pos1;
 	WorldVertexPos = (pos1).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
-	_IsSidewark=IsSidewark;
+	_IsStreet=IsStreet;
+	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
 	gl_Position = PMatrix * VMatrix * pos2;
 	WorldVertexPos = (pos2).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
-	_IsSidewark=IsSidewark;
+	_IsStreet=IsStreet;
+	g2f_IsZAxis = (IsZAxis)? 1 : 0;
 	EmitVertex();
 
 	EndPrimitive();
 
 }
 
-void CreateSurfaceMesh(vec4 pos,float size,int IsSidewark, bool IsSide)
+void CreateSurfaceMesh(vec4 pos,float size,int IsStreet, bool IsSide,bool IsZAxis)
 {
 	vec4 pos0 =vec4(pos.xyz + vec3(-1.0 * size, 0.0, -1.0 * size),1.0);
 	vec4 pos1 =vec4(pos.xyz + vec3(-1.0 * size, 0.0, 1.0 * size),1.0);
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size, 0.0, 1.0 * size),1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size, 0.0, -1.0 * size),1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsSidewark,vec3(0.0,1.0,0.0));
-	CreateOutputData(pos2,pos3,pos0,IsSidewark,vec3(0.0,1.0,0.0));
+	CreateOutputData(pos0,pos1,pos2,IsStreet,vec3(0.0,1.0,0.0),IsZAxis);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,vec3(0.0,1.0,0.0),IsZAxis);
 }
 
-void CreateSideMesh(vec4 pos,float size,int IsSidewark, bool IsSide,vec3 OffsetVector,float heightRate,bool IsZAxis)
+void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVector,float heightRate,bool IsZAxis)
 {
 	vec2 IsZ=(IsZAxis)? vec2(0.0,1.0) : vec2(1.0,0.0);
 	vec4 pos0 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, -1.0 * size*heightRate,-1.0 * size*IsZ.y) + OffsetVector*size,1.0);
@@ -73,16 +77,16 @@ void CreateSideMesh(vec4 pos,float size,int IsSidewark, bool IsSide,vec3 OffsetV
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsSidewark,OffsetVector);
-	CreateOutputData(pos2,pos3,pos0,IsSidewark,OffsetVector);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,OffsetVector,IsZAxis);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,OffsetVector,IsZAxis);
 
 	pos0 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, -1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos1 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, 1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsSidewark,-OffsetVector);
-	CreateOutputData(pos2,pos3,pos0,IsSidewark,-OffsetVector);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,-OffsetVector,IsZAxis);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,-OffsetVector,IsZAxis);
 }
 
 void main()
@@ -92,7 +96,7 @@ void main()
 	float Segment = 32.0;
 	float PlaneSize = 50.0;
 	float SizeRate = PlaneSize/Segment;
-	int IsSidewark = 0;
+	int IsStreet = 0;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
 	//float ToSideWarkDist = 2.5;
@@ -105,7 +109,7 @@ void main()
 		if( abs(OffsetVectorZStreet.x) < StreetRadius)
 		{
 			offset.y += -0.1;
-			IsSidewark = 1;
+			IsStreet = 1;
 			ZStreet=true;
 		}
 	}
@@ -117,7 +121,7 @@ void main()
 		if( abs(OffsetVectorXStreet.z) < StreetRadius)
 		{
 			if(!ZStreet)offset.y += -0.1;
-			IsSidewark = 1;
+			IsStreet = 1;
 			XStreet=true;
 		}
 	}
@@ -125,12 +129,12 @@ void main()
 	// ‘¤–Ê‚ÌƒƒbƒVƒ…‚ðì¬
 	{
 		// ‘¤–Ê‚ðì¬
-		if(ZStreet&&!XStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsSidewark,true, normalize(vec3(OffsetVectorZStreet.x,0.0,0.0)), 0.1,true);
-		if(XStreet&&!ZStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsSidewark,true, normalize(vec3(0.0,0.0,OffsetVectorXStreet.z)), 0.1,false);
+		if(ZStreet&&!XStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, normalize(vec3(OffsetVectorZStreet.x,0.0,0.0)), 0.1,true);
+		if(XStreet&&!ZStreet) CreateSideMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,true, normalize(vec3(0.0,0.0,OffsetVectorXStreet.z)), 0.1,false);
 	}
 
 	// •\–Ê‚ðì¬
-	CreateSurfaceMesh(gl_in[0].gl_Position+offset,SizeRate,IsSidewark,false);
+	CreateSurfaceMesh(gl_in[0].gl_Position+offset,SizeRate,IsStreet,false,ZStreet);
 }
 
 )"

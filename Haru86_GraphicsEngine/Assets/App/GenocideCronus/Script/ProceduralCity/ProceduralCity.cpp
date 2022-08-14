@@ -141,7 +141,7 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			m_Mandelbox->Draw();
+			//m_Mandelbox->Draw();
 		}
 		else
 		{
