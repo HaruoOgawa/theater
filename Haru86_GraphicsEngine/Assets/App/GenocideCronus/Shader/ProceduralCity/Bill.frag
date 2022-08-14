@@ -30,7 +30,7 @@ void main(){
 	float dist = length(_WorldCameraPos-g2f_WorldVertexPos);
 		
 	// ベースカラー
-	col=vec4(vec3( rand(vec2(g2f_id+1.1111,g2f_id+6.6666)) +0.5),1.0);
+	col=vec4(vec3( rand(vec2(g2f_id+1.1111,g2f_id+6.6666))*0.5 +0.5),1.0);
 
 	// 環境光
 	vec4 envColor = vec4(vec3(0.1),1.0);

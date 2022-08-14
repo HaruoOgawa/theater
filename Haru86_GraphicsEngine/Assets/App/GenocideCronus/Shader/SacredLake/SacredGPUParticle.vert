@@ -5,6 +5,13 @@ R"(
 uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _CameraPos;
+uniform mat4 MVPMatrix;
+uniform mat4 MMatrix;
+uniform mat4 VMatrix;
+uniform mat4 PMatrix;
+
+uniform int _IDOffset;
+uniform float _ParticleScale;
 
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
@@ -12,7 +19,11 @@ layout(location=2)in vec2 texcoord;
 layout(location=3)in vec4 weights;
 layout(location=4)in ivec4 joints;
 
-struct v2g{
+out vec2 uv;
+out vec3 WorldVertexPos;
+out vec3 WorldNormal;
+
+/*struct v2g{
 	vec4 position;
 	vec2 uv;
 	mat4 RandPosMat;
@@ -20,7 +31,7 @@ struct v2g{
 	int id;
 };
 
-out v2g v2g_o; 
+out v2g v2g_o; */
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
@@ -71,27 +82,14 @@ mat4 CalRotMatrix(vec3 a)
 
 void main(){
 	// 基本パラメーター
-	int id=gl_InstanceID;
-	float id_f=float(id);
+	float id=float(gl_InstanceID+_IDOffset);
 	vec2 domainID=vec2(0.0);
-	domainID.y=floor(id_f/32.0);
-	domainID.x=id_f-domainID.y*32.0;
+	domainID.y=floor(id/32.0);
+	domainID.x=id-domainID.y*32.0;
 	vec4 pos=vec4(vertex,1.0);
 	
-	// ランダムワールドポジション
-	float height = 50.0;
-	vec3 randPos=vec3(0.0);
-	randPos=( vec3( 
-		rand( vec2(float(gl_InstanceID),0.321)), 
-		rand( vec2(float(gl_InstanceID),0.11159)),
-		rand( vec2(float(gl_InstanceID),0.741))
-	) * 2.0-1.0 )*height*0.5;
-	//randPos.y+=25.0+sin(_time*5.0+rand(domainID)*3.14*2.0)*2.0;
-	//randPos.y=mod(randPos.y+_time*10.0,height)-height*0.5;
-	
 	// ランダムスケール
-	//vec3 randScale = (hash(vec3(id_f+7.77123,id_f+id_f+id_f,id_f*6.2+1.01))*0.5+0.5)*5.0;
-	vec3 randScale = vec3(rand(vec2(id_f+7.77123,id_f+id_f+id_f))*2.0);
+	vec3 randScale = vec3(rand(vec2(id+7.77123,id+id+id))*_ParticleScale);
 	mat4 RandScaleMat = mat4(
 		vec4(randScale.x,0.0,0.0,0.0),
 		vec4(0.0,randScale.y,0.0,0.0),
@@ -100,35 +98,46 @@ void main(){
 	);
 
 	// ランダムローテーション(回転行列の定義がめんどくさいのでここで先に計算する)
-	vec3 randAngle = hash(vec3(id_f+6.14,id_f+1.111,id_f+45.69))*PI*2.0;
-
+	vec3 randAngle = hash(vec3(id+6.14,id+1.111,id+45.69))*PI*2.0;
 	mat4 RandRotateMat = CalRotMatrix(randAngle+randAngle*vec3(_time*0.5));
 
 	// ransPosのオフセット方向を決定する(基本上に直進させたい --> やっぱランダムで)
-	vec4 OffDir =vec4( vec3(0.0,1.0,0.0) ,0.0);
-	//vec4 OffDir =vec4( normalize(hash(vec3(id_f*0.01+id_f,0.621,id_f+9.99+id_f*4.0))) ,0.0);
+	vec4 OffDir =vec4( vec3(0.0, 0.1+rand(vec2(id*0.01+id,0.621)) ,0.0) ,0.0);
+	//vec4 OffDir =vec4( normalize(hash(vec3(id*0.01+id,0.621,id+9.99+id*4.0))) ,0.0);
 	//OffDir=RandRotateMat*OffDir;
 	
-	randPos+=normalize(OffDir.xyz)*_time;
-	randPos=mod(randPos,height)-height*0.5;
+	// ランダムワールドポジション
+	float height = 100.0;
+	float width = 60.0;
+	vec3 randPos=vec3(0.0);
+	randPos=( vec3( 
+		rand( vec2(float(gl_InstanceID),0.321)), 
+		rand( vec2(float(gl_InstanceID),0.11159)),
+		rand( vec2(float(gl_InstanceID),0.741))
+	) * 2.0-1.0 );
+	randPos.y*=height;
+	randPos.xz*=width;
+
+	randPos+=normalize(OffDir.xyz)*_time*10.0;
+	randPos.y=mod(randPos.y,height);
 	mat4 RandPosMat = mat4(
 		vec4(0.0,0.0,0.0,randPos.x),
 		vec4(0.0,0.0,0.0,randPos.y),
 		vec4(0.0,0.0,0.0,randPos.z),
 		vec4(0.0,0.0,0.0,1.0)
 	);
-	//RandPosMat = transpose(RandPosMat);
 
 	// ローカルマトリックスを作成(次のシェーダーの変換に使用するためのもの)
-	mat4 LocalMatrix = RandRotateMat * RandScaleMat;
+	mat4 LocalMatrix = /*RandPosMat **/ RandRotateMat * RandScaleMat;
+	
+	pos=LocalMatrix*pos;
+	pos.xyz+=randPos;
 
 	// アウトプット
-	gl_Position=pos;
-	v2g_o.position=pos;
-	v2g_o.uv=texcoord;
-	v2g_o.RandPosMat=transpose(RandPosMat);
-	v2g_o.LocalMatrix=transpose(LocalMatrix);
-	v2g_o.id=id;
+	gl_Position=MVPMatrix*pos;
+	WorldNormal=(MMatrix*LocalMatrix*vec4(normal,0.0)).xyz;
+	WorldVertexPos=(MMatrix*pos).xyz;
+	uv=texcoord;
 }
 
 )"

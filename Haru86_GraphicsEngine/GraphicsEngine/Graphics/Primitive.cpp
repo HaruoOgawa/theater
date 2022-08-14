@@ -184,3 +184,138 @@ void Primitive::CreateSphere(std::vector<std::vector<float>>* vertices, std::vec
 		}
 	}
 }
+
+void Primitive::CreateCube(std::vector<std::vector<float>>* vertices, std::vector<int>* dimention, std::vector<unsigned short>* indices) {
+
+	std::vector<float> vertex = {
+		//0 +Z
+		-0.5f,-0.5f,0.5f,
+		-0.5f,0.5f,0.5f,
+		0.5f,0.5f,0.5f,
+		0.5f,-0.5f,0.5f,
+		//1 -Z
+		-0.5f,-0.5f,-0.5f,
+		-0.5f,0.5f,-0.5f,
+		0.5f,0.5f,-0.5f,
+		0.5f,-0.5f,-0.5f,
+		//2 -X
+		-0.5f,-0.5f,0.5f,
+		-0.5f,0.5f,0.5f,
+		-0.5f,0.5f,-0.5f,
+		-0.5f,-0.5f,-0.5f,
+		//3 +X
+		0.5f,-0.5f,0.5f,
+		0.5f,0.5f,0.5f,
+		0.5f,0.5f,-0.5f,
+		0.5f,-0.5f,-0.5f,
+		//4  -Y
+		-0.5f,-0.5f,0.5f,
+		-0.5f,-0.5f,-0.5f,
+		0.5f,-0.5f,-0.5f,
+		0.5f,-0.5f,0.5f,
+		//5 +Y
+		-0.5f,0.5f,0.5f,
+		-0.5f,0.5f,-0.5f,
+		0.5f,0.5f,-0.5f,
+		0.5f,0.5f,0.5f,
+	};
+
+	std::vector<float> normal = {
+		//0 +Z
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		//1 -Z
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+		//2 -X
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f,
+		//3 +X
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		//4 -Y
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+		//5 +Y
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+	};
+
+	std::vector<float> texcoord = {
+		//0 +Z
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+		//1 -Z
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+		//2 -X
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+		//3 +X
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+		//4 -Y
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+		//5 +Y
+		0.0f,0.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
+	};
+
+	std::vector<unsigned int> i = {
+		//0 +Z
+		0,1,2,
+		2,3,0,
+		//1 -Z
+		4,5,6,
+		6,7,4,
+		//2 -X
+		8,9,10,
+		10,11,8,
+		//3 +X
+		12,13,14,
+		14,15,12,
+		//4 -Y
+		16,17,18,
+		18,19,16,
+		//5 +Y
+		20,21,22,
+		22,23,20,
+	};
+
+	vertices->push_back(vertex);
+	vertices->push_back(normal);
+	vertices->push_back(texcoord);
+
+	dimention->push_back(3);
+	dimention->push_back(3);
+	dimention->push_back(2);
+
+	for (auto data : i) {
+		indices->emplace_back(data);
+	}
+}

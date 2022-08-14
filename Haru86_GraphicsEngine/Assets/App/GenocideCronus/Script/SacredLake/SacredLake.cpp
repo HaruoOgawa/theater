@@ -62,15 +62,23 @@ namespace myapp {
 		// GPU particle
 		m_GPUParticle = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
-			PrimitiveType::POINT,
+			PrimitiveType::CUBE,
 			RenderingSurfaceType::RASTERIZER,
 			std::string(
 				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
 			),
-			shaderlib::ShaderLib::Standard_frag,
+			shaderlib::ShaderLib::Standard_frag
+		);
+		
+		// m_SphereGPUParticle
+		m_SphereGPUParticle = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::SPHERE,
+			RenderingSurfaceType::RASTERIZER,
 			std::string(
-				#include "../../Shader/SacredLake/SacredGPUParticle.geom"
-			)
+				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
+			),
+			shaderlib::ShaderLib::Standard_frag
 		);
 	}
 
@@ -90,7 +98,20 @@ namespace myapp {
 		else
 		{
 			// GPU particle
-			m_GPUParticle->Draw(GL_POINTS, true, 1024);
+			if (m_GPUParticle) {
+				m_GPUParticle->Draw(GL_TRIANGLES, true, 1024, [this]() {
+					m_GPUParticle->m_material->SetIntUniform("_IDOffset", 0);
+					m_GPUParticle->m_material->SetFloatUniform("_ParticleScale", 2.0f);
+				});
+			}
+			
+			// m_SphereGPUParticle
+			if (m_SphereGPUParticle) {
+				m_SphereGPUParticle->Draw(GL_TRIANGLES, true, 256, [this]() {
+					m_SphereGPUParticle->m_material->SetIntUniform("_IDOffset", 1024+100);
+					m_SphereGPUParticle->m_material->SetFloatUniform("_ParticleScale", 0.75f);
+				});
+			}
 
 			//
 			if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera) {

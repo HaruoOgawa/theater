@@ -39,7 +39,7 @@ void GenocideCronus::Update() {
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
-	m_DebugSceneIndex = 0;
+	m_DebugSceneIndex = 2;
 
 	// ƒV[ƒ“§Œä
 	if (m_DebugSceneIndex == 0) // City
@@ -88,11 +88,11 @@ void GenocideCronus::Update() {
 		m_CameraTransform->m_center = glm::vec3(0.0f, 0.0f, 0.0f); // SacredLake
 
 		m_CameraTransform->m_position = glm::vec3( // SacredLake
-			glm::cos(0.0f) * 30.0f,
-			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
+			//glm::cos(0.0f) * 30.0f,
+			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
 			0.5f,
-			glm::sin(0.0f) * 30.0f
-			//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+			//glm::sin(0.0f) * 30.0f
+			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
 		);
 	}
 	else if (m_DebugSceneIndex == 3) // Mountain

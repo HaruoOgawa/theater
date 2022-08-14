@@ -3,7 +3,6 @@ R"(
 #version 330
 
 in vec2 uv;
-in vec3 CameraPos;
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
 
@@ -12,6 +11,7 @@ uniform vec4 _Color;
 uniform int _UseLighting;
 uniform vec3 _LightDir;
 uniform vec3 _LightPos;
+uniform vec3 _WorldCameraPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
 
@@ -30,7 +30,7 @@ void main(){
 	else if(_UseMainTex == 1) // テクスチャサンプリング
 	{
 		//col=texture(_MainTex,uv);
-		/*vec3 viewdir = normalize(CameraPos-WorldVertexPos);
+		/*vec3 viewdir = normalize(_WorldCameraPos-WorldVertexPos);
 		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
 		col=texture(_MainTex,rpdir);*/
 
@@ -61,7 +61,7 @@ void main(){
 
 		col.rgb+=envColor.rgb;
 
-		vec3 viewDir= -1.0*normalize(WorldVertexPos-CameraPos);
+		vec3 viewDir= -1.0*normalize(WorldVertexPos-_WorldCameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);
 		float spec=pow( max(0.0,dot(WorldNormal,halfDir)) , 60.0);
 		col.rgb+=vec3(1.0)*spec;

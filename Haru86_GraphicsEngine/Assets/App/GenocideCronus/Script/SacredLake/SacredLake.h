@@ -10,6 +10,7 @@ namespace myapp {
 		std::shared_ptr<MeshRendererComponent> m_VolumetricCloud;
 		std::shared_ptr<MeshRendererComponent> m_ReflectPlane;
 		std::shared_ptr<MeshRendererComponent> m_GPUParticle;
+		std::shared_ptr<MeshRendererComponent> m_SphereGPUParticle;
 
 	public:
 		SacredLake();
