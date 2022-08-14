@@ -185,7 +185,7 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 		GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
 	
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA,
-		GL_FLOAT,ERenderTargetType::NONECOLORBUFFER,EDepthTargetType::DEPTH_TEXTURE_BUFFER);
+		GL_FLOAT/*,ERenderTargetType::NONECOLORBUFFER,EDepthTargetType::DEPTH_TEXTURE_BUFFER*/);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_depthTexture, raymarching_depthBuffer, GL_RGBA, GL_RGBA);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_normalTexture, polygon_normalBuffer, GL_RGBA, GL_RGBA);
@@ -336,15 +336,15 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	CopyFrameBuffer(polygon_frameBuffer_MSAA, polygon_frameBuffer, polygon_frameTexture->GetWidth(), polygon_frameTexture->GetHeight());
 
 	//ポリゴンオブジェクトをデプスマップをレンダリング
-	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
+	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
+	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::DEPTH;
 	glBindFramebuffer(GL_FRAMEBUFFER, polygon_depthBuffer);
 	glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -377,31 +377,31 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	}
 
 	// ポリゴンオブジェクトのシャドーマップをレンダリング(これはライトポジションからのデプスマップである)
-	GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
-	glBindFramebuffer(GL_FRAMEBUFFER, polygon_ShadowMapBuffer);
-	glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
+	//GraphicsMain::GetInstance()->renderingTarget = ERerderingTarget::COLOR;
+	//glBindFramebuffer(GL_FRAMEBUFFER, polygon_ShadowMapBuffer);
+	//glViewport(0, 0, static_cast<int>(GetScreenSize().x * frameResolusion), static_cast<int>(GetScreenSize().y * frameResolusion));
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	
-	glEnable(GL_DEPTH_TEST);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	//glClear(GL_DEPTH_BUFFER_BIT);
+	//
+	//glEnable(GL_DEPTH_TEST);
 
-	// 描画前にカメラ座標をバックアップしてライト座標に入れ替える
-	const auto& BackUpCamera = GraphicsMain::GetInstance()->m_UsingCamera;
-	GraphicsMain::GetInstance()->m_UsingCamera = GraphicsMain::GetInstance()->m_GroabalLightPosition;
+	//// 描画前にカメラ座標をバックアップしてライト座標に入れ替える
+	//const auto& BackUpCamera = GraphicsMain::GetInstance()->m_UsingCamera;
+	//GraphicsMain::GetInstance()->m_UsingCamera = GraphicsMain::GetInstance()->m_GroabalLightPosition;
 
-	// 描画
-	for (auto obj : mgame->gameObjectList) {
-		obj->m_transform->CalMatrix();
-		obj->meshComp->Draw();
-	}
+	//// 描画
+	//for (auto obj : mgame->gameObjectList) {
+	//	obj->m_transform->CalMatrix();
+	//	obj->meshComp->Draw();
+	//}
 
-	if (mgame->m_App) {
-		mgame->m_App->Draw(false);
-	}
+	//if (mgame->m_App) {
+	//	mgame->m_App->Draw(false);
+	//}
 
-	// カメラをもとに戻す
-	GraphicsMain::GetInstance()->m_UsingCamera = BackUpCamera;
+	//// カメラをもとに戻す
+	//GraphicsMain::GetInstance()->m_UsingCamera = BackUpCamera;
 
 	// ポリゴンオブジェクトのポストプロセス
 	PostProcess::GetInstance()->DrawPolygonPostProcess(polygon_frameTexture, m_PolygonPostProcess_FrameBuffer);

@@ -67,6 +67,7 @@ namespace myapp {
 			VolumetricCloud_frag
 			);
 		m_VolumetricCloud->useZTest = false;
+		m_VolumetricCloud->useAlphaTest = false;
 
 		// Mandelbox
 		std::string MandelboxShader = {

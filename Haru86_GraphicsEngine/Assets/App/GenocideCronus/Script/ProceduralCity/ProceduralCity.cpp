@@ -88,17 +88,17 @@ namespace myapp {
 		);*/
 
 		//// raymarching
-		/*std::string MandelboxShader = {
+		std::string MandelboxShader = {
 			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		};*/
+		};
 
-		/*m_Mandelbox = std::make_shared<MeshRendererComponent>(
+		m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
-			);*/
+			);
 	}
 
 	void ProceduralCity::Update() 
@@ -141,7 +141,7 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			//m_Mandelbox->Draw();
+			m_Mandelbox->Draw();
 		}
 		else
 		{
