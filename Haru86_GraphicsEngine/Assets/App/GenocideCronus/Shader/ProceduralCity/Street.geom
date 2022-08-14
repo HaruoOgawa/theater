@@ -105,11 +105,9 @@ void main()
 	int IsSidewalk = 0;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
-	//float ToSideWarkDist = 2.0;
 	bool ZStreet=false,XStreet=false;
-	vec3 OffsetVectorZStreet,OffsetVectorXStreet;
-	OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
-	OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
+	vec3 OffsetVectorZStreet = gl_in[0].gl_Position.xyz-_WorldCameraPos;
+	vec3 OffsetVectorXStreet = gl_in[0].gl_Position.xyz-XSideWarkVec;
 
 	// 距離チェック(Z軸原点ベース--> 進行方向はX方向で原点から生える)
 	{
