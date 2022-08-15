@@ -135,7 +135,7 @@ void main(){
 
 	// アウトプット
 	gl_Position=MVPMatrix*pos;
-	WorldNormal=(MMatrix*LocalMatrix*vec4(normal,0.0)).xyz;
+	WorldNormal=((RandRotateMat)*vec4(normal,0.0)).xyz;
 	WorldVertexPos=(MMatrix*pos).xyz;
 	uv=texcoord;
 }
