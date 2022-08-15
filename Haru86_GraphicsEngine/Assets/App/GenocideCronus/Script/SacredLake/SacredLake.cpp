@@ -14,7 +14,8 @@
 namespace myapp {
 	SacredLake::SacredLake():
 		m_Mandelbox(nullptr),
-		m_ReflectPlane(nullptr)
+		m_ReflectPlane(nullptr),
+		m_ReflectionProbe(std::make_shared<ReflectionProbe>(glm::vec3(15.0f),1.0f))
 	{
 		Start();
 	}
@@ -84,6 +85,7 @@ namespace myapp {
 
 	void SacredLake::Update() 
 	{
+		m_ReflectionProbe->Update();
 	}
 
 	void SacredLake::Draw(bool IsRaymarching) {
@@ -98,7 +100,7 @@ namespace myapp {
 		else
 		{
 			// GPU particle
-			if (m_GPUParticle) {
+			if (m_ReflectionProbe->GetRPProgress()==EReflectionProbeProgress::End && m_GPUParticle) {
 				m_GPUParticle->Draw(GL_TRIANGLES, true, 1024, [this]() {
 					m_GPUParticle->m_material->SetIntUniform("_IDOffset", 0);
 					m_GPUParticle->m_material->SetFloatUniform("_ParticleScale", 2.0f);
@@ -106,7 +108,7 @@ namespace myapp {
 			}
 			
 			// m_SphereGPUParticle
-			if (m_SphereGPUParticle) {
+			if (m_ReflectionProbe->GetRPProgress() == EReflectionProbeProgress::End && m_SphereGPUParticle) {
 				m_SphereGPUParticle->Draw(GL_TRIANGLES, true, 256, [this]() {
 					m_SphereGPUParticle->m_material->SetIntUniform("_IDOffset", 1024+100);
 					m_SphereGPUParticle->m_material->SetFloatUniform("_ParticleScale", 0.75f);
@@ -114,7 +116,8 @@ namespace myapp {
 			}
 
 			//
-			if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera) {
+			//if (GraphicsMain::GetInstance()->m_UsingCamera == GraphicsMain::GetInstance()->m_MainCamera)
+			{
 				m_ReflectPlane->Draw(GL_TRIANGLES, false, 0, [this]() {
 					m_ReflectPlane->m_material->SetIntUniform("_UseColor", 1);
 					m_ReflectPlane->m_material->SetVec4Uniform("_Color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));

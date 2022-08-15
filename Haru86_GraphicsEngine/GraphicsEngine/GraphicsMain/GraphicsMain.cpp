@@ -55,6 +55,7 @@ GraphicsMain::~GraphicsMain() {
 	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
+	m_ReflectionProbeList.clear();
 }
 
 bool GraphicsMain::CreateApp() {

@@ -11,8 +11,20 @@ enum class EReflectionType {
 	MONODIRECTIONAL,
 };
 
+enum class EReflectionProbeProgress
+{
+	Initialize,
+	Draw,
+	Separation,
+	End,
+	None,
+};
+
 class ReflectionProbe
 {
+	EReflectionProbeProgress m_Progress;
+	int m_RPDrawCount;
+
 	glm::vec3 m_Offset;
 	float m_Size;
 public:
@@ -23,6 +35,8 @@ public:
 	void Start();
 	void Update();
 	void Draw();
+
+	EReflectionProbeProgress GetRPProgress()const { return m_Progress; }
 
 	//
 	std::shared_ptr<Texture>                         m_CubeTex;

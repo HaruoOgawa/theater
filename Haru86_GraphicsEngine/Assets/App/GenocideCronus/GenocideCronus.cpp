@@ -94,6 +94,9 @@ void GenocideCronus::Update() {
 			//glm::sin(0.0f) * 30.0f
 			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
 		);
+
+		// 更新処理
+		m_SacredLake->Update();
 	}
 	else if (m_DebugSceneIndex == 3) // Mountain
 	{
@@ -105,6 +108,9 @@ void GenocideCronus::Update() {
 		// カメラ
 		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
 		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+
+		// 更新処理
+
 	}
 }
 
