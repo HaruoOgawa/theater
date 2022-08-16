@@ -17,11 +17,16 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _WorldCameraPos;
 
+uniform float _pointNum;
+uniform float _Segment;
+
 void main(){
 	// 基本パラメーター
 	vec4 WorldPos=MMatrix*vec4(vertex,1.0);
-	float pointNum = 1024.0;
-	float Segment = 32.0;
+	//float pointNum = 1024.0;
+	float pointNum = _pointNum;
+	//float Segment = 32.0;
+	float Segment = _Segment;
 	float id =float(gl_InstanceID);
 	vec2 domainID=vec2(0.0);
 	domainID.y=floor(id/Segment);

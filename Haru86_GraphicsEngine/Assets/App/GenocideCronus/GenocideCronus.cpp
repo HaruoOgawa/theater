@@ -39,7 +39,7 @@ void GenocideCronus::Update() {
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
-	m_DebugSceneIndex = 2;
+	m_DebugSceneIndex = 0;
 
 	// ÉVÅ[Éìêßå‰
 	if (m_DebugSceneIndex == 0) // City

@@ -34,7 +34,7 @@ void main(){
 	}
 	else if(_UseMainCube == 1)
 	{
-		vec3 viewdir = normalize(_WorldCameraPos-WorldVertexPos);
+		vec3 viewdir = -normalize(_WorldCameraPos-WorldVertexPos);
 		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
 		col.rgb=texture(_MainCube,rpdir).rgb;
 
