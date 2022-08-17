@@ -6,21 +6,11 @@ class MeshRendererComponent;
 class ReflectionProbe;
 
 namespace myapp {
-	enum class BillRPProgress
-	{
-		Initialize,
-		Draw,
-		Separation,
-		None,
-	};
-
 	class ProceduralCity
 	{
-		// リフレクションプローブ関連
+		// リフレクションプローブ
 		std::shared_ptr<ReflectionProbe> m_BillRP;
-		BillRPProgress m_BillRPProgress;
-		int m_RPDrawCount;
-
+		
 		// 3Dオブジェクト
 		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
 		std::shared_ptr<MeshRendererComponent> m_ProceduralBillRenderer;

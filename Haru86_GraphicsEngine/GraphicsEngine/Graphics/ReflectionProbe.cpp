@@ -9,7 +9,9 @@ ReflectionProbe::ReflectionProbe(glm::vec3 Offset, float Size):
 	m_FramebufferIndex(0),
 	m_ReflectionType(EReflectionType::CUBEMAP),
 	m_Offset(Offset),
-	m_Size(Size)
+	m_Size(Size),
+	m_Progress(EReflectionProbeProgress::Initialize),
+	m_RPDrawCount(0)
 {
 	for (int i = 0; i < 6; i++)
 	{
@@ -24,7 +26,9 @@ ReflectionProbe::ReflectionProbe(std::shared_ptr<TransformComponent> TRS) :
 	m_FramebufferIndex(0),
 	m_ReflectionType(EReflectionType::MONODIRECTIONAL),
 	m_Offset(glm::vec3(0.0f)),
-	m_Size(50.0f)
+	m_Size(50.0f),
+	m_Progress(EReflectionProbeProgress::Initialize),
+	m_RPDrawCount(0)
 {
 	m_CubeCameraTRS.push_back(TRS);
 	Start();
@@ -67,6 +71,36 @@ void ReflectionProbe::Start() {
 
 void ReflectionProbe::Update() 
 {
+	switch (m_Progress)
+	{
+	case EReflectionProbeProgress::Initialize:
+		GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(this);
+
+		m_Progress = EReflectionProbeProgress::Draw;
+		break;
+	case EReflectionProbeProgress::Draw:
+		m_RPDrawCount++;
+
+		if (m_RPDrawCount > 2)m_Progress = EReflectionProbeProgress::Separation;
+		break;
+	case EReflectionProbeProgress::Separation:
+	{
+		auto& RPList = GraphicsMain::GetInstance()->m_ReflectionProbeList;
+		auto Item = std::find(RPList.begin(), RPList.end(), this);
+		if (Item != RPList.end())
+		{
+			RPList.erase(RPList.begin() + std::distance(RPList.begin(), Item));
+		}
+
+		m_Progress = EReflectionProbeProgress::End;
+		break;
+	}
+	case EReflectionProbeProgress::End:
+	case EReflectionProbeProgress::None:
+		break;
+	default:
+		break;
+	}
 }
 
 void ReflectionProbe::Draw() {

@@ -12,10 +12,7 @@
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
-		m_BillRPProgress(BillRPProgress::Initialize),
-		m_RPDrawCount(0),
-		m_BillRP(nullptr),
-		
+		m_BillRP(std::make_shared<ReflectionProbe>(glm::vec3(0.0f, 2.5f, 0.0f), 0.001f)),
 		m_Mandelbox(nullptr),
 		m_ProceduralBillRenderer(nullptr),
 		m_Street(nullptr),
@@ -112,6 +109,9 @@ namespace myapp {
 
 	void ProceduralCity::Update() 
 	{
+		// RPの処理
+		m_BillRP->Update();
+
 		// X軸歩道のオフセット
 		{
 			float PlaneSize = 100.0f;
@@ -131,8 +131,9 @@ namespace myapp {
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(-3.14f/2.0),
 			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			2.0f,
+			//2.0f,
 			//0.5f,
+			1.0f,
 			radius * glm::sin(-3.14f / 2.0)
 			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
@@ -152,7 +153,7 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			//m_Mandelbox->Draw();
+			m_Mandelbox->Draw();
 		}
 		else
 		{
@@ -160,10 +161,10 @@ namespace myapp {
 			if (m_BillRP)
 			{
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
-					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f,0.0f,1.0f));
+					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
-					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -175,10 +176,10 @@ namespace myapp {
 			if (m_CylinderBill && m_BillRP)
 			{
 				m_CylinderBill->Draw(GL_TRIANGLES, true, 256, [this]() {
-					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f, 0.0f, 1.0f));
+					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
-					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -190,46 +191,14 @@ namespace myapp {
 			if (m_Street)
 			{
 				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
-					m_Street->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(0.0f, 0.0f, 1.0f));
+					m_Street->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0),2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
-					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_Street->m_material->SetFloatUniform("LocalStreetRadius", 0.4f);
+					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.5f);
+					m_Street->m_material->SetFloatUniform("_pointNum", 1024.0f);
+					m_Street->m_material->SetFloatUniform("_Segment", 32.0f);
 				});
-			}
-
-			// RPの処理
-			// RPを3つぐらい作って縦方向にOffsetする
-			// Shaderでは座標のZ値をmodしてどのRPを使うか決める
-			// こうすればある程度まばらに見えるはず
-			switch (m_BillRPProgress)
-			{
-			case myapp::BillRPProgress::Initialize:
-				m_BillRP = std::make_shared<ReflectionProbe>(glm::vec3(0.0f,2.5f ,0.0f),0.001f);
-				GraphicsMain::GetInstance()->m_ReflectionProbeList.push_back(m_BillRP);
-
-				m_BillRPProgress = BillRPProgress::Draw;
-				break;
-			case myapp::BillRPProgress::Draw:
-				m_RPDrawCount++;
-
-				if(m_RPDrawCount>2)m_BillRPProgress = BillRPProgress::Separation;
-				break;
-			case myapp::BillRPProgress::Separation:
-			{
-				auto& RPList = GraphicsMain::GetInstance()->m_ReflectionProbeList;
-				auto Item = std::find(RPList.begin(), RPList.end(), m_BillRP);
-				if (Item != RPList.end())
-				{
-					RPList.erase(RPList.begin() + std::distance(RPList.begin(), Item));
-				}
-
-				m_BillRPProgress = BillRPProgress::None;
-				break;
-			}
-			case myapp::BillRPProgress::None:
-				break;
-			default:
-				break;
 			}
 		}
 	}

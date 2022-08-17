@@ -29,6 +29,9 @@ void Mesh::CreateMesh(PrimitiveType primType) {
 	case PrimitiveType::SPHERE:
 		Primitive::CreateSphere(&VertexData, &Dimention, &Indices);
 		break;
+	case PrimitiveType::CUBE:
+		Primitive::CreateCube(&VertexData, &Dimention, &Indices);
+		break;
 	default:
 		Primitive::CreateBoard(&VertexData, &Dimention, &Indices);
 		break;

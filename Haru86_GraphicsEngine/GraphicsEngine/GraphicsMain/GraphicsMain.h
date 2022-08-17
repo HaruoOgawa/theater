@@ -76,7 +76,7 @@ public:
 	std::shared_ptr<TransformComponent> m_UsingCamera;
 
 	// 
-	std::vector<std::shared_ptr<ReflectionProbe>> m_ReflectionProbeList;
+	std::vector<ReflectionProbe*> m_ReflectionProbeList;
 
 	//
 	std::shared_ptr<sound::SoundPlayer> m_SoundPlayer;

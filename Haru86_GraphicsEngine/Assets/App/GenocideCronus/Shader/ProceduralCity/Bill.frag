@@ -26,11 +26,10 @@ uniform samplerCube _BillRP;
 void main(){
 	// ベースパラメーター
 	vec4 col=vec4(vec3(0.0),1.0);
-	vec3 viewdir = normalize(_WorldCameraPos-g2f_WorldVertexPos);
 	float dist = length(_WorldCameraPos-g2f_WorldVertexPos);
 		
 	// ベースカラー
-	col=vec4(vec3( rand(vec2(g2f_id+1.1111,g2f_id+6.6666)) +0.5),1.0);
+	col=vec4(vec3( rand(vec2(g2f_id+1.1111,g2f_id+6.6666))*0.5 +0.5),1.0);
 
 	// 環境光
 	vec4 envColor = vec4(vec3(0.1),1.0);
@@ -67,11 +66,11 @@ void main(){
 	bool IsWindow = (g2f_billinfo.x == 1.0);
 	if(IsWindow)
 	{
-
-
+		// リフレクションの視線ベクトル
+		vec3 viewdir = -normalize(_WorldCameraPos-g2f_WorldVertexPos);
 		// 反射の方を優先して作る --> ライト方向を変えると意外とライティングいい感じになったから
 		vec3 rpdir = normalize(reflect(viewdir,g2f_normal));
-		vec3 CubeCol = texture(_BillRP,viewdir).rgb;
+		vec3 CubeCol = texture(_BillRP,rpdir).rgb;
 		
 		col.rgb=mix(CubeCol,col.rgb,clamp(exp(dist*0.2)-1.0,0.0,1.0));
 		col.a=1.0;

@@ -41,11 +41,17 @@ vec3 CalSSRColor(vec3 color){
 
 	// レイを作成
 	vec3 viewDir=-normalize(pos.xyz-_WorldCameraPos);
-	//vec3 normal=texture(_NormalMap,st).rgb*2.0-1.0;
-	vec3 normal=texture(_NormalMap,gl_FragCoord.xy/_resolution.xy).rgb*2.0-1.0;
+	vec4 RawNormalMapColor =texture(_NormalMap,gl_FragCoord.xy/_resolution.xy);
+	
+	// アルファが0ならノーマルマッピングがオフになっていると見なし抜ける
+	float IsUseNormal = RawNormalMapColor.a;
+	if(IsUseNormal<=0.0){ return col;}
+
+	// 
+	vec3 normal=RawNormalMapColor.rgb*2.0-1.0;
 
 	// ノーマルを使わない場合は『0』としているのでその場合は抜ける --> 主にレイマーチング
-	if(length(normal)<=0.0) return col;
+	if(length(normal)<=0.0) { return col;}
 
 	//
 	vec3 refDir=reflect(viewDir,normal);
@@ -53,6 +59,9 @@ vec3 CalSSRColor(vec3 color){
 
 	//return refDir;
 	//return normal;
+	//return abs(normal);
+	//return col;
+	//return vec3(abs(IsUseNormal));
 
 	// レイで衝突判定をする
 	float RAYNUM=100;

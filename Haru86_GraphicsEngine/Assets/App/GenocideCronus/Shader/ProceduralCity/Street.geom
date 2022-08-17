@@ -14,6 +14,7 @@ flat out int PrimID;
 flat out int _IsStreet; // 道路かどうか
 flat out int _IsSidewalk; // 歩道かどうか
 flat out int g2f_IsZAxis;
+out vec2 UVPerSquare; // 四角形単位のUV座標(ポリゴン二つ単位)
 
 uniform mat4 MVPMatrix;
 uniform mat4 MMatrix;
@@ -27,11 +28,13 @@ uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
+uniform float _pointNum;
+uniform float _Segment;
 
 #define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
 #define PI 3.14159265
 
-void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis,int IsSidewalk)
+void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis,int IsSidewalk,bool IsUpSideTriangle)
 {
 	gl_Position = PMatrix * VMatrix * pos0;
 	WorldVertexPos = (pos0).xyz;
@@ -40,6 +43,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	_IsStreet=IsStreet;
 	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
+	UVPerSquare = (IsUpSideTriangle)? vec2(1.0,0.0) : vec2(0.0,1.0);
 	EmitVertex();
 
 	gl_Position = PMatrix * VMatrix * pos1;
@@ -49,6 +53,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	_IsStreet=IsStreet;
 	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
+	UVPerSquare = (IsUpSideTriangle)? vec2(1.0,1.0) : vec2(0.0,0.0);
 	EmitVertex();
 
 	gl_Position = PMatrix * VMatrix * pos2;
@@ -58,6 +63,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	_IsStreet=IsStreet;
 	_IsSidewalk=IsSidewalk;
 	g2f_IsZAxis = (IsZAxis)? 1 : 0;
+	UVPerSquare = (IsUpSideTriangle)? vec2(0.0,1.0) : vec2(1.0,0.0);
 	EmitVertex();
 
 	EndPrimitive();
@@ -71,8 +77,8 @@ void CreateSurfaceMesh(vec4 pos,float size,int IsStreet, bool IsSide,bool IsZAxi
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size, 0.0, 1.0 * size),1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size, 0.0, -1.0 * size),1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk,true);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,vec3(0.0,1.0,0.0),IsZAxis,IsSidewalk,false);
 }
 
 void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVector,float heightRate,bool IsZAxis,int IsSidewalk)
@@ -83,27 +89,30 @@ void CreateSideMesh(vec4 pos,float size,int IsStreet, bool IsSide,vec3 OffsetVec
 	vec4 pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	vec4 pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) + OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,OffsetVector,IsZAxis,IsSidewalk);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,OffsetVector,IsZAxis,IsSidewalk);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,OffsetVector,IsZAxis,IsSidewalk,true);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,OffsetVector,IsZAxis,IsSidewalk,false);
 
 	pos0 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, -1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos1 =vec4(pos.xyz + vec3(-1.0 * size*IsZ.x, 1.0 * size*heightRate,-1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos2 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, 1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	pos3 =vec4(pos.xyz + vec3(1.0 * size*IsZ.x, -1.0 * size*heightRate,1.0 * size*IsZ.y) - OffsetVector*size,1.0);
 	
-	CreateOutputData(pos0,pos1,pos2,IsStreet,-OffsetVector,IsZAxis,IsSidewalk);
-	CreateOutputData(pos2,pos3,pos0,IsStreet,-OffsetVector,IsZAxis,IsSidewalk);
+	CreateOutputData(pos0,pos1,pos2,IsStreet,-OffsetVector,IsZAxis,IsSidewalk,true);
+	CreateOutputData(pos2,pos3,pos0,IsStreet,-OffsetVector,IsZAxis,IsSidewalk,false);
 }
 
 void main()
 {
 	// 基本パラメーター
-	float pointNum = 1024.0;
-	float Segment = 32.0;
+	//float pointNum = 1024.0;
+	float pointNum = _pointNum;
+	//float Segment = 32.0;
+	float Segment = _Segment;
 	float PlaneSize = 50.0;
 	float SizeRate = PlaneSize/Segment;
 	int IsStreet = 0;
 	int IsSidewalk = 0;
+	float SideHeight=0.1;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
 	bool ZStreet=false,XStreet=false;
@@ -145,7 +154,7 @@ void main()
 	// 歩道かどうかのチェック(メッシュを新たに作るのではなく、ライティングのフラグを持たせる(ひとまずZ軸ベースのみ)
 	if(IsStreet!=1)
 	{
-		if( (abs(OffsetVectorZStreet.x)-ToSideWarkDist) < ToSideWarkDist)
+		if(abs(OffsetVectorZStreet.x) >= StreetRadius && abs(OffsetVectorZStreet.x) < (StreetRadius + ToSideWarkDist) )
 		{
 			IsSidewalk=1;
 			ZStreet=true;

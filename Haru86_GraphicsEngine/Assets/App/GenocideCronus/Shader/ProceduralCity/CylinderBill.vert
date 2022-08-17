@@ -118,7 +118,7 @@ void main(){
 	{
 		// ランダムポジション
 		vec3 randPos=vec3(0.0);
-		float randPosRadius=75.0;
+		float randPosRadius=50.0;
 		randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
 		randPos.y=0.0;
 
@@ -127,9 +127,14 @@ void main(){
 
 		// 大通りのぶんだけ道を開ける
 		{
-			vec3 StreetOffVec = ToSideWarkDist * StreetRadius * normalize(vec3( (randPos.x-_ZCenterVec.x) ,0.0,0.0));
+		vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+
+		if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+		{
+			vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
 			randPos+=StreetOffVec;
 		}
+	}
 
 		//
 		pos.xyz+=randPos;

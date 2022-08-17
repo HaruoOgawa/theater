@@ -55,6 +55,7 @@ GraphicsMain::~GraphicsMain() {
 	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
+	m_ReflectionProbeList.clear();
 }
 
 bool GraphicsMain::CreateApp() {
@@ -105,7 +106,7 @@ void GraphicsMain::LoadData() {
 
 	//
 	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
-	m_SoundPlayer->Play();
+	//m_SoundPlayer->Play();
 }
 
 bool GraphicsMain::RunLoop() {
