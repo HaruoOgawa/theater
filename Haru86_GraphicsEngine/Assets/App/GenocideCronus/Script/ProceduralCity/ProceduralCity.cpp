@@ -131,8 +131,8 @@ namespace myapp {
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(-3.14f/2.0),
 			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
-			2.0f,
-			//0.5f,
+			//2.0f,
+			0.5f,
 			radius * glm::sin(-3.14f / 2.0)
 			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
@@ -152,7 +152,7 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			//m_Mandelbox->Draw();
+			m_Mandelbox->Draw();
 		}
 		else
 		{

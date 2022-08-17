@@ -112,6 +112,7 @@ void main()
 	float SizeRate = PlaneSize/Segment;
 	int IsStreet = 0;
 	int IsSidewalk = 0;
+	float SideHeight=0.1;
 	vec4 offset=vec4(0.0);
 	offset.y=0.25;
 	bool ZStreet=false,XStreet=false;
