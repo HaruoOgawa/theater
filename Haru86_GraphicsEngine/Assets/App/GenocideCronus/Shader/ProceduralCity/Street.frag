@@ -102,6 +102,9 @@ void main(){
 		vec3 OffsetVectorXStreet = WorldVertexPos.xyz-XSideWarkVec.xyz;
 		if(_IsStreet==1) // 道路
 		{
+			// Base Color
+			col.rgb*=0.5;
+
 			float StreetLineWidth = 0.05;
 			vec2 StreetUV = vec2(0.0);
 	
@@ -137,7 +140,8 @@ void main(){
 				if(LocalUV.x <= LocalStreetRadius)
 				{
 					// ベースカラー(レンガ色)
-					col.rgb = vec3(0.611,0.283,0.211);
+					//col.rgb = vec3(0.611,0.283,0.211);
+					col.rgb*=0.75;
 
 					//
 					float LocalOffsetVal = (abs(OffsetVectorZStreet.x)-ToSideWarkDist) / ToSideWarkDist;
@@ -165,6 +169,10 @@ void main(){
 					col.rgb*=( rand(vec2(domainID.x+0.222,domainID.y+9.224)) +0.5);
 
 				}
+				else
+				{
+					col.rgb*=0.75;
+				}
 
 				//
 				//col.rgb=vec3(LocalUV,0.0);
@@ -172,6 +180,11 @@ void main(){
 			else if(g2f_IsZAxis == 0)
 			{
 			}
+		}
+		else // 道路でも歩道でもないとこ--> ビルのある場所の地面の色
+		{
+			// Base Color
+			col.rgb*=0.75;
 		}
 
 	}

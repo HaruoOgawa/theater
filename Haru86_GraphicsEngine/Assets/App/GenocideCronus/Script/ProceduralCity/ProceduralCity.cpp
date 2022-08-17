@@ -132,7 +132,8 @@ namespace myapp {
 			radius * glm::cos(-3.14f/2.0),
 			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
 			//2.0f,
-			0.5f,
+			//0.5f,
+			1.0f,
 			radius * glm::sin(-3.14f / 2.0)
 			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
 		);
@@ -163,7 +164,7 @@ namespace myapp {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
-					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -178,7 +179,7 @@ namespace myapp {
 					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
-					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -194,7 +195,7 @@ namespace myapp {
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_Street->m_material->SetFloatUniform("LocalStreetRadius", 0.4f);
-					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.0f);
+					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.5f);
 					m_Street->m_material->SetFloatUniform("_pointNum", 1024.0f);
 					m_Street->m_material->SetFloatUniform("_Segment", 32.0f);
 				});
