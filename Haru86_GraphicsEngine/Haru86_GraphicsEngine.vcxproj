@@ -303,7 +303,7 @@ xcopy "$(ProjectDir)Assets\Shader" "$(OutDir)Assets\Shader" /i /s /y
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)Assets\Sound\stroke.mp3" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)Assets\Sound\stroke_edit.mp3" "$(OutDir)" /i /s /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -329,7 +329,7 @@ xcopy "$(ProjectDir)Assets\Sound\stroke.mp3" "$(OutDir)" /i /s /y
     <PostBuildEvent>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)Assets\Sound\stroke.mp3" "$(OutDir)" /i /s /y</Command>
+xcopy "$(ProjectDir)Assets\Sound\stroke_edit.mp3" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DemoRelease|x64'">
@@ -355,7 +355,7 @@ xcopy "$(ProjectDir)Assets\Sound\stroke.mp3" "$(OutDir)" /i /s /y</Command>
       <Command>xcopy "$(ProjectDir)GraphicsEngine\Library\GLEW\x64\bin\glew32d.dll" "$(OutDir)" /i /s /y
 xcopy "$(ProjectDir)GraphicsEngine\Library\GLFW\x64\lib\glfw3.dll" "$(OutDir)" /i /s /y
 call squishy-x64 -i "$(OutDir)Haru86_GraphicsEngine.exe" -o "$(OutDir)Haru86_GraphicsEngine.exe"
-xcopy "$(ProjectDir)Assets\Sound\stroke.mp3" "$(OutDir)" /i /s /y</Command>
+xcopy "$(ProjectDir)Assets\Sound\stroke_edit.mp3" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinimumRelease|x64'">
@@ -463,6 +463,7 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\Mountain\Mountain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\App\GenocideCronus\Shader\Mountain\ShaderTest.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.tesc" />

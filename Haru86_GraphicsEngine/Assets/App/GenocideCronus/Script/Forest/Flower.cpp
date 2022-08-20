@@ -407,7 +407,7 @@ namespace myapp
         cal_flower_cs->SetActive();
         cal_flower_cs->SetIntUniform("_stemVertexCount", m_FlowerModel->m_Stem->stemVertexCount);
         cal_flower_cs->SetFloatUniform("_isFloweringTime", isFloweringTime);
-        cal_flower_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->deltaTime);
+        cal_flower_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->m_DeltaTime);
 
         cal_flower_cs->Dispatch(m_FlowerModel->count / m_FlowerModel->m_Stem->numthreds_val, 1, 1);
     }

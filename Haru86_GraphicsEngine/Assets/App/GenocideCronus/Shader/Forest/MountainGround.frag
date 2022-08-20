@@ -3,23 +3,23 @@ R"(
 #version 330
 
 in vec2 uv;
-in vec3 WorldNormal;
 in vec3 WorldVertexPos;
+in vec3 WorldNormal;
 
+uniform int _UseColor;
+uniform vec4 _Color;
+uniform int _UseLighting;
+uniform vec3 _LightDir;
+uniform vec3 _LightPos;
 uniform vec3 _WorldCameraPos;
-uniform vec3 _WorldCameraCenter;
-uniform float _time;
-uniform vec2 _resolution;
-uniform float _RenderingTarget;
+uniform int _UseEnvColor;
+uniform vec4 _EnvColor;
 
-///////////////////////////////////////////////////////////////////
-/////////// I studied from the following site by iq.    ///////////
-/////////// https://www.youtube.com/watch?v=BFld4EBO2RE ///////////
-/////////// https://www.shadertoy.com/view/XsXfRH       ///////////
-/////////// https://iquilezles.org/articles/fbm/        ///////////
-///////////////////////////////////////////////////////////////////
+uniform int _UseMainTex;
+uniform sampler2D _MainTex;
+uniform int _UseMainCube;
+uniform samplerCube _MainCube;
 
-// Base Func ///////////////////////////////////////////////////
 float hash(vec3 p)
 {
     p=50.0*fract( p*0.3183099 + vec3(0.71,0.113,0.419));
@@ -58,134 +58,64 @@ vec4 noised(in vec3 x)
                                  k3 + k6*u.x + k5*u.y + k7*u.x*u.y ) );
 }
 
-float plane(vec3 p,vec4 n)
-{
-    return dot(p,n.xyz)*n.w;
-}
 
-// Moutain Func ////////////////////////////////////////////
-const mat3 m3  = mat3( 0.00,  0.80,  0.60,
-                      -0.80,  0.36, -0.48,
-                      -0.60, -0.48,  0.64 );
-const mat3 m3i = mat3( 0.00, -0.80, -0.60,
-                       0.80,  0.36, -0.48,
-                       0.60, -0.48,  0.64 );
+void main(){
+	vec4 col=vec4(vec3(0.0),1.0);
 
-vec4 fbm(in vec3 x,int octaves)
-{
-    float f=1.9;
-    float s=0.55;
-    float a=0.0;
-    float b=0.5;
-    vec3 d=vec3(0.0);
-    mat3 m=mat3(
-        1.0,0.0,0.0,
-        0.0,1.0,0.0,
-        0.0,0.0,1.0
-    );
-    
-    for(int i=0;i<octaves;i++)
-    {
-        vec4 n=noised(x);
-        a+=b*n.x;
-        d+=b*m*n.yzw;
-        b*=s;
-        x=f*m3*x;
-        m=f*m3i*m;
-    }
-    
-    return vec4(a,d);
-}
+	// ベースカラー
+	if(_UseColor == 1)
+	{
+		col=_Color;
+	}
+	else if(_UseMainTex == 1) // テクスチャサンプリング
+	{
+		col=texture(_MainTex,uv);
+	}
+	else if(_UseMainCube == 1)
+	{
+		vec3 viewdir = -normalize(_WorldCameraPos-WorldVertexPos);
+		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
+		col.rgb=texture(_MainCube,rpdir).rgb;
 
-float MountainMap(vec3 p)
-{
-   // p.z-=iTime*1000.0;
-    float d = plane(p,vec4(0.0,1.0,0.0,2.0));
-    float h = fbm(p/2000.0+vec3(vec2(1.0,-2.0),0.0),9).x;
-    h=200.0*h+100.0;
-    //h=2000.0*h+600.0;
-    return d-h;
-}
+		//col=vec4(rpdir*0.5+0.5,1.0);
+	}
+	else
+	{
+		col=vec4(1.0);
+		//col=vec4(uv.x,uv.y,0.0,1.0);
+	}
 
-vec3 renderMountain(vec3 ro,vec3 rd,float dmax)
-{
-    float d=1.0,t=0.0,i=0.0;
-    for(;++i<64.0 && (d>dmax );)
-    {
-        d=MountainMap(ro+rd*t);
-        t+=d*0.175;
-    }
-    return vec3(d,t,dmax);
-}
+	
 
-vec3 gnMountain(vec3 p,float dmax)
-{
-    vec2 e=vec2(dmax,0.0);
-    return normalize(vec3(
-        MountainMap(p+e.xyy)-MountainMap(p-e.xyy),
-        MountainMap(p+e.yxy)-MountainMap(p-e.yxy),
-        MountainMap(p+e.yyx)-MountainMap(p-e.yyx)
-    ));
-}
+	// 環境光
+	vec4 envColor = vec4(0.0,0.0,0.0,1.0);
+	if(_UseEnvColor == 1)
+	{
+		envColor = _EnvColor;
+	}
 
-vec4 LightingMountain(vec3 ro,vec3 rd,float t,float dmax)
-{
-    vec4 col=vec4(1.0);
+	// ライティング
+	if(_UseLighting == 1)
+	{
+		//vec3 lightDir=normalize(_LightDir);
+		vec3 lightDir=normalize(_LightPos-WorldVertexPos);
+		float diff=max(0.0,dot(WorldNormal,lightDir));
+		col.rgb*=diff;
 
-    vec3 n=gnMountain(ro+rd*t,0.75);
-    float r=1.0;
-    vec3 l = normalize(vec3(
-        r *sin(1.3)*cos(2.36),
-        r *cos(1.3),
-        r *sin(1.3)*sin(2.36)
-    ));
-        
-    float diff=dot(n,l);
-    diff=max(diff,0.0);
-    col.rgb*=diff;
-    col.rgb*=vec3(211.0 / 255.0, 149.0 / 255.0, 107.0 / 255.0);
-    //col.rgb=n;
-        
-    // fog
-    //vec3 ramda = exp2(-0.000125*t*vec3(1.0,2.0,4.0));
-    //col.rgb=mix(vec3(0.5),col.rgb,ramda);
-        
-    return col;
-}
+		col.rgb+=envColor.rgb;
 
-void main()
-{
-    //vec2 st = (gl_FragCoord.xy*2.0-_resolution.xy)/min(_resolution.x,_resolution.y);
-    vec2 st=uv*2.0-1.0;
-    st.x*=(_resolution.x/_resolution.y);
-    
-    vec4 col = vec4(vec3(0.0),1.0);
-    vec3 ta=vec3(0.0,100.0,0.0),ro=vec3(0.0,200.0,200.0);
-    vec3 cdir=normalize(ta-ro);
-    vec3 cside=normalize(cross(cdir,vec3(0.0,-1.0,0.0)));
-    vec3 cup=normalize(cross(cdir,cside));
-    vec3 rd=normalize(st.x*cside+st.y*cup+1.0*cdir);
-    float nowobj = 2.0,d=1.0,t=0.0;
-    
-    // sky color
-    //col.rgb=vec3(0.42, 0.62, 1.1) - rd.y*0.4;
-    
-    // modeling of Mountain
-    vec3 mountain = renderMountain(ro,rd,0.75);
-    if(mountain.x<d)
-    {
-        d=mountain.x;
-        t=mountain.y;
-        nowobj=1.0;
-    }
-    
-    // Lighting
-    if(nowobj == 1.0) // moutain
-    {
-        col=LightingMountain(ro,rd,t,mountain.z);
-    }
+		vec3 viewDir= -1.0*normalize(WorldVertexPos-_WorldCameraPos);
+		vec3 halfDir=normalize(viewDir + lightDir);
+		float spec=pow( max(0.0,dot(WorldNormal,halfDir)) , 60.0);
+		col.rgb+=vec3(1.0)*spec;
 
-    gl_FragColor = col;
+		//col.rgb=vec3(1.0);
+		col.rgb+=(noised(vec3(viewDir*1000.0))*0.5+0.5).r*0.05;
+	}
+
+	
+
+	gl_FragColor=col;
 }
 
 )"

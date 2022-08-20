@@ -80,8 +80,8 @@ namespace myapp
 	void Forest::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
+			//m_AroundMountain->Draw();
 			m_EnergyBall->Draw();
-			m_AroundMountain->Draw();
 		}
 		else
 		{

@@ -5,7 +5,7 @@
 
 CTimeline::CTimeline()
 {
-	timeVal = GraphicsMain::GetInstance()->time;
+	timeVal = GraphicsMain::GetInstance()->m_MilliSecondsTime;
 	animTime = 0.0f;
 }
 
@@ -23,7 +23,7 @@ void CTimeline::AddAnimationClip(GameObject* obj, float startTime, float endTime
 }
 
 void CTimeline::Update() {
-	timeVal = GraphicsMain::GetInstance()->time;
+	timeVal = GraphicsMain::GetInstance()->m_MilliSecondsTime;
 	ComputeTimeline(timeVal);
 }
 
@@ -107,7 +107,7 @@ void CTimeline::ComputeAnimationTrack(float time) {
 	}
 
 	for (auto clip : runningAnimationClip) {
-		clip->lifeTime += GraphicsMain::GetInstance()->deltaTime;
+		clip->lifeTime += GraphicsMain::GetInstance()->m_DeltaTime;
 		clip->lifeTimeRate = clip->lifeTime / (clip->endTime * 0.001f - clip->startTime * 0.001f);
 		if (time > clip->endTime) {
 			auto iter = std::find(clip->gameObject->meshComp->animationClips.begin(), clip->gameObject->meshComp->animationClips.end(), clip);
