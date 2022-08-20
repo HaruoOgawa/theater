@@ -9,6 +9,7 @@
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Sound/SoundPlayer.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include <time.h>
 
 #ifdef _DEBUG
 #include "GraphicsEngine/Message/Console.h"
@@ -32,8 +33,9 @@ void GraphicsMain::Destroy()
 GraphicsMain::GraphicsMain()
 	: 
 	isRunning(true),
-	time(0.0f),
-	deltaTime(0.0f),
+	m_SecondsTime(0.0f),
+	m_MilliSecondsTime(0.0f),
+	m_DeltaTime(0.0f),
 	previousTime(0.0f),
 	mouseStateBool(false),
 	animTime(0.0f),
@@ -141,12 +143,16 @@ void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void GraphicsMain::Update() {
-	while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
-	deltaTime = (time - previousTime) / 1000.0f;
-	if (deltaTime > 0.05f) {
-		deltaTime = 0.05f;
+	//Console::Log("clock(): %f\n", static_cast<float>(clock()*0.001f));
+
+	//while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
+	m_MilliSecondsTime = static_cast<float>(clock());
+	m_SecondsTime = m_MilliSecondsTime * 0.001f;
+	m_DeltaTime = (m_MilliSecondsTime - previousTime) / 1000.0f;
+	if (m_DeltaTime > 0.05f) {
+		m_DeltaTime = 0.05f;
 	}
-	previousTime = time;
+	previousTime = m_MilliSecondsTime;
 
 	if (m_App) {
 		m_App->Update();

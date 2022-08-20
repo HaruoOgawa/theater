@@ -42,8 +42,9 @@ public:
 	bool Initialize();
 	bool RunLoop();
 
-	float time;
-	float deltaTime;
+	float m_SecondsTime;
+	float m_MilliSecondsTime;
+	float m_DeltaTime;
 	std::unique_ptr<CTimeline> m_timeline;
 	float animTime;
 

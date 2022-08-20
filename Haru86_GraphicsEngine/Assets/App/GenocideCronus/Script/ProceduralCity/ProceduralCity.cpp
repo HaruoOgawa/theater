@@ -115,14 +115,14 @@ namespace myapp {
 		// X軸歩道のオフセット
 		{
 			float PlaneSize = 100.0f;
-			float time = GraphicsMain::GetInstance()->time * 0.001f;
+			float time = GraphicsMain::GetInstance()->m_SecondsTime;
 			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
 		}
 
 		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			2.5f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			2.5f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
 			2.5f,
-			2.5f*glm::sin(GraphicsMain::GetInstance()->time*0.001f)
+			2.5f*glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
 		);
 		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
 
@@ -130,12 +130,12 @@ namespace myapp {
 		float radius = 2.0f;
 		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
 			radius * glm::cos(-3.14f/2.0),
-			//radius * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			//radius * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
 			//2.0f,
 			//0.5f,
 			1.0f,
 			radius * glm::sin(-3.14f / 2.0)
-			//radius * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			//radius * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
 		);
 		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
 		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -143,10 +143,10 @@ namespace myapp {
 		// デバッグ用ライト移動
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
 			10.0f * glm::cos(-3.14f / 2.0),
-			//10.0f * glm::cos(GraphicsMain::GetInstance()->time * 0.001f),
+			//10.0f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
 			10.0f,
 			10.0f * glm::sin(-3.14f / 2.0)
-			//10.0f * glm::sin(GraphicsMain::GetInstance()->time * 0.001f)
+			//10.0f * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
 		);
 	}
 

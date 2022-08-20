@@ -109,9 +109,10 @@ float MountainMap(vec3 p)
 vec3 renderMountain(vec3 ro,vec3 rd,float dmax)
 {
     float d=1.0,t=0.0,i=0.0;
-    for(;++i<128.0 && (d>dmax );)
+    for(;++i<128.0 && (d>dmax && t<10000.0);)
     {
         d=MountainMap(ro+rd*t);
+        d=max(0.0,d+1000.0);
         t+=d*0.175;
     }
     return vec3(d,t,dmax);

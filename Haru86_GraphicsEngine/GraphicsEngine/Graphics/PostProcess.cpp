@@ -61,7 +61,7 @@ void PostProcess::DrawPolygonPostProcess(const std::shared_ptr<Texture> SrcTextu
 
 	// draw PostProcess Board
 	m_material->SetActive();
-	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 
@@ -94,7 +94,7 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture,
 
 	m_transform->CalMatrix();
 	m_LateMaterial->SetActive();
-	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_LateMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_LateMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_LateMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_LateMaterial->SetMatrixUniform("VPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix);

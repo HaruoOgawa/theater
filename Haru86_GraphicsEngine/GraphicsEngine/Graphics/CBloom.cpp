@@ -59,7 +59,7 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	glEnable(GL_DEPTH_TEST);
 
 	m_IlluminanceMaterial->SetActive();
-	m_IlluminanceMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_IlluminanceMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_IlluminanceMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_IlluminanceMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	SrcTexture->SetActive(GL_TEXTURE0);
@@ -82,7 +82,7 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	glEnable(GL_DEPTH_TEST);
 
 	m_BlurMaterial->SetActive();
-	m_BlurMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_BlurMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_BlurMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BlurMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_IlluminanceMap) {
@@ -105,7 +105,7 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	glEnable(GL_DEPTH_TEST);
 
 	m_BlurMaterial->SetActive();
-	m_BlurMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_BlurMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_BlurMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BlurMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_BlurMapX) {
@@ -129,7 +129,7 @@ void CBloom::Draw(const std::shared_ptr<Texture> SrcTexture, const unsigned int&
 	glEnable(GL_DEPTH_TEST);
 
 	m_BloomResultMaterial->SetActive();
-	m_BloomResultMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->time);
+	m_BloomResultMaterial->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
 	m_BloomResultMaterial->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_BloomResultMaterial->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	if (m_BlurMapY) {

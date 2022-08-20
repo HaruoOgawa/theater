@@ -83,8 +83,8 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 	m_material->SetMatrixUniform("PMatrix", m_transform->m_pMatrix);
 	m_material->SetMatrixUniform("VPMatrix", m_transform->m_pMatrix * m_transform->m_vMatrix);
 	m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(m_transform->m_pMatrix * m_transform->m_vMatrix));
-	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->time*0.001f);
-	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
+	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
+	m_material->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->m_DeltaTime);
 	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
 	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
 	m_material->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));

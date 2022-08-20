@@ -198,7 +198,7 @@ namespace myapp {
         cal_stem_cs->SetActive();
        
         cal_stem_cs->SetFloatUniform("_stemGrowthRange", stemGrowthRange);
-        cal_stem_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->deltaTime);
+        cal_stem_cs->SetFloatUniform("_DTime", GraphicsMain::GetInstance()->m_DeltaTime);
 
         cal_stem_cs->SetIntUniform("_KernelIndex", CalStemManage_kernel);
         cal_stem_cs->Dispatch(m_FlowerModel->count / numthreds_val, 1, 1);
@@ -225,8 +225,8 @@ namespace myapp {
         stem_mat->SetMatrixUniform("MMatrix", m_StemTRS->m_mMatrix);
         stem_mat->SetMatrixUniform("VMatrix", m_StemTRS->m_vMatrix);
         stem_mat->SetMatrixUniform("PMatrix", m_StemTRS->m_pMatrix);
-        stem_mat->SetFloatUniform("_time", GraphicsMain::GetInstance()->time * 0.001f);
-        stem_mat->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->deltaTime);
+        stem_mat->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
+        stem_mat->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->m_DeltaTime);
         stem_mat->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
         stem_mat->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
         stem_mat->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));

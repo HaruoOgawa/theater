@@ -36,10 +36,26 @@ void GenocideCronus::Start() {
 
 void GenocideCronus::Update() {
 	// 時間
-	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
-	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
+	float LocalTime = glm::mod(GraphicsMain::GetInstance()->m_SecondsTime,20.0f);
+	
+	if (LocalTime >= 0.0 && LocalTime < 5.0f)
+	{
+		m_DebugSceneIndex = 0;
+	}
+	else if (LocalTime >= 5.0 && LocalTime < 10.0f)
+	{
+		m_DebugSceneIndex = 1;
+	}
+	else if (LocalTime >= 10.0 && LocalTime < 15.0f)
+	{
+		m_DebugSceneIndex = 2;
+	}
+	else if (LocalTime >= 15.0 && LocalTime < 20.0f)
+	{
+		m_DebugSceneIndex = 3;
+	}
 
-	m_DebugSceneIndex = 3;
+	//m_DebugSceneIndex = 3;
 
 	// シーン制御
 	if (m_DebugSceneIndex == 0) // City
@@ -67,10 +83,10 @@ void GenocideCronus::Update() {
 		// カメラ
 		float r = 10.0f;
 		m_CameraTransform->m_position = glm::vec3( // Forest
-			glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
+			glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * r,
 			//glm::cos(0.0f) * r,
 			r,
-			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+			glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * r
 			//glm::sin(0.0f) * r
 		);
 
@@ -89,10 +105,10 @@ void GenocideCronus::Update() {
 
 		m_CameraTransform->m_position = glm::vec3( // SacredLake
 			//glm::cos(0.0f) * 30.0f,
-			glm::cos(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f,
+			glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 30.0f,
 			0.5f,
 			//glm::sin(0.0f) * 30.0f
-			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * 30.0f
+			glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 30.0f
 		);
 
 		// 更新処理
