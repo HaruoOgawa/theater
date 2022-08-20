@@ -39,7 +39,7 @@ void GenocideCronus::Update() {
 	float time = GraphicsMain::GetInstance()->time * 0.001f * 0.25f;
 	m_DebugSceneIndex = static_cast<int>(glm::floor(glm::mod(time, 3.99f)));
 
-	//m_DebugSceneIndex = 0;
+	m_DebugSceneIndex = 3;
 
 	// ƒV[ƒ“§Œä
 	if (m_DebugSceneIndex == 0) // City
@@ -67,11 +67,11 @@ void GenocideCronus::Update() {
 		// ƒJƒƒ‰
 		float r = 10.0f;
 		m_CameraTransform->m_position = glm::vec3( // Forest
-			//glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
-			glm::cos(0.0f) * r,
+			glm::cos(GraphicsMain::GetInstance()->time * 0.001f*0.1f) * r,
+			//glm::cos(0.0f) * r,
 			r,
-			//glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
-			glm::sin(0.0f) * r
+			glm::sin(GraphicsMain::GetInstance()->time * 0.001f * 0.1f) * r
+			//glm::sin(0.0f) * r
 		);
 
 		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
