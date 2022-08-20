@@ -20,7 +20,7 @@ namespace sound
 		GetModuleFileName(NULL, ExePath, 256);
 		std::string ExeDir = GetExeDir(ExePath);
 
-		std::string AudioPath ="\"" + ExeDir + "\\" + "stroke.mp3" + "\"";
+		std::string AudioPath ="\"" + ExeDir + "\\" + "stroke_edit.mp3" + "\"";
 		std::string cmd = "open " + AudioPath + " type mpegvideo alias mp3";
 		
 		std::array<char, MAXERRORLENGTH> errorString;
