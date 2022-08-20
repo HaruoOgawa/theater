@@ -13,6 +13,7 @@ namespace sound
 		bool Play();
 		bool Pause();
 		void Release();
+		void Skip(float SkipOffset);
 
 	private:
 		std::string GetExeDir(char path[]);

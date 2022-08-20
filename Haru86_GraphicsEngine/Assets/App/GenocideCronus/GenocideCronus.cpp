@@ -14,6 +14,20 @@
 #include "Assets/App/GenocideCronus/Script/Mountain/Mountain.h"
 
 #include "Assets/App/GenocideCronus/Script/SSR_Test/SSR_Test.h"
+#include "GraphicsEngine/Sound/SoundPlayer.h"
+
+GenocideCronus::GenocideCronus():
+	m_CameraTransform(nullptr),
+	m_GridPlane(nullptr),
+	IsDebugSoundSkipped(false),
+	m_SceneIndex(0),
+	m_ProceduralCity(nullptr),
+	m_SacredLake(nullptr),
+	m_Forest(nullptr),
+	m_Mountain(nullptr),
+	m_SSR_Test(nullptr)
+{
+}
 
 void GenocideCronus::Start() {
 	// カメラ
@@ -36,29 +50,56 @@ void GenocideCronus::Start() {
 
 void GenocideCronus::Update() {
 	// 時間
-	float LocalTime = glm::mod(GraphicsMain::GetInstance()->m_SecondsTime,20.0f);
+	float LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
 	
-	if (LocalTime >= 0.0 && LocalTime < 5.0f)
+	// 
+#ifdef _DEBUG
+	float DebugTimeOffset = 177.0f;// シーンを飛ばすためのオフセット
+	LocalTime += DebugTimeOffset;
+	//Console::Log("LocalTime: %f\n", LocalTime);
+	if(!IsDebugSoundSkipped)
 	{
-		m_DebugSceneIndex = 0;
+		GraphicsMain::GetInstance()->m_SoundPlayer->Skip(DebugTimeOffset);
+		IsDebugSoundSkipped = true;
 	}
-	else if (LocalTime >= 5.0 && LocalTime < 10.0f)
+#endif // _DEBUG
+
+
+	if (LocalTime >= 0.0f && LocalTime < 70.0f) // シーン1(City)
 	{
-		m_DebugSceneIndex = 1;
+		m_SceneIndex = 0;
 	}
-	else if (LocalTime >= 10.0 && LocalTime < 15.0f)
+	else if (LocalTime >= 70.0f && LocalTime < 85.0f) // シーン2(City&Forest)
 	{
-		m_DebugSceneIndex = 2;
+		m_SceneIndex = 0;
 	}
-	else if (LocalTime >= 15.0 && LocalTime < 20.0f)
+	else if (LocalTime >= 85.0f && LocalTime < 116.0f) // シーン3(Forest)
 	{
-		m_DebugSceneIndex = 3;
+		m_SceneIndex = 1;
+	}
+	else if (LocalTime >= 116.0f && LocalTime < 150.0f) //  シーン4(Mountain)
+	{
+		m_SceneIndex = 2;
+	}
+	else if (LocalTime >= 150.0f && LocalTime < 161.0f) // シーン5(Lake)
+	{
+		m_SceneIndex = 3;
+	}else if (LocalTime >= 161.0f && LocalTime < 177.0f) // シーン6(巻き戻し)
+	{
+		m_SceneIndex = 1;
+	}else if (LocalTime >= 177.0f && LocalTime < 264.0f) // シーン7(End of City)
+	{
+		m_SceneIndex = 0;
+	}
+	else if(LocalTime >= 264.0f)// デモ終了
+	{
+		GraphicsMain::GetInstance()->isRunning = false;
 	}
 
-	//m_DebugSceneIndex = 3;
+	//m_SceneIndex = 3;
 
 	// シーン制御
-	if (m_DebugSceneIndex == 0) // City
+	if (m_SceneIndex == 0) // City
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -73,7 +114,7 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_ProceduralCity->Update();
 	}
-	else if (m_DebugSceneIndex == 1)
+	else if (m_SceneIndex == 1)
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -95,7 +136,21 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_Forest->Update();
 	}
-	else if (m_DebugSceneIndex == 2) // Lake
+	else if (m_SceneIndex == 2) // Mountain
+	{
+		// 描画設定
+		PostProcess::GetInstance()->m_UseSSR = false;
+		// 背景色
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+
+		// カメラ
+		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+
+		// 更新処理
+
+	}
+	else if (m_SceneIndex == 3) // Lake
 	{
 		// 描画設定
 		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
@@ -114,27 +169,13 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_SacredLake->Update();
 	}
-	else if (m_DebugSceneIndex == 3) // Mountain
-	{
-		// 描画設定
-		PostProcess::GetInstance()->m_UseSSR = false;
-		// 背景色
-		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
-
-		// カメラ
-		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
-		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
-
-		// 更新処理
-
-	}
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
-	if (m_DebugSceneIndex == 0)m_ProceduralCity->Draw(IsRaymarching);
-	if (m_DebugSceneIndex == 2)m_SacredLake->Draw(IsRaymarching);
-	if (m_DebugSceneIndex == 1)m_Forest->Draw(IsRaymarching);
-	if (m_DebugSceneIndex == 3)m_Mountain->Draw(IsRaymarching);
+	if (m_SceneIndex == 0)m_ProceduralCity->Draw(IsRaymarching);
+	if (m_SceneIndex == 1)m_Forest->Draw(IsRaymarching);
+	if (m_SceneIndex == 2)m_Mountain->Draw(IsRaymarching);
+	if (m_SceneIndex == 3)m_SacredLake->Draw(IsRaymarching);
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) 

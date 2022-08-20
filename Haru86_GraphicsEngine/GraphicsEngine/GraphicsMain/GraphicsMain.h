@@ -42,6 +42,8 @@ public:
 	bool Initialize();
 	bool RunLoop();
 
+	unsigned int GetAppSceneIndex()const;
+
 	float m_SecondsTime;
 	float m_MilliSecondsTime;
 	float m_DeltaTime;

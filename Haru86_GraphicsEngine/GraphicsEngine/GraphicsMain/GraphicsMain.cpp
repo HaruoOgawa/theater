@@ -123,6 +123,11 @@ bool GraphicsMain::RunLoop() {
 	return false;
 }
 
+unsigned int GraphicsMain::GetAppSceneIndex()const
+{
+	return m_App->GetSceneIndex();
+}
+
 void GraphicsMain::UpdateTimeline() {
 	m_timeline->Update();
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
