@@ -43,6 +43,9 @@ public:
 
 	// SSR
 	bool m_UseSSR;
+
+	// Vignette
+	bool m_UseVignette;
 protected:
 	static PostProcess* instance;
 };

@@ -9,16 +9,20 @@
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "BillMeshGenerator.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
+#include "GraphicsEngine/Graphics/PostProcess.h"
 
 namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_BillRP(std::make_shared<ReflectionProbe>(glm::vec3(0.0f, 2.5f, 0.0f), 0.001f)),
 		m_Mandelbox(nullptr),
+		m_CityCloud(nullptr),
 		m_ProceduralBillRenderer(nullptr),
 		m_Street(nullptr),
 		m_StreeLamp(nullptr),
 		m_CylinderBill(nullptr),
-		m_XSideWarkVec(glm::vec3(0.0f))
+		m_XSideWarkVec(glm::vec3(0.0f)),
+		m_IsDrawMandel(false),
+		m_IsDrawCloud(false)
 	{
 		Start();
 	}
@@ -105,6 +109,17 @@ namespace myapp {
 			shaderlib::ShaderLib::RaymarchingObject_vert,
 			MandelboxShader
 			);
+
+		// City Cloud
+		m_CityCloud = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderingSurfaceType::RAYMARCHING,
+			shaderlib::ShaderLib::RaymarchingObject_vert,
+			std::string(
+				#include "../../Shader/ProceduralCity/City_Cloud.frag"
+			)
+		);
 	}
 
 	void ProceduralCity::Update() 
@@ -153,7 +168,16 @@ namespace myapp {
 	void ProceduralCity::Draw(bool IsRaymarching) {
 		if (IsRaymarching)
 		{
-			m_Mandelbox->Draw();
+			if (m_IsDrawCloud)
+			{
+				m_CityCloud->Draw();
+			}
+			else
+			{
+				m_Mandelbox->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_Mandelbox->m_material->SetIntUniform("_IsDrawMandel", (m_IsDrawMandel) ? 1 : 0);
+				});
+			}
 		}
 		else
 		{
@@ -209,11 +233,13 @@ namespace myapp {
 		{
 			if (LocalTime >= 0.0f && LocalTime<31.0f)
 			{
-
+				PostProcess::GetInstance()->m_UseVignette = true;
+				m_IsDrawMandel = false;
 			}
 			else if (LocalTime >= 31.0f && LocalTime < 70.0f)
 			{
-
+				PostProcess::GetInstance()->m_UseVignette = false;
+				m_IsDrawCloud = true;
 			}
 		}
 	}

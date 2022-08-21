@@ -17,6 +17,7 @@ uniform mat4 InvVPMatrix;
 uniform vec3 _WorldCameraPos;
 uniform vec3 _WorldCameraCenter;
 uniform int _UseSSR;
+uniform int _UseVignette;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -102,15 +103,26 @@ vec3 CalSSRColor(vec3 color){
 	return col;
 }
 
+vec3 Vignette(vec3 col)
+{
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+	st=st*2.0-1.0;
+	
+	float w = 1.2;
+	float d = length(st)*w;
+	col = mix(col,vec3(0.0),d);
+	col*=d*0.5;
+	return col;
+}
+
 void main(){
 	vec3 col=vec3(0.0);
 	vec2 st=gl_FragCoord.xy/_resolution.xy;
 	
 	col=texture(_SrcTexture,st).rgb;
-	//col=texture(_DepthMapPolygone,st).rgb;
-	//col=texture(_DepthMapMixed,st).rgb;
 	
 	if(_UseSSR == 1)col=CalSSRColor(col);
+	if(_UseVignette == 1) col = Vignette(col);
 
 	gl_FragColor=vec4(col,1.0);
 }

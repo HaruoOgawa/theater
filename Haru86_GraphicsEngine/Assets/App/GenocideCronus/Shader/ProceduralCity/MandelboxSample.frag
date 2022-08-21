@@ -6,6 +6,7 @@ uniform vec2 _resolution;
 uniform float _RenderingTarget;
 uniform vec3 _WorldCameraPos;
 uniform vec3 _WorldCameraCenter;
+uniform int _IsDrawMandel;
 
 in vec2 uv;
 
@@ -116,10 +117,13 @@ void main(){
   }
  
   if(_RenderingTarget==1.0){
-    if(d<0.001){
+    if(d<0.001 && _IsDrawMandel==1)
+    {
          vec3 col=vec3(1.0)*25./pi;
          gl_FragColor=vec4(col,1);
-    }else{
+    }
+    else
+    {
          vec3 col=cyclicNoise(vec3(st*5.,_time));
          col=vec3((col.r+col.g+col.b)*0.333);
          gl_FragColor=vec4(col,1);
