@@ -3,8 +3,9 @@ R"(
 #version 410
 
 in vec2 uv;
-in float time;
 
+uniform float _time;
+uniform float _deltaTime;
 uniform vec2 _resolution;
 uniform sampler2D _SrcTexture;
 uniform sampler2D _NormalMap;
@@ -18,6 +19,9 @@ uniform vec3 _WorldCameraPos;
 uniform vec3 _WorldCameraCenter;
 uniform int _UseSSR;
 uniform int _UseVignette;
+uniform float _VignetteRadius;
+uniform float _VignetteLateRadius;
+uniform float _VignetteBrightness;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -108,10 +112,12 @@ vec3 Vignette(vec3 col)
 	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
 	st=st*2.0-1.0;
 	
-	float w = 1.2;
-	float d = length(st)*w;
+	float w = 1.1+(1.0-_VignetteRadius)*4.0 - _VignetteLateRadius*0.5;
+	
+	float d = (length(st))*w;
 	col = mix(col,vec3(0.0),d);
-	col*=d*0.5;
+	//col*=d*0.5*(1.0+_VignetteBrightness);
+	col*=d*0.5*(1.0+9.0*_VignetteBrightness);
 	return col;
 }
 

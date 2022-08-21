@@ -233,12 +233,26 @@ namespace myapp {
 		{
 			if (LocalTime >= 0.0f && LocalTime<31.0f)
 			{
-				PostProcess::GetInstance()->m_UseVignette = true;
+				//
+				//float VignetteRadius = glm::sin(LocalTime);
+				float VignetteRadius = glm::clamp((LocalTime - 0.0f) / 5.0f, 0.0f, 1.0f);
+				float VignetteLateRadius = glm::clamp((LocalTime - 30.0f)/1.0f, 0.0f, 1.0f);
+				float VignetteBrightness = glm::clamp((LocalTime - 30.0f) / 1.0f, 0.0f, 1.0f);
+
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteRadius", VignetteRadius);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteLateRadius", VignetteLateRadius);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteBrightness", VignetteBrightness);
+				};
+
 				m_IsDrawMandel = false;
 			}
 			else if (LocalTime >= 31.0f && LocalTime < 70.0f)
 			{
-				PostProcess::GetInstance()->m_UseVignette = false;
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				};
 				m_IsDrawCloud = true;
 			}
 		}

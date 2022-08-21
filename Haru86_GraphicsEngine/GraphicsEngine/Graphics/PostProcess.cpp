@@ -36,7 +36,7 @@ PostProcess::PostProcess():
 	m_BloomTexture(std::make_shared<Texture>()),
 	m_transform(std::make_shared<TransformComponent>()),
 	m_UseSSR(false),
-	m_UseVignette(false)
+	m_LatePostProcesCallBack([]() {})
 {
 	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
 	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "", "");
@@ -99,6 +99,8 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture>& SrcTexture
 	glEnable(GL_DEPTH_TEST);
 
 	m_LateMeshRenderer->Draw(GL_TRIANGLES, false, 0, [&]() {
+		m_LatePostProcesCallBack();
+
 		m_LateMeshRenderer->m_material->SetMatrixUniform("VPMatrix", m_LateMeshRenderer->m_transform->m_pMatrix * m_LateMeshRenderer->m_transform->m_vMatrix);
 		m_LateMeshRenderer->m_material->SetMatrixUniform("InvVPMatrix", glm::inverse(m_LateMeshRenderer->m_transform->m_pMatrix * m_LateMeshRenderer->m_transform->m_vMatrix));
 
@@ -118,7 +120,6 @@ void PostProcess::DrawLatePostProcess(const std::shared_ptr<Texture>& SrcTexture
 		m_LateMeshRenderer->m_material->SetTexUniform("_DepthMapMixed", 4);
 
 		m_LateMeshRenderer->m_material->SetIntUniform("_UseSSR", (m_UseSSR) ? 1 : 0);
-		m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", (m_UseVignette) ? 1 : 0);
 	});
 	SrcTexture->SetEnactive(GL_TEXTURE0);
 	GraphicsRenderer::GetInstance()->polygon_normalTexture->SetEnactive(GL_TEXTURE1);
