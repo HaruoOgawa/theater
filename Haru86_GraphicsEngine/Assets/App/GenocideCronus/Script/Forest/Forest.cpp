@@ -90,4 +90,9 @@ namespace myapp
 			m_LTreeModel->Draw();
 		}
 	}
+
+	void Forest::UpdateTimeline(float LocalTime)
+	{
+
+	}
 }

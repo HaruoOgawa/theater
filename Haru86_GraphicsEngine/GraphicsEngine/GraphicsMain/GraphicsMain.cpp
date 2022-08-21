@@ -126,6 +126,9 @@ unsigned int GraphicsMain::GetAppSceneIndex()const
 }
 
 void GraphicsMain::UpdateTimeline() {
+	m_App->UpdateTimeline();
+
+	//
 	m_timeline->Update();
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
 		return a->m_renderOrder < b->m_renderOrder;

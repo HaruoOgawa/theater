@@ -30,4 +30,9 @@ namespace myapp {
 			m_MoutainObj->Draw();
 		}
 	}
+
+	void Mountain::UpdateTimeline(float LocalTime)
+	{
+
+	}
 }

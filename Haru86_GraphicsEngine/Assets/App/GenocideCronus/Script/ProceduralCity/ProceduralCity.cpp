@@ -202,4 +202,9 @@ namespace myapp {
 			}
 		}
 	}
+
+	void ProceduralCity::UpdateTimeline(float LocalTime)
+	{
+
+	}
 }

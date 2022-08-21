@@ -23,5 +23,6 @@ namespace myapp
 		void Start();
 		void Update();
 		void Draw(bool IsRaymarching);
+		void UpdateTimeline(float LocalTime);
 	};
 }

@@ -14,15 +14,17 @@ namespace myapp {
 
 class GenocideCronus
 {
-    // カメラ
+    // 基本パラメーター
     std::shared_ptr<TransformComponent> m_CameraTransform;
+    unsigned int m_SceneIndex;
+    float        m_LocalTime;
+    float        m_LocalTimeOffset;
 
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
     bool IsDebugSoundSkipped;
 
     // シーンオブジェクト
-    unsigned int m_SceneIndex;
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
     std::shared_ptr<myapp::SacredLake> m_SacredLake;
     std::shared_ptr<myapp::Forest> m_Forest;
@@ -35,6 +37,7 @@ public:
     void Update();
     void Draw(bool IsRaymarching);
     void Timeline(CTimeline* timeline);
+    void UpdateTimeline();
 
     unsigned int GetSceneIndex()const { return m_SceneIndex; }
 };

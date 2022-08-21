@@ -143,4 +143,9 @@ namespace myapp {
 			}
 		}
 	}
+
+	void SacredLake::UpdateTimeline(float LocalTime)
+	{
+
+	}
 }
