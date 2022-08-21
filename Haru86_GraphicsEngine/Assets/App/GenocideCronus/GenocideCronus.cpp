@@ -50,11 +50,11 @@ void GenocideCronus::Update() {
 	
 	// 
 #ifdef _DEBUG
-	/*if(!IsDebugSoundSkipped)
+	if(!IsDebugSoundSkipped)
 	{
-		GraphicsMain::GetInstance()->m_SoundPlayer->Skip(DebugTimeOffset);
+		GraphicsMain::GetInstance()->m_SoundPlayer->Skip(m_LocalTimeOffset);
 		IsDebugSoundSkipped = true;
-	}*/
+	}
 #endif // _DEBUG
 
 
@@ -171,7 +171,7 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
-	m_LocalTimeOffset = 0.0f;// シーンを飛ばすためのオフセット
+	m_LocalTimeOffset = 150.0f;// シーンを飛ばすためのオフセット
 	m_LocalTime += m_LocalTimeOffset;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 

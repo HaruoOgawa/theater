@@ -6,13 +6,14 @@ class CBloom;
 class Mesh;
 class Material;
 class TransformComponent;
+class MeshRendererComponent;
 
 class PostProcess
 {
 	//base
 	std::shared_ptr<Mesh> m_mesh;
 	std::shared_ptr<Material> m_material;
-	std::shared_ptr<Material> m_LateMaterial;
+	std::shared_ptr<MeshRendererComponent> m_LateMeshRenderer;
 	
 	//bloom
 	std::unique_ptr<CBloom> m_Bloom;
@@ -29,8 +30,8 @@ public:
 	
 	PostProcess();
 	virtual ~PostProcess()=default;
-	void DrawPolygonPostProcess(const std::shared_ptr<Texture> SrcTexture,const unsigned int& DestBuffer)const;
-	void DrawLatePostProcess(const std::shared_ptr<Texture> SrcTexture, const unsigned int& DestBuffer)const;
+	void DrawPolygonPostProcess(const std::shared_ptr<Texture>& SrcTexture,const unsigned int& DestBuffer)const;
+	void DrawLatePostProcess(const std::shared_ptr<Texture>& SrcTexture, const unsigned int& DestBuffer)const;
 	
 	//
 	bool m_UsePostProcess;

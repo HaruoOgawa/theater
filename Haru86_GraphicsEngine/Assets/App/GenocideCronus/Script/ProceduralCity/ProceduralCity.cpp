@@ -205,6 +205,16 @@ namespace myapp {
 
 	void ProceduralCity::UpdateTimeline(float LocalTime)
 	{
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
+		{
+			if (LocalTime >= 0.0f && LocalTime<31.0f)
+			{
 
+			}
+			else if (LocalTime >= 31.0f && LocalTime < 70.0f)
+			{
+
+			}
+		}
 	}
 }
