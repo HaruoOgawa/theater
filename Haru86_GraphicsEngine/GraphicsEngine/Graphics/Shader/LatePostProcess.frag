@@ -118,6 +118,9 @@ vec3 Vignette(vec3 col)
 	col = mix(col,vec3(0.0),d);
 	//col*=d*0.5*(1.0+_VignetteBrightness);
 	col*=d*0.5*(1.0+9.0*_VignetteBrightness);
+
+	col.rgb+=(_VignetteBrightness);
+
 	return col;
 }
 

@@ -238,7 +238,7 @@ namespace myapp {
 				float VignetteRadius = glm::clamp((LocalTime - 0.0f) / 5.0f, 0.0f, 1.0f);
 				float VignetteLateRadius = glm::clamp((LocalTime - 30.0f)/1.0f, 0.0f, 1.0f);
 				float VignetteBrightness = glm::clamp((LocalTime - 30.0f) / 1.0f, 0.0f, 1.0f);
-
+				
 				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 1);
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteRadius", VignetteRadius);
