@@ -133,36 +133,6 @@ namespace myapp {
 			float time = GraphicsMain::GetInstance()->m_SecondsTime;
 			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
 		}
-
-		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			2.5f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			2.5f,
-			2.5f*glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
-
-		// デバッグ用カメラ
-		float radius = 2.0f;
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			radius * glm::cos(-3.14f/2.0),
-			//radius * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			//2.0f,
-			//0.5f,
-			1.0f,
-			radius * glm::sin(-3.14f / 2.0)
-			//radius * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
-		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		// デバッグ用ライト移動
-		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			10.0f * glm::cos(-3.14f / 2.0),
-			//10.0f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			10.0f,
-			10.0f * glm::sin(-3.14f / 2.0)
-			//10.0f * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
 	}
 
 	void ProceduralCity::Draw(bool IsRaymarching) {
@@ -233,6 +203,26 @@ namespace myapp {
 		{
 			if (LocalTime >= 0.0f && LocalTime<31.0f)
 			{
+				// カメラワーク
+				float CameraTimeModeRate = 10.0f, NumOfCamera = 3.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.0f, 10.0f, 10.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+
 				//
 				//float VignetteRadius = glm::sin(LocalTime);
 				float VignetteRadius = glm::clamp((LocalTime - 0.0f) / 5.0f, 0.0f, 1.0f);
@@ -250,11 +240,46 @@ namespace myapp {
 			}
 			else if (LocalTime >= 31.0f && LocalTime < 70.0f)
 			{
+				// カメラワーク
+				float CameraTimeModeRate = 5.0f, NumOfCamera = 5.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime), 10.0f, 20.0f * glm::sin(LocalTime));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 2.5f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 10.0f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+
 				PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
 				};
 				m_IsDrawCloud = true;
 			}
+		}
+		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
+		{
+			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 		}
 	}
 }
