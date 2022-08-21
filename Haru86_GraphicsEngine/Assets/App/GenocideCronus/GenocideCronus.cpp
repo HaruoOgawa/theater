@@ -7,13 +7,10 @@
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
-
 #include "Assets/App/GenocideCronus/Script/ProceduralCity/ProceduralCity.h"
 #include "Assets/App/GenocideCronus/Script/SacredLake/SacredLake.h"
 #include "Assets/App/GenocideCronus/Script/Forest/Forest.h"
 #include "Assets/App/GenocideCronus/Script/Mountain/Mountain.h"
-
-#include "Assets/App/GenocideCronus/Script/SSR_Test/SSR_Test.h"
 #include "GraphicsEngine/Sound/SoundPlayer.h"
 
 GenocideCronus::GenocideCronus():
@@ -24,8 +21,7 @@ GenocideCronus::GenocideCronus():
 	m_ProceduralCity(nullptr),
 	m_SacredLake(nullptr),
 	m_Forest(nullptr),
-	m_Mountain(nullptr),
-	m_SSR_Test(nullptr)
+	m_Mountain(nullptr)
 {
 }
 
@@ -54,14 +50,14 @@ void GenocideCronus::Update() {
 	
 	// 
 #ifdef _DEBUG
-	float DebugTimeOffset = 177.0f;// シーンを飛ばすためのオフセット
+	float DebugTimeOffset = 0.0f;// シーンを飛ばすためのオフセット
 	LocalTime += DebugTimeOffset;
-	//Console::Log("LocalTime: %f\n", LocalTime);
-	if(!IsDebugSoundSkipped)
+	Console::Log("LocalTime: %f\n", LocalTime);
+	/*if(!IsDebugSoundSkipped)
 	{
 		GraphicsMain::GetInstance()->m_SoundPlayer->Skip(DebugTimeOffset);
 		IsDebugSoundSkipped = true;
-	}
+	}*/
 #endif // _DEBUG
 
 
@@ -71,35 +67,38 @@ void GenocideCronus::Update() {
 	}
 	else if (LocalTime >= 70.0f && LocalTime < 85.0f) // シーン2(City&Forest)
 	{
-		m_SceneIndex = 0;
+		m_SceneIndex = 1;
 	}
 	else if (LocalTime >= 85.0f && LocalTime < 116.0f) // シーン3(Forest)
 	{
-		m_SceneIndex = 1;
+		m_SceneIndex = 2;
 	}
 	else if (LocalTime >= 116.0f && LocalTime < 150.0f) //  シーン4(Mountain)
 	{
-		m_SceneIndex = 2;
+		m_SceneIndex = 3;
 	}
 	else if (LocalTime >= 150.0f && LocalTime < 161.0f) // シーン5(Lake)
 	{
-		m_SceneIndex = 3;
-	}else if (LocalTime >= 161.0f && LocalTime < 177.0f) // シーン6(巻き戻し)
+		m_SceneIndex = 4;
+	}
+	else if (LocalTime >= 161.0f && LocalTime < 177.0f) // シーン6(巻き戻し)
 	{
-		m_SceneIndex = 1;
-	}else if (LocalTime >= 177.0f && LocalTime < 264.0f) // シーン7(End of City)
+		m_SceneIndex = 5;
+	}
+	else if (LocalTime >= 177.0f && LocalTime < 264.0f) // シーン7(End of City)
 	{
-		m_SceneIndex = 0;
+		m_SceneIndex = 6;
 	}
 	else if(LocalTime >= 264.0f)// デモ終了
 	{
+		m_SceneIndex = 7;
 		GraphicsMain::GetInstance()->isRunning = false;
 	}
 
 	//m_SceneIndex = 3;
 
 	// シーン制御
-	if (m_SceneIndex == 0) // City
+	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6) // City
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -114,7 +113,7 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_ProceduralCity->Update();
 	}
-	else if (m_SceneIndex == 1)
+	else if (m_SceneIndex == 2)
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -136,7 +135,7 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_Forest->Update();
 	}
-	else if (m_SceneIndex == 2) // Mountain
+	else if (m_SceneIndex == 3) // Mountain
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -150,7 +149,7 @@ void GenocideCronus::Update() {
 		// 更新処理
 
 	}
-	else if (m_SceneIndex == 3) // Lake
+	else if (m_SceneIndex == 4) // Lake
 	{
 		// 描画設定
 		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
@@ -172,10 +171,10 @@ void GenocideCronus::Update() {
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
-	if (m_SceneIndex == 0)m_ProceduralCity->Draw(IsRaymarching);
-	if (m_SceneIndex == 1)m_Forest->Draw(IsRaymarching);
-	if (m_SceneIndex == 2)m_Mountain->Draw(IsRaymarching);
-	if (m_SceneIndex == 3)m_SacredLake->Draw(IsRaymarching);
+	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching);
+	if (m_SceneIndex == 2)m_Forest->Draw(IsRaymarching);
+	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
+	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
 }
 
 void GenocideCronus::Timeline(CTimeline* timeline) 

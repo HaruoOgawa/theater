@@ -140,7 +140,7 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 		sWindowHeight,
 		"Haru86_GraphicsEngine",
 		NULL,
-		//glfwGetPrimaryMonitor(),
+		//glfwGetPrimaryMonitor(), // 一つ目のNULLをこれと置き換えればフルスクリーンになる
 		NULL
 	);
 
@@ -477,7 +477,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	// ミックス
 	m_Mixer->Draw(true);
 
-
 	//ミキシングしたフレームバッファのポストプロセス////////////////////////////////////////
 	PostProcess::GetInstance()->DrawLatePostProcess(p_r_BlendingTexture, m_LatePostProcess_FrameBuffer);
 
@@ -496,7 +495,9 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	for (auto obj : mgame->boardGameObjectList) {
-		obj->meshComp->Draw();
-	}
+	GraphicsMain::GetInstance()->m_MainBoardRenderer->Draw(GL_TRIANGLES, false, 0, [this]() {
+		m_LatePostProcess_FrameTexture->SetActive(GL_TEXTURE0);
+		GraphicsMain::GetInstance()->m_MainBoardRenderer->m_material->SetTexUniform("frameTex", 0);
+	});
+	m_LatePostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 }

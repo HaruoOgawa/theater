@@ -419,7 +419,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity\ProceduralCity.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake\SacredLake.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
-    <ClInclude Include="Assets\App\GenocideCronus\Script\SSR_Test\SSR_Test.h" />
     <ClInclude Include="GraphicsEngine\Sound\SoundPlayer.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Leaf.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Stem.h" />
@@ -453,7 +452,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity\ProceduralCity.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\SacredLake\SacredLake.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
-    <ClCompile Include="Assets\App\GenocideCronus\Script\SSR_Test\SSR_Test.cpp" />
     <ClCompile Include="GraphicsEngine\Sound\SoundPlayer.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Leaf.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Stem.cpp" />

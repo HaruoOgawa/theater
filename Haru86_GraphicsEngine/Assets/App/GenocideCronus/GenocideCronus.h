@@ -10,7 +10,6 @@ namespace myapp {
     class SacredLake;
     class Forest;
     class Mountain;
-    class SSR_Test;
 }
 
 class GenocideCronus
@@ -28,9 +27,6 @@ class GenocideCronus
     std::shared_ptr<myapp::SacredLake> m_SacredLake;
     std::shared_ptr<myapp::Forest> m_Forest;
     std::shared_ptr<myapp::Mountain> m_Mountain;
-
-    std::shared_ptr<myapp::SSR_Test> m_SSR_Test;
-
 public:
     GenocideCronus();
     ~GenocideCronus() = default;

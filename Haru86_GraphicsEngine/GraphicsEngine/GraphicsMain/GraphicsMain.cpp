@@ -9,6 +9,7 @@
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Sound/SoundPlayer.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -54,7 +55,6 @@ GraphicsMain::~GraphicsMain() {
 
 	gameObjectList.clear();
 	raymarchingObjectList.clear();
-	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
 	m_ReflectionProbeList.clear();
@@ -81,16 +81,13 @@ void GraphicsMain::LoadData() {
 	//
 	m_App->Start();
 
-	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
-	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(
-			std::make_shared<TransformComponent>(),
-			PrimitiveType::BOARD, 
-			RenderType::FrameBuffer,
-			RenderQueue::UI,
-			RenderingSurfaceType::RASTERIZER,
-			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
-	}
+	m_MainBoardRenderer = std::make_shared<MeshRendererComponent>(
+		std::make_shared<TransformComponent>(),
+		PrimitiveType::BOARD,
+		RenderingSurfaceType::RASTERIZER,
+		shaderlib::ShaderLib::StandardRenderBoard_vert,
+		shaderlib::ShaderLib::StandardRenderBoard_frag
+	);
 
 	//
 	m_App->Timeline(m_timeline.get());
@@ -162,7 +159,6 @@ void GraphicsMain::Update() {
 	if (m_App) {
 		m_App->Update();
 	}
-
 }
 
 // ここのDrawではカメラ位置を変える

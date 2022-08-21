@@ -106,10 +106,6 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 		m_material->SetVec3Uniform("_WorldCameraCenter", GraphicsMain::GetInstance()->m_UsingCamera->m_center);
 	}
 
-	// framebuffer
-	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetActive(GL_TEXTURE0);
-	m_material->SetTexUniform("frameTex", 0);
-	
 	for (auto clip : animationClips) {
 		clip->callback(clip->lifeTimeRate);
 	}
@@ -129,7 +125,4 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 	{
 		m_mesh->Draw(DrawVertexWay);
 	}
-
-	//
-	GraphicsRenderer::GetInstance()->m_LatePostProcess_FrameTexture->SetEnactive(GL_TEXTURE0);
 }
