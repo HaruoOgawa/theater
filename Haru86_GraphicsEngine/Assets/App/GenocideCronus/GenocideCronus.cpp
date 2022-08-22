@@ -134,11 +134,9 @@ void GenocideCronus::Update() {
 
 		// ライトポジション
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			//10.0f * glm::cos(-3.14f / 2.0),
-			10.0f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			10.0f,
-			//10.0f * glm::sin(-3.14f / 2.0)
-			10.0f * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
+			0.0f,
+			5.0f,
+			0.0f
 		);
 
 		// 更新処理
