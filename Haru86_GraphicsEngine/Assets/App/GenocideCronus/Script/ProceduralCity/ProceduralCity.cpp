@@ -10,7 +10,7 @@
 #include "BillMeshGenerator.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
-
+#include "GraphicsEngine/Math/mymath_withGLM.h"
 namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_BillRP(std::make_shared<ReflectionProbe>(glm::vec3(0.0f, 2.5f, 0.0f), 0.001f)),
@@ -22,7 +22,9 @@ namespace myapp {
 		m_CylinderBill(nullptr),
 		m_XSideWarkVec(glm::vec3(0.0f)),
 		m_IsDrawMandel(false),
-		m_IsDrawCloud(false)
+		m_IsDrawCloud(false),
+		NumOfProBill(1024),
+		NumOfCyBill(256)
 	{
 		Start();
 	}
@@ -154,7 +156,7 @@ namespace myapp {
 			// ビル
 			if (m_BillRP)
 			{
-				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [this]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
@@ -169,7 +171,7 @@ namespace myapp {
 			// 円柱ビル
 			if (m_CylinderBill && m_BillRP)
 			{
-				m_CylinderBill->Draw(GL_TRIANGLES, true, 256, [this]() {
+				m_CylinderBill->Draw(GL_TRIANGLES, true, NumOfCyBill, [this]() {
 					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
@@ -280,6 +282,14 @@ namespace myapp {
 		{
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
 			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+			
+			// 二乗しか動かない？
+			//Console::Log("static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime)*0.1f) * 0.5f + 0.5f)): %d\n", static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime) * 0.1f) * 0.5f + 0.5f)));
+			//NumOfProBill -= static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime)*0.1f) * 0.5f + 0.5f));
+			//NumOfProBill = (static_cast<int>(glm::floor(LocalTime))%2==0)?1024:400;
+			// 2の乗であれば問題なく動的インスタンシング数の変動も動作する
+			// 2の10乗(1024)の乗数をForesyのTreeをmixで少しずつ数を変化させて、直線的Forestのシーンに遷移する
+			NumOfProBill = static_cast<int>(glm::pow(2.0f, mymath::rand(glm::vec2(LocalTime)) * 9.0f + 1.0f));
 		}
 	}
 }

@@ -132,6 +132,15 @@ void GenocideCronus::Update() {
 
 		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
 
+		// ライトポジション
+		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
+			//10.0f * glm::cos(-3.14f / 2.0),
+			10.0f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
+			10.0f,
+			//10.0f * glm::sin(-3.14f / 2.0)
+			10.0f * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
+		);
+
 		// 更新処理
 		m_Forest->Update();
 	}
@@ -174,7 +183,7 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
-	m_LocalTimeOffset = 60.0f;// シーンを飛ばすためのオフセット
+	m_LocalTimeOffset = 82.0f;// シーンを飛ばすためのオフセット
 	m_LocalTime += m_LocalTimeOffset;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 

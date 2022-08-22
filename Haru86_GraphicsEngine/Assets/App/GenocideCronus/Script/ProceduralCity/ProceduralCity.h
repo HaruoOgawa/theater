@@ -19,6 +19,10 @@ namespace myapp {
 		std::shared_ptr<MeshRendererComponent> m_CylinderBill;
 
 		//
+		int NumOfProBill;
+		int NumOfCyBill;
+
+		//
 		std::shared_ptr<MeshRendererComponent> m_Mandelbox;
 		std::shared_ptr<MeshRendererComponent> m_CityCloud;
 

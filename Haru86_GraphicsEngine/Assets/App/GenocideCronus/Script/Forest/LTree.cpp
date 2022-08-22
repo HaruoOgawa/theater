@@ -389,7 +389,7 @@ namespace myapp {
 		m_TreeMaterial->SetMatrixUniform("PMatrix", m_TreeTRS->m_pMatrix);
 		
 		m_TreeMaterial->SetFloatUniform("_TreeMaxRadius", 0.05f);
-		m_TreeMaterial->SetIntUniform("_TreeSegment", 12);
+		m_TreeMaterial->SetIntUniform("_TreeSegment", 3);
 
 		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
 		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
@@ -399,6 +399,7 @@ namespace myapp {
 		m_TreeMaterial->SetVec4Uniform("_EnvColor", glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 
 		//m_TreeMesh->Draw(GL_LINES);
-		m_TreeMesh->DrawInstancedWithMesh(128, GL_LINES);
+		//m_TreeMesh->DrawInstancedWithMesh(128, GL_LINES);
+		m_TreeMesh->DrawInstancedWithMesh(512, GL_LINES);
 	}
 }
