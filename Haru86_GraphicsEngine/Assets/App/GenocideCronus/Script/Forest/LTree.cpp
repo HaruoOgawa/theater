@@ -1,9 +1,6 @@
 #include "LTree.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/Mesh.h"
-#include "GraphicsEngine/Graphics/Material.h"
-#include "GraphicsEngine/Component/TransformComponent.h"
-#include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
 #include <glm/gtc/random.hpp>
 
@@ -18,32 +15,19 @@ namespace myapp {
 	{
 	}
 
-	LTree::LTree():
-		m_TreeMesh(nullptr),
-		m_TreeMaterial(nullptr),
-		m_TreeTRS(std::make_shared<TransformComponent>()),
-		m_LStep(-1),
-		m_StartStructure(""),
-		m_LStructure(""),
-		m_LRootNode(nullptr)
+	void LTree::Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices)
 	{
 		//
-		m_TreeTRS->m_scale = glm::vec3(1.0f);
+		m_LStep = -1;
+		m_StartStructure = "";
+		m_LStructure = "";
+		m_LRootNode = nullptr;
 
-		//
-		Start();
-	}
-
-	void LTree::Start()
-	{
 		// L-System
 		PrepareLSystem();
 		GenerateLStructure();
 		AnalyseLStructure();
-		RunLSystem();
-		
-		// オブジェクト(Mesh(RunLSystemで作る)/Mat/TRS/CS)など
-		CreateBaseData();
+		RunLSystem(VertexData, Dimention, Indices);
 	}
 
 	void LTree::PrepareLSystem() 
@@ -315,7 +299,7 @@ namespace myapp {
 		m_LastParentIndices = LTree_Indices[LTree_Indices.size() - 1];
 	}
 
-	void LTree::RunLSystem()
+	void LTree::RunLSystem(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices)
 	{
 		// LStructureから頂点データを作成
 		std::vector<glm::vec3> LTree_Vertices;
@@ -338,68 +322,19 @@ namespace myapp {
 		m_LRootNode->BuildLNode(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, LTreeRadius, LTreeLength);
 
 		// メッシュオブジェクトを構築
-		BuildLTreeMesh(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices);
+		BuildLTreeMesh(LTree_Vertices, LTree_Normals, LTreeRadiusList, LTree_Indices, VertexData, Dimention, Indices);
 	}
 
 	void LTree::BuildLTreeMesh(std::vector<glm::vec3>& LTree_Vertices, std::vector<glm::vec3>& LTree_Normals,
-		const std::vector<float>& LTree_Radius, std::vector<unsigned short>& LTree_Indices)
+		const std::vector<float>& LTree_Radius, std::vector<unsigned short>& LTree_Indices,
+		std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices)
 	{
-		// メッシュオブジェクトの構築
-		std::vector<std::vector<float>> VertexData;
-		std::vector<int> Dimentions;
-		std::vector<unsigned short> Indices;
-
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Vertices));
 		VertexData.push_back(mymath::CastVec3ToLine_float(LTree_Normals));
 		VertexData.push_back(LTree_Radius);
-		Dimentions.push_back(3);
-		Dimentions.push_back(3);
-		Dimentions.push_back(1);
+		Dimention.push_back(3);
+		Dimention.push_back(3);
+		Dimention.push_back(1);
 		Indices = LTree_Indices;
-
-		m_TreeMesh = std::make_shared<Mesh>(VertexData,Dimentions,Indices);
-	}
-
-	void LTree::CreateBaseData()
-	{
-		// マテリアル
-		std::string LTree_vert = {
-			#include "../../Shader/Forest/LTree.vert"
-		};
-		
-		std::string LTree_geom = {
-			#include "../../Shader/Forest/LTree.geom"
-		};
-
-		m_TreeMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER,LTree_vert,shaderlib::ShaderLib::Standard_frag,LTree_geom);
-	}
-
-	void LTree::Update()
-	{
-
-	}
-
-	void LTree::Draw() 
-	{
-		m_TreeMaterial->SetActive();
-		m_TreeTRS->CalMatrix();
-		m_TreeMaterial->SetMatrixUniform("MVPMatrix", m_TreeTRS->m_pMatrix * m_TreeTRS->m_vMatrix * m_TreeTRS->m_mMatrix);
-		m_TreeMaterial->SetMatrixUniform("MMatrix", m_TreeTRS->m_mMatrix);
-		m_TreeMaterial->SetMatrixUniform("VMatrix", m_TreeTRS->m_vMatrix);
-		m_TreeMaterial->SetMatrixUniform("PMatrix", m_TreeTRS->m_pMatrix);
-		
-		m_TreeMaterial->SetFloatUniform("_TreeMaxRadius", 0.05f);
-		m_TreeMaterial->SetIntUniform("_TreeSegment", 3);
-
-		m_TreeMaterial->SetIntUniform("_UseLighting", 1);
-		m_TreeMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0));
-		m_TreeMaterial->SetIntUniform("_UseColor", 1);
-		m_TreeMaterial->SetVec4Uniform("_Color", glm::vec4(164.0f/255.0f, 124.0f / 255.0f, 92.0f / 255.0f, 1.0f));
-		m_TreeMaterial->SetIntUniform("_UseEnvColor", 1);
-		m_TreeMaterial->SetVec4Uniform("_EnvColor", glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
-
-		//m_TreeMesh->Draw(GL_LINES);
-		//m_TreeMesh->DrawInstancedWithMesh(128, GL_LINES);
-		m_TreeMesh->DrawInstancedWithMesh(512, GL_LINES);
 	}
 }

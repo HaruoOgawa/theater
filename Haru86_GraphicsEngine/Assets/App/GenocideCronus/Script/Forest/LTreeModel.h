@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
 
+class MeshRendererComponent;
+
 namespace myapp {
-	class LTree;
-	
 	class LTreeModel
 	{
-		std::shared_ptr<LTree> m_LTree;
+		std::shared_ptr<MeshRendererComponent> m_TreeRenderer;
 	public:
 		LTreeModel();
 		virtual ~LTreeModel() = default;
