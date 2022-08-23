@@ -34,7 +34,7 @@ namespace myapp {
 		virtual ~ProceduralCity()=default;
 		void Start();
 		void Update();
-		void Draw(bool IsRaymarching);
+		void Draw(bool IsRaymarching, int LinearInstanceRate);
 		void UpdateTimeline(float LocalTime);
 	};
 }

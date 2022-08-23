@@ -181,7 +181,7 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
-	m_LocalTimeOffset = 83.0f;// シーンを飛ばすためのオフセット
+	m_LocalTimeOffset = 70.0f;// シーンを飛ばすためのオフセット
 	m_LocalTime += m_LocalTimeOffset;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 
@@ -193,8 +193,16 @@ void GenocideCronus::UpdateTimeline()
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
-	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching);
-	if (m_SceneIndex == 2)m_Forest->Draw(IsRaymarching);
+	//
+	int LinearInstanceRate = 0;
+	if (m_LocalTime >= 70.0f && m_LocalTime < 85.0f) // シーン2(City&Forest)
+	{
+		LinearInstanceRate = static_cast<int>(glm::clamp((m_LocalTime - 70.0f) / 10.0f, 0.0f, 1.0f) * 10.0f);
+	}
+
+	//
+	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching, LinearInstanceRate);
+	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, LinearInstanceRate);
 	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
 	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
 }

@@ -137,7 +137,19 @@ namespace myapp {
 		}
 	}
 
-	void ProceduralCity::Draw(bool IsRaymarching) {
+	void ProceduralCity::Draw(bool IsRaymarching, int LinearInstanceRate) {
+		//
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
+		{
+			NumOfProBill = static_cast<int>(glm::pow(2.0f, 10-LinearInstanceRate));
+			NumOfCyBill = static_cast<int>(glm::pow(2.0f, 8 - (glm::max(0, LinearInstanceRate - 2)) ));
+		}
+		else
+		{
+			NumOfProBill = 1024;
+			NumOfCyBill = 256;
+		}
+		//
 		if (IsRaymarching)
 		{
 			if (m_IsDrawCloud)
@@ -154,7 +166,7 @@ namespace myapp {
 		else
 		{
 			// ビル
-			if (m_BillRP)
+			if (m_BillRP && NumOfProBill != 1)
 			{
 				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [this]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
@@ -169,7 +181,7 @@ namespace myapp {
 			}
 			
 			// 円柱ビル
-			if (m_CylinderBill && m_BillRP)
+			if (m_CylinderBill && m_BillRP && NumOfCyBill != 1)
 			{
 				m_CylinderBill->Draw(GL_TRIANGLES, true, NumOfCyBill, [this]() {
 					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
@@ -282,14 +294,6 @@ namespace myapp {
 		{
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
 			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
-			
-			// 二乗しか動かない？
-			//Console::Log("static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime)*0.1f) * 0.5f + 0.5f)): %d\n", static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime) * 0.1f) * 0.5f + 0.5f)));
-			//NumOfProBill -= static_cast<int>(512.0f * (glm::sin(glm::floor(LocalTime)*0.1f) * 0.5f + 0.5f));
-			//NumOfProBill = (static_cast<int>(glm::floor(LocalTime))%2==0)?1024:400;
-			// 2の乗であれば問題なく動的インスタンシング数の変動も動作する
-			// 2の10乗(1024)の乗数をForesyのTreeをmixで少しずつ数を変化させて、直線的Forestのシーンに遷移する
-			NumOfProBill = static_cast<int>(glm::pow(2.0f, mymath::rand(glm::vec2(LocalTime)) * 9.0f + 1.0f));
 		}
 	}
 }

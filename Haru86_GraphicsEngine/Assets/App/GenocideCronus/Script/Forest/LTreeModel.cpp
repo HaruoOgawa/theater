@@ -7,7 +7,6 @@
 namespace myapp {
 	LTreeModel::LTreeModel() :
 		m_TreeRenderer(nullptr),
-		numOfTree(1024),
 		IsStreetLineTree(false)
 	{
 		Start();
@@ -42,7 +41,7 @@ namespace myapp {
 	{
 	}
 
-	void LTreeModel::Draw()
+	void LTreeModel::Draw(int numOfTree)
 	{
 		m_TreeRenderer->Draw(GL_LINES, true, numOfTree, [this]() {
 			m_TreeRenderer->m_material->SetFloatUniform("_TreeMaxRadius", 0.05f);

@@ -22,7 +22,7 @@ namespace myapp
 		~Forest() = default;
 		void Start();
 		void Update();
-		void Draw(bool IsRaymarching);
+		void Draw(bool IsRaymarching,int SceneIndex, int LinearInstanceRate);
 		void UpdateTimeline(float LocalTime);
 	};
 }

@@ -77,17 +77,32 @@ namespace myapp
 		m_LTreeModel->Update();
 	}
 
-	void Forest::Draw(bool IsRaymarching) {
-		if (IsRaymarching)
+	void Forest::Draw(bool IsRaymarching, int SceneIndex, int LinearInstanceRate) {
+		if (SceneIndex == 1)
 		{
-			//m_AroundMountain->Draw();
-			m_EnergyBall->Draw();
+			m_LTreeModel->SetIsStreetLineTree(true);
+			if (!IsRaymarching)
+			{
+				m_LTreeModel->m_TreeRenderer->m_transform->m_scale = glm::vec3(0.05f);
+				int numOfTree = static_cast<int>(glm::pow(2.0f, LinearInstanceRate));
+				m_LTreeModel->Draw(numOfTree);
+			}
 		}
-		else
+		else if(SceneIndex == 2)
 		{
-			m_Ground->Draw();
-			m_FlowerModel->Draw();
-			m_LTreeModel->Draw();
+			m_LTreeModel->SetIsStreetLineTree(false);
+			if (IsRaymarching)
+			{
+				//m_AroundMountain->Draw();
+				m_EnergyBall->Draw();
+			}
+			else
+			{
+				m_LTreeModel->m_TreeRenderer->m_transform->m_scale = glm::vec3(1.0f);
+				m_Ground->Draw();
+				m_FlowerModel->Draw();
+				m_LTreeModel->Draw();
+			}
 		}
 	}
 

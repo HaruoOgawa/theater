@@ -50,7 +50,7 @@ void main()
 	
 	if(_IsStreetLine == 1) // ’¼üó‚É•À‚×‚é
 	{
-		float randPosRadius=75.0;
+		float randPosRadius=400.0;
 		randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
 		randPos.y=1.5;
 
