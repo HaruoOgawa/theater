@@ -6,7 +6,9 @@
 
 namespace myapp {
 	LTreeModel::LTreeModel() :
-		m_TreeRenderer(nullptr)
+		m_TreeRenderer(nullptr),
+		numOfTree(1024),
+		IsStreetLineTree(false)
 	{
 		Start();
 	}
@@ -42,9 +44,15 @@ namespace myapp {
 
 	void LTreeModel::Draw()
 	{
-		m_TreeRenderer->Draw(GL_LINES, true, 512, [this]() {
+		m_TreeRenderer->Draw(GL_LINES, true, numOfTree, [this]() {
 			m_TreeRenderer->m_material->SetFloatUniform("_TreeMaxRadius", 0.05f);
 			m_TreeRenderer->m_material->SetIntUniform("_TreeSegment", 3);
+
+			m_TreeRenderer->m_material->SetIntUniform("_IsStreetLine", (IsStreetLineTree) ? 1 : 0 );
+			m_TreeRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
+			m_TreeRenderer->m_material->SetVec3Uniform("XSideWarkVec", glm::vec3(0.0f)); // ‚Ð‚Æ‚Ü‚¸“K“–‚È’l‚ð“n‚µ‚Ä‚¨‚­
+			m_TreeRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
+			m_TreeRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 		});
 	}
 }

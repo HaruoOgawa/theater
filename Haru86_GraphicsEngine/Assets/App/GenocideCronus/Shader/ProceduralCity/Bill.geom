@@ -73,10 +73,6 @@ void main()
 {
 	// ランダムポジション
 	float id = t2g_id[0];
-	float domainSize=32.0;
-	vec2 domainID=vec2(0.0);
-	domainID.y=floor(id/domainSize);
-	domainID.x=id-domainID.y*domainSize;
 	
 	vec3 randPos=vec3(0.0);
 	float randPosRadius=75.0;

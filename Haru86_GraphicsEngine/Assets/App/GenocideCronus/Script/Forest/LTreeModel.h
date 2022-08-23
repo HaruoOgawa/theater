@@ -7,6 +7,8 @@ namespace myapp {
 	class LTreeModel
 	{
 		std::shared_ptr<MeshRendererComponent> m_TreeRenderer;
+		int numOfTree;
+		bool IsStreetLineTree;
 	public:
 		LTreeModel();
 		virtual ~LTreeModel() = default;
