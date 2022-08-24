@@ -181,7 +181,7 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
-	m_LocalTimeOffset = 70.0f;// シーンを飛ばすためのオフセット
+	m_LocalTimeOffset = 69.0f;// シーンを飛ばすためのオフセット
 	m_LocalTime += m_LocalTimeOffset;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 

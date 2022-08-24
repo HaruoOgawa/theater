@@ -198,7 +198,7 @@ namespace myapp {
 			// ストリート
 			if (m_Street)
 			{
-				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
+				m_Street->Draw(GL_POINTS, true, 1024, [&]() {
 					m_Street->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0),2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
@@ -206,6 +206,8 @@ namespace myapp {
 					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.5f);
 					m_Street->m_material->SetFloatUniform("_pointNum", 1024.0f);
 					m_Street->m_material->SetFloatUniform("_Segment", 32.0f);
+
+					m_Street->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 				});
 			}
 		}
