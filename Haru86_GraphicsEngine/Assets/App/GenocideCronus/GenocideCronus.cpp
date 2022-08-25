@@ -16,18 +16,19 @@
 GenocideCronus::GenocideCronus():
 	m_CameraTransform(nullptr),
 	m_GridPlane(nullptr),
-	IsDebugSoundSkipped(false),
 	m_SceneIndex(0),
 	m_ProceduralCity(nullptr),
 	m_SacredLake(nullptr),
 	m_Forest(nullptr),
 	m_Mountain(nullptr),
-	m_LocalTime(0.0f),
-	m_LocalTimeOffset(0.0f)
+	m_LocalTime(0.0f)
 {
 }
 
 void GenocideCronus::Start() {
+	// 時間のオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 40.0f;// シーンを飛ばすためのオフセット
+
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
 	GraphicsMain::GetInstance()->m_MainCamera=m_CameraTransform;
@@ -47,17 +48,7 @@ void GenocideCronus::Start() {
 }
 
 void GenocideCronus::Update() {
-	
-	// 
-#ifdef _DEBUG
-	if(!IsDebugSoundSkipped && m_LocalTimeOffset>0.0f)
-	{
-		GraphicsMain::GetInstance()->m_SoundPlayer->Skip(m_LocalTimeOffset);
-		IsDebugSoundSkipped = true;
-	}
-#endif // _DEBUG
-
-
+	//
 	if (m_LocalTime >= 0.0f && m_LocalTime < 70.0f) // シーン1(City)
 	{
 		m_SceneIndex = 0;
@@ -181,8 +172,6 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
-	m_LocalTimeOffset = 69.0f;// シーンを飛ばすためのオフセット
-	m_LocalTime += m_LocalTimeOffset;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 
 	// タイムラインを更新

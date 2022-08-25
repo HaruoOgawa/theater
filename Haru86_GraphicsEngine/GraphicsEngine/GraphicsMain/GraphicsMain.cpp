@@ -35,6 +35,7 @@ GraphicsMain::GraphicsMain()
 	: 
 	isRunning(true),
 	m_SecondsTime(0.0f),
+	m_SecondsTimeOffset(0.0f),
 	m_MilliSecondsTime(0.0f),
 	m_DeltaTime(0.0f),
 	previousTime(0.0f),
@@ -105,7 +106,14 @@ void GraphicsMain::LoadData() {
 
 	//
 	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
-	m_SoundPlayer->Play();
+	if (m_SecondsTimeOffset != 0.0f && m_SecondsTimeOffset > 0.0f)
+	{
+		m_SoundPlayer->Skip(m_SecondsTimeOffset);
+	}
+	else
+	{
+		m_SoundPlayer->Play();
+	}
 }
 
 bool GraphicsMain::RunLoop() {
@@ -148,10 +156,7 @@ void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void GraphicsMain::Update() {
-	//Console::Log("clock(): %f\n", static_cast<float>(clock()*0.001f));
-
-	//while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
-	m_MilliSecondsTime = static_cast<float>(clock());
+	m_MilliSecondsTime = static_cast<float>(clock()) + m_SecondsTimeOffset*1000.0f;
 	m_SecondsTime = m_MilliSecondsTime * 0.001f;
 	m_DeltaTime = (m_MilliSecondsTime - previousTime) / 1000.0f;
 	if (m_DeltaTime > 0.05f) {

@@ -59,6 +59,7 @@ namespace myapp {
 					#include "../../Shader/ProceduralCity/Bill.tese"
 				)
 			);
+
 		}
 		
 		// ‰~’Œƒrƒ‹
@@ -139,8 +140,12 @@ namespace myapp {
 
 	void ProceduralCity::Draw(bool IsRaymarching, int LinearInstanceRate) {
 		//
+		bool UseFade = false;
+
+		//
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
+			UseFade = true;
 			NumOfProBill = static_cast<int>(glm::pow(2.0f, 10-LinearInstanceRate));
 			NumOfCyBill = static_cast<int>(glm::pow(2.0f, 8 - (glm::max(0, LinearInstanceRate - 2)) ));
 		}
@@ -168,11 +173,13 @@ namespace myapp {
 			// ƒrƒ‹
 			if (m_BillRP && NumOfProBill != 1)
 			{
-				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [this]() {
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [=]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade)? 1 : 0);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -183,11 +190,14 @@ namespace myapp {
 			// ‰~’Œƒrƒ‹
 			if (m_CylinderBill && m_BillRP && NumOfCyBill != 1)
 			{
-				m_CylinderBill->Draw(GL_TRIANGLES, true, NumOfCyBill, [this]() {
+				m_CylinderBill->Draw(GL_TRIANGLES, true, NumOfCyBill, [=]() {
 					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+					m_CylinderBill->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
+					m_CylinderBill->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_CylinderBill->m_material->SetIntUniform("_IDOffset", 1024 + 1);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -294,6 +304,11 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+			};
+			m_IsDrawCloud = true;
+
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
 			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 		}

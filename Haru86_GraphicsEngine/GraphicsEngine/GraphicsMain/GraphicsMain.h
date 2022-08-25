@@ -47,6 +47,7 @@ public:
 
 	float m_SecondsTime;
 	float m_MilliSecondsTime;
+	float m_SecondsTimeOffset;
 	float m_DeltaTime;
 	std::unique_ptr<CTimeline> m_timeline;
 	float animTime;

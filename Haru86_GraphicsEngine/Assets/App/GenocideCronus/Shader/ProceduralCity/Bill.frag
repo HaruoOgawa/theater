@@ -15,8 +15,11 @@ uniform vec3 _LightDir;
 uniform vec3 _LightPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
+uniform float _time;
 
 uniform samplerCube _BillRP;
+uniform int _UseFade;
+uniform int _LinearInstanceRate;
 
  float rand(vec2 st)
 {
@@ -85,6 +88,23 @@ void main(){
 	// fog
     //vec3 ramda = exp2(-0.05*dist*vec3(1.0));
     //col.rgb=mix(vec3(0.5),col.rgb,ramda);
+
+	// フェード
+	if(_UseFade == 1)
+	{
+		float nowRate = float(10 - _LinearInstanceRate);
+		float nextRate = max(0.0,float(10 - _LinearInstanceRate - 1));
+		float NowMaxBillNum = exp2(nowRate);
+		float NextMaxBillNum = exp2(nextRate);
+
+		if(g2f_id > NextMaxBillNum && g2f_id <= NowMaxBillNum)
+		{
+			float FadeStartTime = 70.0 + float(_LinearInstanceRate) -0.1; // 70スタートらしいのでひとまず直に書いている
+			float Alpha = 1.0 - clamp( _time-FadeStartTime ,0.0,1.0);
+			col.a = Alpha;
+
+		}
+	}
 
 	gl_FragColor=col;
 }

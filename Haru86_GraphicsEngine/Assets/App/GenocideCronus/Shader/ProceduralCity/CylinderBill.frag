@@ -15,8 +15,12 @@ uniform vec3 _LightDir;
 uniform vec3 _LightPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
+uniform float _time;
 
 uniform samplerCube _BillRP;
+uniform int _UseFade;
+uniform int _LinearInstanceRate;
+uniform int _IDOffset; // 立方体のビルと位置や変化が重ならないようにするためのオフセット
 
  float rand(vec2 st)
 {
@@ -81,7 +85,21 @@ void main(){
     //vec3 ramda = exp2(-0.05*dist*vec3(1.0));
     //col.rgb=mix(vec3(0.5),col.rgb,ramda);
 
-	//col.rgb=v2f_normal*0.5+0.5;
+	// フェード
+	if(_UseFade == 1)
+	{
+		float nowRate = float(8 - max(0,_LinearInstanceRate-2));
+		float nextRate = max(0.0,float(8 - max(0,_LinearInstanceRate-2) - 1));
+		float NowMaxBillNum = exp2(nowRate);
+		float NextMaxBillNum = exp2(nextRate);
+
+		if( (v2f_id-_IDOffset) > NextMaxBillNum && (v2f_id-_IDOffset) <= NowMaxBillNum)
+		{
+			float FadeStartTime = 70.0 + float(_LinearInstanceRate) -0.1; // 70スタートらしいのでひとまず直に書いている
+			float Alpha = 1.0 - clamp( _time-FadeStartTime ,0.0,1.0);
+			col.a = Alpha;
+		}
+	}
 
 	gl_FragColor=col;
 }
