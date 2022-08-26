@@ -29,11 +29,15 @@ namespace myapp {
 				std::string(
 					#include "../../Shader/Forest/LTree.vert"
 				),
-				shaderlib::ShaderLib::Standard_frag,
+				std::string(
+					#include "../../Shader/Forest/LTree.frag"
+				),
 				std::string(
 					#include "../../Shader/Forest/LTree.geom"
 				)
 			);
+
+			m_TreeRenderer->useAlphaTest = true;
 		}
 	}
 
@@ -41,9 +45,9 @@ namespace myapp {
 	{
 	}
 
-	void LTreeModel::Draw(int numOfTree)
+	void LTreeModel::Draw(int numOfTree, int LinearInstanceRate, bool UseFade)
 	{
-		m_TreeRenderer->Draw(GL_LINES, true, numOfTree, [this]() {
+		m_TreeRenderer->Draw(GL_LINES, true, numOfTree, [&]() {
 			m_TreeRenderer->m_material->SetFloatUniform("_TreeMaxRadius", 0.05f);
 			m_TreeRenderer->m_material->SetIntUniform("_TreeSegment", 3);
 
@@ -52,6 +56,8 @@ namespace myapp {
 			m_TreeRenderer->m_material->SetVec3Uniform("XSideWarkVec", glm::vec3(0.0f)); // ‚Ð‚Æ‚Ü‚¸“K“–‚È’l‚ð“n‚µ‚Ä‚¨‚­
 			m_TreeRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
 			m_TreeRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+			m_TreeRenderer->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
+			m_TreeRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 		});
 	}
 }

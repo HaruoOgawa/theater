@@ -13,7 +13,7 @@ namespace myapp {
 		virtual ~LTreeModel() = default;
 		void Start();
 		void Update();
-		void Draw(int numOfTree = 1024);
+		void Draw(int numOfTree = 1024, int LinearInstanceRate = 0, bool UseFade = false);
 
 		void SetIsStreetLineTree(bool IsLine) { IsStreetLineTree = IsLine; }
 

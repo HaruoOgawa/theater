@@ -5,11 +5,12 @@ R"(
 #define PI 3.14159265
 
 layout(lines) in;
-layout(triangle_strip,max_vertices =144) out;
+layout(triangle_strip,max_vertices =128) out;
 //layout(line_strip,256) out;
 
 in vec3 LocalNormal[];
 in float v2g_treeRadius[];
+flat in float v2g_id[];
 
 uniform mat4 MVPMatrix;
 uniform mat4 MMatrix;
@@ -23,7 +24,9 @@ uniform vec3 _CameraPos;
 uniform float _TreeMaxRadius;
 uniform int _TreeSegment;
 
+//out vec3 // WorldVertexPos;
 out vec3 WorldNormal;
+flat out float g2f_id;
 
 void main()
 {
@@ -47,72 +50,88 @@ void main()
 
 		// triangle0
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec0,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec0,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec0),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec1,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec1,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec1),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos1.xyz+offVec1,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec1,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec1),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		EndPrimitive();
 
 		// triangle1
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec0,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec0,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec0),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos1.xyz+offVec1,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec1,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec1),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos1.xyz+offVec0,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec0,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(offVec0),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		EndPrimitive();
 
 		// è„ÇÃäW
 		gl_Position = MVPMatrix * vec4(pos1.xyz,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos1.xyz+offVec1,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec1,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos1.xyz+offVec0,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec0,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		EndPrimitive();
 
 		// â∫ÇÃäW
 		gl_Position = MVPMatrix * vec4(pos0.xyz,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec1,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec1,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		gl_Position = MVPMatrix * vec4(pos0.xyz+offVec0,1.0);
+		// WorldVertexPos = (MMatrix * vec4(pos0.xyz+offVec0,1.0)).xyz;
 		WorldNormal = (MMatrix * vec4(normalize(tangent),0.0)).xyz;
+		g2f_id = v2g_id[0];
 		EmitVertex();
 
 		EndPrimitive();
 	}
-
-	/*gl_Position = MVPMatrix * gl_in[0].gl_Position;
-	EmitVertex;
-	
-	gl_Position = MVPMatrix * gl_in[1].gl_Position;
-	EmitVertex;
-
-	EndPrimitive();*/
 }
 
 )"

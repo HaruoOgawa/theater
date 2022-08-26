@@ -78,14 +78,20 @@ namespace myapp
 	}
 
 	void Forest::Draw(bool IsRaymarching, int SceneIndex, int LinearInstanceRate) {
+		//
+		bool UseFade = false;
+		
+		//
 		if (SceneIndex == 1)
 		{
 			m_LTreeModel->SetIsStreetLineTree(true);
 			if (!IsRaymarching)
 			{
+				UseFade = true;
+
 				m_LTreeModel->m_TreeRenderer->m_transform->m_scale = glm::vec3(0.05f);
 				int numOfTree = static_cast<int>(glm::pow(2.0f, LinearInstanceRate));
-				m_LTreeModel->Draw(numOfTree);
+				m_LTreeModel->Draw(numOfTree, LinearInstanceRate, UseFade);
 			}
 		}
 		else if(SceneIndex == 2)

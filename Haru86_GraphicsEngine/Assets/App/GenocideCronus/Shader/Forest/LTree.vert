@@ -8,6 +8,7 @@ layout(location=2)in float treeRadius; // 半径をだんだん細くするための頂点データ
 
 out vec3 LocalNormal;
 out float v2g_treeRadius;
+flat out float v2g_id;
 
 uniform int _IsStreetLine;
 uniform float _time;
@@ -96,6 +97,7 @@ void main()
 	gl_Position = pos;
 	LocalNormal = normal;
 	v2g_treeRadius = treeRadius;
+	v2g_id = id;
 }
 
 )"
