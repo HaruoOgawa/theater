@@ -27,7 +27,7 @@ GenocideCronus::GenocideCronus():
 
 void GenocideCronus::Start() {
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 69.0f;// シーンを飛ばすためのオフセット
+	//GraphicsMain::GetInstance()->m_SecondsTimeOffset = 45.0f;// シーンを飛ばすためのオフセット
 
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
@@ -187,11 +187,12 @@ void GenocideCronus::Draw(bool IsRaymarching) {
 	if (m_LocalTime >= 70.0f && m_LocalTime < 85.0f) // シーン2(City&Forest)
 	{
 		LinearInstanceRate = static_cast<int>(glm::clamp((m_LocalTime - 70.0f) / 10.0f, 0.0f, 1.0f) * 10.0f);
+		LinearInstanceRate = glm::min(5, LinearInstanceRate);
 	}
 
 	//
 	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching, LinearInstanceRate);
-	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, LinearInstanceRate);
+	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, glm::min(10, LinearInstanceRate + 4));
 	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
 	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
 }

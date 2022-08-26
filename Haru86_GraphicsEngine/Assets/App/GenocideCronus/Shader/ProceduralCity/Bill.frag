@@ -100,9 +100,11 @@ void main(){
 		if(g2f_id > NextMaxBillNum && g2f_id <= NowMaxBillNum)
 		{
 			float FadeStartTime = 70.0 + float(_LinearInstanceRate) -0.1; // 70スタートらしいのでひとまず直に書いている
-			float Alpha = 1.0 - clamp( _time-FadeStartTime ,0.0,1.0);
-			col.a = Alpha;
-
+			if(_LinearInstanceRate < 5)
+			{
+				float Alpha = 1.0 - clamp( _time-FadeStartTime ,0.0,1.0);
+				col.a = Alpha;
+			}
 		}
 	}
 

@@ -73,7 +73,10 @@ void main()
     
     // ÉJÉÅÉâ
     vec3 ta=_WorldCameraCenter;
+    ta.y = min(ta.y,1.0);
     vec3 ro=_WorldCameraPos;
+    ro.y = min(ro.y,1.0);
+
     vec3 cdir=normalize(ta-ro);
     vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));
     vec3 cup=normalize(cross(cdir,cside));
