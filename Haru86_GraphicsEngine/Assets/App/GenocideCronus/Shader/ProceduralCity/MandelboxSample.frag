@@ -131,7 +131,7 @@ void main(){
   {
     if(_RenderingTarget==2.0) // ZTest
     {
-        vec3 col=vec3(1.0)*1./pi;
+        vec3 col=vec3(1.0)*0.05/pi;
         gl_FragColor=vec4(col,1.0);
     }
     else
@@ -145,9 +145,17 @@ void main(){
   }  
   else
   {
-       vec3 col=cyclicNoise(vec3(st*5.,_time));
-       col=vec3((col.r+col.g+col.b)*0.333);
-       gl_FragColor=vec4(col,1);
+        if(_RenderingTarget==2.0) // ZTest
+        {
+            vec3 col=vec3(0.9);
+            gl_FragColor=vec4(col,1.0);
+        }
+        else
+        {
+           vec3 col=cyclicNoise(vec3(st*5.,_time));
+           col=vec3((col.r+col.g+col.b)*0.333);
+           gl_FragColor=vec4(col,1.0);
+        }
   } 
 
 }

@@ -23,6 +23,7 @@ namespace myapp {
 		m_XSideWarkVec(glm::vec3(0.0f)),
 		m_IsDrawMandel(false),
 		m_IsDrawCloud(false),
+		m_GaffDoor(nullptr),
 		NumOfProBill(1024),
 		NumOfCyBill(256)
 	{
@@ -121,6 +122,20 @@ namespace myapp {
 				#include "../../Shader/ProceduralCity/City_Cloud.frag"
 			)
 		);
+
+		// ガフの扉(みたいなやつ)
+		m_GaffDoor = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert,
+			std::string(
+				#include "../../Shader/ProceduralCity/GaffDoor.frag"
+			)
+		);
+		m_GaffDoor->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
+		m_GaffDoor->m_transform->m_scale = glm::vec3(500.0f);
+		m_GaffDoor->m_transform->m_position = glm::vec3(0.0f, 100.0f, 0.0f);
 	}
 
 	void ProceduralCity::Update() 
@@ -189,9 +204,10 @@ namespace myapp {
 					});
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 
-				// 飛び散るパーティクルビル
+				// シーンインデックス６限定の描画
 				if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
 				{
+					// 飛び散るパーティクルビル
 					m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [=]() {
 						m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 						m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
@@ -206,6 +222,9 @@ namespace myapp {
 						m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 						});
 					m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+
+					// ガフの扉
+					m_GaffDoor->Draw();
 				}
 			}
 			

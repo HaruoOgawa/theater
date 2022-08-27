@@ -17,6 +17,7 @@ namespace myapp {
 		glm::vec3							   m_XSideWarkVec;
 		std::shared_ptr<MeshRendererComponent> m_StreeLamp;
 		std::shared_ptr<MeshRendererComponent> m_CylinderBill;
+		std::shared_ptr<MeshRendererComponent> m_GaffDoor;
 
 		//
 		int NumOfProBill;
