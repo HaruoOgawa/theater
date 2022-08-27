@@ -10,6 +10,9 @@ uniform float _time;
 uniform float _deltaTime;
 uniform vec3 _CameraPos;
 
+uniform int _IsEndCity; // シーンインデックスが『6』かどうか
+uniform int _IsParticleBill; // GPUParticleのビルかどうか
+
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
 layout(location=2)in vec4 billinfo;
@@ -38,6 +41,36 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
  float rand(vec2 st)
 {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+mat4 CalRotMatrix(vec3 a)
+{
+	mat4 result;
+
+	mat4 rotx=mat4(
+		vec4(1.0,0.0,0.0,0.0),
+		vec4(0.0,cos(a.x),-sin(a.x),0.0),
+		vec4(0.0,sin(a.x),cos(a.x),0.0),
+		vec4(0.0,0.0,0.0,1.0)
+	);
+
+	mat4 roty=mat4(
+		vec4(cos(a.y),0.0,sin(a.y),0.0),
+		vec4(0.0,1.0,0.0,0.0),
+		vec4(-sin(a.y),0.0,cos(a.y),0.0),
+		vec4(0.0,0.0,0.0,1.0)
+	);
+	
+	mat4 rotz=mat4(
+		vec4(cos(a.z),-sin(a.z),0.0,0.0),
+		vec4(sin(a.z),cos(a.z),0.0,0.0),
+		vec4(0.0,0.0,1.0,0.0),
+		vec4(0.0,0.0,0.0,1.0)
+	);
+
+	result = rotz * roty * rotx;
+
+	return result;
 }
 
 void main(){
@@ -99,10 +132,22 @@ void main(){
 	}
 
 	// ランダムな回転。ただし回転値は PI/2.0の倍数のみ
-	{
+	/*{
 		float randRotation = floor( (rand(vec2(id+0.556,id+id))*2.0-1.0) *10.0) * (PI/2.0);
 		pos.xz*=rot(randRotation);
 		localNormal.xz*=rot(randRotation);
+	}*/
+	
+	mat4 RandRotateMat = mat4(1.0);
+	if(_IsParticleBill != 1)
+	{
+		float randRotation = floor( (rand(vec2(id+0.556,id+id))*2.0-1.0) *10.0) * (PI/2.0);
+		RandRotateMat = CalRotMatrix(vec3(0.0,randRotation,0.0));
+	}
+	else
+	{
+		vec3 randAngle = hash(vec3(id+6.14,id+1.111,id+45.69))*PI*2.0;
+		RandRotateMat = CalRotMatrix(randAngle+randAngle*vec3(_time*0.1));
 	}
 
 	// 乱数で全体の高さ・幅を決める
@@ -118,7 +163,7 @@ void main(){
 			vec4(0.0,0.0,0.0,1.0)
 		);
 
-		pos = ScaleMatrix * pos;
+		pos = RandRotateMat * ScaleMatrix * pos;
 	}
 
 	// アウトプット

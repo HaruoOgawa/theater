@@ -64,14 +64,24 @@ vec3 boxFold(vec3 z, float dz) {
 }
 
 float map(vec3 p){
-    p.xy*=rot(_time*0.1);
-    p.yz*=rot(_time*0.1);
-    p.xz*=rot(_time*0.1);
     
-    /*p.xy*=rot(PI/4.0);
+    // à⁄ìÆ
+    p.y+=3.0; 
+    
+    // âÒì]
+    p.xz*=rot(PI/4.0);
+
+   /* p.xy*=rot(PI/4.0);
     p.yz*=rot(PI/6.0);
     p.xz*=rot(PI/4.0);*/
     
+    /*p.xy*=rot(_time*0.1);
+    p.yz*=rot(_time*0.1);
+    p.xz*=rot(_time*0.1);*/
+    
+    // ägëÂèkè¨
+    p*=2.0;
+
     float scale=2.0;
     vec3 z = p;
     float dr = 1.0;
@@ -99,8 +109,9 @@ void main(){
   vec2 st=uv*2.0-1.0;
   st.x*=(_resolution.x/_resolution.y);
 
-  vec3 ro=vec3(0.0,0.0,15.0);
-  vec3 ta=vec3(0.0);
+  //vec3 ro=vec3(0.0,0.0,15.0);
+  vec3 ro=_WorldCameraPos;
+  vec3 ta=_WorldCameraCenter;
   
   vec3 cdir=normalize(ta-ro);
   vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));
@@ -108,35 +119,37 @@ void main(){
   
   vec3 rd=normalize(st.x*cside+st.y*cup+cdir*1.0);
 
-  float d,t,acc=0.0,pi=0.0;
+  float d,t,acc=0.0,pi=0.0,dmin=0.01;
   for(int i=0;i<128;i++){
     d=map(ro+rd*t);
     pi=float(i);
-    if(d<0.001||t>1000.0)break;
+    if(abs(d)<dmin||t>100.0)break;
     t+=d;
   }
  
-  if(_RenderingTarget==1.0){
-    if(d<0.001 && _IsDrawMandel==1)
+  if(abs(d)<dmin)
+  {
+    if(_RenderingTarget==2.0) // ZTest
     {
-         vec3 col=vec3(1.0)*25./pi;
-         gl_FragColor=vec4(col,1);
+        vec3 col=vec3(1.0)*1./pi;
+        gl_FragColor=vec4(col,1.0);
     }
     else
     {
-         vec3 col=cyclicNoise(vec3(st*5.,_time));
-         col=vec3((col.r+col.g+col.b)*0.333);
-         gl_FragColor=vec4(col,1);
-    }   
+        if(_IsDrawMandel==1)
+        {
+             vec3 col=vec3(1.0)*10./pi;
+            gl_FragColor=vec4(col,1.0);
+        }
+    } 
+  }  
+  else
+  {
+       vec3 col=cyclicNoise(vec3(st*5.,_time));
+       col=vec3((col.r+col.g+col.b)*0.333);
+       gl_FragColor=vec4(col,1);
+  } 
 
-  }else if(_RenderingTarget==2.0){
-    if(d>1.0)t=10.1;
-    //vec3 col=clamp(1.0-vec3(1.0)*exp(-.0075*t),0.0,1.0);
-    vec3 col=vec3(0.995);
-    gl_FragColor=vec4(col,1);
-  }
-
-  
 }
 
 )"

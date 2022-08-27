@@ -101,17 +101,15 @@ namespace myapp {
 		}
 
 		// Mandelbox
-		std::string MandelboxShader = {
-			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		};
-
 		m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
-			MandelboxShader
-			);
+			std::string(
+				#include "../../Shader/ProceduralCity/MandelboxSample.frag"
+			)
+		);
 
 		// City Cloud
 		m_CityCloud = std::make_shared<MeshRendererComponent>(
@@ -170,6 +168,9 @@ namespace myapp {
 		}
 		else
 		{
+			//NumOfProBill = 0;
+			NumOfProBill = 256;
+			NumOfCyBill = 0;
 			// ビル
 			if (m_BillRP && NumOfProBill != 1)
 			{
@@ -180,11 +181,32 @@ namespace myapp {
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade)? 1 : 0);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0 );
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 0);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+
+				// 飛び散るパーティクルビル
+				if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
+				{
+					m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [=]() {
+						m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
+						m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
+						m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
+						m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", 1);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 1);
+
+						m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+						m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
+						});
+					m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+				}
 			}
 			
 			// 円柱ビル
@@ -311,6 +333,22 @@ namespace myapp {
 
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
 			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+		}
+		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
+		{
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+			};
+			m_IsDrawCloud = false;
+			m_IsDrawMandel = true;
+
+			//
+			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.0f, 0.0f); // SacredLake
+			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
+				glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+				0.5f,
+				glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+			);
 		}
 	}
 }

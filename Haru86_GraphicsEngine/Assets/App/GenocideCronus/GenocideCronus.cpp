@@ -27,7 +27,7 @@ GenocideCronus::GenocideCronus():
 
 void GenocideCronus::Start() {
 	// 時間のオフセット
-	//GraphicsMain::GetInstance()->m_SecondsTimeOffset = 45.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 175.0f;// シーンを飛ばすためのオフセット
 
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
