@@ -25,7 +25,8 @@ void main(){
 
 	float randStartTime = rand(vec2(did+did,did+0.691+9.99));
 	float randSize = rand(vec2(did,floor(randStartTime*DomainSize+_time))); 
-	vec3 randColor = vec3(1.0,0.75*vec2( rand(vec2(did+1.85+did,did+8.555+floor(randStartTime*DomainSize+_time))) ));
+	//vec3 randColor = vec3(1.0,0.75*vec2( rand(vec2(did+1.85+did,did+8.555+floor(randStartTime*DomainSize+_time))) ));
+	vec3 randColor = vec3(rand(vec2(did+1.85+did,did+8.555+floor(randStartTime*DomainSize+_time))));
 
 	float d0 = length(st) -(mod(_time+randStartTime,1.0));
 	float d1 = length(st) -(mod(_time+randStartTime,1.0) - randSize);

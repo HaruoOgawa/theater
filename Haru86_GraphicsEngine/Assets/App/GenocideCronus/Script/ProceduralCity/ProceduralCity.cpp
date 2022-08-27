@@ -357,6 +357,8 @@ namespace myapp {
 		{
 			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
 			};
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;

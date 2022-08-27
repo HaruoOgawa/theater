@@ -22,6 +22,8 @@ uniform int _UseVignette;
 uniform float _VignetteRadius;
 uniform float _VignetteLateRadius;
 uniform float _VignetteBrightness;
+uniform int _UseThirdImpact;
+uniform int _UseFilmFilter;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -124,6 +126,24 @@ vec3 Vignette(vec3 col)
 	return col;
 }
 
+vec3 ThirdImpact(vec3 col)
+{
+	col = vec3(col.r,col.g*0.1,col.b*0.1);
+	col *= 0.75;
+	return col;
+}
+
+vec3 DrawFilmFilter(vec3 col)
+{
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+	st=st*2.0-1.0;
+
+	float w = 0.2;
+	if(abs(st.y) > (1.0-w)) col = vec3(0.0);
+
+	return col;
+}
+
 void main(){
 	vec3 col=vec3(0.0);
 	vec2 st=gl_FragCoord.xy/_resolution.xy;
@@ -132,6 +152,8 @@ void main(){
 	
 	if(_UseSSR == 1)col=CalSSRColor(col);
 	if(_UseVignette == 1) col = Vignette(col);
+	if(_UseThirdImpact == 1) col = ThirdImpact(col);
+	if(_UseFilmFilter == 1) col = DrawFilmFilter(col);
 
 	gl_FragColor=vec4(col,1.0);
 }
