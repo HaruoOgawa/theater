@@ -43,7 +43,7 @@ void GenocideCronus::Start() {
 	PostProcess::GetInstance()->m_UsePostProcess = true;
 	PostProcess::GetInstance()->m_UseBloom = true;
 	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
-	PostProcess::GetInstance()->m_BloomIntensity = 1.5f;
+	PostProcess::GetInstance()->m_BloomIntensity = 4.0f;
 
 }
 

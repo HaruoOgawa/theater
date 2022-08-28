@@ -108,6 +108,8 @@ void main(){
 		}
 	}
 
+	col.rgb*=2.0;
+
 	gl_FragColor=col;
 }
 

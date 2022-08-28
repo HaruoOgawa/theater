@@ -24,6 +24,7 @@ uniform float _VignetteLateRadius;
 uniform float _VignetteBrightness;
 uniform int _UseThirdImpact;
 uniform int _UseFilmFilter;
+uniform int _UseWave;
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -148,6 +149,14 @@ void main(){
 	vec3 col=vec3(0.0);
 	vec2 st=gl_FragCoord.xy/_resolution.xy;
 	
+	if(_UseWave == 1)
+	{
+		//float val=(sin(_time*2.0)+1.0)*0.5+0.1;
+		float val=0.6;
+		st.y+=0.005*sin(_time*100.0)*val;
+		st.x+=0.001*sin(_time*50.0)*val;
+	}
+
 	col=texture(_SrcTexture,st).rgb;
 	
 	if(_UseSSR == 1)col=CalSSRColor(col);

@@ -75,9 +75,9 @@ float map(vec3 p){
     p.yz*=rot(PI/6.0);
     p.xz*=rot(PI/4.0);*/
     
-    /*p.xy*=rot(_time*0.1);
-    p.yz*=rot(_time*0.1);
-    p.xz*=rot(_time*0.1);*/
+    p.xy*=rot(_time*0.01);
+    p.yz*=rot(_time*0.01);
+    p.xz*=rot(_time*0.01);
     
     // ägëÂèkè¨
     p*=2.0;
@@ -132,7 +132,7 @@ void main(){
   {
     if(_RenderingTarget==2.0) // ZTest
     {
-        vec3 col=vec3(1.0)*0.05/pi;
+        vec3 col=vec3(1.0)*0.01/pi;
         gl_FragColor=vec4(col,1.0);
     }
     else

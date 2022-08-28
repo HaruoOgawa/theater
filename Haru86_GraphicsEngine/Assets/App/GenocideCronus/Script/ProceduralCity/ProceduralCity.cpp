@@ -381,6 +381,7 @@ namespace myapp {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
 			};
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;
@@ -388,11 +389,11 @@ namespace myapp {
 			//
 			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
-				//glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
-				glm::cos(0.0f) * 17.5f,
+				glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+				//glm::cos(0.0f) * 17.5f,
 				0.5f,
-				//glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
-				glm::sin(0.0f) * 17.5f
+				glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+				//glm::sin(0.0f) * 17.5f
 			);
 		}
 	}
