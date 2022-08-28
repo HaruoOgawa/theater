@@ -12,6 +12,8 @@ uniform mat4 PMatrix;
 
 uniform int _IDOffset;
 uniform float _ParticleScale;
+uniform int _IsRandomScale;
+uniform float _ParticleMoveSpeed;
 
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
@@ -89,7 +91,16 @@ void main(){
 	vec4 pos=vec4(vertex,1.0);
 	
 	// ランダムスケール
-	vec3 randScale = vec3(rand(vec2(id+7.77123,id+id+id))*_ParticleScale);
+	vec3 randScale = vec3(1.0); 
+	if(_IsRandomScale != 1)
+	{
+		randScale = vec3(rand(vec2(id+7.77123,id+id+id))*_ParticleScale);
+	}
+	else
+	{
+		randScale = hash( vec3(id+0.6121+float(gl_VertexID), id+id*10.0+float(gl_VertexID), id+41.253+float(gl_VertexID)) )*_ParticleScale;
+	}
+
 	mat4 RandScaleMat = mat4(
 		vec4(randScale.x,0.0,0.0,0.0),
 		vec4(0.0,randScale.y,0.0,0.0),
@@ -118,7 +129,7 @@ void main(){
 	randPos.y*=height;
 	randPos.xz*=width;
 
-	randPos+=normalize(OffDir.xyz)*_time*10.0;
+	randPos+=normalize(OffDir.xyz)*_time*_ParticleMoveSpeed;
 	randPos.y=mod(randPos.y,height);
 	mat4 RandPosMat = mat4(
 		vec4(0.0,0.0,0.0,randPos.x),

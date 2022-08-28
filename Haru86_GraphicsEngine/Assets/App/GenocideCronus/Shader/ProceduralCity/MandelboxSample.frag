@@ -111,7 +111,8 @@ void main(){
 
   //vec3 ro=vec3(0.0,0.0,15.0);
   vec3 ro=_WorldCameraPos;
-  vec3 ta=_WorldCameraCenter;
+  //vec3 ta=_WorldCameraCenter;
+  vec3 ta=vec3(0.0);
   
   vec3 cdir=normalize(ta-ro);
   vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));

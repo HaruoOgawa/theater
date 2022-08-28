@@ -110,6 +110,7 @@ namespace myapp {
 					m_GPUParticle->m_material->SetIntUniform("_NotUseNormal", 1);
 					//m_GPUParticle->m_material->SetIntUniform("_UseLighting", 0);
 					m_GPUParticle->m_material->SetFloatUniform("_ParticleScale", 2.0f);
+					m_GPUParticle->m_material->SetFloatUniform("_ParticleMoveSpeed", 10.0f);
 
 					/*m_GPUParticle->m_material->SetIntUniform("_UseMainCube", 1);
 					m_ReflectionProbe->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);

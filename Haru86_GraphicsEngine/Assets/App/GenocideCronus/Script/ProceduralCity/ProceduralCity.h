@@ -18,6 +18,7 @@ namespace myapp {
 		std::shared_ptr<MeshRendererComponent> m_StreeLamp;
 		std::shared_ptr<MeshRendererComponent> m_CylinderBill;
 		std::shared_ptr<MeshRendererComponent> m_GaffDoor;
+		std::shared_ptr<MeshRendererComponent> m_RubbleParticle;
 
 		//
 		int NumOfProBill;

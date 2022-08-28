@@ -24,6 +24,7 @@ namespace myapp {
 		m_IsDrawMandel(false),
 		m_IsDrawCloud(false),
 		m_GaffDoor(nullptr),
+		m_RubbleParticle(nullptr),
 		NumOfProBill(1024),
 		NumOfCyBill(256)
 	{
@@ -136,6 +137,18 @@ namespace myapp {
 		m_GaffDoor->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
 		m_GaffDoor->m_transform->m_scale = glm::vec3(500.0f);
 		m_GaffDoor->m_transform->m_position = glm::vec3(0.0f, 100.0f, 0.0f);
+
+		// ä¢‚I
+		m_RubbleParticle = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::SPHERE,
+			RenderingSurfaceType::RASTERIZER,
+			std::string(
+				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
+			),
+			shaderlib::ShaderLib::Standard_frag
+			);
+
 	}
 
 	void ProceduralCity::Update() 
@@ -225,6 +238,15 @@ namespace myapp {
 
 					// ÉKÉtÇÃî‡
 					m_GaffDoor->Draw();
+
+					// ä¢‚I
+					m_RubbleParticle->Draw(GL_TRIANGLES, true, 1024, [this]() {
+						m_RubbleParticle->m_material->SetIntUniform("_IDOffset", 0);
+						m_RubbleParticle->m_material->SetIntUniform("_NotUseNormal", 1);
+						m_RubbleParticle->m_material->SetIntUniform("_IsRandomScale", 1);
+						m_RubbleParticle->m_material->SetFloatUniform("_ParticleScale", 1.0f);
+						m_RubbleParticle->m_material->SetFloatUniform("_ParticleMoveSpeed", 1.0f);
+						});
 				}
 			}
 			
@@ -364,11 +386,13 @@ namespace myapp {
 			m_IsDrawMandel = true;
 
 			//
-			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.0f, 0.0f); // SacredLake
+			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
-				glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+				//glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+				glm::cos(0.0f) * 17.5f,
 				0.5f,
-				glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+				//glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+				glm::sin(0.0f) * 17.5f
 			);
 		}
 	}
