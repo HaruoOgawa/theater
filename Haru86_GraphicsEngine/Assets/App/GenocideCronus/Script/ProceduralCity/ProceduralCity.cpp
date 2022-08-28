@@ -290,7 +290,7 @@ namespace myapp {
 	{
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
 		{
-			if (LocalTime >= 0.0f && LocalTime<31.0f)
+			if (LocalTime > 0.0f && LocalTime<31.0f)
 			{
 				// ƒJƒƒ‰ƒ[ƒN
 				float CameraTimeModeRate = 10.0f, NumOfCamera = 3.0f;
@@ -382,6 +382,7 @@ namespace myapp {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
 			};
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;

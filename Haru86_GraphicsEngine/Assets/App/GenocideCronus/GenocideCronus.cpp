@@ -4,6 +4,7 @@
 #include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
@@ -27,7 +28,7 @@ GenocideCronus::GenocideCronus():
 
 void GenocideCronus::Start() {
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 175.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 176.0f;// シーンを飛ばすためのオフセット
 
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
@@ -72,6 +73,9 @@ void GenocideCronus::Update() {
 	else if (m_LocalTime >= 161.0f && m_LocalTime < 177.0f) // シーン6(巻き戻し)
 	{
 		m_SceneIndex = 5;
+		PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+			PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 1);
+		};
 	}
 	else if (m_LocalTime >= 177.0f && m_LocalTime < 264.0f) // シーン7(End of City)
 	{
@@ -193,7 +197,7 @@ void GenocideCronus::Draw(bool IsRaymarching) {
 	//
 	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching, LinearInstanceRate);
 	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, glm::min(10, LinearInstanceRate + 4));
-	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
+	if (m_SceneIndex == 3 || m_SceneIndex == 5)m_Mountain->Draw(IsRaymarching);
 	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
 }
 
