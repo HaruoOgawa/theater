@@ -22,13 +22,20 @@ GenocideCronus::GenocideCronus():
 	m_SacredLake(nullptr),
 	m_Forest(nullptr),
 	m_Mountain(nullptr),
-	m_LocalTime(0.0f)
+	m_LocalTime(0.0f),
+	m_DebugTimeLock(false)
 {
 }
 
 void GenocideCronus::Start() {
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 176.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 83.0f;// シーンを飛ばすためのオフセット
+
+	// デバッグ用
+	/*{
+		m_DebugTimeLock = true;
+		if (m_DebugTimeLock)m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTimeOffset;
+	}*/
 
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
@@ -113,7 +120,7 @@ void GenocideCronus::Update() {
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// 背景色
-		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
+		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 
 		// カメラ
 		float r = 10.0f;
@@ -175,7 +182,7 @@ void GenocideCronus::Update() {
 void GenocideCronus::UpdateTimeline()
 {
 	// 時間
-	m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
+	if(!m_DebugTimeLock) m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 
 	// タイムラインを更新

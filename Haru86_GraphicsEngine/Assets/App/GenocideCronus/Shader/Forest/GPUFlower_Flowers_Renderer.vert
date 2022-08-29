@@ -80,6 +80,7 @@ out vec2 uv;
 out vec3 CameraPos;
 out vec3 WorldVertexPos;
 out vec3 WorldNormal;
+flat out float v2f_id;
 
 #define PI 3.14159265
 
@@ -112,7 +113,9 @@ void main()
     uv=texcoord;
     WorldVertexPos=(MMatrix*pos).xyz;
     CameraPos=_CameraPos;
-    WorldNormal=normalize((MMatrix*vec4(normal,0.0)).xyz);
+    // Ç»ÇÒÇ©ñ@ê¸Ç™ãtÇ…Ç»Ç¡ÇƒÇΩÇÃÇ≈Ç±Ç±Ç≈Ç–Ç∆Ç‹Ç∏èCê≥
+    WorldNormal=normalize((MMatrix*vec4(-normal,0.0)).xyz);
+    v2f_id = float(gl_InstanceID);
 }
 
 )"

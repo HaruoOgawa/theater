@@ -58,7 +58,7 @@ namespace myapp
 
 		// Mountain(Scene4‚Ì‚à‚Ì‚ð”wŒi‚Æ‚µ‚Ä—¬—p)
 		std::string MountainAround_frag = {
-			#include "../../Shader/Forest/MountainAround.frag"
+			#include "../../Shader/ProceduralCity/City_Cloud.frag"
 		};
 		m_AroundMountain = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
@@ -99,8 +99,8 @@ namespace myapp
 			m_LTreeModel->SetIsStreetLineTree(false);
 			if (IsRaymarching)
 			{
-				//m_AroundMountain->Draw();
-				m_EnergyBall->Draw();
+				m_AroundMountain->Draw();
+				//m_EnergyBall->Draw();
 			}
 			else
 			{

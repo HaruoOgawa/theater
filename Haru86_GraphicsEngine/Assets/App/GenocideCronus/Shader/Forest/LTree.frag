@@ -17,17 +17,10 @@ uniform int _UseFade;
 uniform int _LinearInstanceRate;
 
 void main(){
-	vec4 col=vec4(vec3(0.0),1.0);
+	vec4 col=vec4(vec3(1.0),1.0);
 
 	// ベースカラー
-	if(_UseColor == 1)
-	{
-		col=_Color;
-	}
-	else
-	{
-		col=vec4(1.0);
-	}
+	col.rgb = vec3(0.87,0.72,0.53);
 
 	// 環境光
 	vec4 envColor = vec4(0.0,0.0,0.0,1.0);

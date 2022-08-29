@@ -4,9 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-class Mesh;
+class MeshRendererComponent;
 class Material;
-class TransformComponent;
 class ComputeBuffer;
 
 namespace myapp
@@ -55,9 +54,7 @@ namespace myapp
 		std::shared_ptr<Material>	   cal_flower_cs;
 
 		// オブジェクト
-		std::shared_ptr<Mesh> m_FlowerMesh;
-		std::shared_ptr<Material> m_FlowerMaterial;
-		std::shared_ptr<TransformComponent> m_FlowerTRS;
+		std::shared_ptr<MeshRendererComponent> m_FlowerRenderer;
 	public:
 		Flower(FlowerModel* model);
 		~Flower() = default;

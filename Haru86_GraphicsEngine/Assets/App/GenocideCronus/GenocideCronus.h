@@ -21,6 +21,8 @@ class GenocideCronus
     
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
+    // デバッグ用: 時よ止まれっっっっ！！！！！！
+    bool m_DebugTimeLock;
   
     // シーンオブジェクト
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;

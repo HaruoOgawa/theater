@@ -180,8 +180,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	//CreateFrameBuffer
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),nullptr, polygon_frameBuffer_MSAA,
-		//GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
-		GL_RGBA16F, GL_RGBA, GL_FLOAT, ERenderTargetType::COLOR_RENDER_BUFFER, EDepthTargetType::DEPTH_RENDER_BUFFER, false);
+		GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
+		//GL_RGBA16F, GL_RGBA, GL_FLOAT, ERenderTargetType::COLOR_RENDER_BUFFER, EDepthTargetType::DEPTH_RENDER_BUFFER, false);
 
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA,GL_FLOAT);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), raymarching_frameTexture, raymarching_frameBuffer, GL_RGBA, GL_RGBA);

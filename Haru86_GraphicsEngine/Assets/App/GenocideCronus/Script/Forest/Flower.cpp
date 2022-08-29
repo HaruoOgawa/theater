@@ -1,5 +1,4 @@
 #include "Flower.h"
-#include "GraphicsEngine/Graphics/Mesh.h"
 #include "GraphicsEngine/Graphics/Material.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
@@ -9,14 +8,13 @@
 #include "GraphicsEngine/Math/mymath_withGLM.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Message/Console.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 
 namespace myapp
 {
     Flower::Flower(FlowerModel* model) :
         m_FlowerModel(model),
-        m_FlowerMesh(nullptr),
-        m_FlowerMaterial(nullptr),
-        m_FlowerTRS(std::make_shared<TransformComponent>()),
+        m_FlowerRenderer(nullptr),
         stemDataFlower_buffer(nullptr),
         stemDataFlower_buffer_index(4),
         DEBUG_buffer(nullptr),
@@ -29,8 +27,6 @@ namespace myapp
             #include "../../Shader/Forest/GPU_Flower_Cal_Flowers.comp"
         };
         cal_flower_cs = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, "", "", "", "", "", GPU_Flower_Cal_Flowers_comp);
-
-        m_FlowerTRS->m_scale = glm::vec3(0.333f);
 
         //
         Start();
@@ -46,14 +42,14 @@ namespace myapp
 
     void Flower::LinkBufferToResources(const std::shared_ptr<Stem>& stem) {
         // コンピュートシェーダーにバッファをセット
-        cal_flower_cs->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index, m_FlowerMaterial);
-        cal_flower_cs->SetBuffer(stem->stemVertex_buffer, stem->stemVertex_buffer_index, m_FlowerMaterial);
-        cal_flower_cs->SetBuffer(stem->stemManage_buffer, stem->stemManage_buffer_index, m_FlowerMaterial);
+        cal_flower_cs->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index, m_FlowerRenderer->m_material);
+        cal_flower_cs->SetBuffer(stem->stemVertex_buffer, stem->stemVertex_buffer_index, m_FlowerRenderer->m_material);
+        cal_flower_cs->SetBuffer(stem->stemManage_buffer, stem->stemManage_buffer_index, m_FlowerRenderer->m_material);
         
         cal_flower_cs->SetBuffer(DEBUG_buffer, DEBUG_buffer_index);
 
         // マテリアルにバッファをセット
-        m_FlowerMaterial->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index);
+        m_FlowerRenderer->m_material->SetBuffer(stemDataFlower_buffer, stemDataFlower_buffer_index);
     }
 
     void Flower::Init() {
@@ -114,43 +110,30 @@ namespace myapp
         dimentions.push_back(3);
         indices = multi_Flower_Data->triangles;
 
-        // set data to mesh
-        m_FlowerMesh = std::make_shared<Mesh>(vertices, dimentions, indices);
+        //
+        m_FlowerRenderer = std::make_shared<MeshRendererComponent>(
+              std::make_shared<TransformComponent>(),
+            RenderingSurfaceType::RASTERIZER,
+            vertices, dimentions, indices,
+            std::string(
+                #include "../../Shader/Forest/GPUFlower_Flowers_Renderer.vert"
+            ),
+            std::string(
+                #include "../../Shader/Forest/GPUFlower_Flowers_Renderer.frag"
+            )
+         );
 
-        // material
-        std::string GPUFlower_Flowers_Renderer_vert = {
-            #include "../../Shader/Forest/GPUFlower_Flowers_Renderer.vert"
-        };
-        m_FlowerMaterial = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUFlower_Flowers_Renderer_vert, shaderlib::ShaderLib::Standard_frag);
+        m_FlowerRenderer->m_transform->m_scale = glm::vec3(0.333f);
     }
 
 	void Flower::Update() {
         if (m_FlowerModel->flowersIsDone&&m_FlowerModel->stemIsDone&&m_FlowerModel->leafIsDone) {
             Cal_flower_growth();
-
-            /*// DEBUG
-            float initStemDebugMatrix[16];
-            DEBUG_buffer->GetBufferData<float>(&initStemDebugMatrix[0], 0, 16);
-            for (int n=0;n<16;n++)
-            {
-                const auto& DEBUG_Val = initStemDebugMatrix[n];
-                Console::Log("%d DEBUG_Val: %f\n",n, DEBUG_Val);
-            }*/
         }
 	}
 
 	void Flower::Draw() {
-        m_FlowerMaterial->SetActive();
-        m_FlowerTRS->CalMatrix();
-        m_FlowerMaterial->SetMatrixUniform("MVPMatrix", m_FlowerTRS->m_pMatrix * m_FlowerTRS->m_vMatrix * m_FlowerTRS->m_mMatrix);
-        m_FlowerMaterial->SetMatrixUniform("MMatrix", m_FlowerTRS->m_mMatrix);
-        m_FlowerMaterial->SetMatrixUniform("VMatrix", m_FlowerTRS->m_vMatrix);
-        m_FlowerMaterial->SetMatrixUniform("PMatrix", m_FlowerTRS->m_pMatrix);
-        m_FlowerMaterial->SetIntUniform("_UseLighting", 1);
-        m_FlowerMaterial->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, -1.0) );
-
-        //m_FlowerMesh->Draw();
-        m_FlowerMesh->DrawInstancedWithMesh(m_FlowerModel->count,GL_TRIANGLES);
+        m_FlowerRenderer->Draw(GL_TRIANGLES, true, m_FlowerModel->count);
 	}
 
     // 花びらから花を構築
