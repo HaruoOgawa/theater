@@ -29,7 +29,7 @@ GenocideCronus::GenocideCronus():
 
 void GenocideCronus::Start() {
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 83.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 115.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{
@@ -152,8 +152,8 @@ void GenocideCronus::Update() {
 		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
 		// カメラ
-		m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
-		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+		/*m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
+		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);*/
 
 		// 更新処理
 

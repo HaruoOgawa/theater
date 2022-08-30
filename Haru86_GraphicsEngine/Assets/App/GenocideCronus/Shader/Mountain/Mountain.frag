@@ -5,6 +5,7 @@ uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
 uniform vec3 _WorldCameraPos;
+uniform vec3 _WorldCameraCenter;
 
 in vec2 uv;
 
@@ -233,7 +234,8 @@ void main()
     st.x*=(_resolution.x/_resolution.y);
     
     vec4 col = vec4(1.0);
-    vec3 ta=vec3(0.0,100.0,0.0),ro=vec3(0.0,200.0,200.0);
+    //vec3 ta=vec3(0.0,100.0,0.0),ro=vec3(0.0,200.0,200.0);
+    vec3 ta=_WorldCameraCenter,ro=_WorldCameraPos;
     vec3 cdir=normalize(ta-ro);
     vec3 cside=normalize(cross(cdir,vec3(0.0,-1.0,0.0)));
     vec3 cup=normalize(cross(cdir,cside));
