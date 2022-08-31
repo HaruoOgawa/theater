@@ -26,6 +26,7 @@ uniform float LocalStreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
 uniform int _LinearInstanceRate;
+uniform int _IsEndCity; // シーンインデックスが『6』かどうか
 
 uniform int _UseMainTex;
 uniform sampler2D _MainTex;
@@ -77,6 +78,8 @@ vec4 noised(in vec3 x)
 // 道路と歩道のライティング
 vec4 DrawStreet(vec4 col)
 {
+	float StreetTime = (_IsEndCity == 1)? 0.0 : _time;
+
 	{
 	
 		//vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_WorldCameraPos.xyz;
@@ -97,7 +100,7 @@ vec4 DrawStreet(vec4 col)
 				col.rgb += vec3( (StreetUV.x<StreetLineWidth)? 1.0 : 0.0);
 				col.rgb += vec3( (StreetUV.x>1.0-StreetLineWidth && StreetUV.x<1.0)? 1.0 : 0.0);
 				col.rgb += vec3( (StreetUV.x>0.5-StreetLineWidth*0.5 && StreetUV.x<0.5+StreetLineWidth*0.5)? 1.0 : 0.0)
-					* ( (int(floor(WorldVertexPos.z * 2.0 + _time*10.0))%2==0)? 1.0 : 0.0 ); // 点線にする(止まって見えるのでスクロールする)
+					* ( (int(floor(WorldVertexPos.z * 2.0 + StreetTime*10.0))%2==0)? 1.0 : 0.0 ); // 点線にする(止まって見えるのでスクロールする)
 
 			}
 			else if(g2f_IsZAxis == 0)
@@ -136,7 +139,7 @@ vec4 DrawStreet(vec4 col)
 					// 横線
 					float LineVerOffset = floor(LocalOffsetVal*(1.0/ModIntervalVer));
 					// 止まって見えるのでスクロールする
-					float HolSeed = OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + _time;
+					float HolSeed = OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + StreetTime;
 					float LineHolOffset = mod(HolSeed,ModIntervalHol)*(1.0/ModIntervalHol);
 					vec2 domainID = vec2(LineVerOffset, floor(HolSeed*(1.0/ModIntervalHol)) );
 

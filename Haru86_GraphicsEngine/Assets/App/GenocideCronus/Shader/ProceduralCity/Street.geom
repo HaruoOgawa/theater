@@ -36,7 +36,7 @@ uniform float _Segment;
 
 void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,bool IsZAxis,int IsSidewalk,bool IsUpSideTriangle)
 {
-	gl_Position = PMatrix * VMatrix * pos0;
+	gl_Position = MVPMatrix * pos0;
 	WorldVertexPos = (pos0).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
@@ -46,7 +46,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	UVPerSquare = (IsUpSideTriangle)? vec2(1.0,0.0) : vec2(0.0,1.0);
 	EmitVertex();
 
-	gl_Position = PMatrix * VMatrix * pos1;
+	gl_Position = MVPMatrix * pos1;
 	WorldVertexPos = (pos1).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];
@@ -56,7 +56,7 @@ void CreateOutputData(vec4 pos0,vec4 pos1,vec4 pos2,int IsStreet,vec3 normal,boo
 	UVPerSquare = (IsUpSideTriangle)? vec2(1.0,1.0) : vec2(0.0,0.0);
 	EmitVertex();
 
-	gl_Position = PMatrix * VMatrix * pos2;
+	gl_Position = MVPMatrix * pos2;
 	WorldVertexPos = (pos2).xyz;
 	WorldNormal = normalize(MMatrix*vec4(normal,0.0)).xyz;
 	PrimID=v2g_id[0];

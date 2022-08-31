@@ -281,6 +281,7 @@ namespace myapp {
 					m_Street->m_material->SetFloatUniform("_Segment", 32.0f);
 
 					m_Street->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_Street->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0);
 				});
 			}
 		}
@@ -387,15 +388,41 @@ namespace myapp {
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;
 
-			//
-			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
-			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
-				glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
-				//glm::cos(0.0f) * 17.5f,
-				0.5f,
-				glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
-				//glm::sin(0.0f) * 17.5f
-			);
+			// ƒJƒƒ‰ƒ[ƒN
+			float CameraTimeModeRate = 10.0f, NumOfCamera = 5.0f;
+			float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+			m_Street->m_transform->m_scale = glm::vec3(1.0f);
+
+			if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime * 0.1f), 10.0f, 20.0f * glm::sin(LocalTime * 0.1f));
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 0.0f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
+					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+					0.5f,
+					glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+				);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
+			{
+				m_Street->m_transform->m_scale = glm::vec3(100.0f,1.0f, 100.0f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(50.5f, 10.5f, 50.5f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+			}
 		}
 	}
 }
