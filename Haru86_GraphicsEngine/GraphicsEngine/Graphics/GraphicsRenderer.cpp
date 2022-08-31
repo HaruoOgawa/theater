@@ -133,12 +133,16 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	
 	// ウィンドウ生成
+	bool IsFullScreen = true;
+#ifdef _DEBUG
+	IsFullScreen = false;
+#endif
+
 	sWindow = glfwCreateWindow(
 		sWindowWidth,
 		sWindowHeight,
 		"Haru86_GraphicsEngine",
-		NULL,
-		//glfwGetPrimaryMonitor(), // 一つ目のNULLをこれと置き換えればフルスクリーンになる
+		(IsFullScreen)? glfwGetPrimaryMonitor() : NULL,
 		NULL
 	);
 

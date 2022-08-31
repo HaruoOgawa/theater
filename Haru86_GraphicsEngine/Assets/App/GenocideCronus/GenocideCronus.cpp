@@ -28,6 +28,7 @@ GenocideCronus::GenocideCronus():
 }
 
 void GenocideCronus::Start() {
+#ifdef _DEBUG
 	// 時間のオフセット
 	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 79.0f;// シーンを飛ばすためのオフセット
 
@@ -36,6 +37,7 @@ void GenocideCronus::Start() {
 		m_DebugTimeLock = true;
 		if (m_DebugTimeLock)m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTimeOffset;
 	}*/
+#endif
 
 	// カメラ
 	m_CameraTransform = std::make_shared<TransformComponent>();
@@ -165,7 +167,10 @@ void GenocideCronus::UpdateTimeline()
 {
 	// 時間
 	if(!m_DebugTimeLock) m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
+#ifdef _DEBUG
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
+#endif // _DEBUG
+
 
 	// タイムラインを更新
 	m_ProceduralCity->UpdateTimeline(m_LocalTime);
