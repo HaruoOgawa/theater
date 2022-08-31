@@ -123,18 +123,6 @@ void GenocideCronus::Update() {
 		//GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.4f, 0.6f, 1.0f), 1.0));
 		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
 
-		// カメラ
-		float r = 10.0f;
-		m_CameraTransform->m_position = glm::vec3( // Forest
-			glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * r,
-			//glm::cos(0.0f) * r,
-			r,
-			glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * r
-			//glm::sin(0.0f) * r
-		);
-
-		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
-
 		// ライトポジション
 		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
 			0.0f,
@@ -151,13 +139,6 @@ void GenocideCronus::Update() {
 		PostProcess::GetInstance()->m_UseSSR = false;
 		// 背景色
 		GraphicsRenderer::GetInstance()->SetBackgroudColor(glm::vec4(glm::vec3(0.75f), 1.0));
-
-		// カメラ
-		/*m_CameraTransform->m_position = glm::vec3(5.0f, 0.5f, 5.0f);
-		m_CameraTransform->m_center = glm::vec3(0.0f, 10.0f, 0.0f);*/
-
-		// 更新処理
-
 	}
 	else if (m_SceneIndex == 4) // Lake
 	{

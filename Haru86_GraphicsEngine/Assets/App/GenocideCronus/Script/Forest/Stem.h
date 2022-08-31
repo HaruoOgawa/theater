@@ -77,7 +77,7 @@ namespace myapp {
         float stemLength;
         float stemGrowthRange;
         int numthreds_val;
-        std::shared_ptr<TransformComponent> m_StemTRS;
+        
 
         // kernel(ComputeBuffer Uniform)
         int stemResult_kernel;
@@ -110,6 +110,9 @@ namespace myapp {
         void LinkBufferToResources();
 		void Update();
 		void Draw();
+
+  
+        std::shared_ptr<TransformComponent> m_StemTRS;
 
         friend class Flower;
         friend class Leaf;

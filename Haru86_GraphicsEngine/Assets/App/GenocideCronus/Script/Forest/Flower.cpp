@@ -9,6 +9,7 @@
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Message/Console.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
+#include "Forest.h"
 
 namespace myapp
 {

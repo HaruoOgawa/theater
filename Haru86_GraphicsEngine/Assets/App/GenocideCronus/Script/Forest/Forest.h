@@ -17,6 +17,8 @@ namespace myapp
 		std::shared_ptr<MeshRendererComponent> m_EnergyBall;
 		std::shared_ptr<MeshRendererComponent> m_Ground;
 		std::shared_ptr<MeshRendererComponent> m_AroundMountain;
+
+		bool IsMountainRotate;
 	public:
 		Forest();
 		~Forest() = default;

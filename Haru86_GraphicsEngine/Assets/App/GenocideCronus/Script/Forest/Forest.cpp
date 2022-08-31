@@ -6,6 +6,10 @@
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
+#include "Flower.h"
+#include "Stem.h"
+#include "Leaf.h"
 
 namespace myapp
 {
@@ -14,7 +18,8 @@ namespace myapp
 		m_LTreeModel(nullptr),
 		m_EnergyBall(nullptr),
 		m_Ground(nullptr),
-		m_AroundMountain(nullptr)
+		m_AroundMountain(nullptr),
+		IsMountainRotate(true)
 	{
 		Start();
 	}
@@ -105,7 +110,9 @@ namespace myapp
 			m_LTreeModel->SetIsStreetLineTree(false);
 			if (IsRaymarching)
 			{
-				m_AroundMountain->Draw();
+				m_AroundMountain->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_AroundMountain->m_material->SetIntUniform("_IsMountainRotate", (IsMountainRotate) ? 1 : 0);
+				});
 				m_EnergyBall->Draw();
 			}
 			else
@@ -120,6 +127,50 @@ namespace myapp
 
 	void Forest::UpdateTimeline(float LocalTime)
 	{
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 2)
+		{
+			// ƒJƒƒ‰ƒ[ƒN
+			float CameraTimeModeRate = 3.75f, NumOfCamera = 4.0f;
+			float AdjustTimeOffset = 3.75f * 0.5f;
+			float CameraworkTime = glm::mod(LocalTime + AdjustTimeOffset, CameraTimeModeRate * NumOfCamera);
+			/*m_FlowerModel->m_Flower->m_FlowerRenderer->m_transform->m_scale = glm::vec3(1.0f);
+			m_FlowerModel->m_Stem->m_StemTRS->m_scale = glm::vec3(1.0f);*/
+			IsMountainRotate = true;
 
+			if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+			{
+				IsMountainRotate = false;
+
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+					GraphicsMain::GetInstance()->m_SecondsTime * 0.1f, 0.5f, GraphicsMain::GetInstance()->m_SecondsTime * 0.1f
+				) * 5.0f;
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f) * 5.0f;
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f), 225.0f, glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f)
+				);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+
+				/*m_FlowerModel->m_Flower->m_FlowerRenderer->m_transform->m_scale = glm::vec3(10.0f);
+				m_FlowerModel->m_Stem->m_StemTRS->m_scale = glm::vec3(10.0f);*/
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+			{
+				IsMountainRotate = false;
+
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f) * 5.0f;
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f) * 5.0f;
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
+					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 10.0f, 10.0f, glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 10.0f
+				);
+
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f);
+			}
+		}
 	}
 }

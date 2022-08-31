@@ -7,6 +7,7 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
+#include "Forest.h"
 
 namespace myapp {
 	Stem::Stem(FlowerModel* model) :

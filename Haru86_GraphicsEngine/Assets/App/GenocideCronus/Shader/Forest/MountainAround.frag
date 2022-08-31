@@ -11,6 +11,7 @@ uniform vec3 _WorldCameraCenter;
 uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
+uniform int _IsMountainRotate;
 
 ///////////////////////////////////////////////////////////////////
 /////////// I studied from the following site by iq.    ///////////
@@ -243,7 +244,7 @@ void main()
     vec4 col = vec4(1.0);
     vec3 ta=_WorldCameraCenter,ro=_WorldCameraPos;
     //ro.xz*=-1.0;
-    ro.xz*=rot(-_time*0.25);
+    if(_IsMountainRotate == 1) ro.xz*=rot(-_time*0.25);
 
     ta.y-=1000.0;
     ro.y-=1000.0;

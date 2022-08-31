@@ -53,8 +53,7 @@ namespace myapp
 
 		std::shared_ptr<Material>	   cal_flower_cs;
 
-		// オブジェクト
-		std::shared_ptr<MeshRendererComponent> m_FlowerRenderer;
+		
 	public:
 		Flower(FlowerModel* model);
 		~Flower() = default;
@@ -63,6 +62,9 @@ namespace myapp
 		void LinkBufferToResources(const std::shared_ptr<Stem>& stem);
 		void Update();
 		void Draw();
+
+		// オブジェクト
+		std::shared_ptr<MeshRendererComponent> m_FlowerRenderer;
 
 	private:
 		// 初期化

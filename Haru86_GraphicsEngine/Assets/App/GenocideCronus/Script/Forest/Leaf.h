@@ -17,5 +17,6 @@ namespace myapp {
 		void LinkBufferToResources(const std::shared_ptr<Stem>& stem);
 		void Update();
 		void Draw();
+
 	};
 }

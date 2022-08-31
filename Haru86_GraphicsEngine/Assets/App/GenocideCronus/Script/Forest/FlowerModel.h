@@ -31,16 +31,18 @@ namespace myapp {
 		bool stemIsDone;
 		bool leafIsDone;
 
-		//
-		std::shared_ptr<Flower> m_Flower;
-		std::shared_ptr<Stem> m_Stem;
-		std::shared_ptr<Leaf> m_Leaf;
+		
 	public:
 		FlowerModel();
 		~FlowerModel() = default;
 		void Start();
 		void Update();
 		void Draw();
+
+		//
+		std::shared_ptr<Flower> m_Flower;
+		std::shared_ptr<Stem> m_Stem;
+		std::shared_ptr<Leaf> m_Leaf;
 
 		friend Flower;
 		friend Stem;
