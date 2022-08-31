@@ -23,6 +23,8 @@ uniform float _RenderingTarget;
 //#define _time iTime
 //#define _resolution iResolution
 
+#define rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
+
 // Base Func ///////////////////////////////////////////////////
 float hash(vec3 p)
 {
@@ -145,9 +147,10 @@ vec4 LightingMountain(vec3 ro,vec3 rd,float t,float dmax)
     ));
         
     float diff=dot(n,l);
-    diff=max(diff,0.0);
+    //diff=max(diff,0.0);
+    diff=abs(diff);
     col.rgb*=diff;
-    col.rgb*=vec3(211.0 / 255.0, 149.0 / 255.0, 107.0 / 255.0);
+    //col.rgb*=vec3(211.0 / 255.0, 149.0 / 255.0, 107.0 / 255.0);
     //col.rgb=n;
         
     // fog
@@ -158,7 +161,7 @@ vec4 LightingMountain(vec3 ro,vec3 rd,float t,float dmax)
 }
 
 // Cloud Func //////////////////////////////////////////////////
-vec4 fbm2(in vec3 x,int octaves)
+/*vec4 fbm2(in vec3 x,int octaves)
 {
     float f=1.9;
     float s=0.55;
@@ -228,7 +231,7 @@ vec4 RenderingCloud(vec3 ro,vec3 rd,float dmax,vec4 incol)
     }
     
     return col;
-}
+}*/
 
 void main()
 {
@@ -239,6 +242,9 @@ void main()
     // Base Parm
     vec4 col = vec4(1.0);
     vec3 ta=_WorldCameraCenter,ro=_WorldCameraPos;
+    //ro.xz*=-1.0;
+    ro.xz*=rot(-_time*0.25);
+
     ta.y-=1000.0;
     ro.y-=1000.0;
 
@@ -249,7 +255,8 @@ void main()
     float nowobj = 2.0,d=1.0,t=0.0;
     
     // sky color
-    col.rgb=vec3(0.42, 0.62, 1.1) - rd.y*0.4;
+    col.rgb=vec3(0.75);
+    //col.rgb=vec3(0.42, 0.62, 1.1) - rd.y*0.4;
     
     // modeling of Mountain
     vec3 mountain = renderMountain(ro,rd,0.75);
@@ -264,22 +271,20 @@ void main()
     if(nowobj == 1.0) // moutain
     {
         col=LightingMountain(ro,rd,t,mountain.z);
+        //col = vec4(vec3( (col.r+col.g+col.b)*0.33333 ),1.0);
     }
-    else// Cloud
+    /*else// Cloud
     {
         col=RenderingCloud(ro,rd,0.001,col);
         
         // fog test
         //vec3 fogVal=exp2(-0.0025*t*vec3(1.0,2.0,4.0));
         //col.rgb=mix(vec3(0.5),col.rgb,fogVal);
-    }
+    }*/
     
     if(_RenderingTarget==2.0){
-        col.rgb=vec3(0.5);
+        col.rgb=vec3(0.995);
         //col.rgb=vec3( (col.r+col.g+col.b)*0.333 );
-    }
-    else
-    {
     }
 
     gl_FragColor = col;

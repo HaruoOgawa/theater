@@ -15,11 +15,6 @@ uniform vec3 _WorldCameraPos;
 uniform int _UseEnvColor;
 uniform vec4 _EnvColor;
 
-uniform int _UseMainTex;
-uniform sampler2D _MainTex;
-uniform int _UseMainCube;
-uniform samplerCube _MainCube;
-
 float hash(vec3 p)
 {
     p=50.0*fract( p*0.3183099 + vec3(0.71,0.113,0.419));
@@ -63,26 +58,13 @@ void main(){
 	vec4 col=vec4(vec3(0.0),1.0);
 
 	// ベースカラー
-	if(_UseColor == 1)
+	/*if(_UseColor == 1)
 	{
 		col=_Color;
 	}
-	else if(_UseMainTex == 1) // テクスチャサンプリング
-	{
-		col=texture(_MainTex,uv);
-	}
-	else if(_UseMainCube == 1)
-	{
-		vec3 viewdir = -normalize(_WorldCameraPos-WorldVertexPos);
-		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
-		col.rgb=texture(_MainCube,rpdir).rgb;
-
-		//col=vec4(rpdir*0.5+0.5,1.0);
-	}
-	else
+	else*/
 	{
 		col=vec4(1.0);
-		//col=vec4(uv.x,uv.y,0.0,1.0);
 	}
 
 	
@@ -112,8 +94,6 @@ void main(){
 		//col.rgb=vec3(1.0);
 		col.rgb+=(noised(vec3(viewDir*1000.0))*0.5+0.5).r*0.05;
 	}
-
-	
 
 	gl_FragColor=col;
 }

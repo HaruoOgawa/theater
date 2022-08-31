@@ -26,7 +26,7 @@ void main(){
 	vec4 col=vec4(vec3(1.0),1.0);
 
 	// ベースカラー
-	col.rgb = hash(vec3(v2f_id+4.4412,0.00591,v2f_id))*0.5+0.5;
+	//col.rgb = hash(vec3(v2f_id+4.4412,0.00591,v2f_id))*0.5+0.5;
 	//col.rgb = vec3(0.91,0.57,0.6) * 2.0;
 	
 	// 環境光

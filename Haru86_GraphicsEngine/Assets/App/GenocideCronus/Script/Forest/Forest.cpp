@@ -27,13 +27,14 @@ namespace myapp
 		m_LTreeModel = std::make_shared<LTreeModel>();
 
 		// エナジーボール
-		std::string EnergyBall_frag = {
-			#include "../../Shader/Forest/EnergyBall.frag"
-		};
 		m_EnergyBall = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderingSurfaceType::RAYMARCHING,shaderlib::ShaderLib::StandardRenderBoard_vert, EnergyBall_frag
+			RenderingSurfaceType::RAYMARCHING,
+			shaderlib::ShaderLib::StandardRenderBoard_vert, 
+			std::string(
+				#include "../../Shader/Forest/EnergyBall.frag"
+			)
 		);
 		m_EnergyBall->useZTest = false;
 		m_EnergyBall->useAlphaTest = true;
@@ -57,13 +58,18 @@ namespace myapp
 		};
 
 		// Mountain(Scene4のものを背景として流用)
-		std::string MountainAround_frag = {
-			#include "../../Shader/ProceduralCity/City_Cloud.frag"
-		};
 		m_AroundMountain = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
-			RenderingSurfaceType::RAYMARCHING, shaderlib::ShaderLib::StandardRenderBoard_vert, MountainAround_frag);
+			RenderingSurfaceType::RAYMARCHING, 
+			shaderlib::ShaderLib::StandardRenderBoard_vert, 
+			/*std::string(
+				#include "../../Shader/ProceduralCity/City_Cloud.frag"
+			)*/
+			std::string(
+				#include "../../Shader/Forest/MountainAround.frag"
+			)
+		);
 
 		m_AroundMountain->useAlphaTest = false;
 		m_AroundMountain->useZTest = false;
@@ -100,7 +106,7 @@ namespace myapp
 			if (IsRaymarching)
 			{
 				m_AroundMountain->Draw();
-				//m_EnergyBall->Draw();
+				m_EnergyBall->Draw();
 			}
 			else
 			{

@@ -73,7 +73,7 @@ namespace sound
 			MAXERRORLENGTH);
 
 		// スキップした後は、もう一度Playしないと音が鳴らない
-		Play();
+		//Play();
 
 		//Console::Log("cmd: %s\n", cmd.c_str());
 		//std::printf("%s\n", errorString.data());
