@@ -3,9 +3,6 @@
 #include <memory>
 #include <string>
 #include <glm/glm.hpp>
-class Mesh;
-class Material;
-class TransformComponent;
 
 namespace myapp {
 
@@ -50,38 +47,25 @@ namespace myapp {
 
 	class LTree
 	{
-		// Base Info
-		std::shared_ptr<Mesh> m_TreeMesh;
-		std::shared_ptr<Material> m_TreeMaterial;
-		std::shared_ptr<TransformComponent> m_TreeTRS;
-
-		// L-System Info
 		int m_LStep;
 		std::string m_StartStructure;
 		std::vector<LRule> m_LRule;
 		std::string m_LStructure;
 		std::shared_ptr<LTreeNode> m_LRootNode;
 	public:
-		LTree();
+		LTree()=default;
 		virtual ~LTree()=default;
 
-		void Start();
-		void Update();
-		void Draw();
+		void Generate(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 	
 	private:
-		// Base MeThod
 		void PrepareLSystem();
 		void GenerateLStructure();
 
 		void AnalyseLStructure();
-		void RunLSystem();
+		void RunLSystem(std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 		void BuildLTreeMesh(std::vector<glm::vec3>& LTree_Vertices,std::vector<glm::vec3>& LTree_Normals,
-			const std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices);
-
-		// L-System Action Method
-
-		// 
-		void CreateBaseData();
+			const std::vector<float>& LTreeRadiusList,std::vector<unsigned short>& LTree_Indices,
+			std::vector<std::vector<float>>& VertexData, std::vector<int>& Dimention, std::vector<unsigned short>& Indices);
 	};
 }

@@ -3,8 +3,8 @@
 #include <glm/gtx/quaternion.hpp>
 #include "../GraphicsMain/GraphicsMain.h"
 
-TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s)
-	: m_center(glm::vec3(0.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
+TransformComponent::TransformComponent(glm::vec3 pos,glm::vec3 rot,glm::vec3 s, glm::vec3 center)
+	: m_center(center), m_up(glm::vec3(0.0f,1.0f,0.0f)),m_position(pos), m_rotation(rot), m_scale(s)
 {
 	CalMatrix();
 }

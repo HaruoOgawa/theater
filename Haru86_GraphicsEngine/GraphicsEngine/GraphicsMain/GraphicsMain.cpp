@@ -9,6 +9,7 @@
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
 #include "GraphicsEngine/Sound/SoundPlayer.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -34,6 +35,7 @@ GraphicsMain::GraphicsMain()
 	: 
 	isRunning(true),
 	m_SecondsTime(0.0f),
+	m_SecondsTimeOffset(0.0f),
 	m_MilliSecondsTime(0.0f),
 	m_DeltaTime(0.0f),
 	previousTime(0.0f),
@@ -54,7 +56,6 @@ GraphicsMain::~GraphicsMain() {
 
 	gameObjectList.clear();
 	raymarchingObjectList.clear();
-	boardGameObjectList.clear();
 	postProcessGameObjectList.clear();
 	uiObjectList.clear();
 	m_ReflectionProbeList.clear();
@@ -81,16 +82,13 @@ void GraphicsMain::LoadData() {
 	//
 	m_App->Start();
 
-	//renderBoardがユーザーに指定されていないのであれば、デフォルトのものをセットする
-	if (renderBoard==nullptr) {
-		renderBoard = std::make_unique<GameObject>(
-			std::make_shared<TransformComponent>(),
-			PrimitiveType::BOARD, 
-			RenderType::FrameBuffer,
-			RenderQueue::UI,
-			RenderingSurfaceType::RASTERIZER,
-			shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::StandardRenderBoard_frag);
-	}
+	m_MainBoardRenderer = std::make_shared<MeshRendererComponent>(
+		std::make_shared<TransformComponent>(),
+		PrimitiveType::BOARD,
+		RenderingSurfaceType::RASTERIZER,
+		shaderlib::ShaderLib::StandardRenderBoard_vert,
+		shaderlib::ShaderLib::StandardRenderBoard_frag
+	);
 
 	//
 	m_App->Timeline(m_timeline.get());
@@ -108,7 +106,14 @@ void GraphicsMain::LoadData() {
 
 	//
 	m_SoundPlayer = std::make_shared<sound::SoundPlayer>();
-	m_SoundPlayer->Play();
+	if (m_SecondsTimeOffset != 0.0f && m_SecondsTimeOffset > 0.0f)
+	{
+		m_SoundPlayer->Skip(m_SecondsTimeOffset);
+	}
+	else
+	{
+		m_SoundPlayer->Play();
+	}
 }
 
 bool GraphicsMain::RunLoop() {
@@ -129,6 +134,9 @@ unsigned int GraphicsMain::GetAppSceneIndex()const
 }
 
 void GraphicsMain::UpdateTimeline() {
+	m_App->UpdateTimeline();
+
+	//
 	m_timeline->Update();
 	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
 		return a->m_renderOrder < b->m_renderOrder;
@@ -148,21 +156,17 @@ void GraphicsMain::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void GraphicsMain::Update() {
-	//Console::Log("clock(): %f\n", static_cast<float>(clock()*0.001f));
-
-	//while (!(time > previousTime + 16.0f)) { time += (1.0f / 60.0f); };
-	m_MilliSecondsTime = static_cast<float>(clock());
+	m_MilliSecondsTime = static_cast<float>(clock()) + m_SecondsTimeOffset*1000.0f;
 	m_SecondsTime = m_MilliSecondsTime * 0.001f;
 	m_DeltaTime = (m_MilliSecondsTime - previousTime) / 1000.0f;
-	if (m_DeltaTime > 0.05f) {
+	/*if (m_DeltaTime > 0.05f) {
 		m_DeltaTime = 0.05f;
-	}
+	}*/
 	previousTime = m_MilliSecondsTime;
 
 	if (m_App) {
 		m_App->Update();
 	}
-
 }
 
 // ここのDrawではカメラ位置を変える

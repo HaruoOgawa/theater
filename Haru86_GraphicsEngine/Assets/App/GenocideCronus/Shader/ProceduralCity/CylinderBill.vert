@@ -14,6 +14,7 @@ uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
+uniform int _IDOffset; // 立方体のビルと位置や変化が重ならないようにするためのオフセット
 
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
@@ -49,7 +50,7 @@ vec3 hash( vec3 p ) // replace this by something better. really. do
 void main(){
 	// 基本パラメーター
 	//float id = floor(_time*0.15);
-	float id = float(gl_InstanceID+1024+1);
+	float id = float(gl_InstanceID + _IDOffset);
 	vec4 pos=vec4(vertex,1.0);
 	vec4 localNormal = vec4(normal,0.0);
 	

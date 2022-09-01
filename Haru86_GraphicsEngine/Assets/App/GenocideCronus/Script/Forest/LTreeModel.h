@@ -1,17 +1,22 @@
 #pragma once
 #include <memory>
 
+class MeshRendererComponent;
+
 namespace myapp {
-	class LTree;
-	
 	class LTreeModel
 	{
-		std::shared_ptr<LTree> m_LTree;
+		
+		bool IsStreetLineTree;
 	public:
 		LTreeModel();
 		virtual ~LTreeModel() = default;
 		void Start();
 		void Update();
-		void Draw();
+		void Draw(int numOfTree = 1024, int LinearInstanceRate = 0, bool UseFade = false);
+
+		void SetIsStreetLineTree(bool IsLine) { IsStreetLineTree = IsLine; }
+
+		std::shared_ptr<MeshRendererComponent> m_TreeRenderer;
 	};
 }

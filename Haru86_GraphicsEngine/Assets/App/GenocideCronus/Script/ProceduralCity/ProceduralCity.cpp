@@ -9,16 +9,24 @@
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "BillMeshGenerator.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"
-
+#include "GraphicsEngine/Graphics/PostProcess.h"
+#include "GraphicsEngine/Math/mymath_withGLM.h"
 namespace myapp {
 	ProceduralCity::ProceduralCity():
 		m_BillRP(std::make_shared<ReflectionProbe>(glm::vec3(0.0f, 2.5f, 0.0f), 0.001f)),
 		m_Mandelbox(nullptr),
+		m_CityCloud(nullptr),
 		m_ProceduralBillRenderer(nullptr),
 		m_Street(nullptr),
 		m_StreeLamp(nullptr),
 		m_CylinderBill(nullptr),
-		m_XSideWarkVec(glm::vec3(0.0f))
+		m_XSideWarkVec(glm::vec3(0.0f)),
+		m_IsDrawMandel(false),
+		m_IsDrawCloud(false),
+		m_GaffDoor(nullptr),
+		m_RubbleParticle(nullptr),
+		NumOfProBill(1024),
+		NumOfCyBill(256)
 	{
 		Start();
 	}
@@ -53,6 +61,7 @@ namespace myapp {
 					#include "../../Shader/ProceduralCity/Bill.tese"
 				)
 			);
+
 		}
 		
 		// 円柱ビル
@@ -94,17 +103,52 @@ namespace myapp {
 		}
 
 		// Mandelbox
-		std::string MandelboxShader = {
-			#include "../../Shader/ProceduralCity/MandelboxSample.frag"
-		};
-
 		m_Mandelbox = std::make_shared<MeshRendererComponent>(
 			std::make_shared<TransformComponent>(),
 			PrimitiveType::BOARD,
 			RenderingSurfaceType::RAYMARCHING,
 			shaderlib::ShaderLib::RaymarchingObject_vert,
-			MandelboxShader
+			std::string(
+				#include "../../Shader/ProceduralCity/MandelboxSample.frag"
+			)
+		);
+
+		// City Cloud
+		m_CityCloud = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderingSurfaceType::RAYMARCHING,
+			shaderlib::ShaderLib::RaymarchingObject_vert,
+			std::string(
+				#include "../../Shader/ProceduralCity/City_Cloud.frag"
+			)
+		);
+
+		// ガフの扉(みたいなやつ)
+		m_GaffDoor = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::BOARD,
+			RenderingSurfaceType::RASTERIZER,
+			shaderlib::ShaderLib::Standard_vert,
+			std::string(
+				#include "../../Shader/ProceduralCity/GaffDoor.frag"
+			)
+		);
+		m_GaffDoor->m_transform->m_rotation = glm::vec3(-3.14f / 2.0f, 0.0f, 0.0f);
+		m_GaffDoor->m_transform->m_scale = glm::vec3(500.0f);
+		m_GaffDoor->m_transform->m_position = glm::vec3(0.0f, 100.0f, 0.0f);
+
+		// 瓦礫
+		m_RubbleParticle = std::make_shared<MeshRendererComponent>(
+			std::make_shared<TransformComponent>(),
+			PrimitiveType::SPHERE,
+			RenderingSurfaceType::RASTERIZER,
+			std::string(
+				#include "../../Shader/SacredLake/SacredGPUParticle.vert"
+			),
+			shaderlib::ShaderLib::Standard_frag
 			);
+
 	}
 
 	void ProceduralCity::Update() 
@@ -118,68 +162,105 @@ namespace myapp {
 			float time = GraphicsMain::GetInstance()->m_SecondsTime;
 			m_XSideWarkVec.z = glm::mod(-time * 11.0f, PlaneSize) - PlaneSize * 0.5;
 		}
-
-		/*GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			2.5f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			2.5f,
-			2.5f*glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);*/
-
-		// デバッグ用カメラ
-		float radius = 2.0f;
-		GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-			radius * glm::cos(-3.14f/2.0),
-			//radius * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			//2.0f,
-			//0.5f,
-			1.0f,
-			radius * glm::sin(-3.14f / 2.0)
-			//radius * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
-		//GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 0.5f, 0.0f);
-		GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		// デバッグ用ライト移動
-		GraphicsMain::GetInstance()->m_GroabalLightPosition->m_position = glm::vec3(
-			10.0f * glm::cos(-3.14f / 2.0),
-			//10.0f * glm::cos(GraphicsMain::GetInstance()->m_SecondsTime),
-			10.0f,
-			10.0f * glm::sin(-3.14f / 2.0)
-			//10.0f * glm::sin(GraphicsMain::GetInstance()->m_SecondsTime)
-		);
 	}
 
-	void ProceduralCity::Draw(bool IsRaymarching) {
-		if (IsRaymarching)
+	void ProceduralCity::Draw(bool IsRaymarching, int LinearInstanceRate) {
+		//
+		bool UseFade = false;
+
+		//
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
-			m_Mandelbox->Draw();
+			UseFade = true;
+			NumOfProBill = static_cast<int>(glm::pow(2.0f, 10-LinearInstanceRate));
+			NumOfCyBill = static_cast<int>(glm::pow(2.0f, 8 - (glm::max(0, LinearInstanceRate - 2)) ));
 		}
 		else
 		{
-			// ビル
-			if (m_BillRP)
+			NumOfProBill = 1024;
+			NumOfCyBill = 256;
+		}
+		//
+		if (IsRaymarching)
+		{
+			if (m_IsDrawCloud)
 			{
-				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, 1024, [this]() {
+				m_CityCloud->Draw();
+			}
+			else
+			{
+				m_Mandelbox->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_Mandelbox->m_material->SetIntUniform("_IsDrawMandel", (m_IsDrawMandel) ? 1 : 0);
+				});
+			}
+		}
+		else
+		{
+			//NumOfProBill = 0;
+			NumOfProBill = 256;
+			NumOfCyBill = 0;
+			// ビル
+			if (m_BillRP && NumOfProBill != 1)
+			{
+				m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [=]() {
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade)? 1 : 0);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0 );
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 0);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
 					});
 				m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+
+				// シーンインデックス６限定の描画
+				if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
+				{
+					// 飛び散るパーティクルビル
+					m_ProceduralBillRenderer->Draw(GL_PATCHES, true, NumOfProBill, [=]() {
+						m_ProceduralBillRenderer->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
+						m_ProceduralBillRenderer->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
+						m_ProceduralBillRenderer->m_material->SetFloatUniform("StreetRadius", 2.5f);
+						m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", 1);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 1);
+
+						m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+						m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
+						});
+					m_BillRP->m_CubeTex->SetEnactive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
+
+					// ガフの扉
+					m_GaffDoor->Draw();
+
+					// 瓦礫
+					m_RubbleParticle->Draw(GL_TRIANGLES, true, 1024, [this]() {
+						m_RubbleParticle->m_material->SetIntUniform("_IDOffset", 0);
+						m_RubbleParticle->m_material->SetIntUniform("_NotUseNormal", 1);
+						m_RubbleParticle->m_material->SetIntUniform("_IsRandomScale", 1);
+						m_RubbleParticle->m_material->SetFloatUniform("_ParticleScale", 1.0f);
+						m_RubbleParticle->m_material->SetFloatUniform("_ParticleMoveSpeed", 1.0f);
+						});
+				}
 			}
 			
 			// 円柱ビル
-			if (m_CylinderBill && m_BillRP)
+			if (m_CylinderBill && m_BillRP && NumOfCyBill != 1)
 			{
-				m_CylinderBill->Draw(GL_TRIANGLES, true, 256, [this]() {
+				m_CylinderBill->Draw(GL_TRIANGLES, true, NumOfCyBill, [=]() {
 					m_CylinderBill->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_CylinderBill->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_CylinderBill->m_material->SetFloatUniform("StreetRadius", 2.5f);
 					m_CylinderBill->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
+					m_CylinderBill->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
+					m_CylinderBill->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_CylinderBill->m_material->SetIntUniform("_IDOffset", 1024 + 1);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -190,7 +271,7 @@ namespace myapp {
 			// ストリート
 			if (m_Street)
 			{
-				m_Street->Draw(GL_POINTS, true, 1024, [this]() {
+				m_Street->Draw(GL_POINTS, true, 1024, [&]() {
 					m_Street->m_material->SetVec3Uniform("_ZCenterVec", glm::vec3(2.0f * glm::cos(-3.14f / 2.0),2.0f, 2.0f * glm::sin(-3.14f / 2.0)));
 					m_Street->m_material->SetVec3Uniform("XSideWarkVec", m_XSideWarkVec);
 					m_Street->m_material->SetFloatUniform("StreetRadius", 2.5f);
@@ -198,7 +279,149 @@ namespace myapp {
 					m_Street->m_material->SetFloatUniform("ToSideWarkDist", 2.5f);
 					m_Street->m_material->SetFloatUniform("_pointNum", 1024.0f);
 					m_Street->m_material->SetFloatUniform("_Segment", 32.0f);
+
+					m_Street->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_Street->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0);
 				});
+			}
+		}
+	}
+
+	void ProceduralCity::UpdateTimeline(float LocalTime)
+	{
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
+		{
+			if (LocalTime > 0.0f && LocalTime<31.0f)
+			{
+				// カメラワーク
+				float CameraTimeModeRate = 10.0f, NumOfCamera = 3.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.0f, 10.0f, 10.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+
+				//
+				//float VignetteRadius = glm::sin(LocalTime);
+				float VignetteRadius = glm::clamp((LocalTime - 0.0f) / 5.0f, 0.0f, 1.0f);
+				float VignetteLateRadius = glm::clamp((LocalTime - 30.0f)/1.0f, 0.0f, 1.0f);
+				float VignetteBrightness = glm::clamp((LocalTime - 30.0f) / 1.0f, 0.0f, 1.0f);
+				
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteRadius", VignetteRadius);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteLateRadius", VignetteLateRadius);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_VignetteBrightness", VignetteBrightness);
+				};
+
+				m_IsDrawMandel = false;
+			}
+			else if (LocalTime >= 31.0f && LocalTime < 70.0f)
+			{
+				// カメラワーク
+				float CameraTimeModeRate = 5.0f, NumOfCamera = 5.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime), 10.0f, 20.0f * glm::sin(LocalTime));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 2.5f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 10.0f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				};
+				m_IsDrawCloud = true;
+			}
+		}
+		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
+		{
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+			};
+			m_IsDrawCloud = true;
+
+			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
+			GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
+		}
+		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
+		{
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
+			};
+			m_IsDrawCloud = false;
+			m_IsDrawMandel = true;
+
+			// カメラワーク
+			float CameraTimeModeRate = 10.0f, NumOfCamera = 5.0f;
+			float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+			m_Street->m_transform->m_scale = glm::vec3(1.0f);
+
+			if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime * 0.1f), 10.0f, 20.0f * glm::sin(LocalTime * 0.1f));
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 0.0f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
+					glm::cos(LocalTime * 0.1f) * 17.5f,
+					0.5f,
+					glm::sin(LocalTime * 0.1f) * 17.5f
+				);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
+			{
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+			}
+			else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
+			{
+				m_Street->m_transform->m_scale = glm::vec3(100.0f,1.0f, 100.0f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(50.5f, 10.5f, 50.5f);
+				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
 			}
 		}
 	}

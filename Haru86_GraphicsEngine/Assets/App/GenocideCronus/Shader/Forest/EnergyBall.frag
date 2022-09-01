@@ -109,14 +109,14 @@ void main(){
         //vec3 col=vec3(1.0);
         gl_FragColor=vec4(col,1.0);
     }
-    
   }
   else
   {
     if(_RenderingTarget==2.0)
     {
-        vec3 col=vec3(1.0);
-        gl_FragColor=vec4(col,1.0);
+        //vec3 col=vec3(1.0);
+        vec4 col=vec4(0.0);
+        gl_FragColor=col;
     }
   }
 

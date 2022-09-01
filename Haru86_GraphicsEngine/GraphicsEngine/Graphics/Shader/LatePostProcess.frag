@@ -3,8 +3,9 @@ R"(
 #version 410
 
 in vec2 uv;
-in float time;
 
+uniform float _time;
+uniform float _deltaTime;
 uniform vec2 _resolution;
 uniform sampler2D _SrcTexture;
 uniform sampler2D _NormalMap;
@@ -17,6 +18,19 @@ uniform mat4 InvVPMatrix;
 uniform vec3 _WorldCameraPos;
 uniform vec3 _WorldCameraCenter;
 uniform int _UseSSR;
+uniform int _UseVignette;
+uniform float _VignetteRadius;
+uniform float _VignetteLateRadius;
+uniform float _VignetteBrightness;
+uniform int _UseThirdImpact;
+uniform int _UseFilmFilter;
+uniform int _UseWave;
+uniform int _UseRewinding;
+
+float rand(vec2 st)
+{
+    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
+}
 
 vec3 CalSSRColor(vec3 color){
 	vec3 col=color;
@@ -102,15 +116,102 @@ vec3 CalSSRColor(vec3 color){
 	return col;
 }
 
+vec3 Vignette(vec3 col)
+{
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+	st=st*2.0-1.0;
+	
+	float w = 1.1+(1.0-_VignetteRadius)*4.0 - _VignetteLateRadius*0.5;
+	
+	float d = (length(st))*w;
+	col = mix(col,vec3(0.0),d);
+	//col*=d*0.5*(1.0+_VignetteBrightness);
+	col*=d*0.5*(1.0+9.0*_VignetteBrightness);
+
+	col.rgb+=(_VignetteBrightness);
+
+	return col;
+}
+
+vec3 ThirdImpact(vec3 col)
+{
+	col = vec3(col.r,col.g*0.1,col.b*0.1);
+	col *= 0.75;
+	return col;
+}
+
+vec3 DrawFilmFilter(vec3 col)
+{
+	//
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+
+	// ホワイトノイズ
+	col *= ( 1.0 - rand(vec2(st.x,st.y)+_time) * (1.0 - min(1.0,abs(sin(_time*0.5))*1.5))  );
+
+	//
+	st=st*2.0-1.0;
+
+	float w = 0.2;
+	if(abs(st.y) > (1.0-w)) col = vec3(0.0);
+
+	return col;
+}
+
+vec3 DrawRewindingFilter(vec3 col)
+{
+	// ホワイトノイズ
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+	col *= rand(vec2(st.x,st.y)+_time);
+
+	// ラインノイズ
+	float DomainSize = 100.0;
+	float did = rand(vec2(0.971,floor(st.y*DomainSize))) * DomainSize;
+	float randStartTime = rand(vec2(did+did,did+0.691+9.99));
+	float RandWidth = rand(vec2(did,floor(randStartTime*DomainSize+_time)))*0.1; 
+	
+	float d0 = abs(st.y) - (mod(_time+randStartTime,1.0));
+	float d1 = abs(st.y) - (mod(_time+randStartTime,1.0) - RandWidth);
+	if(d0<0.001 && d1>0.001)
+	{
+		col.rgb *= 0.5;
+	}
+
+	// ビデオフィルター
+	{
+		vec2 vst = st*2.0-1.0;
+		float FilterWidth = 0.25;
+		if(abs(vst.x) > (1.0-FilterWidth))
+		{
+			col.rgb = vec3(0.0);
+		}
+	}
+
+	return col;
+}
+
 void main(){
 	vec3 col=vec3(0.0);
 	vec2 st=gl_FragCoord.xy/_resolution.xy;
 	
+	if(_UseWave == 1)
+	{
+		//float val=(sin(_time*2.0)+1.0)*0.5+0.1;
+		float val=0.6;
+		st.y+=0.005*sin(_time*100.0)*val;
+		st.x+=0.001*sin(_time*50.0)*val;
+	}
+	else if(_UseRewinding == 1)
+	{
+		st.y = mod(st.y+_time,_frameResolusion);
+	}
+
 	col=texture(_SrcTexture,st).rgb;
-	//col=texture(_DepthMapPolygone,st).rgb;
-	//col=texture(_DepthMapMixed,st).rgb;
 	
 	if(_UseSSR == 1)col=CalSSRColor(col);
+	if(_UseVignette == 1) col = Vignette(col);
+	if(_UseThirdImpact == 1) col = ThirdImpact(col);
+	if(_UseFilmFilter == 1) col = DrawFilmFilter(col);
+	if(_UseRewinding == 1) col = DrawRewindingFilter(col);
 
 	gl_FragColor=vec4(col,1.0);
 }

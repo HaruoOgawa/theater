@@ -7,6 +7,7 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
+#include "Forest.h"
 
 namespace myapp {
 	Stem::Stem(FlowerModel* model) :
@@ -130,9 +131,9 @@ namespace myapp {
             initStemManege.push_back(stemManage);
             
             //
-            //glm::vec2 initBasePos = mymath::circleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
+            glm::vec2 initBasePos = mymath::circleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
             // Ç–Ç∆Ç‹Ç∏îºãÖèÛÇ…ï¿Ç◊ÇÈ
-            glm::vec2 initBasePos = mymath::hemCircleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
+           // glm::vec2 initBasePos = mymath::hemCircleRand(stemGrowthRange, glm::vec2(5.1792f, float(i) + 6.66666f), glm::vec2(float(i) + 7.771543f)); //glm::sphericalRand(stemGrowthRange);
             
             // offset
             glm::vec2 offvec = 5.0f * glm::normalize(initBasePos);

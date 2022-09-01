@@ -17,6 +17,8 @@ uniform vec3 XSideWarkVec;
 uniform float StreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
+uniform int _IsEndCity; // シーンインデックスが『6』かどうか
+uniform int _IsParticleBill; // GPUParticleのビルかどうか
 
 in float t2g_id[];
 in vec3 t2g_normal[];
@@ -73,40 +75,65 @@ void main()
 {
 	// ランダムポジション
 	float id = t2g_id[0];
-	float domainSize=32.0;
-	vec2 domainID=vec2(0.0);
-	domainID.y=floor(id/domainSize);
-	domainID.x=id-domainID.y*domainSize;
 	
 	vec3 randPos=vec3(0.0);
 	float randPosRadius=75.0;
 	randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
 	randPos.y=1.5;
 
-	randPos.z-=_time*10.0;
-	randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
-
-	// 大通りのぶんだけ道を開ける
+	//
+	if(_IsEndCity != 1)
 	{
-		vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+		randPos.z-=_time*10.0;
+		randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
 
-		if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+		// 大通りのぶんだけ道を開ける
 		{
-			vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
-			randPos+=StreetOffVec;
+			vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+
+			if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+			{
+				vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
+				randPos+=StreetOffVec;
+			}
 		}
+
+		/*// X軸の大通りの分だけ、道をあける
+		{
+			vec3 OffsetVectorXStreet = randPos-XSideWarkVec;
+			if( abs(OffsetVectorXStreet.z) < StreetRadius)
+			{
+				vec3 StreetOffVec = StreetRadius * normalize( vec3(0.0,0.0,1.5*(OffsetVectorXStreet.z)) );
+				randPos+=StreetOffVec;
+			}
+		}*/
 	}
-
-	/*// X軸の大通りの分だけ、道をあける
+	else if(_IsParticleBill == 1)
 	{
-		vec3 OffsetVectorXStreet = randPos-XSideWarkVec;
-		if( abs(OffsetVectorXStreet.z) < StreetRadius)
-		{
-			vec3 StreetOffVec = StreetRadius * normalize( vec3(0.0,0.0,1.5*(OffsetVectorXStreet.z)) );
-			randPos+=StreetOffVec;
-		}
-	}*/
+		// ランダムワールドポジション
+		float height = 100.0;
+		float width = 60.0;
+		
+		randPos = hash(vec3(
+			id+0.321,
+			id+0.11159,
+			id+0.741
+		));
+		
+		/*randPos=( vec3( 
+			rand( vec2(float(gl_InstanceID),0.321)), 
+			rand( vec2(float(gl_InstanceID),0.11159)),
+			rand( vec2(float(gl_InstanceID),0.741))
+		) * 2.0-1.0 );*/
+		
+		randPos.y*=height;
+		randPos.xz*=width;
 
+		vec4 OffDir = vec4(0.0,1.0,0.0,1.0);
+		randPos+=normalize(OffDir.xyz)*_time;
+		randPos.y=mod(randPos.y,height);
+	}
+	
 	Createvertex(randPos);
 }
 

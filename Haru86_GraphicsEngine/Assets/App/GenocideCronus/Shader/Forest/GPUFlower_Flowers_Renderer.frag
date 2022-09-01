@@ -5,56 +5,33 @@ R"(
 in vec2 uv;
 in vec3 WorldVertexPos;
 in vec3 WorldNormal;
+flat in float v2f_id;
 
-uniform int _UseColor;
-uniform vec4 _Color;
 uniform int _UseLighting;
 uniform vec3 _LightDir;
 uniform vec3 _LightPos;
 uniform vec3 _WorldCameraPos;
-uniform int _UseEnvColor;
-uniform vec4 _EnvColor;
 
-uniform int _UseMainTex;
-uniform sampler2D _MainTex;
-uniform int _UseMainCube;
-uniform samplerCube _MainCube;
+// hash --> https://www.shadertoy.com/view/4dffRH
+vec3 hash( vec3 p ) // replace this by something better. really. do
+{
+	p = vec3( dot(p,vec3(127.1,311.7, 74.7)),
+			  dot(p,vec3(269.5,183.3,246.1)),
+			  dot(p,vec3(113.5,271.9,124.6)));
+
+	return -1.0 + 2.0*fract(sin(p)*43758.5453123);
+}
 
 void main(){
-	vec4 col=vec4(vec3(0.0),1.0);
+	vec4 col=vec4(vec3(1.0),1.0);
 
 	// ベースカラー
-	if(_UseColor == 1)
-	{
-		col=_Color;
-	}
-	else if(_UseMainTex == 1) // テクスチャサンプリング
-	{
-		col=texture(_MainTex,uv);
-	}
-	else if(_UseMainCube == 1)
-	{
-		vec3 viewdir = -normalize(_WorldCameraPos-WorldVertexPos);
-		vec3 rpdir = normalize(reflect(viewdir,WorldNormal));
-		col.rgb=texture(_MainCube,rpdir).rgb;
-
-		//col=vec4(rpdir*0.5+0.5,1.0);
-	}
-	else
-	{
-		col=vec4(1.0);
-		//col=vec4(uv.x,uv.y,0.0,1.0);
-	}
-
+	//col.rgb = hash(vec3(v2f_id+4.4412,0.00591,v2f_id))*0.5+0.5;
+	//col.rgb = vec3(0.91,0.57,0.6) * 2.0;
 	
-
 	// 環境光
 	vec4 envColor = vec4(0.0,0.0,0.0,1.0);
-	if(_UseEnvColor == 1)
-	{
-		envColor = _EnvColor;
-	}
-
+	
 	// ライティング
 	if(_UseLighting == 1)
 	{

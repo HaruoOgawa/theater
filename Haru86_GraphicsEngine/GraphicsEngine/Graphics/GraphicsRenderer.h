@@ -35,7 +35,6 @@ class GraphicsRenderer
 	unsigned int polygon_frameBuffer_MSAA;
 	unsigned int polygon_depthBuffer;
 	unsigned int polygon_normalBuffer;
-	unsigned int polygon_ShadowMapBuffer;
 	unsigned int raymarching_frameBuffer;
 	unsigned int raymarching_depthBuffer;
 	unsigned int p_r_BlendingBuffer;
@@ -97,4 +96,3 @@ private:
 protected:
 	static GraphicsRenderer* renderer_instance;
 };
-

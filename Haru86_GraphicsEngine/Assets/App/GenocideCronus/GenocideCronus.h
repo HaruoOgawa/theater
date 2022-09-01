@@ -10,27 +10,28 @@ namespace myapp {
     class SacredLake;
     class Forest;
     class Mountain;
-    class SSR_Test;
 }
 
 class GenocideCronus
 {
-    // カメラ
+    // 基本パラメーター
     std::shared_ptr<TransformComponent> m_CameraTransform;
+    unsigned int m_SceneIndex;
+    float        m_LocalTime;
+
+    float        m_LocalReverseTime;
+    bool         m_IsReverseTime;
 
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
-    bool IsDebugSoundSkipped;
-
+    // デバッグ用: 時よ止まれっっっっ！！！！！！
+    bool m_DebugTimeLock;
+  
     // シーンオブジェクト
-    unsigned int m_SceneIndex;
     std::shared_ptr<myapp::ProceduralCity> m_ProceduralCity;
     std::shared_ptr<myapp::SacredLake> m_SacredLake;
     std::shared_ptr<myapp::Forest> m_Forest;
     std::shared_ptr<myapp::Mountain> m_Mountain;
-
-    std::shared_ptr<myapp::SSR_Test> m_SSR_Test;
-
 public:
     GenocideCronus();
     ~GenocideCronus() = default;
@@ -39,6 +40,7 @@ public:
     void Update();
     void Draw(bool IsRaymarching);
     void Timeline(CTimeline* timeline);
+    void UpdateTimeline();
 
     unsigned int GetSceneIndex()const { return m_SceneIndex; }
 };

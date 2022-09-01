@@ -9,7 +9,7 @@ GameObject::GameObject(const std::shared_ptr<TransformComponent>& TRS,PrimitiveT
 {
 	//
 	if (renderType == RenderType::FrameBuffer) {
-		GraphicsMain::GetInstance()->boardGameObjectList.emplace_back(this);
+		//GraphicsMain::GetInstance()->boardGameObjectList.emplace_back(this);
 	}
 	else if (renderType == RenderType::PostProcess) {
 		GraphicsMain::GetInstance()->postProcessGameObjectList.emplace_back(this);

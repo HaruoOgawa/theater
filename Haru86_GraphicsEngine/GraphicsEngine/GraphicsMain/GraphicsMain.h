@@ -24,6 +24,7 @@ class GenocideCronus;
 class CTimeline;
 class TransformComponent;
 class ReflectionProbe;
+class MeshRendererComponent;
 
 class GraphicsMain
 {
@@ -46,12 +47,12 @@ public:
 
 	float m_SecondsTime;
 	float m_MilliSecondsTime;
+	float m_SecondsTimeOffset;
 	float m_DeltaTime;
 	std::unique_ptr<CTimeline> m_timeline;
 	float animTime;
 
 	//frame board
-	std::unique_ptr<class GameObject> renderBoard;
 	std::shared_ptr<class CameraObject> game_camera_instance;
 	
 	//
@@ -61,7 +62,7 @@ public:
 	float previousTime;
 	std::vector<class GameObject*> gameObjectList;
 	std::vector<class GameObject*> raymarchingObjectList;
-	std::vector<class GameObject*> boardGameObjectList;
+	std::shared_ptr<MeshRendererComponent> m_MainBoardRenderer;
 	std::vector<class GameObject*> postProcessGameObjectList;
 	std::vector<class UIObject*> uiObjectList;
 
@@ -69,10 +70,6 @@ public:
 
 	// ライト
 	std::shared_ptr<TransformComponent> m_GroabalLightPosition;
-
-	// カメラパラメーター
-	//std::vector<std::shared_ptr<TransformComponent>> m_CameraTransformList;
-	//int m_UseCameraIndex;
 
 	// カメラ
 	std::shared_ptr<TransformComponent> m_MainCamera;

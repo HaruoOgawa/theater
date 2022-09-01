@@ -17,11 +17,14 @@ namespace myapp
 		std::shared_ptr<MeshRendererComponent> m_EnergyBall;
 		std::shared_ptr<MeshRendererComponent> m_Ground;
 		std::shared_ptr<MeshRendererComponent> m_AroundMountain;
+
+		bool IsMountainRotate;
 	public:
 		Forest();
 		~Forest() = default;
 		void Start();
 		void Update();
-		void Draw(bool IsRaymarching);
+		void Draw(bool IsRaymarching,int SceneIndex, int LinearInstanceRate,bool IsReverseTime);
+		void UpdateTimeline(float LocalTime);
 	};
 }

@@ -25,24 +25,165 @@ uniform float StreetRadius;
 uniform float LocalStreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
+uniform int _LinearInstanceRate;
+uniform int _IsEndCity; // シーンインデックスが『6』かどうか
 
 uniform int _UseMainTex;
 uniform sampler2D _MainTex;
 //uniform samplerCube _MainTex;
 
-vec3 hash( vec3 p ) // replace this by something better. really. do
+float hash(vec3 p)
 {
-	p = vec3( dot(p,vec3(127.1,311.7, 74.7)),
-			  dot(p,vec3(269.5,183.3,246.1)),
-			  dot(p,vec3(113.5,271.9,124.6)));
-
-	return -1.0 + 2.0*fract(sin(p)*43758.5453123);
+    p=50.0*fract( p*0.3183099 + vec3(0.71,0.113,0.419));
+    return -1.0+2.0*fract( p.x*p.y*p.z*(p.x+p.y+p.z) );
 }
 
  float rand(vec2 st)
 {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
 }
+
+vec4 noised(in vec3 x)
+{
+    vec3 p=floor(x);
+    vec3 w=fract(x);
+    
+    vec3 u=w*w*w*(w*(w*6.0-15.0)+10.0);
+    vec3 du=30.0*w*w*(w*(w-2.0)+1.0);
+    
+    float a = hash( p+vec3(0,0,0) );
+    float b = hash( p+vec3(1,0,0) );
+    float c = hash( p+vec3(0,1,0) );
+    float d = hash( p+vec3(1,1,0) );
+    float e = hash( p+vec3(0,0,1) );
+    float f = hash( p+vec3(1,0,1) );
+    float g = hash( p+vec3(0,1,1) );
+    float h = hash( p+vec3(1,1,1) );
+    
+    float k0 = a;
+    float k1 = b-a;
+    float k2 = c-a;
+    float k3 = e-a;
+    float k4 = a-b-c+d;
+    float k5 = a-c-e+g;
+    float k6 = a-b-e+f;
+    float k7 =-a+b+c-d+e-f-g+h;
+    
+    return vec4( -1.0+2.0*(k0 + k1*u.x + k2*u.y + k3*u.z + k4*u.x*u.y + k5*u.y*u.z + k6*u.z*u.x + k7*u.x*u.y*u.z),
+                 2.0* du * vec3( k1 + k4*u.y + k6*u.z + k7*u.y*u.z,
+                                 k2 + k5*u.z + k4*u.x + k7*u.z*u.x,
+                                 k3 + k6*u.x + k5*u.y + k7*u.x*u.y ) );
+}
+
+// 道路と歩道のライティング
+vec4 DrawStreet(vec4 col)
+{
+	float StreetTime = (_IsEndCity == 1)? 0.0 : _time;
+
+	{
+	
+		//vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_WorldCameraPos.xyz;
+		vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_ZCenterVec.xyz;
+		vec3 OffsetVectorXStreet = WorldVertexPos.xyz-XSideWarkVec.xyz;
+		if(_IsStreet==1) // 道路
+		{
+			// Base Color
+			col.rgb*=0.5;
+
+			float StreetLineWidth = 0.05;
+			vec2 StreetUV = vec2(0.0);
+	
+			if(g2f_IsZAxis == 1)
+			{
+				StreetUV.x = clamp(abs(OffsetVectorZStreet.x)/1.5,0.0,1.0);
+
+				col.rgb += vec3( (StreetUV.x<StreetLineWidth)? 1.0 : 0.0);
+				col.rgb += vec3( (StreetUV.x>1.0-StreetLineWidth && StreetUV.x<1.0)? 1.0 : 0.0);
+				col.rgb += vec3( (StreetUV.x>0.5-StreetLineWidth*0.5 && StreetUV.x<0.5+StreetLineWidth*0.5)? 1.0 : 0.0)
+					* ( (int(floor(WorldVertexPos.z * 2.0 + StreetTime*10.0))%2==0)? 1.0 : 0.0 ); // 点線にする(止まって見えるのでスクロールする)
+
+			}
+			else if(g2f_IsZAxis == 0)
+			{
+				StreetUV.y = clamp(abs(OffsetVectorXStreet.z)/1.5,0.0,1.0);
+
+				col.rgb += vec3( (StreetUV.y<StreetLineWidth)? 1.0 : 0.0);
+				col.rgb += vec3( (StreetUV.y>1.0-StreetLineWidth && StreetUV.y<1.0)? 1.0 : 0.0);
+				col.rgb += vec3( (StreetUV.y>0.5-StreetLineWidth*0.5 && StreetUV.y<0.5+StreetLineWidth*0.5)? 1.0 : 0.0)
+					* ( (int(floor(WorldVertexPos.x * 2.0))%2==0)? 1.0 : 0.0 ); // 点線にする
+			}
+
+			//col.rgb=vec3(StreetUV,0.0); 
+		}
+		else if(_IsSidewalk == 1) // 歩道
+		{
+			if(g2f_IsZAxis == 1)
+			{
+				vec2 LocalUV = (sign(OffsetVectorZStreet.x) == 1.0)? vec2(1.0-UVPerSquare.x,UVPerSquare.y) : UVPerSquare;
+				//float LocalStreetRadius = 0.5;
+				
+				if(LocalUV.x <= LocalStreetRadius)
+				{
+					// ベースカラー(レンガ色)
+					//col.rgb = vec3(0.611,0.283,0.211);
+					col.rgb*=0.75;
+
+					//
+					float LocalOffsetVal = (abs(OffsetVectorZStreet.x)-ToSideWarkDist) / ToSideWarkDist;
+					float ModIntervalVer = 0.05;
+					float ModIntervalHol = 0.125;
+
+					// 縦線
+					col.rgb = (mod(LocalOffsetVal,ModIntervalVer)*(1.0/ModIntervalVer) >0.9)? vec3(0.0) : col.rgb;
+
+					// 横線
+					float LineVerOffset = floor(LocalOffsetVal*(1.0/ModIntervalVer));
+					// 止まって見えるのでスクロールする
+					float HolSeed = OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + StreetTime;
+					float LineHolOffset = mod(HolSeed,ModIntervalHol)*(1.0/ModIntervalHol);
+					vec2 domainID = vec2(LineVerOffset, floor(HolSeed*(1.0/ModIntervalHol)) );
+
+					col.rgb = ( LineHolOffset >0.95)? vec3(0.0) : col.rgb;
+				
+					// ライティング
+					vec3 lightDir=normalize(_LightPos-WorldVertexPos);
+					float diff=max(0.0,dot(WorldNormal,lightDir));
+					col.rgb*=diff;
+
+					// レンガタイルの色合いをランダムにする
+					col.rgb*=( rand(vec2(domainID.x+0.222,domainID.y+9.224)) +0.5);
+
+				}
+				else
+				{
+					col.rgb*=0.75;
+				}
+
+				//
+				//col.rgb=vec3(LocalUV,0.0);
+			}
+			else if(g2f_IsZAxis == 0)
+			{
+			}
+		}
+		else // 道路でも歩道でもないとこ--> ビルのある場所の地面の色
+		{
+			// Base Color
+			col.rgb*=0.75;
+		}
+	}
+
+	return col;
+}
+
+vec4 DrawGround(vec4 col)
+{
+	vec3 viewDir= -1.0*normalize(WorldVertexPos-_WorldCameraPos);
+	col.rgb*=vec3(0.89, 0.8, 0.65)*0.5;
+	col.rgb+=(noised(vec3(WorldVertexPos)+vec3(0.0,0.0,_time*10.0))*0.5+0.5).r*0.1;
+	return col;
+}
+
 
 void main(){
 	vec4 col=vec4(vec3(0.0),1.0);
@@ -90,108 +231,13 @@ void main(){
 		vec3 halfDir=normalize(viewDir + lightDir);
 		float spec=pow( max(0.0,dot(WorldNormal,halfDir)) , 60.0);
 		col.rgb+=vec3(1.0)*spec;
-
-		//col.rgb=viewDir*0.5+0.5;
 	}
 
 	// 道路と歩道のライティング
 	{
-	
-		//vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_WorldCameraPos.xyz;
-		vec3 OffsetVectorZStreet = WorldVertexPos.xyz-_ZCenterVec.xyz;
-		vec3 OffsetVectorXStreet = WorldVertexPos.xyz-XSideWarkVec.xyz;
-		if(_IsStreet==1) // 道路
-		{
-			// Base Color
-			col.rgb*=0.5;
-
-			float StreetLineWidth = 0.05;
-			vec2 StreetUV = vec2(0.0);
-	
-			if(g2f_IsZAxis == 1)
-			{
-				StreetUV.x = clamp(abs(OffsetVectorZStreet.x)/1.5,0.0,1.0);
-
-				col.rgb += vec3( (StreetUV.x<StreetLineWidth)? 1.0 : 0.0);
-				col.rgb += vec3( (StreetUV.x>1.0-StreetLineWidth && StreetUV.x<1.0)? 1.0 : 0.0);
-				col.rgb += vec3( (StreetUV.x>0.5-StreetLineWidth*0.5 && StreetUV.x<0.5+StreetLineWidth*0.5)? 1.0 : 0.0)
-					* ( (int(floor(WorldVertexPos.z * 2.0 + _time*10.0))%2==0)? 1.0 : 0.0 ); // 点線にする(止まって見えるのでスクロールする)
-
-			}
-			else if(g2f_IsZAxis == 0)
-			{
-				StreetUV.y = clamp(abs(OffsetVectorXStreet.z)/1.5,0.0,1.0);
-
-				col.rgb += vec3( (StreetUV.y<StreetLineWidth)? 1.0 : 0.0);
-				col.rgb += vec3( (StreetUV.y>1.0-StreetLineWidth && StreetUV.y<1.0)? 1.0 : 0.0);
-				col.rgb += vec3( (StreetUV.y>0.5-StreetLineWidth*0.5 && StreetUV.y<0.5+StreetLineWidth*0.5)? 1.0 : 0.0)
-					* ( (int(floor(WorldVertexPos.x * 2.0))%2==0)? 1.0 : 0.0 ); // 点線にする
-			}
-
-			//col.rgb=vec3(StreetUV,0.0); 
-		}
-		else if(_IsSidewalk == 1) // 歩道
-		{
-			if(g2f_IsZAxis == 1)
-			{
-				vec2 LocalUV = (sign(OffsetVectorZStreet.x) == 1.0)? vec2(1.0-UVPerSquare.x,UVPerSquare.y) : UVPerSquare;
-				//float LocalStreetRadius = 0.5;
-				
-				if(LocalUV.x <= LocalStreetRadius)
-				{
-					// ベースカラー(レンガ色)
-					//col.rgb = vec3(0.611,0.283,0.211);
-					col.rgb*=0.75;
-
-					//
-					float LocalOffsetVal = (abs(OffsetVectorZStreet.x)-ToSideWarkDist) / ToSideWarkDist;
-					float ModIntervalVer = 0.05;
-					float ModIntervalHol = 0.125;
-
-					// 縦線
-					col.rgb = (mod(LocalOffsetVal,ModIntervalVer)*(1.0/ModIntervalVer) >0.9)? vec3(0.0) : col.rgb;
-
-					// 横線
-					float LineVerOffset = floor(LocalOffsetVal*(1.0/ModIntervalVer));
-					// 止まって見えるのでスクロールする
-					float HolSeed = OffsetVectorZStreet.z+rand(vec2(LineVerOffset))*10.0 + _time;
-					float LineHolOffset = mod(HolSeed,ModIntervalHol)*(1.0/ModIntervalHol);
-					vec2 domainID = vec2(LineVerOffset, floor(HolSeed*(1.0/ModIntervalHol)) );
-
-					col.rgb = ( LineHolOffset >0.95)? vec3(0.0) : col.rgb;
-				
-					// ライティング
-					vec3 lightDir=normalize(_LightPos-WorldVertexPos);
-					float diff=max(0.0,dot(WorldNormal,lightDir));
-					col.rgb*=diff;
-
-					// レンガタイルの色合いをランダムにする
-					col.rgb*=( rand(vec2(domainID.x+0.222,domainID.y+9.224)) +0.5);
-
-				}
-				else
-				{
-					col.rgb*=0.75;
-				}
-
-				//
-				//col.rgb=vec3(LocalUV,0.0);
-			}
-			else if(g2f_IsZAxis == 0)
-			{
-			}
-		}
-		else // 道路でも歩道でもないとこ--> ビルのある場所の地面の色
-		{
-			// Base Color
-			col.rgb*=0.75;
-		}
-
+		col = mix( DrawStreet(col), DrawGround(col) , float(_LinearInstanceRate)/10.0 );
 	}
-
-	///*if(_IsStreet==1)*/ col.rgb=hash(vec3( float(PrimID)+0.0012,float(PrimID)+float(PrimID)+6.7777,float(PrimID)+1.2396 ))*0.5+0.5;
-	//col.rgb=vec3(UVPerSquare,0.0);
-
+	
 	gl_FragColor=col;
 }
 
