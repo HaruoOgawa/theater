@@ -18,7 +18,10 @@ class GenocideCronus
     std::shared_ptr<TransformComponent> m_CameraTransform;
     unsigned int m_SceneIndex;
     float        m_LocalTime;
-    
+
+    float        m_LocalReverseTime;
+    bool         m_IsReverseTime;
+
     // デバッグ用
     std::shared_ptr<GameObject> m_GridPlane;
     // デバッグ用: 時よ止まれっっっっ！！！！！！

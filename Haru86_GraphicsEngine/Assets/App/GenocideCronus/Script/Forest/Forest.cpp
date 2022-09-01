@@ -142,14 +142,14 @@ namespace myapp
 				IsMountainRotate = false;
 
 				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-					GraphicsMain::GetInstance()->m_SecondsTime * 0.1f, 0.5f, GraphicsMain::GetInstance()->m_SecondsTime * 0.1f
+					LocalTime * 0.1f, 0.5f, LocalTime * 0.1f
 				) * 5.0f;
 				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f) * 5.0f;
 			}
 			else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
 			{
 				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f), 225.0f, glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f)
+					glm::cos(LocalTime * 0.1f), 225.0f, glm::sin(LocalTime * 0.1f)
 				);
 				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -166,7 +166,7 @@ namespace myapp
 			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
 			{
 				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(
-					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 10.0f, 10.0f, glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 10.0f
+					glm::cos(LocalTime * 0.1f) * 10.0f, 10.0f, glm::sin(LocalTime * 0.1f) * 10.0f
 				);
 
 				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f);

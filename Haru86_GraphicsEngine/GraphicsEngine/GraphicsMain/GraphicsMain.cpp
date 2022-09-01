@@ -159,9 +159,9 @@ void GraphicsMain::Update() {
 	m_MilliSecondsTime = static_cast<float>(clock()) + m_SecondsTimeOffset*1000.0f;
 	m_SecondsTime = m_MilliSecondsTime * 0.001f;
 	m_DeltaTime = (m_MilliSecondsTime - previousTime) / 1000.0f;
-	if (m_DeltaTime > 0.05f) {
+	/*if (m_DeltaTime > 0.05f) {
 		m_DeltaTime = 0.05f;
-	}
+	}*/
 	previousTime = m_MilliSecondsTime;
 
 	if (m_App) {

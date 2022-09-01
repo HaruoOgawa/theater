@@ -23,6 +23,8 @@ GenocideCronus::GenocideCronus():
 	m_Forest(nullptr),
 	m_Mountain(nullptr),
 	m_LocalTime(0.0f),
+	m_LocalReverseTime(0.0f),
+	m_IsReverseTime(false),
 	m_DebugTimeLock(false)
 {
 }
@@ -30,7 +32,7 @@ GenocideCronus::GenocideCronus():
 void GenocideCronus::Start() {
 #ifdef _DEBUG
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 79.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 159.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{
@@ -85,6 +87,9 @@ void GenocideCronus::Update() {
 		PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
 			PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 1);
 		};
+
+		m_IsReverseTime = true;
+		m_LocalReverseTime = m_LocalTime;
 	}
 	else if (m_LocalTime >= 177.0f && m_LocalTime < 264.0f) // シーン7(End of City)
 	{
@@ -117,7 +122,7 @@ void GenocideCronus::Update() {
 		// 更新処理
 		m_ProceduralCity->Update();
 	}
-	else if (m_SceneIndex == 2)
+	else if (m_SceneIndex == 2) // Forest
 	{
 		// 描画設定
 		PostProcess::GetInstance()->m_UseSSR = false;
@@ -166,7 +171,29 @@ void GenocideCronus::Update() {
 void GenocideCronus::UpdateTimeline()
 {
 	// 時間
-	if(!m_DebugTimeLock) m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
+
+	if (!m_DebugTimeLock) {
+		if (m_IsReverseTime) // 巻き戻し
+		{
+			// 巻き戻しの速さを計算する
+			float ReverseTimeRate = (161.0f - 70.0f) / 16.0f;
+
+			//
+			m_LocalReverseTime -= GraphicsMain::GetInstance()->m_DeltaTime * ReverseTimeRate;
+			m_LocalTime = m_LocalReverseTime;
+
+			if (m_LocalReverseTime <= 70.0f && GraphicsMain::GetInstance()->m_SecondsTime >= 177.0f)
+			{
+				m_IsReverseTime = false;
+				m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
+			}
+		}
+		else // 通常の再生
+		{
+			m_LocalTime = GraphicsMain::GetInstance()->m_SecondsTime;
+		}
+	}
+
 #ifdef _DEBUG
 	Console::Log("m_LocalTime: %f\n", m_LocalTime);
 #endif // _DEBUG
@@ -191,7 +218,7 @@ void GenocideCronus::Draw(bool IsRaymarching) {
 	//
 	if (m_SceneIndex == 0 || m_SceneIndex == 1 || m_SceneIndex == 6)m_ProceduralCity->Draw(IsRaymarching, LinearInstanceRate);
 	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, glm::min(10, LinearInstanceRate + 4));
-	if (m_SceneIndex == 3 || m_SceneIndex == 5)m_Mountain->Draw(IsRaymarching);
+	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
 	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
 }
 

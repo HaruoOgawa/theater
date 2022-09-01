@@ -407,9 +407,9 @@ namespace myapp {
 			{
 				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
 				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
-					glm::cos(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f,
+					glm::cos(LocalTime * 0.1f) * 17.5f,
 					0.5f,
-					glm::sin(GraphicsMain::GetInstance()->m_SecondsTime * 0.1f) * 17.5f
+					glm::sin(LocalTime * 0.1f) * 17.5f
 				);
 			}
 			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
