@@ -88,7 +88,7 @@ namespace myapp
 		m_LTreeModel->Update();
 	}
 
-	void Forest::Draw(bool IsRaymarching, int SceneIndex, int LinearInstanceRate) {
+	void Forest::Draw(bool IsRaymarching, int SceneIndex, int LinearInstanceRate, bool IsReverseTime) {
 		//
 		bool UseFade = false;
 		
@@ -120,7 +120,8 @@ namespace myapp
 				m_LTreeModel->m_TreeRenderer->m_transform->m_scale = glm::vec3(1.0f);
 				m_Ground->Draw();
 				m_FlowerModel->Draw();
-				m_LTreeModel->Draw();
+				int numOfTree = (IsReverseTime) ? 256 : 1024;
+				m_LTreeModel->Draw(numOfTree);
 			}
 		}
 	}

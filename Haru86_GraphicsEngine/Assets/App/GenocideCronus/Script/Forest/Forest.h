@@ -24,7 +24,7 @@ namespace myapp
 		~Forest() = default;
 		void Start();
 		void Update();
-		void Draw(bool IsRaymarching,int SceneIndex, int LinearInstanceRate);
+		void Draw(bool IsRaymarching,int SceneIndex, int LinearInstanceRate,bool IsReverseTime);
 		void UpdateTimeline(float LocalTime);
 	};
 }
