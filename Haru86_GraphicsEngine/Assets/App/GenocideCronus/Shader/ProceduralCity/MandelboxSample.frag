@@ -128,7 +128,7 @@ void main(){
     t+=d;
   }
  
-  if(abs(d)<dmin)
+  if(abs(d)<dmin && _IsDrawMandel==1)
   {
     if(_RenderingTarget==2.0) // ZTest
     {
@@ -137,11 +137,8 @@ void main(){
     }
     else
     {
-        if(_IsDrawMandel==1)
-        {
-             vec3 col=vec3(1.0)*10./pi;
-            gl_FragColor=vec4(col,1.0);
-        }
+        vec3 col=vec3(1.0)*10./pi;
+        gl_FragColor=vec4(col,1.0);
     } 
   }  
   else
