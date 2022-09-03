@@ -11,6 +11,7 @@ uniform vec3 _WorldCameraCenter;
 uniform float _time;
 uniform vec2 _resolution;
 uniform float _RenderingTarget;
+uniform int _IsDownSideCloud;
 
 float rand(vec3 p) {
     return fract(sin(dot(p, vec3(12.345, 67.89, 412.12))) * 42123.45) * 2.0 - 1.0;
@@ -76,6 +77,8 @@ void main()
     ta.y = min(ta.y,1.0);
     vec3 ro=_WorldCameraPos;
     ro.y = min(ro.y,1.0);
+
+    if(_IsDownSideCloud == 1) ro.y += 2.5;
 
     vec3 cdir=normalize(ta-ro);
     vec3 cside=normalize(cross(cdir,vec3(0.0,1.0,0.0)));

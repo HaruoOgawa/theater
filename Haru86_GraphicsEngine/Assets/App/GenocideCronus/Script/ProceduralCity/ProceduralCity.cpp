@@ -23,6 +23,7 @@ namespace myapp {
 		m_XSideWarkVec(glm::vec3(0.0f)),
 		m_IsDrawMandel(false),
 		m_IsDrawCloud(false),
+		m_IsDownSideCloud(false),
 		m_GaffDoor(nullptr),
 		m_RubbleParticle(nullptr),
 		NumOfProBill(1024),
@@ -185,7 +186,9 @@ namespace myapp {
 		{
 			if (m_IsDrawCloud)
 			{
-				m_CityCloud->Draw();
+				m_CityCloud->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_CityCloud->m_material->SetIntUniform("_IsDownSideCloud", (m_IsDownSideCloud)? 1 : 0);
+				});
 			}
 			else
 			{
@@ -289,6 +292,8 @@ namespace myapp {
 
 	void ProceduralCity::UpdateTimeline(float LocalTime)
 	{
+		m_IsDownSideCloud = false;
+
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
 		{
 			if (LocalTime > 0.0f && LocalTime<31.0f)
@@ -351,11 +356,12 @@ namespace myapp {
 				}
 				else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
 				{
-					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 10.0f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 15.0f, 0.0f);
 					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
 				}
 				else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
 				{
+					m_IsDownSideCloud = true;
 					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
 					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
 				}

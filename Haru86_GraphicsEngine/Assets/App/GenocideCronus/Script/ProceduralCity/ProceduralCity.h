@@ -31,6 +31,7 @@ namespace myapp {
 		// Timeline Val
 		bool m_IsDrawMandel;
 		bool m_IsDrawCloud;
+		bool m_IsDownSideCloud;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;
