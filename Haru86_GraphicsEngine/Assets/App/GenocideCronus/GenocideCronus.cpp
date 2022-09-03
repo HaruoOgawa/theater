@@ -32,7 +32,7 @@ GenocideCronus::GenocideCronus():
 void GenocideCronus::Start() {
 #ifdef _DEBUG
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 160.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 177.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{

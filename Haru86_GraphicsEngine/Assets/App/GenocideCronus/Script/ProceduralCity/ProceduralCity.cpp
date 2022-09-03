@@ -421,7 +421,7 @@ namespace myapp {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
-				Console::Log("_UseWhiteFade LocalTime: %f\n", LocalTime);
+				
 				if (LocalTime <= 179.0f)
 				{
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
