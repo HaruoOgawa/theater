@@ -139,6 +139,15 @@ namespace myapp
 						1.0f-glm::clamp((LocalTime - 85.0f) * 2.0f, 0.0f, 1.0f));
 				};
 			}
+			else if (LocalTime > 115.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 
+						glm::clamp((LocalTime - 115.5f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
 			else
 			{
 				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {

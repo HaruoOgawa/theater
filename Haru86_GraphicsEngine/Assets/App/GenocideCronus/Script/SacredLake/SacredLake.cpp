@@ -147,6 +147,24 @@ namespace myapp {
 
 	void SacredLake::UpdateTimeline(float LocalTime)
 	{
-
+		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 4)
+		{
+			if (LocalTime <= 150.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal",
+						1.0f - glm::clamp((LocalTime - 150.0f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				};
+			}
+		}
 	}
 }
