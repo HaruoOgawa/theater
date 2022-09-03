@@ -15,6 +15,6 @@ namespace myapp {
 
 		void Update();
 		void Draw(bool IsRaymarching);
-		void UpdateTimeline(float LocalTime);
+		void UpdateTimeline(float LocalTime, bool IsReverseTime);
 	};
 }

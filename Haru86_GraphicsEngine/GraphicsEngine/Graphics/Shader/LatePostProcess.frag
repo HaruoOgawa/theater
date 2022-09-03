@@ -216,12 +216,12 @@ void main(){
 	col=texture(_SrcTexture,st).rgb;
 	
 	if(_UseSSR == 1)col=CalSSRColor(col);
-	if(_UseVignette == 1) col = Vignette(col);
 	if(_UseThirdImpact == 1) col = ThirdImpact(col);
+	if(_UseWhiteFade == 1) col = WhiteFade(col);
+	if(_UseVignette == 1) col = Vignette(col);
 	if(_UseFilmFilter == 1) col = DrawFilmFilter(col);
 	if(_UseRewinding == 1) col = DrawRewindingFilter(col);
-	if(_UseWhiteFade == 1) col = WhiteFade(col);
-
+	
 	gl_FragColor=vec4(col,1.0);
 }
 

@@ -33,7 +33,7 @@ namespace myapp {
 		}
 	}
 
-	void Mountain::UpdateTimeline(float LocalTime)
+	void Mountain::UpdateTimeline(float LocalTime, bool IsReverseTime)
 	{
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 3)
 		{
@@ -68,13 +68,22 @@ namespace myapp {
 			}
 
 			// ホワイトフェード
-			if (LocalTime <= 116.5f)
+			if (!IsReverseTime && LocalTime <= 116.5f)
 			{
 				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
 					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal",
 						1.0f - glm::clamp((LocalTime - 116.0f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			if (IsReverseTime && LocalTime > 116.0f && LocalTime <= 116.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal",
+						glm::clamp((116.5f - LocalTime) * 2.0f, 0.0f, 1.0f));
 				};
 			}
 			else if (LocalTime > 146.0f)

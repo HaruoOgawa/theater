@@ -38,7 +38,7 @@ namespace myapp {
 		void Start();
 		void Update();
 		void Draw(bool IsRaymarching, int LinearInstanceRate);
-		void UpdateTimeline(float LocalTime);
+		void UpdateTimeline(float LocalTime, bool IsReverseTime);
 	};
 }
 

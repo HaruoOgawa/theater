@@ -290,9 +290,11 @@ namespace myapp {
 		}
 	}
 
-	void ProceduralCity::UpdateTimeline(float LocalTime)
+	void ProceduralCity::UpdateTimeline(float LocalTime, bool IsReverseTime)
 	{
 		m_IsDownSideCloud = false;
+		m_IsDrawMandel = false;
+		m_IsDrawCloud = false;
 
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
 		{
@@ -374,11 +376,38 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
-			PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((LocalTime-84.5f)*2.0f,0.0f,1.0f) );
-			};
+			if (!IsReverseTime && LocalTime > 84.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((LocalTime - 84.5f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else if (IsReverseTime && LocalTime > 84.5f && LocalTime <= 85.0f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f-glm::clamp((85.0f-LocalTime) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else if (IsReverseTime && LocalTime > 70.0f && LocalTime <= 72.0f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((72.0f-LocalTime) / 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				};
+			}
+			
 			m_IsDrawCloud = true;
 
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
@@ -386,12 +415,23 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
 		{
-			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
+				Console::Log("_UseWhiteFade LocalTime: %f\n", LocalTime);
+				if (LocalTime <= 179.0f)
+				{
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f - glm::clamp((LocalTime - 177.0f)/2.0f, 0.0f, 1.0f));
+					//PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f);
+				}
+				else
+				{
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				}
 			};
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;

@@ -32,7 +32,7 @@ GenocideCronus::GenocideCronus():
 void GenocideCronus::Start() {
 #ifdef _DEBUG
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 138.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 160.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{
@@ -200,10 +200,10 @@ void GenocideCronus::UpdateTimeline()
 
 
 	// タイムラインを更新
-	m_ProceduralCity->UpdateTimeline(m_LocalTime);
-	m_Forest->UpdateTimeline(m_LocalTime);
-	m_Mountain->UpdateTimeline(m_LocalTime);
-	m_SacredLake->UpdateTimeline(m_LocalTime);
+	m_ProceduralCity->UpdateTimeline(m_LocalTime, m_IsReverseTime);
+	m_Forest->UpdateTimeline(m_LocalTime, m_IsReverseTime);
+	m_Mountain->UpdateTimeline(m_LocalTime, m_IsReverseTime);
+	m_SacredLake->UpdateTimeline(m_LocalTime, m_IsReverseTime);
 }
 
 void GenocideCronus::Draw(bool IsRaymarching) {
