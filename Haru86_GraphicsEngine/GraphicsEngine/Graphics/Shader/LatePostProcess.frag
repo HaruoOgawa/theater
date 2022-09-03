@@ -26,6 +26,8 @@ uniform int _UseThirdImpact;
 uniform int _UseFilmFilter;
 uniform int _UseWave;
 uniform int _UseRewinding;
+uniform int _UseWhiteFade;
+uniform float _WhiteFadeVal;
 
 float rand(vec2 st)
 {
@@ -189,6 +191,12 @@ vec3 DrawRewindingFilter(vec3 col)
 	return col;
 }
 
+vec3 WhiteFade(vec3 col)
+{
+	col = min(vec3(1.0),col+_WhiteFadeVal);
+	return col;
+}
+
 void main(){
 	vec3 col=vec3(0.0);
 	vec2 st=gl_FragCoord.xy/_resolution.xy;
@@ -212,6 +220,7 @@ void main(){
 	if(_UseThirdImpact == 1) col = ThirdImpact(col);
 	if(_UseFilmFilter == 1) col = DrawFilmFilter(col);
 	if(_UseRewinding == 1) col = DrawRewindingFilter(col);
+	if(_UseWhiteFade == 1) col = WhiteFade(col);
 
 	gl_FragColor=vec4(col,1.0);
 }

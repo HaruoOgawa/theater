@@ -374,8 +374,10 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
-			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((LocalTime-84.5f)*2.0f,0.0f,1.0f) );
 			};
 			m_IsDrawCloud = true;
 

@@ -130,6 +130,23 @@ namespace myapp
 	{
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 2)
 		{
+			if (LocalTime <= 85.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 
+						1.0f-glm::clamp((LocalTime - 85.0f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				};
+			}
+
 			// ƒJƒƒ‰ƒ[ƒN
 			float CameraTimeModeRate = 3.75f, NumOfCamera = 4.0f;
 			float AdjustTimeOffset = 3.75f * 0.5f;
