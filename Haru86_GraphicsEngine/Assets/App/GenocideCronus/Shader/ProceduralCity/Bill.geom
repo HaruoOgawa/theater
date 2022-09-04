@@ -81,22 +81,23 @@ void main()
 	randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
 	randPos.y=1.5;
 
+	// ‘å’Ê‚è‚Ì‚Ô‚ñ‚¾‚¯“¹‚ðŠJ‚¯‚é
+	if(_IsParticleBill != 1)
+	{
+		vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+
+		if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+		{
+			vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
+			randPos+=StreetOffVec;
+		}
+	}
+
 	//
 	if(_IsEndCity != 1)
 	{
 		randPos.z-=_time*10.0;
 		randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
-
-		// ‘å’Ê‚è‚Ì‚Ô‚ñ‚¾‚¯“¹‚ðŠJ‚¯‚é
-		{
-			vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
-
-			if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
-			{
-				vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
-				randPos+=StreetOffVec;
-			}
-		}
 
 		/*// XŽ²‚Ì‘å’Ê‚è‚Ì•ª‚¾‚¯A“¹‚ð‚ ‚¯‚é
 		{

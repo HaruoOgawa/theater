@@ -31,13 +31,15 @@ namespace myapp {
 		// Timeline Val
 		bool m_IsDrawMandel;
 		bool m_IsDrawCloud;
+		bool m_IsDownSideCloud;
+		bool m_IsUseBloom;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;
 		void Start();
 		void Update();
 		void Draw(bool IsRaymarching, int LinearInstanceRate);
-		void UpdateTimeline(float LocalTime);
+		void UpdateTimeline(float LocalTime, bool IsReverseTime);
 	};
 }
 

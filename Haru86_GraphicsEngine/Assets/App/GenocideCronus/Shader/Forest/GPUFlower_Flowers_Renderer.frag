@@ -38,6 +38,8 @@ void main(){
 		//vec3 lightDir=normalize(_LightDir);
 		vec3 lightDir=normalize(_LightPos-WorldVertexPos);
 		float diff=max(0.0,dot(WorldNormal,lightDir));
+		// とてつもなく、少数部が細かい(桁が多い)数が来るとfloat Textureの精度が足りなくなってMSAA使用時に白いドットのノイズが出てしまうのでその対策
+		diff = min(1.0,diff);
 		col.rgb*=diff;
 
 		col.rgb+=envColor.rgb;
@@ -45,6 +47,8 @@ void main(){
 		vec3 viewDir= -1.0*normalize(WorldVertexPos-_WorldCameraPos);
 		vec3 halfDir=normalize(viewDir + lightDir);
 		float spec=pow( max(0.0,dot(WorldNormal,halfDir)) , 60.0);
+		// とてつもなく、少数部が細かい(桁が多い)数が来るとfloat Textureの精度が足りなくなってMSAA使用時に白いドットのノイズが出てしまうのでその対策
+		spec = min(1.0,spec);
 		col.rgb+=vec3(1.0)*spec;
 	}
 

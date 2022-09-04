@@ -23,10 +23,12 @@ namespace myapp {
 		m_XSideWarkVec(glm::vec3(0.0f)),
 		m_IsDrawMandel(false),
 		m_IsDrawCloud(false),
+		m_IsDownSideCloud(false),
 		m_GaffDoor(nullptr),
 		m_RubbleParticle(nullptr),
 		NumOfProBill(1024),
-		NumOfCyBill(256)
+		NumOfCyBill(256),
+		m_IsUseBloom(false)
 	{
 		Start();
 	}
@@ -185,7 +187,9 @@ namespace myapp {
 		{
 			if (m_IsDrawCloud)
 			{
-				m_CityCloud->Draw();
+				m_CityCloud->Draw(GL_TRIANGLES, false, 0, [this]() {
+					m_CityCloud->m_material->SetIntUniform("_IsDownSideCloud", (m_IsDownSideCloud)? 1 : 0);
+				});
 			}
 			else
 			{
@@ -196,9 +200,8 @@ namespace myapp {
 		}
 		else
 		{
-			//NumOfProBill = 0;
-			NumOfProBill = 256;
-			NumOfCyBill = 0;
+			//NumOfProBill = 256;
+			//NumOfCyBill = 0;
 			// ビル
 			if (m_BillRP && NumOfProBill != 1)
 			{
@@ -209,6 +212,7 @@ namespace myapp {
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade)? 1 : 0);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseBloom", (m_IsUseBloom)? 1 : 0 );
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0 );
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 0);
 
@@ -230,6 +234,7 @@ namespace myapp {
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", 1);
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 1);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_UseBloom", (m_IsUseBloom) ? 1 : 0);
 
 						m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 						m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -261,6 +266,8 @@ namespace myapp {
 					m_CylinderBill->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
 					m_CylinderBill->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 					m_CylinderBill->m_material->SetIntUniform("_IDOffset", 1024 + 1);
+					m_CylinderBill->m_material->SetIntUniform("_UseBloom", (m_IsUseBloom)? 1 : 0);
+					m_CylinderBill->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6) ? 1 : 0);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -287,8 +294,12 @@ namespace myapp {
 		}
 	}
 
-	void ProceduralCity::UpdateTimeline(float LocalTime)
+	void ProceduralCity::UpdateTimeline(float LocalTime, bool IsReverseTime)
 	{
+		m_IsDownSideCloud = false;
+		m_IsDrawMandel = false;
+		m_IsDrawCloud = false;
+
 		if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 0)
 		{
 			if (LocalTime > 0.0f && LocalTime<31.0f)
@@ -351,11 +362,12 @@ namespace myapp {
 				}
 				else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
 				{
-					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 10.0f, 0.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.1f, 15.0f, 0.0f);
 					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
 				}
 				else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
 				{
+					m_IsDownSideCloud = true;
 					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
 					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
 				}
@@ -368,9 +380,38 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 1)
 		{
-			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
-			};
+			if (!IsReverseTime && LocalTime > 84.5f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((LocalTime - 84.5f) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else if (IsReverseTime && LocalTime > 84.5f && LocalTime <= 85.0f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f-glm::clamp((85.0f-LocalTime) * 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else if (IsReverseTime && LocalTime > 70.0f && LocalTime <= 72.0f)
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((72.0f-LocalTime) / 2.0f, 0.0f, 1.0f));
+				};
+			}
+			else
+			{
+				PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				};
+			}
+			
 			m_IsDrawCloud = true;
 
 			GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.0f * glm::cos(-3.14f / 2.0), 1.0f, 2.0f * glm::sin(-3.14f / 2.0));
@@ -378,51 +419,107 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
 		{
-			PostProcess::GetInstance()->m_LatePostProcesCallBack = []() {
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
-				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
-			};
 			m_IsDrawCloud = false;
 			m_IsDrawMandel = true;
 
-			// カメラワーク
-			float CameraTimeModeRate = 10.0f, NumOfCamera = 5.0f;
-			float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
-			m_Street->m_transform->m_scale = glm::vec3(1.0f);
+			if (LocalTime < 246.0f) {
+				// カメラワーク
+				float CameraTimeModeRate = 10.0f, NumOfCamera = 5.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+				m_Street->m_transform->m_scale = glm::vec3(1.0f);
 
-			if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
-			{
-				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime * 0.1f), 10.0f, 20.0f * glm::sin(LocalTime * 0.1f));
-				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f);
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.0f, 0.5f, 2.5f * 10.0f); // 固定
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake // 高い回転
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
+						glm::cos(LocalTime * 0.1f) * 15.0f,
+						50.0f,
+						glm::sin(LocalTime * 0.1f) * 15.0f
+					);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime * 0.1f), 10.0f, 20.0f * glm::sin(LocalTime * 0.1f));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f); // よさげな回転
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f) 
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 0.0f); // 近くていい感じの固定
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
+				{
+					m_Street->m_transform->m_scale = glm::vec3(100.0f, 1.0f, 100.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(50.5f, 10.5f, 50.5f); // 広い視野で固定
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
 			}
-			else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+			else if(LocalTime >= 246.0f)
 			{
-				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 0.0f);
-				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+				// ブルームをオン
+				PostProcess::GetInstance()->m_UseBloom = true;
+				m_IsUseBloom = true;
+
+				// ブルームパラメーター
+				PostProcess::GetInstance()->m_BloomThreshold = 2.0f * glm::clamp((LocalTime - 246.0f) / 14.0f, 0.0f, 1.0f);
+				PostProcess::GetInstance()->m_BloomIntensity = 2.0f * glm::clamp((LocalTime - 246.0f) / 4.0f, 0.0f, 1.0f)
+					+ 400.0f * glm::clamp((LocalTime - 254.0f) / 8.0f, 0.0f, 1.0f);
+
+				// カメラワーク
+				float CameraTimeModeRate = 5.0f, NumOfCamera = 3.0f;
+				float CameraworkTime = glm::mod(LocalTime, CameraTimeModeRate * NumOfCamera);
+				m_Street->m_transform->m_scale = glm::vec3(1.0f);
+
+				if (CameraworkTime >= 0.0f && CameraworkTime < CameraTimeModeRate * 1.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(0.0f, 0.5f, 2.5f * 10.0f); // 固定
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 5.0f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 1.0f && CameraworkTime < CameraTimeModeRate * 2.0f)
+				{
+					m_Street->m_transform->m_scale = glm::vec3(100.0f, 1.0f, 100.0f);
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(50.5f, 10.5f, 50.5f); // 広い視野で固定
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
+				}
+				else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
+				{
+					GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(20.0f * glm::cos(LocalTime * 0.1f), 10.0f, 20.0f * glm::sin(LocalTime * 0.1f));
+					GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.0f, 0.0f); // よさげな回転
+				}
 			}
-			else if (CameraworkTime >= CameraTimeModeRate * 2.0f && CameraworkTime < CameraTimeModeRate * 3.0f)
-			{
-				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 10.0f, 0.0f); // SacredLake
-				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3( // SacredLake
-					glm::cos(LocalTime * 0.1f) * 17.5f,
-					0.5f,
-					glm::sin(LocalTime * 0.1f) * 17.5f
-				);
-			}
-			else if (CameraworkTime >= CameraTimeModeRate * 3.0f && CameraworkTime < CameraTimeModeRate * 4.0f)
-			{
-				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(2.5f, 0.5f, 2.5f);
-				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
-			}
-			else if (CameraworkTime >= CameraTimeModeRate * 4.0f && CameraworkTime < CameraTimeModeRate * 5.0f)
-			{
-				m_Street->m_transform->m_scale = glm::vec3(100.0f,1.0f, 100.0f);
-				GraphicsMain::GetInstance()->m_MainCamera->m_position = glm::vec3(50.5f, 10.5f, 50.5f);
-				GraphicsMain::GetInstance()->m_MainCamera->m_center = glm::vec3(0.0f, 2.5f, 0.0f);
-			}
+			
+			PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteNoise", (LocalTime <= 254.0f)? 1 : 0);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseFilmFilter", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWave", 1);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WaveSpeed", (LocalTime <= 254.0f) ? 1.0f : 1000.0f);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WaveWidth", (LocalTime <= 254.0f) ? 1.0f : 10.0f);
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_FilmWidthReduction", 0.2f*glm::clamp((LocalTime - 254.0f)/4.0f,0.0f,1.0f));
+				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseRewinding", 0);
+				
+				if (LocalTime <= 179.0f)
+				{
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f - glm::clamp((LocalTime - 177.0f)/2.0f, 0.0f, 1.0f));
+					//PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", 1.0f);
+				}
+				if (LocalTime > 254.0f)
+				{
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 1);
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetFloatUniform("_WhiteFadeVal", glm::clamp((LocalTime - 254.0f)/4.0f, 0.0f, 1.0f));
+				}
+				else
+				{
+					PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseWhiteFade", 0);
+				}
+			};
 		}
 	}
 }
