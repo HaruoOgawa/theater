@@ -23,8 +23,12 @@ uniform float _VignetteRadius;
 uniform float _VignetteLateRadius;
 uniform float _VignetteBrightness;
 uniform int _UseThirdImpact;
+uniform int _UseWhiteNoise;
 uniform int _UseFilmFilter;
+uniform float _FilmWidthReduction;
 uniform int _UseWave;
+uniform float _WaveSpeed;
+uniform float _WaveWidth;
 uniform int _UseRewinding;
 uniform int _UseWhiteFade;
 uniform float _WhiteFadeVal;
@@ -142,18 +146,25 @@ vec3 ThirdImpact(vec3 col)
 	return col;
 }
 
-vec3 DrawFilmFilter(vec3 col)
+vec3 WhiteNoise(vec3 col)
 {
-	//
 	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
 
 	// ホワイトノイズ
 	col *= ( 1.0 - rand(vec2(st.x,st.y)+_time) * (1.0 - min(1.0,abs(sin(_time*0.5))*1.5))  );
 
+	return col;
+}
+
+vec3 DrawFilmFilter(vec3 col)
+{
+	//
+	vec2 st=gl_FragCoord.xy/(_resolution.xy*_frameResolusion);
+
 	//
 	st=st*2.0-1.0;
 
-	float w = 0.2;
+	float w = 0.2 - _FilmWidthReduction;
 	if(abs(st.y) > (1.0-w)) col = vec3(0.0);
 
 	return col;
@@ -204,9 +215,9 @@ void main(){
 	if(_UseWave == 1)
 	{
 		//float val=(sin(_time*2.0)+1.0)*0.5+0.1;
-		float val=0.6;
-		st.y+=0.005*sin(_time*100.0)*val;
-		st.x+=0.001*sin(_time*50.0)*val;
+		float val = 0.6 * _WaveWidth;
+		st.y+=0.005*sin(_time*100.0*_WaveSpeed)*val;
+		st.x+=0.001*sin(_time*50.0*_WaveSpeed)*val;
 	}
 	else if(_UseRewinding == 1)
 	{
@@ -219,6 +230,7 @@ void main(){
 	if(_UseThirdImpact == 1) col = ThirdImpact(col);
 	if(_UseWhiteFade == 1) col = WhiteFade(col);
 	if(_UseVignette == 1) col = Vignette(col);
+	if(_UseWhiteNoise == 1) col = WhiteNoise(col);
 	if(_UseFilmFilter == 1) col = DrawFilmFilter(col);
 	if(_UseRewinding == 1) col = DrawRewindingFilter(col);
 	

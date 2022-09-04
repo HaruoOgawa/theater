@@ -32,6 +32,7 @@ namespace myapp {
 		bool m_IsDrawMandel;
 		bool m_IsDrawCloud;
 		bool m_IsDownSideCloud;
+		bool m_IsUseBloom;
 	public:
 		ProceduralCity();
 		virtual ~ProceduralCity()=default;

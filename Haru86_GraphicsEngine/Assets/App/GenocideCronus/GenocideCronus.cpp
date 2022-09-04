@@ -32,7 +32,7 @@ GenocideCronus::GenocideCronus():
 void GenocideCronus::Start() {
 #ifdef _DEBUG
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 177.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 160.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{
@@ -54,8 +54,8 @@ void GenocideCronus::Start() {
 	// ポストプロセスの設定
 	PostProcess::GetInstance()->m_UsePostProcess = true;
 	PostProcess::GetInstance()->m_UseBloom = false;
-	PostProcess::GetInstance()->m_BloomThreshold = 1.0f;
-	PostProcess::GetInstance()->m_BloomIntensity = 4.0f;
+	PostProcess::GetInstance()->m_BloomThreshold = 0.0f; // 1
+	PostProcess::GetInstance()->m_BloomIntensity = 0.0f; // 4
 
 }
 

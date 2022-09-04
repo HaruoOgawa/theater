@@ -132,15 +132,15 @@ void main(){
 
 			// ‘å’Ê‚è‚Ì‚Ô‚ñ‚¾‚¯“¹‚ðŠJ‚¯‚é
 			{
-			vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+				vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
 
-			if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
-			{
+				if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+				{
 				vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
 				randPos+=StreetOffVec;
+				}
+			}
 		}
-		}
-	}
 
 		//
 		pos.xyz+=randPos;
