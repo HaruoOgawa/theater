@@ -183,6 +183,9 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	
+	// フルスクリーンに関する設定
+	glfwWindowHint(GLFW_AUTO_ICONIFY, GL_FALSE);
+
 	// ウィンドウ生成
 	bool IsFullScreen = true;
 #ifdef _DEBUG
@@ -203,6 +206,9 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 #endif // _DEBUG
 		return false;
 	}
+
+	// マウスを描画しない
+	glfwSetInputMode(sWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// プログラム終了時の処理
 	atexit(glfwTerminate);
