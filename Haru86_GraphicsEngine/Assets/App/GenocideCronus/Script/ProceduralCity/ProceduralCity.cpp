@@ -199,9 +199,8 @@ namespace myapp {
 		}
 		else
 		{
-			//NumOfProBill = 0;
-			NumOfProBill = 256;
-			NumOfCyBill = 0;
+			//NumOfProBill = 256;
+			//NumOfCyBill = 0;
 			// ƒrƒ‹
 			if (m_BillRP && NumOfProBill != 1)
 			{
@@ -233,6 +232,7 @@ namespace myapp {
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", 1);
 						m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 1);
+						m_ProceduralBillRenderer->m_material->SetIntUniform("_UseBloom", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6) ? 1 : 0);
 
 						m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 						m_ProceduralBillRenderer->m_material->SetTexUniform("_BillRP", 1);
@@ -264,6 +264,7 @@ namespace myapp {
 					m_CylinderBill->m_material->SetIntUniform("_UseFade", (UseFade) ? 1 : 0);
 					m_CylinderBill->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 					m_CylinderBill->m_material->SetIntUniform("_IDOffset", 1024 + 1);
+					m_CylinderBill->m_material->SetIntUniform("_UseBloom", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
@@ -415,6 +416,7 @@ namespace myapp {
 		}
 		else if (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)
 		{
+			PostProcess::GetInstance()->m_UseBloom = true;
 			PostProcess::GetInstance()->m_LatePostProcesCallBack = [=]() {
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseVignette", 0);
 				PostProcess::GetInstance()->m_LateMeshRenderer->m_material->SetIntUniform("_UseThirdImpact", 1);

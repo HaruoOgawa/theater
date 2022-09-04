@@ -65,6 +65,7 @@ int GraphicsRenderer::CheckError() {
 
 	case 1286: // 0x0506
 		Console::Log("ErrorCode %d / GL_INVALID_FRAMEBUFFER_OPERATION\n", err);
+		CheckFrameBufferError();
 		break;
 
 	case 1287: // 0x0507
@@ -78,6 +79,57 @@ int GraphicsRenderer::CheckError() {
 
 	Error = static_cast<int>(err);
 	//Console::Log("CheckError GLErr: %d\n", err);
+#endif // _DEBUG
+
+	return Error;
+}
+
+int GraphicsRenderer::CheckFrameBufferError() {
+	int Error = 0;
+#ifdef _DEBUG
+	GLenum err;
+	err = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+
+	switch (err)
+	{
+	case GL_FRAMEBUFFER_COMPLETE: // 0x8CD5
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_COMPLETE\n", err);
+		break;
+
+	case GL_FRAMEBUFFER_UNDEFINED: // 0x8219
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_UNDEFINED \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: // 0x8CD6
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: // 0x8CD7
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER: // 0x8CDB
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER: // 0x8CDC
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE: // 0x8D56
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE \n", err);
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS: // 0x8DA8
+		Console::Log("ErrorCode %d / GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS \n", err);
+		break;
+
+	default: // 0x????
+		Console::Log("ErrorCode %d / Unknown Error\n", err);
+		break;
+	}
+
+	Error = static_cast<int>(err);
 #endif // _DEBUG
 
 	return Error;
@@ -184,7 +236,8 @@ bool GraphicsRenderer::Initialize(float width,float height) {
 	//CreateFrameBuffer
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),polygon_frameTexture, polygon_frameBuffer, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y),nullptr, polygon_frameBuffer_MSAA,
-		GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
+		GL_RGBA16F, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
+		//GL_RGBA, GL_RGBA, GL_FLOAT,ERenderTargetType::COLOR_RENDER_BUFFER,EDepthTargetType::DEPTH_RENDER_BUFFER,true);
 		//GL_RGBA16F, GL_RGBA, GL_FLOAT, ERenderTargetType::COLOR_RENDER_BUFFER, EDepthTargetType::DEPTH_RENDER_BUFFER, false);
 
 	CreateFrameBuffer(static_cast<int>(GetScreenSize().x), static_cast<int>(GetScreenSize().y), polygon_depthTexture, polygon_depthBuffer, GL_RGBA, GL_RGBA,GL_FLOAT);

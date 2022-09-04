@@ -55,6 +55,7 @@ public:
 	static void Create();
 	static void Destroy();
 	static int CheckError();
+	static int CheckFrameBufferError();
 
 	GraphicsRenderer(class GraphicsMain* game);
 	~GraphicsRenderer();
