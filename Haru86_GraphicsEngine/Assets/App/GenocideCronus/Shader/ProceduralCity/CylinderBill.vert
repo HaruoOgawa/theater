@@ -15,6 +15,8 @@ uniform float StreetRadius;
 uniform float ToSideWarkDist;
 uniform vec3 _ZCenterVec; // Zは無限大である
 uniform int _IDOffset; // 立方体のビルと位置や変化が重ならないようにするためのオフセット
+uniform int _IsEndCity; // シーンインデックスが『6』かどうか
+uniform int _IsParticleBill; // GPUParticleのビルかどうか
 
 layout(location=0)in vec3 vertex;
 layout(location=1)in vec3 normal;
@@ -123,17 +125,20 @@ void main(){
 		randPos=hash(vec3(id+7.22,id+id,id-88.21))*randPosRadius;
 		randPos.y=0.0;
 
-		randPos.z-=_time*10.0;
-		randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
-
-		// 大通りのぶんだけ道を開ける
+		if(_IsEndCity != 1)
 		{
-		vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+			randPos.z-=_time*10.0;
+			randPos.z=mod(randPos.z,randPosRadius)-randPosRadius*0.5;
 
-		if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
-		{
-			vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
-			randPos+=StreetOffVec;
+			// 大通りのぶんだけ道を開ける
+			{
+			vec3 OffsetVectorZStreet = randPos-_ZCenterVec;
+
+			if(abs(OffsetVectorZStreet.x) <= (StreetRadius + ToSideWarkDist))
+			{
+				vec3 StreetOffVec = exp(-0.3*abs(OffsetVectorZStreet.x))*ToSideWarkDist * StreetRadius * normalize(vec3( OffsetVectorZStreet.x ,0.0,0.0));
+				randPos+=StreetOffVec;
+		}
 		}
 	}
 

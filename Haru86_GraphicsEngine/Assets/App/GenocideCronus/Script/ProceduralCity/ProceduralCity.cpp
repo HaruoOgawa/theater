@@ -211,6 +211,7 @@ namespace myapp {
 					m_ProceduralBillRenderer->m_material->SetFloatUniform("ToSideWarkDist", 1.5f);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseFade", (UseFade)? 1 : 0);
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
+					m_ProceduralBillRenderer->m_material->SetIntUniform("_UseBloom", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0 );
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0 );
 					m_ProceduralBillRenderer->m_material->SetIntUniform("_IsParticleBill", 0);
 
@@ -265,6 +266,7 @@ namespace myapp {
 					m_CylinderBill->m_material->SetIntUniform("_LinearInstanceRate", LinearInstanceRate);
 					m_CylinderBill->m_material->SetIntUniform("_IDOffset", 1024 + 1);
 					m_CylinderBill->m_material->SetIntUniform("_UseBloom", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6)? 1 : 0);
+					m_CylinderBill->m_material->SetIntUniform("_IsEndCity", (GraphicsMain::GetInstance()->GetAppSceneIndex() == 6) ? 1 : 0);
 
 					m_BillRP->m_CubeTex->SetActive(GL_TEXTURE1, GL_TEXTURE_CUBE_MAP);
 					m_CylinderBill->m_material->SetTexUniform("_BillRP", 1);
