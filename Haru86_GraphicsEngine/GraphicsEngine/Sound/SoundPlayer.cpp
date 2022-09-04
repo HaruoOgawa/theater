@@ -40,11 +40,11 @@ namespace sound
 
 	bool SoundPlayer::Play() 
 	{
-		std::array<char, MAXERRORLENGTH> errorString;
+		/*std::array<char, MAXERRORLENGTH> errorString;
 		mciGetErrorStringA(
 			mciSendStringA("play mp3", nullptr, 0, nullptr),
 			errorString.data(),
-			MAXERRORLENGTH);
+			MAXERRORLENGTH);*/
 		//std::printf("%s\n", errorString.data());
 
 		return true;

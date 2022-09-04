@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
 
-class GameObject;
-class CTimeline;
 class TransformComponent;
 
 namespace myapp {
@@ -22,8 +20,6 @@ class GenocideCronus
     float        m_LocalReverseTime;
     bool         m_IsReverseTime;
 
-    // デバッグ用
-    std::shared_ptr<GameObject> m_GridPlane;
     // デバッグ用: 時よ止まれっっっっ！！！！！！
     bool m_DebugTimeLock;
   
@@ -39,7 +35,6 @@ public:
     void Start();
     void Update();
     void Draw(bool IsRaymarching);
-    void Timeline(CTimeline* timeline);
     void UpdateTimeline();
 
     unsigned int GetSceneIndex()const { return m_SceneIndex; }

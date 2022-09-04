@@ -6,7 +6,6 @@
 namespace myapp {
 	class Flower;
 	class Stem;
-	class Leaf;
 
 	struct BSplineData
 	{
@@ -42,10 +41,8 @@ namespace myapp {
 		//
 		std::shared_ptr<Flower> m_Flower;
 		std::shared_ptr<Stem> m_Stem;
-		std::shared_ptr<Leaf> m_Leaf;
 
 		friend Flower;
 		friend Stem;
-		friend Leaf;
 	};
 }

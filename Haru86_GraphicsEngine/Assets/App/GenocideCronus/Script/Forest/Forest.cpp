@@ -2,14 +2,12 @@
 #include "GraphicsEngine/Graphics/PostProcess.h"
 #include "FlowerModel.h"
 #include "LTreeModel.h"
-#include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "Flower.h"
 #include "Stem.h"
-#include "Leaf.h"
 
 namespace myapp
 {

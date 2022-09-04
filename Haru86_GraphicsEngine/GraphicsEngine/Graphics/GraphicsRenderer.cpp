@@ -4,7 +4,6 @@
 #include "GraphicsEngine/Message/Console.h"
 #endif // _DEBUG
 
-#include "../Object/GameObject.h"
 #include "../Component/MeshRendererComponent.h"
 
 #include "../GraphicsMain/GraphicsMain.h"
@@ -376,11 +375,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 
 	glEnable(GL_DEPTH_TEST);
 
-	for (auto obj : mgame->gameObjectList) {
-		obj->m_transform->CalMatrix();
-		obj->meshComp->Draw();
-	}
-
 	if (mgame->m_App) {
 		mgame->m_App->Draw(false);
 	}
@@ -401,11 +395,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 
 	glEnable(GL_DEPTH_TEST);
 
-	for (auto obj : mgame->gameObjectList) {
-		obj->m_transform->CalMatrix();
-		obj->meshComp->Draw();
-	}
-
 	if (mgame->m_App) {
 		mgame->m_App->Draw(false);
 	}
@@ -421,11 +410,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST);
-
-	for (auto obj : mgame->gameObjectList) {
-		obj->m_transform->CalMatrix();
-		obj->meshComp->Draw();
-	}
 
 	if (mgame->m_App) {
 		mgame->m_App->Draw(false);
@@ -446,11 +430,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-		for (auto obj : mgame->raymarchingObjectList) {
-			obj->m_transform->CalMatrix();
-			obj->meshComp->Draw();
-		}
-
 		if (mgame->m_App) {
 			mgame->m_App->Draw(true);
 		}
@@ -466,11 +445,6 @@ void GraphicsRenderer::Draw(const std::shared_ptr<TransformComponent>& UsingCame
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-
-		for (auto obj : mgame->raymarchingObjectList) {
-			obj->m_transform->CalMatrix();
-			obj->meshComp->Draw();
-		}
 
 		if (mgame->m_App) {
 			mgame->m_App->Draw(true);

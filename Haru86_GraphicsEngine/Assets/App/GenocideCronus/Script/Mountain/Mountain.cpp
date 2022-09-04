@@ -1,9 +1,9 @@
 #include "Mountain.h"
-#include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/PostProcess.h"
+#include "GraphicsEngine/Graphics/ShaderLib.h"
 
 namespace myapp {
 	Mountain::Mountain()

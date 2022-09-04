@@ -1,7 +1,5 @@
 #include "MeshRendererComponent.h"
 #include "./TransformComponent.h"
-#include "GraphicsEngine/GraphicsMain/CTimeline.h"
-#include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/GraphicsRenderer.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 
@@ -104,10 +102,6 @@ void MeshRendererComponent::Draw(GLenum DrawVertexWay, bool IsInstancing, int In
 	{
 		m_material->SetVec3Uniform("_WorldCameraPos", GraphicsMain::GetInstance()->m_UsingCamera->m_position);
 		m_material->SetVec3Uniform("_WorldCameraCenter", GraphicsMain::GetInstance()->m_UsingCamera->m_center);
-	}
-
-	for (auto clip : animationClips) {
-		clip->callback(clip->lifeTimeRate);
 	}
 
 	// Custom Uniform

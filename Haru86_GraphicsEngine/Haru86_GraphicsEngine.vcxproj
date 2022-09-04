@@ -392,7 +392,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Flower.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\ProceduralCity\BillMeshGenerator.h" />
-    <ClInclude Include="GraphicsEngine\GraphicsMain\CTimeline.h" />
     <ClInclude Include="GraphicsEngine\Graphics\EGraphicsParam.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ShaderLib.h" />
     <ClInclude Include="GraphicsEngine\Math\mymath_withGLM.h" />
@@ -404,7 +403,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="GraphicsEngine\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="GraphicsEngine\Library\tinygltf\tiny_gltf.h" />
     <ClInclude Include="GraphicsEngine\GraphicsMain\GraphicsMain.h" />
-    <ClInclude Include="GraphicsEngine\Object\GameObject.h" />
     <ClInclude Include="GraphicsEngine\Graphics\GraphicsRenderer.h" />
     <ClInclude Include="GraphicsEngine\Graphics\Material.h" />
     <ClInclude Include="GraphicsEngine\Component\MeshRendererComponent.h" />
@@ -420,11 +418,9 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClInclude Include="Assets\App\GenocideCronus\Script\SacredLake\SacredLake.h" />
     <ClInclude Include="GraphicsEngine\Graphics\ReflectionProbe.h" />
     <ClInclude Include="GraphicsEngine\Sound\SoundPlayer.h" />
-    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Leaf.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\Stem.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTree.h" />
-    <ClInclude Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.h" />
     <ClInclude Include="Assets\App\GenocideCronus\Script\Mountain\Mountain.h" />
   </ItemGroup>
   <ItemGroup>
@@ -432,12 +428,10 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Flower.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\FlowerModel.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\ProceduralCity\BillMeshGenerator.cpp" />
-    <ClCompile Include="GraphicsEngine\GraphicsMain\CTimeline.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\CBloom.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ShaderLib.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ComputeBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\GraphicsMain.cpp" />
-    <ClCompile Include="GraphicsEngine\Object\GameObject.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\GraphicsRenderer.cpp" />
     <ClCompile Include="GraphicsEngine\GraphicsMain\Main.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\Material.cpp" />
@@ -453,29 +447,23 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <ClCompile Include="Assets\App\GenocideCronus\Script\SacredLake\SacredLake.cpp" />
     <ClCompile Include="GraphicsEngine\Graphics\ReflectionProbe.cpp" />
     <ClCompile Include="GraphicsEngine\Sound\SoundPlayer.cpp" />
-    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Leaf.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\Stem.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeModel.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTree.cpp" />
-    <ClCompile Include="Assets\App\GenocideCronus\Script\Forest\LTreeLeaf.cpp" />
     <ClCompile Include="Assets\App\GenocideCronus\Script\Mountain\Mountain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Flowers_Renderer.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.frag" />
-    <None Include="Assets\App\GenocideCronus\Shader\Mountain\ShaderTest.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.tesc" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.tese" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Bill.vert" />
-    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\BillWindow.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\EnergyBall.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Flowers_Renderer.vert" />
-    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Leaf_Renderer.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Stem_Renderer.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPUFlower_Stem_Renderer.vert" />
-    <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Leaf.comp" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\GPU_Flower_Cal_Stem.comp" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\Forest\LTree.vert" />
@@ -488,9 +476,6 @@ xcopy "$(ProjectDir)GraphicsEngine\Assets\Sound\stroke.wav" "$(OutDir)" /i /s /y
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\GlowCave.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\MandelboxSample.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\Mountain\Mountain.frag" />
-    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.frag" />
-    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.geom" />
-    <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\ProceduralCity.vert" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.frag" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.geom" />
     <None Include="Assets\App\GenocideCronus\Shader\ProceduralCity\Street.tesc" />
