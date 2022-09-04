@@ -6,6 +6,7 @@
 #include "GraphicsEngine/GraphicsMain/GraphicsMain.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
+#include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "GraphicsEngine/Math/mymath_withGLM.h"
 #include "Forest.h"
 
@@ -29,21 +30,20 @@ namespace myapp {
 
         cal_stem_cs = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, "", "", "", "", "", GPU_Flower_Cal_Stem_comp);
 
-        // マテリアル
-        std::string GPUFlower_Stem_Renderer_vert = {
-            #include "Assets/App/GenocideCronus/Shader/Forest/GPUFlower_Stem_Renderer.vert"
-        };
-        std::string GPUFlower_Stem_Renderer_geom = {
-            #include "Assets/App/GenocideCronus/Shader/Forest/GPUFlower_Stem_Renderer.geom"
-        };
-        stem_mat = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, GPUFlower_Stem_Renderer_vert,shaderlib::ShaderLib::Standard_frag, GPUFlower_Stem_Renderer_geom);
-
-        // ポイントメッシュ
-        stem_point_mesh = std::make_shared<Mesh>(PrimitiveType::POINT);
-
-        // TRS
-        m_StemTRS = std::make_shared<TransformComponent>();
-        m_StemTRS->m_scale = glm::vec3(0.333f);
+        //
+        m_StemRenderer = std::make_shared<MeshRendererComponent>(
+            std::make_shared<TransformComponent>(),
+            PrimitiveType::POINT,
+            RenderingSurfaceType::RASTERIZER,
+            std::string(
+                #include "Assets/App/GenocideCronus/Shader/Forest/GPUFlower_Stem_Renderer.vert"
+            ), 
+            shaderlib::ShaderLib::Standard_frag,
+            std::string(
+                #include "Assets/App/GenocideCronus/Shader/Forest/GPUFlower_Stem_Renderer.geom"
+            )
+        );
+        m_StemRenderer->m_transform->m_scale = glm::vec3(0.333f);
 
         //
         Start();
@@ -60,14 +60,14 @@ namespace myapp {
 
     void Stem::LinkBufferToResources() {
         // コンピュートシェーダーにバッファをセット
-        cal_stem_cs->SetBuffer(stemResult_buffer, stemResult_buffer_index, stem_mat); // _write_stemResult_buffer
-        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, stem_mat); // _read_stemBasePosition_buffer
-        cal_stem_cs->SetBuffer(stemVertex_buffer, stemVertex_buffer_index, stem_mat); // _write_stemVertex_buffer
-        cal_stem_cs->SetBuffer(stemManage_buffer, stemManage_buffer_index, stem_mat); // _read_stemManage_buffer
+        cal_stem_cs->SetBuffer(stemResult_buffer, stemResult_buffer_index, m_StemRenderer->m_material); // _write_stemResult_buffer
+        cal_stem_cs->SetBuffer(stemBasePosition_buffer, stemBasePosition_buffer_index, m_StemRenderer->m_material); // _read_stemBasePosition_buffer
+        cal_stem_cs->SetBuffer(stemVertex_buffer, stemVertex_buffer_index, m_StemRenderer->m_material); // _write_stemVertex_buffer
+        cal_stem_cs->SetBuffer(stemManage_buffer, stemManage_buffer_index, m_StemRenderer->m_material); // _read_stemManage_buffer
 
         // マテリアルにバッファをセット
-        stem_mat->SetBuffer(stemVertex_buffer, stemVertex_buffer_index); // _stemVertex_buffer
-        stem_mat->SetBuffer(stemManage_buffer, stemManage_buffer_index); // _read_stemManage_buffer
+        m_StemRenderer->m_material->SetBuffer(stemVertex_buffer, stemVertex_buffer_index); // _stemVertex_buffer
+        m_StemRenderer->m_material->SetBuffer(stemManage_buffer, stemManage_buffer_index); // _read_stemManage_buffer
     }
 
 	void Stem::Update() {
@@ -215,25 +215,12 @@ namespace myapp {
     void Stem::Render_Stem() {
         __glewMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
-        stem_mat->SetActive();
-        m_StemTRS->CalMatrix();
-        stem_mat->SetIntUniform("_stemVertexCount", stemVertexCount);
-        stem_mat->SetIntUniform("_stemSegments", stemSegments);
-        stem_mat->SetFloatUniform("_stemRadius", stemRadius);
-        stem_mat->SetFloatUniform("_stemLength", stemLength);
-
-        stem_mat->SetMatrixUniform("MVPMatrix", m_StemTRS->m_pMatrix * m_StemTRS->m_vMatrix * m_StemTRS->m_mMatrix);
-        stem_mat->SetMatrixUniform("MMatrix", m_StemTRS->m_mMatrix);
-        stem_mat->SetMatrixUniform("VMatrix", m_StemTRS->m_vMatrix);
-        stem_mat->SetMatrixUniform("PMatrix", m_StemTRS->m_pMatrix);
-        stem_mat->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
-        stem_mat->SetFloatUniform("_deltaTime", GraphicsMain::GetInstance()->m_DeltaTime);
-        stem_mat->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-        stem_mat->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
-        stem_mat->SetVec3Uniform("_LightDir", glm::vec3(1.0, 1.0, 1.0));
-        stem_mat->SetIntUniform("_UseLighting", 1);
-        
-        stem_point_mesh->DrawInstancedWithMesh(stemVertexCount * m_FlowerModel->count, GL_POINTS);
+        m_StemRenderer->Draw(GL_POINTS, true, stemVertexCount * m_FlowerModel->count, [&]() {
+            m_StemRenderer->m_material->SetIntUniform("_stemVertexCount", stemVertexCount);
+            m_StemRenderer->m_material->SetIntUniform("_stemSegments", stemSegments);
+            m_StemRenderer->m_material->SetFloatUniform("_stemRadius", stemRadius);
+            m_StemRenderer->m_material->SetFloatUniform("_stemLength", stemLength);
+        });
     }
 	/////////////
 

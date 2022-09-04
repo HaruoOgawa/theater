@@ -4,8 +4,7 @@
 
 class ComputeBuffer;
 class Material;
-class Mesh;
-class TransformComponent;
+class MeshRendererComponent;
 
 namespace myapp {
 	class FlowerModel;
@@ -99,8 +98,8 @@ namespace myapp {
 
         //
         std::shared_ptr<Material> cal_stem_cs;
-        std::shared_ptr<Material> stem_mat;
-        std::shared_ptr<Mesh> stem_point_mesh;
+
+        std::shared_ptr<MeshRendererComponent> m_StemRenderer; 
 
 	public:
 		Stem(FlowerModel* model);
@@ -110,9 +109,6 @@ namespace myapp {
         void LinkBufferToResources();
 		void Update();
 		void Draw();
-
-  
-        std::shared_ptr<TransformComponent> m_StemTRS;
 
         friend class Flower;
         friend class Leaf;
