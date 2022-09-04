@@ -21,7 +21,6 @@ namespace sound {
 }
 
 class GenocideCronus;
-class CTimeline;
 class TransformComponent;
 class ReflectionProbe;
 class MeshRendererComponent;
@@ -49,7 +48,6 @@ public:
 	float m_MilliSecondsTime;
 	float m_SecondsTimeOffset;
 	float m_DeltaTime;
-	std::unique_ptr<CTimeline> m_timeline;
 	float animTime;
 
 	//frame board

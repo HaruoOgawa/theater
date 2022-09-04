@@ -1,8 +1,6 @@
 #include "GraphicsMain.h"
 #include <string>
-#include "../Object/GameObject.h"
 #include "../Graphics/Mesh.h"
-#include "CTimeline.h"
 #include <vector>
 #include <algorithm>
 #include "Assets/App/GenocideCronus/GenocideCronus.h"
@@ -42,8 +40,6 @@ GraphicsMain::GraphicsMain()
 	mouseStateBool(false),
 	animTime(0.0f),
 	renderingTarget(ERerderingTarget::COLOR),
-	m_timeline(nullptr),
-	//m_UseCameraIndex(0)
 	m_MainCamera(nullptr),
 	m_UsingCamera(nullptr),
 	m_SoundPlayer(nullptr),
@@ -71,7 +67,6 @@ bool GraphicsMain::CreateApp() {
 
 bool GraphicsMain::Initialize() {
 	// ÉÅÉÇÉäämï€
-	m_timeline = std::make_unique<CTimeline>();
 	m_App = new GenocideCronus();
 	LoadData();
 	
@@ -89,10 +84,6 @@ void GraphicsMain::LoadData() {
 		shaderlib::ShaderLib::StandardRenderBoard_vert,
 		shaderlib::ShaderLib::StandardRenderBoard_frag
 	);
-
-	//
-	m_App->Timeline(m_timeline.get());
-	m_timeline->Initialize();
 
 	//
 	if (m_MainCamera == nullptr) {
@@ -135,12 +126,6 @@ unsigned int GraphicsMain::GetAppSceneIndex()const
 
 void GraphicsMain::UpdateTimeline() {
 	m_App->UpdateTimeline();
-
-	//
-	m_timeline->Update();
-	std::sort(gameObjectList.begin(), gameObjectList.end(), [](GameObject* a, GameObject* b) {
-		return a->m_renderOrder < b->m_renderOrder;
-	});
 }
 
 void GraphicsMain::InputProcess() {

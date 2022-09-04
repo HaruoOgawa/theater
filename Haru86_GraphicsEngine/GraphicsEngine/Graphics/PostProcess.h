@@ -4,24 +4,17 @@
 
 class Texture;
 class CBloom;
-class Mesh;
-class Material;
-class TransformComponent;
 class MeshRendererComponent;
 
 class PostProcess
 {
 	//base
-	std::shared_ptr<Mesh> m_mesh;
-	std::shared_ptr<Material> m_material;
+	std::shared_ptr<MeshRendererComponent> m_PolygonePPRenderer;
 	
 	//bloom
 	std::unique_ptr<CBloom> m_Bloom;
 	std::shared_ptr<Texture> m_BloomTexture;
 	unsigned int m_BloomFrameBuffer;
-
-	// VPMatrixŽæ“¾—pTRS
-	std::shared_ptr<TransformComponent> m_transform;
 
 public:
 	static void CreateInstance();

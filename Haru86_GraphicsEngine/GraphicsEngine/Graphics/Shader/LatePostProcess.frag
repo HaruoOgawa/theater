@@ -69,6 +69,7 @@ vec3 CalSSRColor(vec3 color){
 
 	// 
 	vec3 normal=RawNormalMapColor.rgb*2.0-1.0;
+	normal = normalize(normal);
 
 	// ノーマルを使わない場合は『0』としているのでその場合は抜ける --> 主にレイマーチング
 	if(length(normal)<=0.0) { return col;}
@@ -97,7 +98,9 @@ vec3 CalSSRColor(vec3 color){
 		vec3 rayPos= pos.xyz + step * n;
 		vec4 vpPos = VPMatrix * vec4(rayPos,1.0);
 		vec2 rayUV = (vpPos.xy/vpPos.w) * 0.5 +0.5;
-
+		rayUV.y*=0.95;
+		//rayUV.x*=0.99;
+		
 		//  rayDepthの定義
 		float rayDepth= (vpPos.z/vpPos.w)*0.5+0.5;
 		

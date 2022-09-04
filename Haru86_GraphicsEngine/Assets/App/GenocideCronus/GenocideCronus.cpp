@@ -1,7 +1,5 @@
 #include "GenocideCronus.h"
 
-#include "GraphicsEngine/GraphicsMain/CTimeline.h"
-#include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
@@ -16,7 +14,6 @@
 
 GenocideCronus::GenocideCronus():
 	m_CameraTransform(nullptr),
-	m_GridPlane(nullptr),
 	m_SceneIndex(0),
 	m_ProceduralCity(nullptr),
 	m_SacredLake(nullptr),
@@ -32,7 +29,7 @@ GenocideCronus::GenocideCronus():
 void GenocideCronus::Start() {
 #ifdef _DEBUG
 	// 時間のオフセット
-	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 160.0f;// シーンを飛ばすためのオフセット
+	GraphicsMain::GetInstance()->m_SecondsTimeOffset = 0.0f;// シーンを飛ばすためのオフセット
 
 	// デバッグ用
 	/*{
@@ -220,8 +217,4 @@ void GenocideCronus::Draw(bool IsRaymarching) {
 	if (m_SceneIndex == 2 || m_SceneIndex == 1)m_Forest->Draw(IsRaymarching, m_SceneIndex, glm::min(10, LinearInstanceRate + 4), m_IsReverseTime);
 	if (m_SceneIndex == 3)m_Mountain->Draw(IsRaymarching);
 	if (m_SceneIndex == 4)m_SacredLake->Draw(IsRaymarching);
-}
-
-void GenocideCronus::Timeline(CTimeline* timeline) 
-{
 }

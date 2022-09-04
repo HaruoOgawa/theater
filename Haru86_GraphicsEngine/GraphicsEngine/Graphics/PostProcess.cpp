@@ -34,12 +34,18 @@ PostProcess::PostProcess():
 	m_BloomIntensity(0.0),
 	m_Bloom(std::make_unique<CBloom>()),
 	m_BloomTexture(std::make_shared<Texture>()),
-	m_transform(std::make_shared<TransformComponent>()),
 	m_UseSSR(false),
-	m_LatePostProcesCallBack([]() {})
+	m_LatePostProcesCallBack([]() {}),
+	m_PolygonePPRenderer(nullptr)
 {
-	m_mesh = std::make_shared<Mesh>(PrimitiveType::BOARD);
-	m_material = std::make_shared<Material>(RenderingSurfaceType::RASTERIZER, shaderlib::ShaderLib::StandardRenderBoard_vert, shaderlib::ShaderLib::PolygonPostProcess_frag, "", "", "", "");
+	m_PolygonePPRenderer = std::make_shared<MeshRendererComponent>(
+		std::make_shared<TransformComponent>(),
+		PrimitiveType::BOARD,
+		RenderingSurfaceType::RASTERIZER,
+		shaderlib::ShaderLib::StandardRenderBoard_vert, 
+		shaderlib::ShaderLib::PolygonPostProcess_frag
+	);
+	
 	m_LateMeshRenderer = std::make_shared<MeshRendererComponent>(
 		std::make_shared<TransformComponent>(),
 		PrimitiveType::BOARD,
@@ -68,22 +74,17 @@ void PostProcess::DrawPolygonPostProcess(const std::shared_ptr<Texture>& SrcText
 	glEnable(GL_DEPTH_TEST);
 
 	// draw PostProcess Board
-	m_material->SetActive();
-	m_material->SetFloatUniform("_time", GraphicsMain::GetInstance()->m_SecondsTime);
-	m_material->SetVec2Uniform("_resolution", GraphicsRenderer::GetInstance()->GetScreenSize());
-	m_material->SetFloatUniform("_frameResolusion", GraphicsRenderer::GetInstance()->frameResolusion);
+	m_PolygonePPRenderer->Draw(GL_TRIANGLES, false, 0, [&]() {
+		// Bloom
+		m_BloomTexture->SetActive(GL_TEXTURE0);
+		m_PolygonePPRenderer->m_material->SetTexUniform("_BloomTexture", 0);
+		m_PolygonePPRenderer->m_material->SetFloatUniform("_UseBloom", (m_BloomTexture && m_UseBloom) ? 1.0 : 0.0);
 
-	// Bloom
-	m_BloomTexture->SetActive(GL_TEXTURE0);
-	m_material->SetTexUniform("_BloomTexture", 0);
-	m_material->SetFloatUniform("_UseBloom", (m_BloomTexture && m_UseBloom)? 1.0 : 0.0);
-	
+		// Set SrcTexture
+		SrcTexture->SetActive(GL_TEXTURE1);
+		m_PolygonePPRenderer->m_material->SetTexUniform("_SrcTexture", 1);
+	});
 
-	// Set SrcTexture
-	SrcTexture->SetActive(GL_TEXTURE1);
-	m_material->SetTexUniform("_SrcTexture", 1);
-	
-	m_mesh->Draw();
 	m_BloomTexture->SetEnactive(GL_TEXTURE0);
 	SrcTexture->SetEnactive(GL_TEXTURE1);
 }

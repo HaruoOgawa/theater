@@ -5,7 +5,6 @@
 #include "GraphicsEngine/Graphics/ShaderLib.h"
 #include "GraphicsEngine/Component/TransformComponent.h"
 #include "GraphicsEngine/Message/Console.h"
-#include "GraphicsEngine/Object/GameObject.h"
 #include "GraphicsEngine/Component/MeshRendererComponent.h"
 #include "BillMeshGenerator.h"
 #include "GraphicsEngine/Graphics/ReflectionProbe.h"

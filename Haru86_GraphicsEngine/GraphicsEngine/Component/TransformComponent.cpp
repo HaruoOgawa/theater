@@ -24,10 +24,6 @@ void TransformComponent::ComputeModelMatrix() {
 }
 
 void TransformComponent::ComputeViewMatrix() {
-	//int CamIndex = GraphicsMain::GetInstance()->m_UseCameraIndex;
-	//if (
-		//(CamIndex>=0&& CamIndex< GraphicsMain::GetInstance()->m_CameraTransformList.size())
-		//&& GraphicsMain::GetInstance()->m_CameraTransformList[CamIndex])
 	if(GraphicsMain::GetInstance()->m_UsingCamera)
 	{
 		m_vMatrix = glm::lookAt(
