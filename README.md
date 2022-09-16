@@ -1,6 +1,4 @@
-## クレジット
-音楽は、こちらのものをお借りしています。
- - [melcom STROKE](https://www.melcom-music.de/p/music-2022.html#stroke)
+
 ## 概要
 * 趣味で作ったメガデモです。(スパゲッティコードです)
   * お手元でビルドしてご覧ください
